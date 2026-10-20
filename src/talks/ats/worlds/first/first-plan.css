@@ -1,0 +1,225 @@
+/* The plan slides' own marks (21 to 23: parts-plan.tsx and their scene
+   modules), in stage pixels and under the kit's rules: navy (paper) words and outlines on the
+   white ground, the process's green for the City's own work, the course's
+   indigo for its evidence, and slate (soft) for what is left behind. A
+   part's state arrives as the kit's custom properties (--d draws, --k
+   fills), so the same values always draw the same picture. Selectors name
+   a class of this world's own, so the order the sheets load in never
+   decides a picture. */
+
+/* Words: navy, white on a filled shape, or indigo for the course's figure. The kit's label type is slate, so each tone names the label class too. */
+.dk-label.fs-label--navy {
+  fill: var(--dk-paper);
+}
+
+.dk-label.fs-label--white {
+  fill: var(--dk-night);
+}
+
+.dk-label.fs-label--indigo {
+  fill: var(--dk-catalog);
+}
+
+.dk-label.fs-label--strong {
+  font-weight: 600;
+}
+
+.dk-label.fs-label--text {
+  font-size: 32px;
+}
+
+.dk-label.fs-label--figure {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* A strip: its edge draws on in navy and its ground comes in with it. */
+.fs-strip__ground {
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.6);
+}
+
+.fs-strip__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* 21: the lower lane runs green, the City's quick work; the upper is the plain ground the foundations are built on. */
+.fs-strip--lower .fs-strip__ground {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--d, 0) * var(--dk-wash));
+}
+
+.fs-strip--lower .fs-strip__edge {
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+/* A well in the upper lane: white with a thin rule, until it fills green. It comes in as its lane draws. */
+.fs-well {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+  opacity: min(1, calc(var(--d, 0) * 2));
+}
+
+.fs-grow {
+  transform: scaleX(var(--k, 0));
+}
+
+.fs-grow rect {
+  vector-effect: non-scaling-stroke;
+}
+
+.fs-well__fill {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+/* A box shipped along the lower lane: solid green, its lid's line in white. */
+.fs-parcel rect {
+  fill: var(--dk-process);
+}
+
+.fs-parcel path {
+  fill: none;
+  stroke: var(--dk-night);
+  stroke-width: 2.5;
+}
+
+/* An arrow down from a well: navy, its head arriving with the line's front. */
+.fs-arrow__line,
+.fs-arrow__head {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fs-arrow .fs-arrow__head {
+  opacity: clamp(0, calc(var(--d, 0) * 20 - 19), 1);
+}
+
+/* A tag: grey for a problem, green for the City's own work. */
+.fs-tagged__shape {
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.fs-tagged--grey .fs-tagged__shape {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+}
+
+.fs-tagged--green .fs-tagged__shape {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-idle) * 100%), var(--dk-night));
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+.fs-tagged__hole {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 1.5;
+}
+
+/* 22: a tier's outline draws on, its ground with it; lit, it fills green. */
+.fs-shape__ground {
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.5);
+}
+
+.fs-shape__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.fs-tier__lit {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+/* A desk and its laptop, drawing on in navy; the top fills as it draws. */
+.fs-desk__top {
+  fill: var(--dk-paper);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.fs-desk__legs {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.fs-desk__laptop {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* The slab under the desks: solid green, its words white on it. */
+.fs-slab {
+  fill: var(--dk-process);
+}
+
+/* 23: the tiles, the lit first tile, the project dots, the tally and the measure. */
+.fs-strip--tile .fs-strip__ground {
+  fill-opacity: calc(var(--d, 0) * 0.35);
+}
+
+.fs-lit {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-process);
+  stroke-width: 4;
+}
+
+.fs-project {
+  fill: var(--dk-paper);
+  stroke: var(--dk-night);
+  stroke-width: 3;
+}
+
+.fs-tally {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.fs-measure {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.fs-point {
+  fill: var(--dk-paper);
+}
+
+.fs-target {
+  fill: var(--dk-night);
+  stroke: var(--dk-process);
+  stroke-width: 5;
+}
+
+/* A nameplate: white, a navy edge. */
+.fs-plate rect {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
