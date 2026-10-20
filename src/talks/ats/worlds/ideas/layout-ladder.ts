@@ -31,11 +31,12 @@ const STAIR_X = SAFE.left + 160;
 const TREAD = (SAFE.right - STAIR_X) / 4;
 /**
  * The first block holds its name and caption (16 px pad, two 32 px lines,
- * 20 px under); each block after rises 56 px more, so the top block's face
- * ends 68 px under where drawing may start, room for the arrow over it.
+ * 20 px under); each block after rises 48 px more, so the top block's face
+ * ends 92 px under where drawing may start, room for the arrow and its
+ * long label over it.
  */
 const FIRST = 100;
-const RISE = 56;
+const RISE = 48;
 /** The words' inset in a block's face. */
 const PAD = { x: 20, y: 16 } as const;
 
@@ -57,24 +58,27 @@ const TICK: Point = { x: STANDS.x, y: STANDS.top - 8 - TICK_R };
 const STOP_AT: Point = { x: STANDS.x, y: TICK.y - TICK_R - 6 - LABEL_LINE / 2 };
 
 /**
- * The arrow rides 36 px over the line through the blocks' top left corners
+ * The arrow rides 24 px over the line through the blocks' top left corners
  * (the stair's noses), from over the second block's tread to over the
- * fourth's, so it climbs as the stair does; its head stays under where
- * drawing may start. Its label rides along it, 26 px
- * off its middle on the side away from the stair, turned to its slope.
+ * fourth's, 760 px long, so it climbs as the stair does (7 degrees). Its
+ * label rides along it on one line, 26 px off its middle on the side away
+ * from the stair, turned to its slope: the label is about 790 px long at
+ * 26 px semibold in Geist, so its high end rises about 48 px over its
+ * middle and still ends 15 px under where drawing may start, and its low
+ * end stays over the arrow's tail, clear of the tick's label at the left.
  */
 const NOSE = { x: STAIR_X + TREAD, y: FLOOR - FIRST - RISE } as const;
 const SLOPE = RISE / TREAD;
-const OVER = 36;
+const OVER = 24;
 const arrowY = (x: number) => round(NOSE.y - OVER - (x - NOSE.x) * SLOPE);
-const TAIL_X = 760;
+const TAIL_X = 740;
 const HEAD_X = 1500;
 const TURN = round((-Math.atan(SLOPE) * 180) / Math.PI);
 const LIFT = 26;
 const mid = { x: (TAIL_X + HEAD_X) / 2, y: (arrowY(TAIL_X) + arrowY(HEAD_X)) / 2 };
 const norm = Math.hypot(1, SLOPE);
 
-/** The tool: 56 px square, 22 px under the floor at the stair's start, its name and caption stacked beside it, 24 px off, the two lines' middles 16 px from its top and its foot. */
+/** The tool: 56 px square, 22 px under the floor at the stair's start, its name and caption stacked beside it, 24 px off, the two lines' middles 16 px from its top and its foot; the caption runs on from there as long as it is (about 340 px). */
 const TOOL = box(STAIR_X, FLOOR + 22, 56, 56);
 const TOOL_WORDS = { x: TOOL.x + TOOL.w + 24, first: TOOL.y + 12 } as const;
 

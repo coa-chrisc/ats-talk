@@ -26,12 +26,23 @@ const E = ENFORCE;
 const G = EARN;
 const D = E.dial;
 
-/** The turned label along the arrow: its box before the turn, widened by the turn's lean. */
-const turnedLabel = () => {
-  const flat = label(L.more.label.at, L.more.label.text);
-  const lean = (flat.w / 2) * Math.sin((Math.abs(L.more.label.turn) * Math.PI) / 180);
-  return box(flat.x, flat.y - lean, flat.w, flat.h + 2 * lean);
+/** The turned label along the arrow: the four corners of its line, turned about its place by the arrow's slope. */
+const turnedCorners = (): Point[] => {
+  const { at, text, turn } = L.more.label;
+  const half = wordsWidth(text, 26) / 2;
+  const a = (turn * Math.PI) / 180;
+  const along = { x: Math.cos(a) * half, y: Math.sin(a) * half };
+  const up = { x: -Math.sin(a) * (LABEL_LINE / 2), y: Math.cos(a) * (LABEL_LINE / 2) };
+  return [1, -1].flatMap((s) => [1, -1].map((t) => ({ x: at.x + s * along.x + t * up.x, y: at.y + s * along.y + t * up.y })));
 };
+/** The turned label's axis-aligned bounds, for the slide's extent. */
+const turnedLabel = () => {
+  const corners = turnedCorners();
+  const x0 = Math.min(...corners.map((c) => c.x));
+  const y0 = Math.min(...corners.map((c) => c.y));
+  return box(x0, y0, Math.max(...corners.map((c) => c.x)) - x0, Math.max(...corners.map((c) => c.y)) - y0);
+};
+const within = (p: Point, b: Box) => p.x > b.x && p.x < b.x + b.w && p.y > b.y && p.y < b.y + b.h;
 
 /** A gate on a step: its posts' span and height over the tread. */
 const gateBox = (step: (typeof G.steps)[number]) => box(step.gate.x - GATE.span / 2, step.gate.y - GATE.h, GATE.span, GATE.h);
@@ -156,7 +167,15 @@ describe("slide 7, the ladder", () => {
       const y = L.more.tail.y - (x - L.more.tail.x) * slope;
       expect(y + 12, step.key).toBeLessThan(step.at.y);
     }
-    for (const step of L.steps) expect(overlaps(turnedLabel(), step.at), step.key).toBe(false);
+    // The label runs parallel to the arrow on the side away from the stair, its line clear of the arrow, so its corners say where it is.
+    const lift = Math.hypot(L.more.label.at.x - (L.more.tail.x + L.more.head.x) / 2, L.more.label.at.y - (L.more.tail.y + L.more.head.y) / 2);
+    expect(lift).toBeGreaterThan(LABEL_LINE / 2 + 6);
+    expect(L.more.label.at.y).toBeLessThan((L.more.tail.y + L.more.head.y) / 2);
+    for (const corner of turnedCorners()) {
+      for (const step of L.steps) expect(within(corner, step.at), step.key).toBe(false);
+      expect(within(corner, label(L.stop.at, L.stop.text))).toBe(false);
+      expect(corner.y).toBeGreaterThanOrEqual(contentTop("ladder"));
+    }
     expect(overlaps(turnedLabel(), label(L.stop.at, L.stop.text))).toBe(false);
   });
 
