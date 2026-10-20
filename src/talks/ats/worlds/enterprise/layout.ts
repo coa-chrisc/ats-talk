@@ -1,7 +1,7 @@
 /**
  * The enterprise world (Part 2, slides 3 to 6) on one plane the size of the
  * stage: what every slide shares. Each slide's own places are in its own
- * module (layout-spending.ts, layout-agents.ts, layout-fleet.ts,
+ * module (layout-spending.ts, layout-agents.ts, layout-review.ts, layout-fleet.ts,
  * layout-stumbled.ts). Every word is read from the script; a title's line
  * break is given by the word it falls after. Every id starts with its
  * picture's id, and each picture's parts sit under two ids, its marks and
@@ -33,7 +33,8 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * holds the band's 1728 px (measured in Geist with the kit's tracking, and
  * erring wide by 2 per cent): slide 3 breaks at its first sentence's end
  * (about 1430 and 1690 px); slide 4 at its last comma before its verbs
- * (about 1410 and 1370 px); slide 5
+ * (about 1410 and 1370 px); slide 4a at its first sentence's end (about
+ * 1365 and 1465 px); slide 5
  * breaks at its first sentence's end (about 1485 and 985 px); slide 6 after
  * its verb, since its first sentence alone runs about 1930 px (about 1570
  * and 1420 px).
@@ -41,6 +42,7 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 const BREAKS: Record<string, string[]> = {
   spending: ["years."],
   agents: ["steps,"],
+  review: ["chatbots."],
   "fleet-defined": ["roles."],
   stumbled: ["are"],
 };

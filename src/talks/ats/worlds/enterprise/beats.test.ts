@@ -9,6 +9,7 @@ import { CHAIN, HOLD } from "@/components/deck/kit";
 import { storyKeysOf, titleKey } from "./layout";
 import { AGENTS } from "./layout-agents";
 import { FLEET } from "./layout-fleet";
+import { REVIEW } from "./layout-review";
 import { SPENDING } from "./layout-spending";
 import { STUMBLED } from "./layout-stumbled";
 import { ARRIVE } from "./moves";
@@ -156,6 +157,59 @@ describe("slide 4, chatbots to agents", () => {
   });
 });
 
+describe("slide 4a, review moved off the person", () => {
+  const id = stepOf("review");
+  const R = REVIEW;
+  const pages = R.stack.pages.map((page) => startOf(id, page.key));
+
+  it("raises the two bars from the floor, the second longer, each named and captioned as it rises, story line A with them", () => {
+    const [may, september] = R.bars.map((bar) => playOf(id, bar.key)[0]);
+    expect(september.at).toBeGreaterThan(may.at);
+    expect(september.duration).toBeGreaterThan(may.duration);
+    for (const bar of R.bars) {
+      const play = playOf(id, bar.key)[0];
+      expect(startOf(id, bar.name.key)).toBeGreaterThan(play.at);
+      expect(startOf(id, bar.caption.key)).toBeLessThan(play.at + play.duration);
+    }
+    expect(storyAt("review", 0)).toBeGreaterThan(september.at);
+    expect(storyAt("review", 0)).toBeLessThan(september.at + september.duration);
+  });
+
+  it("then grows the stack page by page, bottom first, for about two seconds, beside the seated person, naming it once it towers", () => {
+    expect(startOf(id, R.desk.key)).toBeGreaterThan(endOf(id, R.bars[1].caption.key) - 0.5);
+    expect(pages[0]).toBeGreaterThan(startOf(id, R.seated.key));
+    for (let i = 1; i < pages.length; i++) expect(pages[i]).toBeGreaterThan(pages[i - 1]);
+    expect(pages.at(-1)! - pages[0]).toBeGreaterThan(1.5);
+    expect(startOf(id, R.stack.name.key)).toBeGreaterThan(pages.at(-1)!);
+  });
+
+  it("then draws the funnel, named at its mouth, stands the person at its outlet and lands the mark, story line B with it", () => {
+    const funnel = startOf(id, R.funnel.key);
+    expect(funnel).toBeGreaterThan(endOf(id, R.stack.name.key) - 0.2);
+    expect(startOf(id, R.funnel.name.key)).toBeGreaterThan(funnel);
+    expect(startOf(id, R.standing.key)).toBeGreaterThan(funnel);
+    expect(startOf(id, R.mark.key)).toBeGreaterThan(startOf(id, R.standing.key));
+    expect(startOf(id, R.people.key)).toBeGreaterThan(startOf(id, R.mark.key));
+    expect(storyAt("review", 1)).toBeGreaterThan(funnel);
+    expect(storyAt("review", 1)).toBeLessThan(endOf(id, R.people.key));
+  });
+
+  it("lands the figure last, its caption with it", () => {
+    expect(startOf(id, R.figure.key)).toBeGreaterThan(endOf(id, R.mark.key));
+    expect(startOf(id, R.figure.caption.key) - startOf(id, R.figure.key)).toBeLessThanOrEqual(0.2);
+  });
+
+  it("ends on the two bars, the towering stack and the funnel with its person, mark and figure", () => {
+    const end = at(id);
+    for (const bar of R.bars) expect(end[bar.key]["--k"]).toBe(1);
+    for (const page of R.stack.pages) expect(end[page.key].autoAlpha).toBe(1);
+    expect(end[R.funnel.key]["--d"]).toBe(1);
+    expect(end[R.mark.key]).toMatchObject({ autoAlpha: 1, "--d": 1 });
+    expect(end[R.figure.key].autoAlpha).toBe(1);
+    expect(end[R.figure.caption.key].autoAlpha).toBe(1);
+  });
+});
+
 describe("slide 5, what a fleet is", () => {
   const id = stepOf("fleet-defined");
   const F = FLEET;
@@ -251,7 +305,7 @@ describe("slide 6, most who rushed stumbled", () => {
 
 describe("the titles", () => {
   it("change at the start of each click but the first, the old one gone at once", () => {
-    for (const [previous, next] of [["spending", "agents"], ["agents", "fleet-defined"], ["fleet-defined", "stumbled"]]) {
+    for (const [previous, next] of [["spending", "agents"], ["agents", "review"], ["review", "fleet-defined"], ["fleet-defined", "stumbled"]]) {
       const step = stepOf(next);
       expect(startOf(step, titleKey(previous))).toBe(0);
       expect(at(step)[titleKey(previous)].autoAlpha).toBe(0);

@@ -5,7 +5,7 @@
  * the last slide's picture away at once and changes the title; nothing
  * carries from one slide to the next. The world's first slide brings its
  * title up as the world arrives, the world before having faded out. Each
- * slide's moves are in its own module (steps-spending.ts, steps-agents.ts,
+ * slide's moves are in its own module (steps-spending.ts, steps-agents.ts, steps-review.ts,
  * steps-fleet.ts, steps-stumbled.ts).
  */
 import type { PartMove } from "@/components/deck/engine/types";

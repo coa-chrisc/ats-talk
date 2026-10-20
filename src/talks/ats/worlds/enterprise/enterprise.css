@@ -4,7 +4,7 @@
    knowledge in green; evidence from the outside world in indigo (catalog);
    grey (soft, raised) for problems and what was missing; the pass green
    only on a cell's passed tick (the kit's board cell) and the orange only
-   through the kit's HumanMark. A part's state arrives as the kit's custom
+   through the kit's HumanMark (slides 4a and 5). A part's state arrives as the kit's custom
    properties (--d, --k) or autoAlpha. Selectors are doubled where they
    refine a kit class, so the order the sheets load in never decides a
    picture. */
@@ -229,6 +229,22 @@
   stroke: var(--dk-paper);
   stroke-width: 7;
   stroke-linecap: round;
+}
+
+/* Slide 4a: the stack's pages, thin rules in navy, and the funnel. */
+.en-page {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.en-funnel {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Slide 5: the desk, the board's frame (its ground coming up as it draws, as the kit's board does), and the thin wall. */

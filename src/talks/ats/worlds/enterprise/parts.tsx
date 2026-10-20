@@ -3,7 +3,7 @@
  * story lines, a word set in the marks, a run of words set in HTML that
  * may wrap inside its box, a large figure on one baseline or on two, a
  * straight stroke, a bracket, a column, a part of a bar, a stop on a ring,
- * a desk, a card and a rule. Every word set here is passed in from a
+ * a desk, a funnel, a card and a rule. Every word set here is passed in from a
  * layout, which reads it from the script. Painted by enterprise.css.
  */
 "use client";
@@ -146,4 +146,12 @@ export function Card({ id, at, band }: { id: string; at: Box; band: Box }) {
       <rect className="en-card__band" x={band.x} y={band.y} width={band.w} height={band.h} />
     </g>
   );
+}
+
+/** A funnel: its two sides from a wide mouth down to a narrow outlet and a short spout, drawn on as one line (`draw`); its mouth left open. */
+export function Funnel({ id, x0, x1, top, outlet, outletY, spout }: { id: string; x0: number; x1: number; top: number; outlet: number; outletY: number; spout: number }) {
+  const c = (x0 + x1) / 2;
+  const l = c - outlet / 2;
+  const r = c + outlet / 2;
+  return <path className="en-funnel dk-draw" data-build={id} d={`M${x0} ${top}L${l} ${outletY}V${outletY + spout}M${x1} ${top}L${r} ${outletY}V${outletY + spout}`} pathLength={1} />;
 }

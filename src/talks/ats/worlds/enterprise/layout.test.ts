@@ -6,9 +6,10 @@
  */
 import { describe, expect, it } from "vitest";
 import { AGENT_R, STORY, box, type Box, type Point } from "@/components/deck/kit";
-import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, contentTop, linesIn, titleOf, wordsWidth } from "./layout";
+import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, capOf, contentTop, figureWidth, linesIn, titleOf, wordsWidth } from "./layout";
 import { AGENTS, CAPTION_Y, LOOP_RING } from "./layout-agents";
 import { BUILDER_R, FLEET } from "./layout-fleet";
+import { BARS, FIGURE as SHARE, FUNNEL, REVIEW, STACK } from "./layout-review";
 import { BAR, COLUMN, SPENDING, figureBox as spendingFigure } from "./layout-spending";
 import { CARD, FIGURE as BIG, INNER, STUMBLED, figureBox as stumbledFigure } from "./layout-stumbled";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
@@ -19,6 +20,14 @@ const S = SPENDING;
 const A = AGENTS;
 const L = A.loop;
 const F = FLEET;
+const R = REVIEW;
+const reviewMark = () => box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48);
+const shareBox = () => box(R.figure.at.x, R.figure.at.y - capOf(SHARE.size), figureWidth(R.figure.runs, SHARE.size, SHARE.small), capOf(SHARE.size) + 8);
+const reviewZones = () => ({
+  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), text(bar.caption.at, bar.caption.text)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
+  middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), text(R.stack.name.at, R.stack.name.text)]),
+  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), text(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox(), label(R.figure.caption.at, R.figure.caption.text, "start")]),
+});
 const T = STUMBLED;
 
 /** The person's mark: its ring, and its words to its right (the kit sets them 44 px from its middle). */
@@ -44,6 +53,7 @@ const DRAWN: Record<string, Box[]> = {
     ...L.stops.flatMap((stop) => [ringBox(stop.at, LOOP_RING.stop), label(stop.name.at, stop.name.text, stop.name.anchor)]),
     label(L.bar.name.at, L.bar.name.text, "end"),
   ],
+  review: Object.values(reviewZones()),
   "fleet-defined": [
     ...F.leads.at.map((at) => ringBox(at, AGENT_R)),
     box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs),
@@ -93,6 +103,7 @@ describe("the enterprise world's layout", () => {
   const MEASURED: Record<string, readonly [string, number][]> = {
     spending: [["Enterprise AI spending tripled in two years.", 1430], ["Most of it pairs models with a company's own data.", 1691]],
     agents: [["An agent takes a goal, plans its own steps,", 1410], ["uses tools, acts, and stops at a boundary.", 1368]],
+    review: [["Review by a person worked for chatbots.", 1364], ["Agents produce more than anyone can read.", 1467]],
     "fleet-defined": [["A fleet is several agents with separate roles.", 1485], ["A person approves the result.", 983]],
     stumbled: [["Most organizations that rushed into agents are", 1568], ["stumbling. Each failure was a missing limit.", 1419]],
   };
@@ -212,6 +223,53 @@ describe("slide 4, the timeline and the loop", () => {
     const name = label(L.bar.name.at, L.bar.name.text, "end");
     expect(right(name)).toBeLessThan(Math.min(L.bar.from.x, L.bar.to.x));
     for (const stop of L.stops) expect(overlaps(name, label(stop.name.at, stop.name.text, stop.name.anchor)), stop.name.text).toBe(false);
+  });
+});
+
+describe("slide 4a, the review in three zones", () => {
+  it("keeps the three zones left to right, 40 px or more apart", () => {
+    const { left, middle, right: rightZone } = reviewZones();
+    expect(middle.x).toBeGreaterThan(right(left) + 40);
+    expect(rightZone.x).toBeGreaterThan(right(middle) + 4);
+    expect(FUNNEL.x0).toBeGreaterThan(right(middle) + 24);
+  });
+
+  it("stands the two bars on the floor, the second 12 times the first, each captioned over its top and named under the floor", () => {
+    const [may, september] = R.bars;
+    expect(bottom(may.at)).toBe(R.floor.y);
+    expect(bottom(september.at)).toBe(R.floor.y);
+    expect(september.at.h / may.at.h).toBe(BARS.ratio);
+    for (const bar of R.bars) {
+      expect(bottom(text(bar.caption.at, bar.caption.text))).toBeLessThan(bar.at.y);
+      expect(text(bar.name.at, bar.name.text).y).toBeGreaterThan(R.floor.y);
+    }
+  });
+
+  it("stacks the pages on the desk beside the seated person, up to twice the person's height, named over the top", () => {
+    const pages = R.stack.pages;
+    expect(pages[0].y).toBeLessThan(R.desk.y);
+    for (let i = 1; i < pages.length; i++) expect(pages[i - 1].y - pages[i].y).toBe(STACK.pitch);
+    const height = R.desk.y - pages.at(-1)!.y;
+    expect(height).toBeGreaterThanOrEqual(2 * R.seated.at.h);
+    expect(STACK.x).toBeGreaterThan(right(R.seated.at) + 40);
+    expect(bottom(text(R.stack.name.at, R.stack.name.text))).toBeLessThan(pages.at(-1)!.y);
+  });
+
+  it("narrows the funnel from a wide mouth to a small outlet, the person under it with the mark beside them and their words under them, the figure under all of it", () => {
+    expect(FUNNEL.x1 - FUNNEL.x0).toBeGreaterThan(6 * FUNNEL.outlet);
+    expect(bottom(text(R.funnel.name.at, R.funnel.name.text))).toBeLessThan(R.funnel.top);
+    expect(R.standing.at.x + R.standing.at.w / 2).toBe(R.funnel.centre);
+    expect(R.standing.at.y).toBeGreaterThan(R.funnel.outletY + FUNNEL.spout);
+    expect(overlaps(reviewMark(), R.standing.at)).toBe(false);
+    const people = label(R.people.at, R.people.text);
+    expect(people.y).toBeGreaterThan(bottom(R.standing.at));
+    expect(overlaps(people, reviewMark())).toBe(false);
+    const share = shareBox();
+    expect(share.y).toBeGreaterThan(bottom(people) + 8);
+    expect(share.x).toBeGreaterThan(FUNNEL.x0);
+    expect(right(share)).toBeLessThan(FUNNEL.x1);
+    expect(Math.abs(share.x + share.w / 2 - R.funnel.centre)).toBeLessThanOrEqual(4);
+    expect(label(R.figure.caption.at, R.figure.caption.text, "start").y).toBeGreaterThan(R.figure.at.y);
   });
 });
 

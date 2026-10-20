@@ -21,9 +21,9 @@ const sources = readdirSync(dir)
   .map((file) => [file, readFileSync(join(dir, file), "utf8")] as const);
 
 describe("the enterprise world", () => {
-  it("holds the script's slides 3 to 6 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["3", "4", "5", "6"]);
-    expect(PICTURES.map((picture) => picture.id)).toEqual(["spending", "agents", "fleet-defined", "stumbled"]);
+  it("holds the script's slides 3 to 6 and 4a in the order shown, one click each", () => {
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["3", "4", "4a", "5", "6"]);
+    expect(PICTURES.map((picture) => picture.id)).toEqual(["spending", "agents", "review", "fleet-defined", "stumbled"]);
     expect(enterprise.steps.map((step) => step.id)).toEqual(ids);
     expect(ids).toEqual(PICTURES.map((picture) => stepOf(picture.id)));
   });
@@ -58,7 +58,7 @@ describe("the enterprise world", () => {
   });
 
   it("sets every slide on the deck's white", () => {
-    expect(enterprise.steps.map((step) => step.ground)).toEqual([undefined, undefined, undefined, undefined]);
+    expect(enterprise.steps.map((step) => step.ground)).toEqual([undefined, undefined, undefined, undefined, undefined]);
   });
 
   it("shows no picture file: every slide is drawn", () => {
@@ -101,7 +101,7 @@ describe("one slide at a time", () => {
   });
 
   it("breaks the titles after the words the layout names, two lines each", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2]);
+    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2]);
   });
 });
 
@@ -144,12 +144,12 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses orange only through the kit's HumanMark, on slide 5, and the pass green only on the board's passed cells", () => {
+  it("uses orange only through the kit's HumanMark, on slides 4a and 5, and the pass green only on the board's passed cells", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
-    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file)).toEqual(["scene-fleet.tsx"]);
+    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file)).toEqual(["scene-fleet.tsx", "scene-review.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file)).toEqual([]);
-    expect(markup.match(/class="dk-human"/g)).toHaveLength(1);
+    expect(markup.match(/class="dk-human"/g)).toHaveLength(2);
     for (const [file, source] of sources.filter(([name]) => name.startsWith("steps-"))) expect(/\bpass\(/.test(source), file).toBe(file === "steps-fleet.ts");
   });
 
