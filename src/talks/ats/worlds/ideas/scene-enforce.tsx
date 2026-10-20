@@ -4,7 +4,7 @@
 import { Part } from "@/components/deck/kit";
 import { ENFORCE } from "./layout-enforce";
 import { Arrow, Block, Dial, DialTick, Floor, Needle } from "./parts-draw";
-import { Layer, Note, StoryOf, Words } from "./parts";
+import { Layer, Note, StoryOf } from "./parts";
 
 const E = ENFORCE;
 const D = E.dial;
@@ -17,7 +17,6 @@ export function EnforceMarks() {
       ))}
       <Floor id={E.floor.key} y={E.floor.y} x0={E.floor.x0} x1={E.floor.x1} />
       <Arrow id={E.arrow.key} from={{ x: E.arrow.x, y: E.arrow.y0 }} to={{ x: E.arrow.x, y: E.arrow.y1 }} tone="process" />
-      <Words id={E.arrow.label.key} at={E.arrow.label.at} text={E.arrow.label.text} strong />
       <Dial id={D.key} hub={D.hub} r={D.r} />
       {D.ticks.map((tick) => (
         <DialTick key={tick.key} id={tick.key} from={tick.from} to={tick.to} />
@@ -27,11 +26,14 @@ export function EnforceMarks() {
   );
 }
 
-/** The blocks' names and the dial's settings are HTML, so each wraps inside its box. */
+/** The arrow's label, the blocks' names and the dial's settings are HTML, so each wraps inside its box. */
 export function EnforceHtml() {
   return (
     <Layer id={E.html}>
       <StoryOf picture="enforce" />
+      <Note id={E.arrow.label.key} at={E.arrow.label.at} align="center" strong>
+        {E.arrow.label.text}
+      </Note>
       {E.steps.map((step) => (
         <Note key={step.name.key} id={step.name.key} at={step.name.at} strong>
           {step.name.text}

@@ -27,7 +27,7 @@ const shareBox = () => box(R.figure.at.x, R.figure.at.y - capOf(SHARE.size), fig
 const reviewZones = () => ({
   left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), label(bar.caption.at, bar.caption.text, bar.caption.anchor)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
   middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), label(R.stack.name.at, R.stack.name.text)]),
-  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), label(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox(), label(R.figure.caption.at, R.figure.caption.text)]),
+  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), label(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox()]),
 });
 const T = STUMBLED;
 
@@ -55,7 +55,7 @@ const DRAWN: Record<string, Box[]> = {
     ...L.stops.flatMap((stop) => [ringBox(stop.at, LOOP_RING.stop), label(stop.name.at, stop.name.text, stop.name.anchor)]),
     label(L.bar.name.at, L.bar.name.text, "end"),
   ],
-  review: Object.values(reviewZones()),
+  review: [...Object.values(reviewZones()), R.figure.caption.at],
   "fleet-defined": [
     ...F.leads.at.map((at) => ringBox(at, AGENT_R)),
     box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs),
@@ -253,11 +253,12 @@ describe("slide 4, the timeline and the loop", () => {
 });
 
 describe("slide 4a, the review in three zones", () => {
-  it("keeps the three zones left to right, 40 px or more apart", () => {
+  it("keeps the three zones left to right, 40 px or more apart, the figure's caption under the right zone clear of the other two", () => {
     const { left, middle, right: rightZone } = reviewZones();
     expect(middle.x).toBeGreaterThan(right(left) + 40);
     expect(rightZone.x).toBeGreaterThan(right(middle) + 4);
     expect(FUNNEL.x0).toBeGreaterThan(right(middle) + 24);
+    for (const zone of [left, middle]) expect(overlaps(R.figure.caption.at, zone)).toBe(false);
   });
 
   it("stands the two bars on the floor, the second 12 times the first, each captioned over its top and named under the floor", () => {
@@ -299,8 +300,12 @@ describe("slide 4a, the review in three zones", () => {
     expect(share.x).toBeGreaterThan(FUNNEL.x0);
     expect(right(share)).toBeLessThan(FUNNEL.x1);
     expect(Math.abs(share.x + share.w / 2 - R.funnel.centre)).toBeLessThanOrEqual(4);
-    expect(R.figure.caption.at.x).toBe(R.funnel.centre);
-    expect(label(R.figure.caption.at, R.figure.caption.text).y).toBeGreaterThan(R.figure.at.y);
+    // The caption wraps onto two lines in its box, set to the right against the figure's right edge, under the baseline.
+    expect(right(R.figure.caption.at)).toBe(R.figure.at.x + 2 * SHARE.half);
+    expect(Math.abs(right(R.figure.caption.at) - right(share))).toBeLessThanOrEqual(2);
+    expect(R.figure.caption.at.y).toBeGreaterThan(R.figure.at.y);
+    expect(linesIn(R.figure.caption.text, 26, R.figure.caption.at.w)).toBeLessThanOrEqual(SHARE.captionLines);
+    expect(R.figure.caption.at.h).toBe(SHARE.captionLines * LABEL_LINE);
   });
 });
 

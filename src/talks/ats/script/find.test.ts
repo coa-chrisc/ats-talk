@@ -10,7 +10,7 @@ describe("reading the script by id", () => {
     expect(pictureOf("lets-talk").world).toBe("ready");
     expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Stop here if it gets the job done", "More independence, so more to control, review and answer for", "Plain tool", "Some jobs need no AI at all"]);
     expect(stepOf("lessons", "play").show).toEqual(["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start where a mistake costs little", "Enterprise now", "The City now", "What we would do first"]);
-    expect(shown("who-decides", "play")).toEqual(["Leadership", "Sets the bright lines", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know"]);
+    expect(shown("who-decides", "play")).toEqual(["Leadership", "Draws the lines AI may never cross", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know if it went wrong"]);
   });
 
   it("finds a picture's story lines, A then B", () => {

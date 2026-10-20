@@ -3,7 +3,7 @@
 
 import { HumanMark, Part, Person } from "@/components/deck/kit";
 import { FIGURE, REVIEW } from "./layout-review";
-import { Column, Desk, Figure, Funnel, Layer, StoryOf, Stroke, Words } from "./parts";
+import { Column, Desk, Figure, Funnel, Layer, Note, StoryOf, Stroke, Words } from "./parts";
 
 const R = REVIEW;
 const N = R.funnel;
@@ -29,7 +29,6 @@ export function ReviewMarks() {
       <HumanMark id={R.mark.key} at={R.mark.at} />
       <Words id={R.people.key} at={R.people.at} text={R.people.text} strong />
       <Figure id={R.figure.key} at={R.figure.at} runs={R.figure.runs} size={FIGURE.size} small={FIGURE.small} />
-      <Words id={R.figure.caption.key} at={R.figure.caption.at} text={R.figure.caption.text} />
     </Part>
   );
 }
@@ -38,6 +37,9 @@ export function ReviewHtml() {
   return (
     <Layer id={R.html}>
       <StoryOf picture="review" />
+      <Note id={R.figure.caption.key} at={R.figure.caption.at} align="end">
+        {R.figure.caption.text}
+      </Note>
     </Layer>
   );
 }

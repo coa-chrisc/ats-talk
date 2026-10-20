@@ -72,7 +72,7 @@ const DRAWN: Record<string, Box[]> = {
   enforce: [
     ...E.steps.map((step) => step.at),
     box(E.arrow.x - 12, E.arrow.y1, 24, E.arrow.y0 - E.arrow.y1),
-    label(E.arrow.label.at, E.arrow.label.text),
+    E.arrow.label.at,
     box(D.hub.x - D.r - 16, D.hub.y - D.r, 2 * D.r + 32, D.r),
     ...D.settings.map((setting) => setting.at),
   ],
@@ -203,10 +203,17 @@ describe("slide 8, the descending stair and the dial", () => {
     }
   });
 
-  it("points the arrow up the stair's left, beside the tallest block, its label over its head", () => {
+  it("points the arrow up the stair's left, beside the tallest block, its label centred over its head on two lines, clear of the stair", () => {
     expect(E.arrow.y1).toBeLessThan(E.arrow.y0);
     expect(E.arrow.x + 12).toBeLessThan(E.steps[0].at.x);
-    expect(bottom(label(E.arrow.label.at, E.arrow.label.text))).toBeLessThan(E.arrow.y1);
+    const words = E.arrow.label.at;
+    expect(bottom(words)).toBeLessThan(E.arrow.y1);
+    expect(words.x + words.w / 2).toBe(E.arrow.x);
+    expect(words.x + words.w).toBeLessThan(E.steps[0].at.x);
+    expect(linesIn(E.arrow.label.text, 26, words.w) * LABEL_LINE).toBeLessThanOrEqual(words.h);
+    // Its longer word sets on one line: Geist sets it at 0.9 of the rough measure or less.
+    const longest = Math.max(...E.arrow.label.text.split(" ").map((word) => wordsWidth(word, 26)));
+    expect(longest * 0.9).toBeLessThanOrEqual(words.w);
   });
 
   it("draws the dial right of the stair, no smaller than its first 150 px, three ticks on its arc, the needle resting on the first", () => {
@@ -269,20 +276,25 @@ describe("slide 9, the balance", () => {
     expect(T.plaque.at.x - (middle.x + middle.w)).toBeGreaterThanOrEqual(80);
   });
 
-  it("sets the figure larger than its first 96 px, a word to a line, its caption under it on two lines", () => {
+  it("sets the figure larger than its first 96 px, a word to a line, its caption under it on no more than three lines", () => {
     expect(FIGURE_LINE).toBeGreaterThanOrEqual(130);
     expect(T.six.at.h).toBe(2 * FIGURE_LINE);
-    // A word to a line: the whole figure does not fit the zone's width, its longer word does (the rough measure runs wide at 144 px bold).
-    expect(wordsWidth(T.six.text, 144) * 0.85).toBeGreaterThan(T.six.at.w);
-    const longest = Math.max(...T.six.text.split(" ").map((word) => wordsWidth(word, 144)));
+    // A word to a line: the whole figure does not fit the zone's width, its longer word does (the rough measure runs wide at 128 px bold).
+    expect(wordsWidth(T.six.text, 128) * 0.85).toBeGreaterThan(T.six.at.w);
+    const longest = Math.max(...T.six.text.split(" ").map((word) => wordsWidth(word, 128)));
     expect(longest * 0.85).toBeLessThanOrEqual(T.six.at.w);
     expect(T.six.caption.at.y).toBeGreaterThanOrEqual(bottom(T.six.at));
     expect(linesIn(T.six.caption.text, 32, T.six.caption.at.w) * TEXT_LINE).toBeLessThanOrEqual(T.six.caption.at.h);
   });
 
-  it("keeps the plaque's words inside it", () => {
+  it("keeps the plaque's words inside it, the name on one line and the caption on no more than three", () => {
     expect(inside(T.plaque.words.at, T.plaque.at)).toBe(true);
-    expect(linesIn(T.plaque.caption, 26, T.plaque.words.at.w) * LABEL_LINE + 56).toBeLessThanOrEqual(T.plaque.words.at.h);
+    // The rough measure runs wide at 26 px: Geist sets the caption's lines at 0.9 of it or less, on three lines in the column.
+    const lines = linesIn(T.plaque.caption, 26, T.plaque.words.at.w / 0.9);
+    expect(lines).toBeLessThanOrEqual(3);
+    expect(lines * LABEL_LINE + 56).toBeLessThanOrEqual(T.plaque.words.at.h);
+    // The name at 48 px bold sets in about 275 px in Geist, under 0.9 of the rough measure.
+    expect(wordsWidth(T.plaque.name, 48) * 0.9).toBeLessThanOrEqual(T.plaque.words.at.w);
   });
 });
 

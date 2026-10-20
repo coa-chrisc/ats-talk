@@ -3,7 +3,7 @@
  * stair takes the stage's left and the dial its right, side by side, the
  * dial's baseline near the stair's floor, so the strongest control and the
  * light setting read along one line. At the left a green arrow pointing up
- * beside the tallest block, its label over its head; four blocks on a floor
+ * beside the tallest block, its label on two lines over its head; four blocks on a floor
  * stepping down left to right, each named inside its face. At the right a
  * half-circle dial on its baseline, three ticks on its arc, the middle
  * setting's name and caption over the arc's top and the outer two's under
@@ -45,10 +45,17 @@ const blockAt = (i: number): Box => {
   return box(STAIR.x0 + i * TREAD, FLOOR - h, TREAD, h);
 };
 
-/** The arrow: up the stair's left, 78 px clear of it, from the floor to level with the tallest block's top; its label 20 px over its head. */
+/**
+ * The arrow: up the stair's left, 78 px clear of it, from the floor to
+ * level with the tallest block's top. Its label is centred over its head,
+ * 20 px up, on two lines in a 140 px box (its longer word is 130 px at
+ * 26 px semibold with the notes' tracking), so the box runs from 80 to 220,
+ * the story band's left edge to 8 px short of the stair.
+ */
 const ARROW_X = 150;
 const top0 = blockAt(0);
 const ARROW = { x: ARROW_X, y0: FLOOR - 8, y1: top0.y + 18 } as const;
+const ARROW_LABEL_W = 140;
 
 /* The dial */
 
@@ -89,7 +96,7 @@ export const ENFORCE = {
     const b = blockAt(i);
     return { key: `enforce.step.${i}`, at: b, name: { key: `enforce.step.${i}.name`, text: name, at: box(b.x + PAD.x, b.y + PAD.y, b.w - 2 * PAD.x, 2 * LABEL_LINE) } };
   }),
-  arrow: { key: "enforce.arrow", ...ARROW, label: { key: "enforce.arrow.label", text: STRONGEST, at: { x: ARROW_X, y: ARROW.y1 - 20 - LABEL_LINE / 2 } as Point } },
+  arrow: { key: "enforce.arrow", ...ARROW, label: { key: "enforce.arrow.label", text: STRONGEST, at: box(ARROW_X - ARROW_LABEL_W / 2, ARROW.y1 - 20 - 2 * LABEL_LINE, ARROW_LABEL_W, 2 * LABEL_LINE) } },
   dial: {
     key: "enforce.dial",
     hub: HUB,

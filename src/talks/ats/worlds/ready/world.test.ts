@@ -109,7 +109,7 @@ describe("one slide at a time", () => {
     expect(lines("levels")).toHaveLength(2);
     expect(lines("levels")[0].endsWith("own.")).toBe(true);
     expect(lines("who-decides")).toHaveLength(2);
-    expect(lines("who-decides")[0].endsWith("decides")).toBe(true);
+    expect(lines("who-decides")[0].endsWith("cross.")).toBe(true);
     expect(lines("residents")).toHaveLength(1);
     expect(lines("could-be")).toHaveLength(2);
     expect(lines("could-be")[0].endsWith("done,")).toBe(true);

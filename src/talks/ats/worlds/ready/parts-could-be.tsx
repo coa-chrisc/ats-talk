@@ -13,7 +13,7 @@ export function Leader({ id, points }: { id: string; points: readonly Point[] })
   return <path className="rd-leader dk-draw" data-build={id} d={points.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join("")} pathLength={1} />;
 }
 
-/** An entry of the key under the track: its name in navy and its caption under the name in the secondary grey, both at the key's size. */
+/** An entry of the key under the track: its name in navy and its caption under the name in the secondary grey */
 export function KeyEntry({ id, name, caption }: { id: string; name: { text: string; at: Point }; caption: { text: string; at: Point } }) {
   return (
     <g data-build={id}>

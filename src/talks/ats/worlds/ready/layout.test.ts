@@ -14,7 +14,7 @@ import { APPLIED, APPLIED_BOXES, PANEL, TICK, TILE, linesBoxes, numeralBox } fro
 import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, KEY_SIZE, MARKER_R, TRACK_TOP, runnerBox } from "./layout-could-be";
 import { LEVELS, LEVELS_BOXES, LEVELS_MEASURES, LEVEL_AGENT_R } from "./layout-levels";
 import { CARD_PLACES, HELPER_R, RESIDENTS, RESIDENTS_BOXES, RESIDENTS_MEASURES } from "./layout-residents";
-import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits } from "./layout-who-decides";
+import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits, measuredBox } from "./layout-who-decides";
 
 const bottom = (b: Box) => b.y + b.h;
 const right = (b: Box) => b.x + b.w;
@@ -112,8 +112,8 @@ describe("slide 25, who decides", () => {
       expect(tier.at.w).toBe(W.tiers[i].at.w);
     });
     for (const tier of W.tiers) {
-      expect(inside(wordsBox(tier.name.at, tier.name.text, 32, "start"), tier.at), tier.name.text).toBe(true);
-      expect(inside(wordsBox(tier.caption.at, tier.caption.text, 26, "start"), tier.at), tier.caption.text).toBe(true);
+      expect(inside(measuredBox(tier.name.at, tier.name.text, 32), tier.at), tier.name.text).toBe(true);
+      expect(inside(measuredBox(tier.caption.at, tier.caption.text, 26), tier.at), tier.caption.text).toBe(true);
     }
   });
 
@@ -121,8 +121,8 @@ describe("slide 25, who decides", () => {
     const tier = W.tiers[1];
     const mark = box(W.mark.at.x - 24, W.mark.at.y - 24, 48, 48);
     expect(inside(mark, tier.at)).toBe(true);
-    expect(apart(mark, wordsBox(tier.name.at, tier.name.text, 32, "start"))).toBe(true);
-    expect(apart(mark, wordsBox(tier.caption.at, tier.caption.text, 26, "start"))).toBe(true);
+    expect(apart(mark, measuredBox(tier.name.at, tier.name.text, 32))).toBe(true);
+    expect(apart(mark, measuredBox(tier.caption.at, tier.caption.text, 26))).toBe(true);
   });
 
   it("runs one arrow down the stack's left side and one up its right, each the stack's height, their labels outside them", () => {
@@ -134,12 +134,12 @@ describe("slide 25, who decides", () => {
     expect(W.up.from).toEqual({ x: W.up.to.x, y: foot });
     expect(W.up.to.y).toBe(top);
     expect(W.up.from.x).toBeGreaterThan(right(W.tiers[0].at));
-    expect(right(wordsBox(W.down.label.at, W.down.label.text, 26, "end"))).toBeLessThan(W.down.from.x);
-    expect(wordsBox(W.up.label.at, W.up.label.text, 26, "start").x).toBeGreaterThan(W.up.from.x);
+    expect(right(measuredBox(W.down.label.at, W.down.label.text, 26, "end"))).toBeLessThan(W.down.from.x);
+    expect(measuredBox(W.up.label.at, W.up.label.text, 26).x).toBeGreaterThan(W.up.from.x);
   });
 
   it("lands the three questions in their own zone to the right, one under another, each holding its words", () => {
-    const upLabel = wordsBox(W.up.label.at, W.up.label.text, 26, "start");
+    const upLabel = measuredBox(W.up.label.at, W.up.label.text, 26);
     W.cards.slice(1).forEach((card, i) => expect(card.at.y).toBeGreaterThan(bottom(W.cards[i].at)));
     for (const card of W.cards) {
       expect(card.at.x).toBeGreaterThan(right(upLabel) + 40);

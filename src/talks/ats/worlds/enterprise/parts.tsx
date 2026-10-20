@@ -55,7 +55,7 @@ type NoteProps = {
   at: Box;
   /** The 26 px label, the 32 px text, the 24 px tag or the 48 px name. */
   size?: "label" | "text" | "tag" | "name";
-  align?: "start" | "center";
+  align?: "start" | "center" | "end";
   strong?: boolean;
   className?: string;
   children: ReactNode;
@@ -63,7 +63,7 @@ type NoteProps = {
 
 /** Words in HTML, wrapping inside their box, in navy, their lines balanced. */
 export function Note({ id, at, size = "label", align = "start", strong = false, className, children }: NoteProps) {
-  const classes = ["en-note", `en-note--${size}`, align === "center" ? "en-note--center" : "", strong ? "en-note--strong" : "", className ?? ""].filter(Boolean).join(" ");
+  const classes = ["en-note", `en-note--${size}`, align === "start" ? "" : `en-note--${align}`, strong ? "en-note--strong" : "", className ?? ""].filter(Boolean).join(" ");
   return (
     <div className={classes} data-build={id} style={{ left: at.x, top: at.y, width: at.w, height: at.h }}>
       {children}

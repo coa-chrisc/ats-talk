@@ -54,11 +54,11 @@
   letter-spacing: -0.015em;
 }
 
-/* The large figure: 144 px, a word to a line. */
+/* The large figure: 128 px, a word to a line. */
 .id-note--big {
-  font-size: 144px;
+  font-size: 128px;
   font-weight: 700;
-  line-height: 140px;
+  line-height: 130px;
   letter-spacing: -0.02em;
 }
 

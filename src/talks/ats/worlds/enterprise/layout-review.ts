@@ -8,7 +8,8 @@
  * a wide mouth named over it narrowing to a small outlet, a person standing
  * under the outlet with the approval mark beside them and their words under
  * them; and under all of that, centred under the funnel, a large figure
- * with its caption under it.
+ * with its caption wrapping under it, set to the right against the
+ * figure's right edge.
  * Words are read from the script, by position.
  *
  * The drawing has y 548 to 992: every
@@ -17,7 +18,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
-import { contentTop, figureRuns, layerOf } from "./layout";
+import { LABEL_LINE, contentTop, figureRuns, layerOf } from "./layout";
 
 const [MAY, SEPTEMBER, FEW, MANY, UNREAD, MODEL, PEOPLE, SHARE, DECISIONS] = shown("review", "play");
 
@@ -65,12 +66,13 @@ const STANDING = box(FUNNEL_C - 20, OUTLET_Y + FUNNEL.spout + 10, 40, 64);
 const MARK: Point = { x: FUNNEL_C + 50, y: STANDING.y + STANDING.h / 2 };
 /**
  * The figure: the digits at 112 px and its word at 40 px, centred under the
- * funnel by its width measured wide (about 340 px), its baseline 110 px
- * under the person's words so its numerals clear them by about 20 px; its
- * caption 38 px under it at the label size, centred on the funnel, its
- * foot 18 px over the drawing's foot.
+ * funnel by its width measured wide (about 340 px), its baseline 106 px
+ * under the person's words so its numerals clear them by about 9 px; its
+ * caption (about 1000 px of label type) wraps onto two lines in a 560 px
+ * box whose right edge is the figure's, 10 px under the baseline, its
+ * words set to the right, its foot 2 px over the drawing's foot.
  */
-export const FIGURE = { half: 168, size: 112, small: 40, drop: 110, captionGap: 38 } as const;
+export const FIGURE = { half: 168, size: 112, small: 40, drop: 106, captionGap: 10, captionW: 560, captionLines: 2 } as const;
 const PEOPLE_Y = STANDING.y + STANDING.h + 28;
 const FIGURE_X = FUNNEL_C - FIGURE.half;
 const FIGURE_BASE = PEOPLE_Y + FIGURE.drop;
@@ -113,6 +115,6 @@ export const REVIEW = {
     text: SHARE,
     runs: figureRuns(SHARE),
     at: { x: FIGURE_X, y: FIGURE_BASE } as Point,
-    caption: { key: "review.figure.caption", text: DECISIONS, at: { x: FUNNEL_C, y: FIGURE_BASE + FIGURE.captionGap } as Point },
+    caption: { key: "review.figure.caption", text: DECISIONS, at: box(FUNNEL_C + FIGURE.half - FIGURE.captionW, FIGURE_BASE + FIGURE.captionGap, FIGURE.captionW, FIGURE.captionLines * LABEL_LINE) },
   },
 };
