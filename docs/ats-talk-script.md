@@ -33,7 +33,7 @@ Move 1 is carried mostly by Chris, move 2 mostly by Stefan, move 3 by Chris, mov
 
 - **Full blast.** Nothing in the main talk proposes deploying an agent, buying an agent platform, or standing up new infrastructure. Slide 9 says so out loud.
 - **"It didn't come from us."** The course's own step one is an inventory of what exists, built, bought and employee-made. Slide 4 applies that to people and work, and names Austin Public Health and Austin Energy as departments that have been at this for years. The point lands as CMU's advice, not as a complaint.
-- **Vendors will fill the gap.** Slide 6 carries the BCG finding that talent is the differentiator, the buy, boost, build split that puts most value in the enterprise's own knowledge, and BNY training its workforce before granting autonomy. Slide 4a shows the City's own partners (Microsoft, Quisitive, Amazon) working inside City-owned infrastructure, which is the opposite of handing the problem to a vendor.
+- **Vendors will fill the gap.** Slide 6 carries the BCG finding that talent is the differentiator, the buy, boost, build split that puts most value in the enterprise's own knowledge, and BNY training its workforce before granting autonomy. Slide 4a shows the City's own partners (Microsoft and Quisitive, with Amazon joining) working inside City-owned infrastructure, which is the opposite of handing the problem to a vendor.
 - **Losing the momentum.** Slide 4a says plainly that the City is not ready to scale the agent fleet, in the course's gate language, and in the same breath that stopping it would lose the infrastructure built over years and the staff who know Azure. Decision 4 on slide 19 makes keeping it going an explicit ask.
 
 ## Timing
@@ -61,7 +61,7 @@ Austin Technology Services, or City of Austin if ATS has no mark of its own yet.
 - Slide 3 and slide 4: the authorized AI tools control is described as the CISO's policy, as in Stefan's deck. Confirm the wording the CISO would use.
 - Slide 10: the name of the practitioner group. The script says "AI consortium" because that is the working name; if leadership prefers another, it changes in one place.
 - Slide 15: the 2026 Citywide Strategic Plan priority named is High-Performing Government, as in the city talk.
-- Slide 4a: the partner list. Microsoft and Quisitive are in the weekly sessions with the security office; Amazon is named as a partner the City works with. Confirm Amazon's current role before naming it on a slide, and whether "and others" should name anyone.
+- Slide 4a: Microsoft and Quisitive are in the weekly sessions with the security office. Amazon is new to the fold and the partnership discussions are fresh, so it is drawn apart in a dashed outline as joining the conversation. Firm it up only when the partnership is.
 
 ---
 
@@ -123,11 +123,11 @@ Speaker: Chris
 
 **On screen:** Austin Public Health already builds with a fleet of AI agents, and the City is not ready to scale that yet.
 - Lead agents plan, build and review in a sandbox built with the security office; a person approves.
-- The work continues with Microsoft, Quisitive, Amazon and others, in infrastructure the City owns.
+- The work continues with Microsoft and Quisitive, and Amazon is joining the conversation.
 
-**They see:** A fenced yard draws in the middle, labeled "Sandbox", with a small caption "Built with the security office". Inside it, three green agents labeled "Lead agents" fill an application outline with blocks, two smaller agents labeled "Reviewers" check it, and a person gives it the orange approval mark with the label "A person approves". Outside the fence three nameplates settle in a row: "Microsoft", "Quisitive", "Amazon", with a fourth reading "And others". To the right a short stair of gates draws: "Explore", "Validate" and "Deploy" light green in turn, and "Scale" stays grey with a tag "Not ready to scale that yet". A tag at the foot of the fence reads "Over years". The slide ends on the yard, the agents at work, the orange mark, the partner nameplates and the stair with its grey top step.
+**They see:** A fenced yard draws in the middle, labeled "Sandbox", with a small caption "Built with the security office". Inside it, three green agents labeled "Lead agents" fill an application outline with blocks, two smaller agents labeled "Reviewers" check it, and a person gives it the orange approval mark with the label "A person approves". Outside the fence two nameplates settle side by side: "Microsoft" and "Quisitive". A third, drawn in a dashed outline, lands a little apart: "Amazon", with the caption "Joining the conversation". To the right a short stair of gates draws: "Explore", "Validate" and "Deploy" light green in turn, and "Scale" stays grey with a tag "Not ready to scale that yet". A tag at the foot of the fence reads "Over years". The slide ends on the yard, the agents at work, the orange mark, the partner nameplates and the stair with its grey top step.
 
-**You say:** One pocket deserves its own slide, because it is further along than the course expects a city to be. Since late 2025 Austin Public Health has built its applications with a fleet of AI agents: lead agents read the lessons, permissions and tested modules, build in parallel, two AI reviewers check every change, and a person approves before anyone uses it. It runs inside a sandbox built with the security office over years, with Microsoft, Quisitive, Amazon and others in the room every week. In the course's gates it has passed explore, validate and deploy. The City is not ready to scale that yet, and the gates say not to. The work has to continue in that infrastructure, or the momentum and the people who know Azure go with it.
+**You say:** One pocket deserves its own slide, because it is further along than the course expects. Since late 2025 Austin Public Health has built its applications with a fleet of AI agents: lead agents read the lessons, permissions and tested modules, build in parallel, two AI reviewers check every change, and a person approves before anyone uses it. It runs inside a sandbox built with the security office over years, with Microsoft and Quisitive in the room every week, and Amazon now joining the conversation. In the course's gates it has passed explore, validate and deploy. The City is not ready to scale that yet, and the gates say not to. The work has to continue in that infrastructure, or the momentum and the people who know Azure go with it.
 
 
 ---

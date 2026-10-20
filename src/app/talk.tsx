@@ -1,7 +1,7 @@
 "use client";
 
 import { Deck, NotesView } from "@/components/deck/engine";
-import { deck } from "@/talks/city/deck";
+import { deck } from "@/talks/ats/deck";
 
 /*
  * The talk, with its deck definition: scenes are components, so the
