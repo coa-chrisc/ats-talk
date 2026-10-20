@@ -37,6 +37,23 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     ],
   },
   {
+    id: "noticed",
+    number: "12a",
+    part: 4,
+    world: "stands",
+    name: "The rest of the country has noticed",
+    show: "Other cities and national bodies already treat the City's AI work as a model.",
+    say: "The pockets were noticed outside the building before they were counted inside it. The City CIO nominated the Austin Public Health work for the Texas IT Leadership Awards, and it won the Innovative Leader Award. Johns Hopkins GovEx, through its City Data Alliance, highlights the method as a model for other cities. Bloomberg Cities Network wrote about the City's work. The CDC featured the work. The City has been invited to present by NYC Health, Tacoma, Mesa and Texas DIR, the state's technology department. A program that starts here walks into a community with a national reputation already attached. And this is only what we found by asking around. There is more, and finding it is step one.",
+    see: ["Five plain plaques settle on a wall one at a time, each with a short label: \"Innovative Leader Award\", with the caption \"Texas IT Leadership Awards\"; \"Johns Hopkins GovEx\", with \"Highlights the method as a model\"; \"Bloomberg Cities Network\", with \"Wrote about the City's work\"; \"CDC\", with \"Featured the work\"; and \"Invited to present\", with four small names under it, \"NYC Health\", \"Tacoma\", \"Mesa\", \"Texas DIR\". A grey tag sits apart below the wall: \"Only what we found by asking around\". The slide ends on the wall of five plaques and the tag."],
+    story: [
+      "The City CIO nominated the work for a Texas award, and it won. GovEx holds the method up as a model.",
+      "This is only what we found by asking around. There is more, and finding it is step one.",
+    ],
+    steps: [
+      { id: "play", show: ["Innovative Leader Award", "Texas IT Leadership Awards", "Johns Hopkins GovEx", "Highlights the method as a model", "Bloomberg Cities Network", "Wrote about the City's work", "CDC", "Featured the work", "Invited to present", "NYC Health", "Tacoma", "Mesa", "Texas DIR", "Only what we found by asking around"] },
+    ],
+  },
+  {
     id: "infrastructure",
     number: "13",
     part: 4,
@@ -60,14 +77,14 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     world: "stands",
     name: "The four ideas already fit it",
     show: "The course's controls map onto what the sandbox already does.",
-    say: "This is the slide I most wanted to show you. The course spends a full day on controls for agents, and when I came home and laid its list against the sandbox, the two matched. The course asks for identity for every actor; the sandbox has single sign-on and roles. It asks for rules the system enforces; the sandbox has allow lists and private networking, and nothing talks to anything it was not allowed to. It asks for approval before effect; a person approves each build. It asks for repeatable and logged; everything is infrastructure as code in Azure DevOps. The foundations are in place. What the City lacks is the organization around them, and that is cheaper to fix.",
-    see: ["Two columns draw. The left column is headed \"The course asks for\" and lists four lines: \"Identity for every actor\", \"Rules the system enforces\", \"Approval before effect\", \"Repeatable and logged\". The right column is headed \"The sandbox has\" and lists four lines that land in turn opposite their partners: \"Single sign-on and roles\", \"Allow lists and private networking\", \"A person approves each build\", \"Infrastructure as code\". A deep-green tick lands between each matched pair. A grey tag at the foot reads \"The organization around them\". The slide ends on the two columns, the four ticks and the tag."],
+    say: "This is the slide I most wanted to show you. The course spends a full day on controls for agents, and when I came home and laid its list against the sandbox, the two matched. The course asks for identity for every actor; the sandbox has single sign-on and roles. It asks for rules the system enforces; the sandbox has allow lists and private networking, and nothing talks to anything it was not allowed to. It asks for approval before effect; a person approves each build. It asks for repeatable and logged; everything is infrastructure as code in Azure DevOps. The foundations are in place. The missing piece is the organization that connects them, and that is leadership's to supply, at a fraction of the cost of the foundations.",
+    see: ["Two columns draw. The left column is headed \"The course asks for\" and lists four lines: \"Identity for every actor\", \"Rules the system enforces\", \"Approval before effect\", \"Repeatable and logged\". The right column is headed \"The sandbox has\" and lists four lines that land in turn opposite their partners: \"Single sign-on and roles\", \"Allow lists and private networking\", \"A person approves each build\", \"Infrastructure as code\". A deep-green tick lands between each matched pair. A grey tag at the foot reads \"What connects them\". The slide ends on the two columns, the four ticks and the tag."],
     story: [
       "Sign-on and roles, allow lists and private networking, a person approving each build, all as code.",
-      "The foundations the course asks for are in place. The City lacks the organization around them.",
+      "The foundations the course asks for are in place. The missing piece is what connects them.",
     ],
     steps: [
-      { id: "play", show: ["The course asks for", "Identity for every actor", "Rules the system enforces", "Approval before effect", "Repeatable and logged", "The sandbox has", "Single sign-on and roles", "Allow lists and private networking", "A person approves each build", "Infrastructure as code", "The organization around them"] },
+      { id: "play", show: ["The course asks for", "Identity for every actor", "Rules the system enforces", "Approval before effect", "Repeatable and logged", "The sandbox has", "Single sign-on and roles", "Allow lists and private networking", "A person approves each build", "Infrastructure as code", "What connects them"] },
     ],
   },
   {

@@ -12,10 +12,10 @@ The `<!-- beat -->` comment under each heading names the part the slide plays in
 ## What the DCIOs should walk away with
 
 1. Four ideas from the course they can repeat in a meeting, and the sense that they understood each one.
-2. An accurate picture of where the City stands: where it looks like it is, where it is once its own work is counted, and where it could be with organization and a budget line.
+2. An accurate picture of where the City stands: where it looks like it is, where it is once its own work is counted and the outside recognition it already has, and where it could be with organization and a budget line. The program walks into a community; it does not start one.
 3. A plan whose first steps are already half done, so each decision reads as a short distance rather than a request.
 4. A clear sense of their own part: leadership sets the bright lines, the DCIO decides authority, the CISO owns the controls.
-5. Confidence in the people who have been doing this work, and in Stefan and Chris as the ones to organize it. The talk never asks for that; the last slide shows that the plan they just heard was the course applied.
+5. Confidence in the people who have been doing this work, and in Stefan and Chris as the ones to organize it. The talk never asks for that; the last slide shows that the plan they just heard was the course applied. The one thing only leadership can add is the connection between the pieces, and the talk hands them that as the decision and the credit.
 
 ## The spine
 
@@ -37,11 +37,11 @@ Beyond the checker's rules: no title of the form "X, and Y." more than one in fi
 | 1. What we brought back | 1 to 2 | 2 |
 | 2. Where enterprise is | 3 to 6 | 5 |
 | 3. The four ideas | 7 to 10 | 5 |
-| 4. Where the City stands | 11 to 15 | 6 |
+| 4. Where the City stands | 11 to 15 | 7 |
 | 5. What we would do first | 16 to 23 | 8 |
 | 6. Ready, the ask, the reveal | 24 to 29 | 5 |
 
-About 29 clicks in 31 minutes. To reach 25 minutes, fold slide 5 into slide 4 and slide 23 into slide 21.
+About 30 clicks in 32 minutes. To reach 25 minutes, fold slide 5 into slide 4, slide 12a into slide 12, and slide 23 into slide 21.
 
 ## Branding and color cues
 
@@ -51,6 +51,7 @@ Austin Technology Services, or City of Austin where ATS has no mark. Navy title 
 
 - Slide 3: BCG, October 2026: AI's share of IT budgets rose from five to 17 percent; companies spend a further 2.8 percent of revenue on AI outside the IT budget. The buy, boost, build split (about 35, 55, 10) is the course's illustrative one.
 - Slide 12: the Austin Energy description, the practitioner group (20 people, nine departments) and Ask About AI attendance (70 to 100).
+- Slide 12a: each recognition item, confirmed with the department it belongs to; add Austin Energy's or any other department's recognition for AI policy or tooling.
 - Slide 13: whether Azure AI Foundry is in use alongside Azure OpenAI; the status of the production landing zone and its ServiceNow demand request, in words the CISO would accept; Amazon's role, drawn apart as joining the conversation.
 - Slide 15: 20 applications, 145 modules in 13 categories, as of October 2026.
 - Slide 23: the 2026 Citywide Strategic Plan priority named is High-Performing Government.
@@ -217,6 +218,20 @@ Speaker: Chris
 
 Note: confirm the Austin Energy description with Austin Energy, and the practitioner group and Ask About AI numbers.
 
+### 12a. The rest of the country has noticed
+<!-- beat: the proof that the community exists; outside recognition the City has not yet claimed as its own, and the admission that this is only what we found by asking -->
+Speaker: Chris
+
+**On screen:** Other cities and national bodies already treat the City's AI work as a model.
+- The City CIO nominated the work for a Texas award, and it won. GovEx holds the method up as a model.
+- This is only what we found by asking around. There is more, and finding it is step one.
+
+**They see:** Five plain plaques settle on a wall one at a time, each with a short label: "Innovative Leader Award", with the caption "Texas IT Leadership Awards"; "Johns Hopkins GovEx", with "Highlights the method as a model"; "Bloomberg Cities Network", with "Wrote about the City's work"; "CDC", with "Featured the work"; and "Invited to present", with four small names under it, "NYC Health", "Tacoma", "Mesa", "Texas DIR". A grey tag sits apart below the wall: "Only what we found by asking around". The slide ends on the wall of five plaques and the tag.
+
+**You say:** The pockets were noticed outside the building before they were counted inside it. The City CIO nominated the Austin Public Health work for the Texas IT Leadership Awards, and it won the Innovative Leader Award. Johns Hopkins GovEx, through its City Data Alliance, highlights the method as a model for other cities. Bloomberg Cities Network wrote about the City's work. The CDC featured the work. The City has been invited to present by NYC Health, Tacoma, Mesa and Texas DIR, the state's technology department. A program that starts here walks into a community with a national reputation already attached. And this is only what we found by asking around. There is more, and finding it is step one.
+
+Note: confirm each item with the department it belongs to, and add any recognition Austin Energy or other departments have received for AI policy or tooling.
+
 ### 13. Infrastructure ready for AI
 <!-- beat: the second correction; a sandbox with deployed models, a CISO-approved pilot path and a production route, built with partners over years -->
 Speaker: Chris
@@ -237,11 +252,11 @@ Speaker: Stefan
 
 **On screen:** The course's controls map onto what the sandbox already does.
 - Sign-on and roles, allow lists and private networking, a person approving each build, all as code.
-- The foundations the course asks for are in place. The City lacks the organization around them.
+- The foundations the course asks for are in place. The missing piece is what connects them.
 
-**They see:** Two columns draw. The left column is headed "The course asks for" and lists four lines: "Identity for every actor", "Rules the system enforces", "Approval before effect", "Repeatable and logged". The right column is headed "The sandbox has" and lists four lines that land in turn opposite their partners: "Single sign-on and roles", "Allow lists and private networking", "A person approves each build", "Infrastructure as code". A deep-green tick lands between each matched pair. A grey tag at the foot reads "The organization around them". The slide ends on the two columns, the four ticks and the tag.
+**They see:** Two columns draw. The left column is headed "The course asks for" and lists four lines: "Identity for every actor", "Rules the system enforces", "Approval before effect", "Repeatable and logged". The right column is headed "The sandbox has" and lists four lines that land in turn opposite their partners: "Single sign-on and roles", "Allow lists and private networking", "A person approves each build", "Infrastructure as code". A deep-green tick lands between each matched pair. A grey tag at the foot reads "What connects them". The slide ends on the two columns, the four ticks and the tag.
 
-**You say:** This is the slide I most wanted to show you. The course spends a full day on controls for agents, and when I came home and laid its list against the sandbox, the two matched. The course asks for identity for every actor; the sandbox has single sign-on and roles. It asks for rules the system enforces; the sandbox has allow lists and private networking, and nothing talks to anything it was not allowed to. It asks for approval before effect; a person approves each build. It asks for repeatable and logged; everything is infrastructure as code in Azure DevOps. The foundations are in place. What the City lacks is the organization around them, and that is cheaper to fix.
+**You say:** This is the slide I most wanted to show you. The course spends a full day on controls for agents, and when I came home and laid its list against the sandbox, the two matched. The course asks for identity for every actor; the sandbox has single sign-on and roles. It asks for rules the system enforces; the sandbox has allow lists and private networking, and nothing talks to anything it was not allowed to. It asks for approval before effect; a person approves each build. It asks for repeatable and logged; everything is infrastructure as code in Azure DevOps. The foundations are in place. The missing piece is the organization that connects them, and that is leadership's to supply, at a fraction of the cost of the foundations.
 
 ### 15. Where the City stands
 <!-- beat: the second track; the City redrawn where it is once people, infrastructure and a working fleet are counted -->
@@ -278,12 +293,12 @@ Speaker: Chris
 Speaker: Chris
 
 **On screen:** Step one is an open call to every department, with one table for the practitioners who answer.
-- The practitioner group exists informally today. An open call makes it the City's AI consortium.
+- The program walks into a community that exists. An open call makes it the City's AI consortium.
 - The departments that led keep leading inside it, and everyone else is invited in.
 
 **They see:** The department grid from slide 12 returns with its lanterns lit. A card labeled "Open call" slides across the grid, and more lanterns light in boxes that were dark, a small green person beside each. The lit people step out of their boxes and gather around a round table in the middle, labeled "AI consortium". Three of the chairs are drawn larger, with the caption "The departments that led". The slide ends on the table, the people around it, and the grid behind them with its boxes now mostly dark.
 
-**You say:** Step one is an open call. The course quotes Shopify giving every employee every tool on the belief that high-value use cases can emerge from anywhere in the company, and contrasts it with a top-down memo elsewhere whose author later said he had not given enough context. So the call goes to every department and asks one question: who is building, piloting or teaching with AI today? The answers come to one table. The practitioner group exists informally; sanctioning it makes it the City's AI consortium, and the departments that led keep leading inside it. The people who have carried this work for years should be the first ones leadership thanks and the first ones it asks.
+**You say:** Step one is an open call. The course quotes Shopify giving every employee every tool on the belief that high-value use cases can emerge from anywhere in the company, and contrasts it with a top-down memo elsewhere whose author later said he had not given enough context. So the call goes to every department and asks one question: who is building, piloting or teaching with AI today? The answers come to one table. The program walks into a community that exists rather than seeding one; sanctioning it makes it the City's AI consortium, and the departments that led keep leading inside it. The people who have carried this work for years should be the first ones leadership thanks and the first ones it asks.
 
 ### 18. An AI program team from staff we have
 <!-- beat: step two; a small team drawn from the consortium, led by people already doing the work, with the Azure staff kept on the infrastructure -->
@@ -431,7 +446,7 @@ Speaker: Chris and Stefan
 
 **They see:** The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads "Backup slides". Nothing moves after that.
 
-**You say:** That is what we brought back, and what we would do with it. The City is further along than its org chart shows, because people across departments did the work before anyone asked them to, and the infrastructure they built already meets the standard the course teaches. With the organization around it and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's security deck is in the backup slides.
+**You say:** That is what we brought back. The City is further along than its org chart shows, because people across departments did the work before anyone asked, and the infrastructure they built already meets the standard the course teaches. Connecting those pieces is the decision in front of you, and a program with a national reputation already attached comes with it. With that and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's security deck is in the backup slides.
 
 ---
 

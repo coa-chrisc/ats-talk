@@ -26,10 +26,10 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     world: "first",
     name: "Make the consortium official",
     show: "Step one is an open call to every department, with one table for the practitioners who answer.",
-    say: "Step one is an open call. The course quotes Shopify giving every employee every tool on the belief that high-value use cases can emerge from anywhere in the company, and contrasts it with a top-down memo elsewhere whose author later said he had not given enough context. So the call goes to every department and asks one question: who is building, piloting or teaching with AI today? The answers come to one table. The practitioner group exists informally; sanctioning it makes it the City's AI consortium, and the departments that led keep leading inside it. The people who have carried this work for years should be the first ones leadership thanks and the first ones it asks.",
+    say: "Step one is an open call. The course quotes Shopify giving every employee every tool on the belief that high-value use cases can emerge from anywhere in the company, and contrasts it with a top-down memo elsewhere whose author later said he had not given enough context. So the call goes to every department and asks one question: who is building, piloting or teaching with AI today? The answers come to one table. The program walks into a community that exists rather than seeding one; sanctioning it makes it the City's AI consortium, and the departments that led keep leading inside it. The people who have carried this work for years should be the first ones leadership thanks and the first ones it asks.",
     see: ["The department grid from slide 12 returns with its lanterns lit. A card labeled \"Open call\" slides across the grid, and more lanterns light in boxes that were dark, a small green person beside each. The lit people step out of their boxes and gather around a round table in the middle, labeled \"AI consortium\". Three of the chairs are drawn larger, with the caption \"The departments that led\". The slide ends on the table, the people around it, and the grid behind them with its boxes now mostly dark."],
     story: [
-      "The practitioner group exists informally today. An open call makes it the City's AI consortium.",
+      "The program walks into a community that exists. An open call makes it the City's AI consortium.",
       "The departments that led keep leading inside it, and everyone else is invited in.",
     ],
     steps: [
