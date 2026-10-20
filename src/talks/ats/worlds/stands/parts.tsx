@@ -57,8 +57,8 @@ export function Big({ id, at, text, className, anchor = "start" }: { id: string;
 }
 
 /** Words broken on several rows, one `<text>`: each row a run on its own baseline, a space kept at each break so the runs read as the one phrase. */
-export function Rows({ id, at, rows, pitch, anchor = "start", size = "label", soft = false }: { id?: string; at: Point; rows: readonly string[]; pitch: number; anchor?: "start" | "middle"; size?: "label" | "text"; soft?: boolean }) {
-  const className = `${size === "text" ? "dk-text" : "dk-label"} sn-word${soft ? " sn-word--soft" : ""}`;
+export function Rows({ id, at, rows, pitch, anchor = "start", size = "label", soft = false, extra = "" }: { id?: string; at: Point; rows: readonly string[]; pitch: number; anchor?: "start" | "middle"; size?: "label" | "text"; soft?: boolean; extra?: string }) {
+  const className = `${size === "text" ? "dk-text" : "dk-label"} sn-word${soft ? " sn-word--soft" : ""}${extra ? ` ${extra}` : ""}`;
   return (
     <text className={className} data-build={id} textAnchor={anchor} dominantBaseline="central">
       {rows.map((row, i) => (

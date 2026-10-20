@@ -10,6 +10,7 @@
 
 import { Plane, SetText } from "@/components/deck/kit";
 import { TITLE, TITLES } from "./layout";
+import { CommunityHtml, CommunityMarks } from "./scene-community";
 import { ControlHtml, ControlMarks } from "./scene-control";
 import { ExistsHtml, ExistsMarks } from "./scene-exists";
 import { FitsHtml, FitsMarks } from "./scene-fits";
@@ -28,6 +29,7 @@ export function Scene() {
           <ControlMarks />
           <ExistsMarks />
           <NoticedMarks />
+          <CommunityMarks />
           <InfrastructureMarks />
           <FitsMarks />
           <FleetMarks />
@@ -41,6 +43,7 @@ export function Scene() {
       <ControlHtml />
       <ExistsHtml />
       <NoticedHtml />
+      <CommunityHtml />
       <InfrastructureHtml />
       <FitsHtml />
       <FleetHtml />

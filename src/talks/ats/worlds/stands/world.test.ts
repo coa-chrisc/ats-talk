@@ -13,7 +13,7 @@ import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { COUNTS } from "./counts";
 import { PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
 import { ARRIVE, partsOf } from "./moves";
-import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
+import { LEAVE, at, built, lastStepOf, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { stands, standsEntry } from "./world";
 
 const dir = import.meta.dirname;
@@ -22,11 +22,12 @@ const sources = readdirSync(dir)
   .map((file) => [file, readFileSync(join(dir, file), "utf8")] as const);
 
 describe("the stands world", () => {
-  it("holds the script's slides 11 to 15 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["11", "11a", "12", "12a", "13", "14", "15"]);
-    expect(PICTURES.map((picture) => picture.id)).toEqual(["track", "control", "exists", "noticed", "infrastructure", "fits", "fleet"]);
+  it("holds the script's slides 11 to 15 in the order shown, one click each but slide 12b's two", () => {
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["11", "11a", "12", "12a", "12b", "13", "14", "15"]);
+    expect(PICTURES.map((picture) => picture.id)).toEqual(["track", "control", "exists", "noticed", "community", "infrastructure", "fits", "fleet"]);
     expect(stands.steps.map((step) => step.id)).toEqual(ids);
-    expect(ids).toEqual(PICTURES.map((picture) => stepOf(picture.id)));
+    expect(ids).toEqual(PICTURES.flatMap((picture) => picture.steps.map((step) => `${picture.id}.${step.id}`)));
+    expect(PICTURES.filter((picture) => picture.steps.length > 1).map((picture) => [picture.id, picture.steps.map((step) => step.id)])).toEqual([["community", ["roll", "themes"]]]);
     expect(standsEntry.world).toBe(stands);
   });
 
@@ -84,9 +85,12 @@ describe("one slide at a time", () => {
     expect(at(first)[titleKey(id)].yPercent).toBe(0);
   });
 
-  it("shows on each slide's click only its own parts: nothing carries from the slide before", () => {
+  it("shows on each slide's click only its own parts: nothing carries from the slide before, and a second click keeps only its own slide's", () => {
     for (const id of ids) {
       const own = new Set(stands.steps[n(id)].moves.flatMap((move) => ("key" in move ? [move.key] : [])));
+      const picture = id.split(".")[0];
+      if (id !== stepOf(picture)) for (const key of world.keys.filter((key) => pictureHolding(key) === picture)) own.add(key);
+      if (id !== stepOf(picture)) own.add(titleKey(picture));
       /** A picture's layers only hold its parts, which are each checked here; a layer left up with nothing showing in it draws nothing. */
       const layers = new Set(PICTURES.flatMap((picture) => Object.values(layerOf(picture.id))));
       const strays = world.keys.filter((key) => !layers.has(key) && visible(at(id), key) && !own.has(key));
@@ -107,7 +111,7 @@ describe("one slide at a time", () => {
   });
 
   it("breaks the titles after the words the layout names, two lines each", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2, 2]);
+    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2, 2, 2]);
   });
 });
 
@@ -213,12 +217,14 @@ describe("the story lines", () => {
   it("come up in their slide's click, A before B, and stay up to the slide's end", () => {
     for (const picture of PICTURES) {
       const [a, b] = storyKeysOf(picture.id);
-      const id = stepOf(picture.id);
-      expect(playOf(id, a), a).toHaveLength(1);
-      expect(playOf(id, b), b).toHaveLength(1);
-      expect(startOf(id, b), picture.id).toBeGreaterThan(startOf(id, a));
-      expect(at(id)[a].yPercent, a).toBe(0);
-      expect(at(id)[b].yPercent, b).toBe(0);
+      const first = stepOf(picture.id);
+      const last = lastStepOf(picture.id);
+      expect(playOf(first, a), a).toHaveLength(1);
+      expect(playOf(last, b), b).toHaveLength(1);
+      if (first === last) expect(startOf(first, b), picture.id).toBeGreaterThan(startOf(first, a));
+      else expect(at(first)[b].yPercent, `${b} waits for the second click`).toBe(120);
+      expect(at(last)[a].yPercent, a).toBe(0);
+      expect(at(last)[b].yPercent, b).toBe(0);
     }
   });
 

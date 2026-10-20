@@ -410,3 +410,21 @@
   letter-spacing: -0.02em;
   fill: var(--dk-catalog);
 }
+
+/* Slide 12b: the quotes at 36 px, and the theme rows' white bands and green rules. */
+.sn-quote.sn-quote {
+  font-size: 36px;
+  font-weight: 500;
+  fill: var(--dk-paper);
+}
+
+.sn-theme-band {
+  fill: var(--dk-night);
+}
+
+.sn-theme-rule {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}

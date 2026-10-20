@@ -28,8 +28,9 @@ export const at = (id: string) => world.states[n(id) + 1];
 export const before = (id: string) => world.states[n(id)];
 export const playsAt = (id: string) => world.plays[n(id)].flatMap((play) => ("key" in play ? [play] : []));
 export const playOf = (id: string, key: string) => playsAt(id).filter((play) => play.key === key);
-/** Each slide has one click: its picture's `play`. */
-export const stepOf = (pictureId: string) => stepId(pictureId, "play");
+/** A slide's first click (its only one but on slide 12b, whose clicks are `roll` then `themes`), and its last. */
+export const stepOf = (pictureId: string) => stepId(pictureId, PICTURES.find((picture) => picture.id === pictureId)!.steps[0].id);
+export const lastStepOf = (pictureId: string) => stepId(pictureId, PICTURES.find((picture) => picture.id === pictureId)!.steps.at(-1)!.id);
 
 export const markup = renderToStaticMarkup(createElement(Scene));
 export const built = [...markup.matchAll(/data-build="([^"]+)"/g)].map((match) => match[1]);

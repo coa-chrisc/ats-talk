@@ -42,6 +42,8 @@ const BREAKS: Record<string, string[]> = {
   exists: ["it has"],
   /** 1352 and 1175 px. */
   noticed: ["already"],
+  /** 1534 and 1462 px. */
+  community: ["build,"],
   /** 1406 and 1432 px. */
   infrastructure: ["AI,"],
   /** 1065 and 1084 px. */
