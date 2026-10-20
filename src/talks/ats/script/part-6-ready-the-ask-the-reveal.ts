@@ -59,15 +59,15 @@ export const READY_THE_ASK_THE_REVEAL: Picture[] = [
     part: 6,
     world: "ready",
     name: "Where the City could be",
-    show: "Four decisions, each already half done, would put the City with the pack within a year.",
-    say: "Four decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs a few weeks of calendar time, and we would run it. Adopt the four levels and the bright lines; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it and a budget line to match; it is already running, and it is the reason the distance is short. None of this starts from zero. All of it starts from work your own staff already did.",
-    see: ["The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled \"Enterprise\". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled \"Within a year\". Along the lane between the solid runner and the dashed one, four green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: \"The consortium and the program team\" with \"Exists informally today\", \"Listening tour\" with \"Calendar time\", \"Four levels\" with \"Stefan drafts them with the CISO\", \"The infrastructure\" with \"Already running\". A tag in the infield reads \"A budget line to match\". The slide ends on the track with the solid runner, the four markers and their row, the dashed runner at the pack's tail and the tag."],
+    show: "Five decisions, each already half done, would put the City with the pack within a year.",
+    say: "Five decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs calendar time, and we would run it. Adopt the four levels; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it; it is already running. Policy tiers and a budget, with a sanctioned enterprise tool for data that is not ready; the first tier is in place. None of this starts from zero. All of it starts from work your own staff already did.",
+    see: ["The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled \"Enterprise\". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled \"Within a year\". Along the lane between the solid runner and the dashed one, five green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: \"The consortium and the program team\" with \"Exists informally today\", \"Listening tour\" with \"Calendar time\", \"Four levels\" with \"Stefan drafts them with the CISO\", \"The infrastructure\" with \"Already running\", \"Policy tiers and a budget\" with \"The first tier is in place\". The slide ends on the track with the solid runner, the five markers and their row, and the dashed runner at the pack's tail."],
     story: [
       "Sanction the consortium and the program team. Sponsor the listening tour. Adopt the four levels.",
-      "Keep the agent work going in the infrastructure the City built, with a budget line to match.",
+      "Keep the agent work going in the infrastructure the City built. Policy tiers and a budget.",
     ],
     steps: [
-      { id: "play", show: ["Enterprise", "Within a year", "The consortium and the program team", "Exists informally today", "Listening tour", "Calendar time", "Four levels", "Stefan drafts them with the CISO", "The infrastructure", "Already running", "A budget line to match"] },
+      { id: "play", show: ["Enterprise", "Within a year", "The consortium and the program team", "Exists informally today", "Listening tour", "Calendar time", "Four levels", "Stefan drafts them with the CISO", "The infrastructure", "Already running", "Policy tiers and a budget", "The first tier is in place"] },
     ],
   },
   {
@@ -94,11 +94,11 @@ export const READY_THE_ASK_THE_REVEAL: Picture[] = [
     world: "ready",
     name: "Let's talk",
     show: "Let's talk.",
-    say: "That is what we brought back. The City is further along than its org chart shows, because people across departments did the work before anyone asked, and the infrastructure they built already meets the standard the course teaches. Connecting those pieces is the decision in front of you, and a program with a national reputation already attached comes with it. With that and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's security deck is in the backup slides.",
+    say: "That is what we brought back. The City is further along than its org chart shows, because people across departments did the work before anyone asked, and the infrastructure they built already meets the standard the course teaches. Connecting those pieces is the decision in front of you, and a program with a national reputation already attached comes with it. With that and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these five decisions. Stefan's security deck is in the backup slides.",
     see: ["The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads \"Backup slides\". Nothing moves after that."],
     story: [
       "We would like to hear what you would most want a City AI strategy to do first.",
-      "We would also like to hear what you would need from us to make these four decisions.",
+      "We would also like to hear what you would need from us to make these five decisions.",
     ],
     steps: [
       { id: "play", show: ["Backup slides"] },

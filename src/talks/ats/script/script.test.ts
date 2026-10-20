@@ -65,6 +65,7 @@ const PLAN: [string, string[]][] = [
   ["four-ideas", ["play"]],
   ["spending", ["play"]],
   ["agents", ["play"]],
+  ["review", ["play"]],
   ["fleet-defined", ["play"]],
   ["stumbled", ["play"]],
   ["ladder", ["play"]],
@@ -72,6 +73,7 @@ const PLAN: [string, string[]][] = [
   ["people", ["play"]],
   ["earn", ["play"]],
   ["track", ["play"]],
+  ["control", ["play"]],
   ["exists", ["play"]],
   ["noticed", ["play"]],
   ["infrastructure", ["play"]],
@@ -96,9 +98,9 @@ const PLAN: [string, string[]][] = [
 /** Which world draws each slide: its part's own, but each part is one world. */
 const WORLD_OF_SLIDES: [WorldId, string[]][] = [
   ["brought", ["1", "2"]],
-  ["enterprise", ["3", "4", "5", "6"]],
+  ["enterprise", ["3", "4", "4a", "5", "6"]],
   ["ideas", ["7", "8", "9", "10"]],
-  ["stands", ["11", "12", "12a", "13", "14", "15"]],
+  ["stands", ["11", "11a", "12", "12a", "13", "14", "15"]],
   ["first", ["16", "17", "18", "19", "20", "21", "22", "23"]],
   ["ready", ["24", "25", "26", "27", "28", "29"]],
 ];
@@ -136,7 +138,7 @@ const LONE_DIGIT = /(?<![\d,.])[2-9](?![\d,.])/;
 
 describe("the talk's script", () => {
   it("is the script, word for word: every picture's heading, On screen, story lines, You say and They see", () => {
-    expect(SOURCE.pictures).toHaveLength(30);
+    expect(SOURCE.pictures).toHaveLength(32);
     expect(SCRIPT.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see }))).toEqual(
       SOURCE.pictures.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see })),
     );
@@ -180,10 +182,10 @@ describe("the talk's script", () => {
     for (const world of WORLDS) expect(new Set(SCRIPT.filter((picture) => picture.world === world).map((picture) => picture.part)).size, world).toBe(1);
   });
 
-  it("gives every picture one click, and two only where the script says so: 30 in all", () => {
+  it("gives every picture one click, and two only where the script says so: 32 in all", () => {
     expect(SOURCE.pictures.filter((picture) => picture.twoClicks).map((picture) => picture.number)).toEqual(TWO_CLICKS);
     for (const picture of SCRIPT) expect(picture.steps.length, picture.id).toBe(TWO_CLICKS.includes(picture.number) ? 2 : 1);
-    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(30);
+    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(32);
   });
 
   it("leaves no string empty", () => {

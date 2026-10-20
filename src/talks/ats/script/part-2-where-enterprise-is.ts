@@ -37,6 +37,23 @@ export const WHERE_ENTERPRISE_IS: Picture[] = [
     ],
   },
   {
+    id: "review",
+    number: "4a",
+    part: 2,
+    world: "enterprise",
+    name: "Review moved off the person",
+    show: "A person reviewing every AI output worked for chatbots. Agents now produce more than anyone can read.",
+    say: "One more thing changed, and it is the reason the controls changed with it. When AI was a chatbot, a person read every answer before anything happened, and that was enough. Agents finish days of work in an hour. Anthropic merged 2,500 a day in May and over 30,000 a day by September; a study of 22,000 developers found review time up fivefold. No staff can read that, so enterprise moved the review into the system. A model checks first, programmatic limits catch what it misses, and people take the high-risk cases, which is where Gartner expects human authority to stay: exceptions, appeals and anything that touches a resident. Gartner expects agents to make 15 percent of work decisions by 2028, with people kept on the rest.",
+    see: ["On the left a short timeline of two bars rises, labeled \"May\" and \"September\", the second 12 times the first, with the captions \"2,500 a day\" and \"Over 30,000 a day\". In the middle a single person sits at a desk with a stack of pages growing beside them until it towers over the desk, labeled \"More than anyone can read\". On the right a funnel draws: a wide mouth labeled \"A model checks first\", narrowing to a small outlet where a person stands with the orange mark of a person deciding, labeled \"People take the high-risk cases\". Under the funnel an indigo figure lands: \"15 percent\", with the caption \"Of work decisions by 2028\". The slide ends on the two bars, the towering stack and the funnel with its figure."],
+    story: [
+      "Anthropic merged 2,500 code changes a day in May and over 30,000 a day by September.",
+      "Enterprise moved review into the system: a model checks first, and people take the high-risk cases.",
+    ],
+    steps: [
+      { id: "play", show: ["May", "September", "2,500 a day", "Over 30,000 a day", "More than anyone can read", "A model checks first", "People take the high-risk cases", "15 percent", "Of work decisions by 2028"] },
+    ],
+  },
+  {
     id: "fleet-defined",
     number: "5",
     part: 2,

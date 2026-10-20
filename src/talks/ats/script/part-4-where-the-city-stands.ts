@@ -20,6 +20,23 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     ],
   },
   {
+    id: "control",
+    number: "11a",
+    part: 4,
+    world: "stands",
+    name: "The control bought time",
+    show: "The authorized tools rule was the right first control. The next control is a pathway, with tiers and a budget.",
+    say: "A word about the policy, because the room has heard about it. From the end of October staff may use the Copilot that comes with Microsoft 365 and nothing else. That is the right first control, and the mainstream one: Seattle made the same rule in May; Minnesota, San Francisco and Houston run the same way. It has a shelf life. Gartner finds 69 percent of organizations see staff using prohibited tools anyway, and Microsoft finds 28 percent of staff say no approved option exists. The cities ahead of us added tiers by data sensitivity, with a sanctioned enterprise tool for the data that is not ready to connect, and a budget line. Pennsylvania, in a year, went from 175 to 3,000 staff on a sanctioned enterprise tool.",
+    see: ["The fence post from slide 11 stands at the left with its tick, labeled \"Authorized tools\", and four small city nameplates settle beside it: \"Seattle\", \"Minnesota\", \"San Francisco\", \"Houston\". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled \"69 percent\", with the caption \"See staff using tools anyway\". On the right a stair of three steps rises, labeled \"Tiers by data sensitivity\", with the caption \"Boston\"; a green figure climbs from the first step to the second. Beside the stair an indigo figure lands: \"175 to 3,000\", with the caption \"Pennsylvania, in a year\". A plain tag at the foot reads \"A budget line\". The slide ends on the post and nameplates, the gauge, the stair with its climber, the figure and the tag."],
+    story: [
+      "Seattle, Minnesota and Houston made the same rule. Gartner: 69 percent see staff using tools anyway.",
+      "Boston moved to tiers by data sensitivity. Pennsylvania, in a year, went from 175 to 3,000 staff.",
+    ],
+    steps: [
+      { id: "play", show: ["Authorized tools", "Seattle", "Minnesota", "San Francisco", "Houston", "69 percent", "See staff using tools anyway", "Tiers by data sensitivity", "Boston", "175 to 3,000", "Pennsylvania, in a year", "A budget line"] },
+    ],
+  },
+  {
     id: "exists",
     number: "12",
     part: 4,

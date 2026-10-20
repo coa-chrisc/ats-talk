@@ -5,16 +5,16 @@ The picture ids and worlds are the table below; script.test.ts holds the same pl
 import re, json, os, sys
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 doc = open(os.path.join(ROOT, 'docs/ats-talk-script.md')).read().replace('&amp;', '&')
-IDS = {'1':'title','2':'four-ideas','3':'spending','4':'agents','5':'fleet-defined','6':'stumbled',
+IDS = {'1':'title','2':'four-ideas','3':'spending','4':'agents','4a':'review','5':'fleet-defined','6':'stumbled',
  '7':'ladder','8':'enforce','9':'people','10':'earn',
- '11':'track','12':'exists','12a':'noticed','13':'infrastructure','14':'fits','15':'fleet',
+ '11':'track','11a':'control','12':'exists','12a':'noticed','13':'infrastructure','14':'fits','15':'fleet',
  '16':'not-proposing','17':'consortium','18':'program-team','19':'listen','20':'sort','21':'lanes','22':'level-up','23':'outcomes',
  '24':'levels','25':'who-decides','26':'residents','27':'could-be','28':'applied','29':'lets-talk'}
 WORLD = {}
 for n in ['1','2']: WORLD[n]='brought'
-for n in ['3','4','5','6']: WORLD[n]='enterprise'
+for n in ['3','4','4a','5','6']: WORLD[n]='enterprise'
 for n in ['7','8','9','10']: WORLD[n]='ideas'
-for n in ['11','12','12a','13','14','15']: WORLD[n]='stands'
+for n in ['11','11a','12','12a','13','14','15']: WORLD[n]='stands'
 for n in ['16','17','18','19','20','21','22','23']: WORLD[n]='first'
 for n in ['24','25','26','27','28','29']: WORLD[n]='ready'
 FILES = {1:('part-1-what-we-brought-back','WHAT_WE_BROUGHT_BACK'),2:('part-2-where-enterprise-is','WHERE_ENTERPRISE_IS'),3:('part-3-the-four-ideas','THE_FOUR_IDEAS'),4:('part-4-where-the-city-stands','WHERE_THE_CITY_STANDS'),5:('part-5-what-we-would-do-first','WHAT_WE_WOULD_DO_FIRST'),6:('part-6-ready-the-ask-the-reveal','READY_THE_ASK_THE_REVEAL')}

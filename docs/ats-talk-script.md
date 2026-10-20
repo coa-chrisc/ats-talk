@@ -35,13 +35,13 @@ Beyond the checker's rules: no title of the form "X, and Y." more than one in fi
 | Part | Slides | Minutes |
 |---|---|---|
 | 1. What we brought back | 1 to 2 | 2 |
-| 2. Where enterprise is | 3 to 6 | 5 |
+| 2. Where enterprise is | 3 to 6 | 6 |
 | 3. The four ideas | 7 to 10 | 5 |
-| 4. Where the City stands | 11 to 15 | 7 |
+| 4. Where the City stands | 11 to 15 | 8 |
 | 5. What we would do first | 16 to 23 | 8 |
 | 6. Ready, the ask, the reveal | 24 to 29 | 5 |
 
-About 30 clicks in 32 minutes. To reach 25 minutes, fold slide 5 into slide 4, slide 12a into slide 12, and slide 23 into slide 21.
+About 32 clicks in 34 minutes. To reach 28 minutes, fold slide 5 into slide 4, slide 12a into slide 12, and slide 23 into slide 21.
 
 ## Branding and color cues
 
@@ -51,6 +51,8 @@ Austin Technology Services, or City of Austin where ATS has no mark. Navy title 
 
 - Slide 3: BCG, October 2026: AI's share of IT budgets rose from five to 17 percent; companies spend a further 2.8 percent of revenue on AI outside the IT budget. The buy, boost, build split (about 35, 55, 10) is the course's illustrative one.
 - Slide 12: the Austin Energy description, the practitioner group (20 people, nine departments) and Ask About AI attendance (70 to 100).
+- Slide 4a: Anthropic engineering blog, 13 October 2026 (2,500 to over 30,000 merged changes a day); Faros AI, The Acceleration Whiplash, Q2 2026 (22,000 developers, median review time five times); Gartner, 25 June 2025 (15 percent of day-to-day work decisions by 2028) and 17 March 2026 (humans retain authority over exceptions, appeals and high-risk cases).
+- Slide 11a: Gartner, 19 November 2025 (69 percent); Microsoft UK, October 2025 (28 percent say no approved option exists); the City policy's effective date and scope in the CISO's words.
 - Slide 12a: each recognition item, confirmed with the department it belongs to; add Austin Energy's or any other department's recognition for AI policy or tooling.
 - Slide 13: whether Azure AI Foundry is in use alongside Azure OpenAI; the status of the production landing zone and its ServiceNow demand request, in words the CISO would accept; Amazon's role, drawn apart as joining the conversation.
 - Slide 15: 20 applications, 145 modules in 13 categories, as of October 2026.
@@ -111,6 +113,18 @@ Speaker: Stefan
 **They see:** A timeline draws left to right from "2023" to "2026" with three figures on it: a speech bubble labeled "Chatbot" with the caption "Answers", a page with a person beside it labeled "Copilot" with "Drafts while a person decides", and a figure with a tool belt labeled "Agent" with "Does the work". Under the agent a loop draws as five small stops joined in a ring, each lighting in turn: "Goal", "Plans", "Tools", "Acts", "Adjusts". A short bar closes the loop, labeled "Stops at a boundary". The slide ends on the timeline and the lit loop.
 
 **You say:** The word agent gets used for everything, so this is the definition we will hold to. In 2023 a chatbot answered a question; by 2026 an agent does the work. A copilot drafts, and a person approves each step. An agent is given a goal, breaks it into steps, chooses tools, takes actions in other systems, checks the result and adjusts, and keeps going until the goal is met or it reaches a boundary someone set. The loop is the whole point. It is why agents are useful, because the person no longer does every step, and it is why they need different controls, because the person no longer sees every step either. Everything in the course follows from that one sentence.
+
+### 4a. Review moved off the person
+<!-- beat: the practice changed; a person reviewing every output worked for chatbots, and agents now produce more than staff can read, so review runs in the system first and people take the high-risk cases; idea two before it is named -->
+Speaker: Stefan
+
+**On screen:** A person reviewing every AI output worked for chatbots. Agents now produce more than anyone can read.
+- Anthropic merged 2,500 code changes a day in May and over 30,000 a day by September.
+- Enterprise moved review into the system: a model checks first, and people take the high-risk cases.
+
+**They see:** On the left a short timeline of two bars rises, labeled "May" and "September", the second 12 times the first, with the captions "2,500 a day" and "Over 30,000 a day". In the middle a single person sits at a desk with a stack of pages growing beside them until it towers over the desk, labeled "More than anyone can read". On the right a funnel draws: a wide mouth labeled "A model checks first", narrowing to a small outlet where a person stands with the orange mark of a person deciding, labeled "People take the high-risk cases". Under the funnel an indigo figure lands: "15 percent", with the caption "Of work decisions by 2028". The slide ends on the two bars, the towering stack and the funnel with its figure.
+
+**You say:** One more thing changed, and it is the reason the controls changed with it. When AI was a chatbot, a person read every answer before anything happened, and that was enough. Agents finish days of work in an hour. Anthropic merged 2,500 a day in May and over 30,000 a day by September; a study of 22,000 developers found review time up fivefold. No staff can read that, so enterprise moved the review into the system. A model checks first, programmatic limits catch what it misses, and people take the high-risk cases, which is where Gartner expects human authority to stay: exceptions, appeals and anything that touches a resident. Gartner expects agents to make 15 percent of work decisions by 2028, with people kept on the rest.
 
 ### 5. What a fleet is
 <!-- beat: definition; a fleet is agents with roles and a person at the end, defined generically before anyone's fleet is credited -->
@@ -203,6 +217,20 @@ Speaker: Chris
 **They see:** A running track draws as a long oval seen from above, filling the drawing width. A pack of small indigo runners labeled "Enterprise" is far along the back straight. A single green runner, twice their size, stands on a white start line at the lower left, labeled "The City" beneath the track. A grey tag sits in the infield: "No AI strategy, no AI team and no AI budget line". A fence post plants in the ground outside the track beside the start line, a deep-green tick on its cap, labeled "Authorized tools". The slide ends on the track, the pack, the City at the line and the ticked post.
 
 **You say:** Measured the way a consultant would measure it, the City is at the start line. There is no AI strategy, no AI team and no AI budget line, while the enterprise pack we just described spends 17 percent of IT budgets. One thing is already in place, and it matters more than it looks. Staff can use only authorized tools, the AI tools the Chief Information Security Officer approved, and the system enforces that rather than a memo asking for it. On the course's ladder of controls that is the strongest kind, and most of the organizations in the cancellation statistics did not have it. Hold this picture. We are going to redraw it twice.
+
+### 11a. The control bought time
+<!-- beat: the honest word about the policy; the authorized tools list is the mainstream first rung and the pressure is now on it; the next rung is tiers with a budget, not a longer ban -->
+Speaker: Chris
+
+**On screen:** The authorized tools rule was the right first control. The next control is a pathway, with tiers and a budget.
+- Seattle, Minnesota and Houston made the same rule. Gartner: 69 percent see staff using tools anyway.
+- Boston moved to tiers by data sensitivity. Pennsylvania, in a year, went from 175 to 3,000 staff.
+
+**They see:** The fence post from slide 11 stands at the left with its tick, labeled "Authorized tools", and four small city nameplates settle beside it: "Seattle", "Minnesota", "San Francisco", "Houston". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled "69 percent", with the caption "See staff using tools anyway". On the right a stair of three steps rises, labeled "Tiers by data sensitivity", with the caption "Boston"; a green figure climbs from the first step to the second. Beside the stair an indigo figure lands: "175 to 3,000", with the caption "Pennsylvania, in a year". A plain tag at the foot reads "A budget line". The slide ends on the post and nameplates, the gauge, the stair with its climber, the figure and the tag.
+
+**You say:** A word about the policy, because the room has heard about it. From the end of October staff may use the Copilot that comes with Microsoft 365 and nothing else. That is the right first control, and the mainstream one: Seattle made the same rule in May; Minnesota, San Francisco and Houston run the same way. It has a shelf life. Gartner finds 69 percent of organizations see staff using prohibited tools anyway, and Microsoft finds 28 percent of staff say no approved option exists. The cities ahead of us added tiers by data sensitivity, with a sanctioned enterprise tool for the data that is not ready to connect, and a budget line. Pennsylvania, in a year, went from 175 to 3,000 staff on a sanctioned enterprise tool.
+
+Note: confirm the City policy's effective date and exact scope in the CISO's words; the city examples are Seattle (May 2026), Minnesota, San Francisco and Houston's 2025 to 2028 contract, Boston's policy v2.1 (March 2026) and Pennsylvania's rollout (StateScoop, April 2026). Sources are in the research notes.
 
 ### 12. What already exists
 <!-- beat: the first correction to the picture; pockets of practice across departments and a practitioner group, not yet at one table -->
@@ -413,16 +441,16 @@ Speaker: Chris
 **You say:** One line runs under all of this, and it is where the community's voice from the listening step comes back. AI at the City is used for residents, never on them. It helps City staff serve more people, and serve them in their own language. It never judges a resident, decides a benefit or replaces a person's decision about one; that is the no-go level on slide 24, and it is where leadership's bright line belongs. The test for any project is whether residents would see it as the City serving them better over the long term. If they would not, the City should not build it, however feasible it is, and the listening step is how we would know.
 
 ### 27. Where the City could be
-<!-- beat: the third track; the four decisions drawn as the distance they close, each already half done -->
+<!-- beat: the third track; the five decisions drawn as the distance they close, each already half done -->
 Speaker: Chris and Stefan
 
-**On screen:** Four decisions, each already half done, would put the City with the pack within a year.
+**On screen:** Five decisions, each already half done, would put the City with the pack within a year.
 - Sanction the consortium and the program team. Sponsor the listening tour. Adopt the four levels.
-- Keep the agent work going in the infrastructure the City built, with a budget line to match.
+- Keep the agent work going in the infrastructure the City built. Policy tiers and a budget.
 
-**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, four green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: "The consortium and the program team" with "Exists informally today", "Listening tour" with "Calendar time", "Four levels" with "Stefan drafts them with the CISO", "The infrastructure" with "Already running". A tag in the infield reads "A budget line to match". The slide ends on the track with the solid runner, the four markers and their row, the dashed runner at the pack's tail and the tag.
+**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, five green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: "The consortium and the program team" with "Exists informally today", "Listening tour" with "Calendar time", "Four levels" with "Stefan drafts them with the CISO", "The infrastructure" with "Already running", "Policy tiers and a budget" with "The first tier is in place". The slide ends on the track with the solid runner, the five markers and their row, and the dashed runner at the pack's tail.
 
-**You say:** Four decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs a few weeks of calendar time, and we would run it. Adopt the four levels and the bright lines; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it and a budget line to match; it is already running, and it is the reason the distance is short. None of this starts from zero. All of it starts from work your own staff already did.
+**You say:** Five decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs calendar time, and we would run it. Adopt the four levels; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it; it is already running. Policy tiers and a budget, with a sanctioned enterprise tool for data that is not ready; the first tier is in place. None of this starts from zero. All of it starts from work your own staff already did.
 
 ### 28. That was the course, applied
 <!-- beat: the reveal; the four ideas from slide 2 return, each matched to what was proposed -->
@@ -442,11 +470,11 @@ Speaker: Chris and Stefan
 
 **On screen:** Let's talk.
 - We would like to hear what you would most want a City AI strategy to do first.
-- We would also like to hear what you would need from us to make these four decisions.
+- We would also like to hear what you would need from us to make these five decisions.
 
 **They see:** The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads "Backup slides". Nothing moves after that.
 
-**You say:** That is what we brought back. The City is further along than its org chart shows, because people across departments did the work before anyone asked, and the infrastructure they built already meets the standard the course teaches. Connecting those pieces is the decision in front of you, and a program with a national reputation already attached comes with it. With that and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's security deck is in the backup slides.
+**You say:** That is what we brought back. The City is further along than its org chart shows, because people across departments did the work before anyone asked, and the infrastructure they built already meets the standard the course teaches. Connecting those pieces is the decision in front of you, and a program with a national reputation already attached comes with it. With that and a budget line to match, the City can deliver on the strategic plan while it shores up practice, training and security, with the community's voice in the room. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these five decisions. Stefan's security deck is in the backup slides.
 
 ---
 
