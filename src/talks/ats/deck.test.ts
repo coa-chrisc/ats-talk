@@ -10,7 +10,7 @@ import { SCRIPT, WORLDS } from "./script";
  * against the worlds present; integration flips this to true once the last
  * world (ready) is in, and the checks that need the whole deck run.
  */
-const COMPLETE = false;
+const COMPLETE = true;
 
 const addresses = deck.worlds.flatMap(({ world }) => world.steps.map((step) => `${world.id}/${step.id}`));
 const present = new Set<string>(deck.worlds.map(({ world }) => world.id));

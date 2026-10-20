@@ -1,0 +1,242 @@
+/* The plan world's own marks (parts.tsx and the scene modules), in stage
+   pixels and under the kit's rules: navy (paper) words and outlines on the
+   white ground, the process's green for the City's own work, the course's
+   indigo for its evidence, and slate (soft) for what is left behind. A
+   part's state arrives as the kit's custom properties (--d draws, --k
+   fills), so the same values always draw the same picture. Selectors name
+   a class of this world's own, so the order the sheets load in never
+   decides a picture. */
+
+/* A picture's HTML, as one part a step can hide. */
+.pl-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Words: navy, white on a filled shape, or indigo for the course's figure. The kit's label type is slate, so each tone names the label class too. */
+.dk-label.pl-word--navy {
+  fill: var(--dk-paper);
+}
+
+.dk-label.pl-word--white {
+  fill: var(--dk-night);
+}
+
+.dk-label.pl-word--indigo {
+  fill: var(--dk-catalog);
+}
+
+.dk-label.pl-word--strong {
+  font-weight: 600;
+}
+
+.dk-label.pl-word--text {
+  font-size: 32px;
+}
+
+.dk-label.pl-word--figure {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* A strip: its edge draws on in navy and its ground comes in with it. */
+.pl-strip__ground {
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.6);
+}
+
+.pl-strip__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* 13: the lower lane runs green, the City's quick work; the upper is the plain ground the foundations are built on. */
+.pl-strip--lower .pl-strip__ground {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--d, 0) * var(--dk-wash));
+}
+
+.pl-strip--lower .pl-strip__edge {
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+/* A well in the upper lane: white with a thin rule, until it fills green. */
+.pl-well {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.pl-grow {
+  transform: scaleX(var(--k, 0));
+}
+
+.pl-grow rect {
+  vector-effect: non-scaling-stroke;
+}
+
+.pl-well__fill {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+/* A box shipped along the lower lane: solid green, its lid's line in white. */
+.pl-parcel rect {
+  fill: var(--dk-process);
+}
+
+.pl-parcel path {
+  fill: none;
+  stroke: var(--dk-night);
+  stroke-width: 2.5;
+}
+
+/* An arrow down from a well: navy, its head arriving with the line's front. */
+.pl-arrow__line,
+.pl-arrow__head {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pl-arrow .pl-arrow__head {
+  opacity: clamp(0, calc(var(--d, 0) * 20 - 19), 1);
+}
+
+/* A tag: grey for a problem, green for the City's own work, indigo for the course's evidence. */
+.pl-tag__shape {
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.pl-tag--grey .pl-tag__shape {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+}
+
+.pl-tag--green .pl-tag__shape {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-idle) * 100%), var(--dk-night));
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+.pl-tag--indigo .pl-tag__shape {
+  fill: var(--dk-catalog);
+  stroke: var(--dk-catalog);
+}
+
+.pl-tag__hole {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 1.5;
+}
+
+.pl-tag--indigo .pl-tag__hole {
+  stroke: var(--dk-night);
+}
+
+/* 14: a tier's outline draws on, its ground with it; lit, it fills green. */
+.pl-outline__ground {
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.5);
+}
+
+.pl-outline__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.pl-tier__lit {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+/* A desk and its laptop, drawing on in navy; the top fills as it draws. */
+.pl-desk__top {
+  fill: var(--dk-paper);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.pl-desk__legs {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.pl-desk__laptop {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* The slab under the desks: solid green, its words white on it. */
+.pl-slab {
+  fill: var(--dk-process);
+}
+
+/* 15: the tiles, the lit first tile, the project dots, the tally and the measure. */
+.pl-strip--tile .pl-strip__ground {
+  fill-opacity: calc(var(--d, 0) * 0.35);
+}
+
+.pl-lit {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-process);
+  stroke-width: 4;
+}
+
+.pl-dot {
+  fill: var(--dk-paper);
+  stroke: var(--dk-night);
+  stroke-width: 3;
+}
+
+.pl-tally {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.pl-measure {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.pl-point {
+  fill: var(--dk-paper);
+}
+
+.pl-target {
+  fill: var(--dk-night);
+  stroke: var(--dk-process);
+  stroke-width: 5;
+}
+
+/* A nameplate: white, a navy edge. */
+.pl-plate rect {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}

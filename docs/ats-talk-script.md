@@ -121,7 +121,7 @@ Note: confirm the Austin Energy description with Austin Energy, and the practiti
 <!-- beat: proof and candor; APH builds with a fleet of agents today, the City is not ready to scale that, and the work has to continue in the City's own infrastructure or the momentum is lost -->
 Speaker: Chris
 
-**On screen:** Austin Public Health already builds with a fleet of AI agents, and the City is not ready to scale that yet.
+**On screen:** APH already builds with a fleet of AI agents, and the City is not ready to scale that yet.
 - Lead agents plan, build and review in a sandbox built with the security office; a person approves.
 - The work continues with Microsoft and Quisitive, and Amazon is joining the conversation.
 
@@ -162,7 +162,7 @@ Speaker: Chris
 <!-- beat: idea three; the enforcement ladder, the City's allow list as the model, and light controls for low-risk work -->
 Speaker: Stefan
 
-**On screen:** Rules the system enforces beat rules we ask people or models to follow, and the controls should fit the risk.
+**On screen:** Enforced rules beat rules we ask models to follow, and the controls should fit the risk.
 - The City's authorized tools list is already the strongest kind of control: the system enforces it.
 - Light controls keep first projects moving; heavy controls go where exposure is high.
 
@@ -214,7 +214,7 @@ Speaker: Chris
 <!-- beat: method, step two; department leaders, staff and community, their goals for 2027 and 2028, in their own words -->
 Speaker: Chris
 
-**On screen:** Step two is to listen: to department leaders, to staff and to the community, and to write it down in their words.
+**On screen:** Step two is to listen to leaders, staff and the community, and to write it in their words.
 - Ask what is slow or broken, where they could do more, and what their goals for 2027 and 2028 are.
 - The course calls an honest channel for staff concerns the first no-regrets action, so this is it.
 
@@ -238,9 +238,9 @@ Speaker: Stefan
 <!-- beat: the plan's shape; deliver quick wins now while a second lane builds the foundations; the course calls it running two modes at once -->
 Speaker: Chris
 
-**On screen:** Run two lanes at once: deliver quick wins now, and build the foundations that make the next ones faster.
-- Lane one ships small, reversible tools that come out of listening and sorting.
-- Lane two builds training, a shared software lifecycle, one toolset and the infrastructure.
+**On screen:** Run two lanes at once: quick wins now, and the foundations that make the next ones faster.
+- Lane one is where we deliver quick wins now: small, reversible tools out of listening and sorting.
+- In lane two we build the foundations: training, a software lifecycle, one toolset, infrastructure.
 
 **They see:** Two lanes draw, one above the other. The lower lane is labeled "Deliver quick wins now", and small green boxes ship along it one after another. The upper lane is labeled "Build the foundations", and four pieces fill in turn: "Training", "Software lifecycle", "One toolset", "The infrastructure the City already built". An arrow runs down from each piece into the lower lane, and the boxes there move faster after each arrow lands. A small indigo tag at the right reads "Fast lane and slow lane", with the caption "Both at once". The slide ends on both lanes full and the tag.
 
@@ -278,7 +278,7 @@ Speaker: Stefan
 <!-- beat: the playbook on the shelf; four levels, a named owner for each agent, and manage individually at the City's scale -->
 Speaker: Stefan
 
-**On screen:** When agents come, and they will come inside tools we already own, we will have a playbook on the shelf.
+**On screen:** When agents come inside tools we already own, we will have a playbook on the shelf.
 - Classify each one into four levels, from no-go to bounded autonomy, and name a human owner for each.
 - At the City's scale that is a list and a set of owners, not a platform.
 
@@ -318,7 +318,7 @@ Speaker: Chris and Stefan
 - Sanction the open call and the AI consortium, and sponsor the listening tour with departments.
 - Keep the agent work going in the infrastructure the City built, with its Azure staff focused on it.
 
-**They see:** The slide is navy. Four numbered lines settle one at a time in white with green numerals: "Sanction the open call and the AI consortium", "Sponsor the listening tour", "Pick one first use case lane and adopt the four levels", "Keep the agent work going in the infrastructure". Under each, a small green nameplate lands: "We would run", "We would run", "Stefan would draft the levels with the CISO", "The Azure staff keep going". A grey tag at the foot reads "None of this needs a budget line yet". The slide ends on the four lines and their nameplates.
+**They see:** An indigo panel fills the slide under the title. Four numbered lines settle on it one at a time in white with green numerals: "Sanction the open call and the AI consortium", "Sponsor the listening tour", "Pick one first use case lane and adopt the four levels", "Keep the agent work going in the infrastructure". Under each, a small green nameplate lands: "We would run" under the first two, then "Stefan would draft the levels with the CISO", then "The Azure staff keep going". A grey tag at the foot, on the white ground below the panel, reads "None of this needs a budget line yet". The slide ends on the panel, the four lines and their nameplates.
 
 **You say:** We will end with the decisions, and we kept them to four. First, sanction the open call and the AI consortium, so the City's practitioners come to one table with leadership's blessing. Second, sponsor the listening tour: a few weeks of conversations with department leaders, staff and the community that we would run and write up in their words. Third, pick one first use case lane and adopt the four levels now, so the first agent inside an authorized tool has a place to be classified; Stefan would draft the levels with the CISO. Fourth, keep the agent work going in the infrastructure the City built, with its partners, and let the Azure staff keep going on it. None of this needs a budget line yet.
 
@@ -330,7 +330,7 @@ Speaker: Chris and Stefan
 - We would like to hear what you would most want a City AI strategy to do first.
 - We would also like to hear what you would need from us to make these four decisions.
 
-**They see:** The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads "The backup slides". Nothing moves after that.
+**They see:** The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads "Backup slides". Nothing moves after that.
 
 **You say:** That is what we brought back. The world moved fast and mostly moved badly, and the organizations that got value did the foundations first: their own people, honest listening, small reversible wins and controls the system enforces. The City is behind on operationalizing AI and ahead on the thing that matters most, which is staff who have already done this work and are waiting to be asked. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's deck on the security side is in the backup slides, and we are glad to go as deep as you like.
 

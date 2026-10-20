@@ -1,0 +1,306 @@
+/* The taught world's own marks, under the kit's rules (kit.css,
+   kit-parts.css) and docs/aph-brand-reference.md: words and outlines in navy
+   (paper) on the white ground, the City's own people and the process in
+   green, evidence from the course in indigo (catalog), slate (soft) for what
+   failed or is not proposed, and the deep-green tick only through the kit's
+   PassTick. A part's state arrives as the kit's custom properties (--d, --k,
+   --x, --y) and this world's --r, a turn in degrees. Selectors are doubled
+   where they refine a kit class, so the order the sheets load in never
+   decides a picture. */
+
+/* A slide's HTML as one part, holding no room of its own. */
+.tg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Words in the marks: navy, the kit's label size. */
+.dk-label.tg-word {
+  fill: var(--dk-paper);
+}
+
+.tg-word--strong.tg-word--strong {
+  font-weight: 600;
+}
+
+/* Words in HTML, wrapping inside their box. */
+.tg-note {
+  position: absolute;
+  font-family: var(--dk-face);
+  font-weight: 500;
+  color: var(--dk-paper);
+  white-space: normal;
+}
+
+.tg-note--label {
+  font-size: var(--dk-label);
+  line-height: 32px;
+  letter-spacing: 0.01em;
+}
+
+.tg-note--text {
+  font-size: var(--dk-text);
+  line-height: 45px;
+}
+
+.tg-note--tag {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.tg-note--name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.015em;
+}
+
+.tg-note--figure {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 104px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.tg-note--center {
+  text-align: center;
+}
+
+.tg-note--strong {
+  font-weight: 600;
+}
+
+.tg-note--catalog.tg-note--catalog {
+  color: var(--dk-catalog);
+}
+
+.tg-note b {
+  display: block;
+  font-weight: 600;
+}
+
+.tg-note span {
+  display: block;
+}
+
+/* Lines on the floor and under the cards. */
+.tg-floor,
+.tg-rule {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.tg-rule.tg-rule {
+  stroke-width: 4;
+}
+
+/* A stair's block, growing up from the floor. */
+.tg-block {
+  fill: var(--dk-raised);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  transform: scaleY(var(--k, 0));
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+}
+
+/* Slide 5's figure, in the process green. */
+.tg-walker circle,
+.tg-walker path,
+.tg-figure circle,
+.tg-figure path {
+  fill: var(--dk-process);
+}
+
+/* Arrows: grey for what grows with each rung, green for the strongest kind. */
+.tg-arrow {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tg-arrow--soft {
+  stroke: var(--dk-soft);
+}
+
+.tg-arrow--process {
+  stroke: var(--dk-process);
+}
+
+/* The plain tool: its outline draws on, then its face fills solid. */
+.tg-hammer__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.tg-hammer__face {
+  fill: var(--dk-paper);
+  opacity: var(--k, 0);
+}
+
+/* Slide 6's balance. */
+.tg-stand path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.tg-stand .tg-stand__foot,
+.tg-stand .tg-stand__cap {
+  fill: var(--dk-paper);
+  opacity: var(--d, 0);
+}
+
+.tg-beam {
+  transform: rotate(calc(var(--r, 0) * 1deg));
+}
+
+.tg-beam path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.tg-beam .tg-beam__pin {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  opacity: var(--d, 0);
+}
+
+.tg-pan path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+}
+
+.tg-pan .tg-pan__plate {
+  fill: var(--dk-paper);
+  opacity: var(--d, 0);
+}
+
+/* The technology: an indigo box with a blank tag. */
+.tg-box__face {
+  fill: color-mix(in srgb, var(--dk-catalog) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  stroke: var(--dk-catalog);
+  stroke-width: 3;
+}
+
+.tg-box__lid,
+.tg-box__string {
+  fill: none;
+  stroke: var(--dk-catalog);
+  stroke-width: 3;
+}
+
+.tg-box__tag {
+  fill: var(--dk-night);
+  stroke: var(--dk-catalog);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.tg-box__hole {
+  fill: var(--dk-catalog);
+}
+
+/* The three-part bar: navy outline and dividers, the middle filling green from its left. */
+.tg-bar {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.tg-bar__fill {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  transform: scaleX(var(--k, 0));
+  transform-origin: 0 50%;
+  transform-box: fill-box;
+}
+
+/* The plaque: a raised face inside a navy frame with a second rule inset. */
+.tg-plaque__face {
+  fill: var(--dk-raised);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.tg-plaque__inset {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 1.5;
+}
+
+/* Slide 7's fence post, in navy. */
+.tg-fence path {
+  fill: var(--dk-paper);
+}
+
+/* The dial and its needle, which turns counterclockwise by --r degrees. */
+.tg-dial path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.tg-dial .tg-dial__base {
+  stroke-width: 3;
+}
+
+.tg-dial__tick {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.tg-needle {
+  transform: rotate(calc(var(--r, 0) * -1deg));
+}
+
+.tg-needle path,
+.tg-needle circle {
+  fill: var(--dk-paper);
+}
+
+/* Slide 8's cards: square, white, navy edge, a grey band across the top. */
+.tg-card__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.tg-card__band {
+  fill: var(--dk-soft);
+}
+
+/* The grey tag under each card's line: what was missing. */
+.tg-tag.tg-tag {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 2px solid var(--dk-soft);
+  background: var(--dk-raised);
+  color: var(--dk-paper);
+}
+
+/* The plaque's name, large over its caption. */
+.tg-note .tg-plaque__name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.015em;
+}

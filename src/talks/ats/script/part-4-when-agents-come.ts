@@ -8,7 +8,7 @@ export const WHEN_AGENTS_COME: Picture[] = [
     part: 4,
     world: "ready",
     name: "When agents come, we will be ready",
-    show: "When agents come, and they will come inside tools we already own, we will have a playbook on the shelf.",
+    show: "When agents come inside tools we already own, we will have a playbook on the shelf.",
     say: "Agents will not wait for the City's strategy. Vendors keep adding agent features to products the City already owns, so some will arrive inside authorized tools. For that day the course gives a playbook we would keep on the shelf. Classify each agent into one of four levels: no-go, never without a person, for anything that transacts, decides regulated matters or cannot be undone; assist only, with read-only tools; execute with approval, where a named approver signs off before anything takes effect; and bounded autonomy, with strict limits and a tested stop. Give every agent a named owner, which the course found is often nobody. At the City's scale that is a list and a set of owners, not a platform.",
     see: ["Four bands draw across the slide, each in its own hue: grey \"No-go\", with the caption \"Never without a person\"; sky \"Assist only\", with \"Read-only tools\"; gold \"Execute with approval\", with \"A named approver signs off\"; and pink \"Bounded autonomy\", with \"Strict limits and a tested stop\". A short list draws beneath with three rows, each a small agent icon, a level, and a nameplate reading \"Owner\". A grey tag at the foot reads \"A list and a set of owners\". The slide ends on the four bands and the short list."],
     story: [
@@ -61,7 +61,7 @@ export const WHEN_AGENTS_COME: Picture[] = [
     name: "Four decisions",
     show: "Four decisions would start this, and none of them needs a budget line yet.",
     say: "We will end with the decisions, and we kept them to four. First, sanction the open call and the AI consortium, so the City's practitioners come to one table with leadership's blessing. Second, sponsor the listening tour: a few weeks of conversations with department leaders, staff and the community that we would run and write up in their words. Third, pick one first use case lane and adopt the four levels now, so the first agent inside an authorized tool has a place to be classified; Stefan would draft the levels with the CISO. Fourth, keep the agent work going in the infrastructure the City built, with its partners, and let the Azure staff keep going on it. None of this needs a budget line yet.",
-    see: ["The slide is navy. Four numbered lines settle one at a time in white with green numerals: \"Sanction the open call and the AI consortium\", \"Sponsor the listening tour\", \"Pick one first use case lane and adopt the four levels\", \"Keep the agent work going in the infrastructure\". Under each, a small green nameplate lands: \"We would run\", \"We would run\", \"Stefan would draft the levels with the CISO\", \"The Azure staff keep going\". A grey tag at the foot reads \"None of this needs a budget line yet\". The slide ends on the four lines and their nameplates."],
+    see: ["An indigo panel fills the slide under the title. Four numbered lines settle on it one at a time in white with green numerals: \"Sanction the open call and the AI consortium\", \"Sponsor the listening tour\", \"Pick one first use case lane and adopt the four levels\", \"Keep the agent work going in the infrastructure\". Under each, a small green nameplate lands: \"We would run\" under the first two, then \"Stefan would draft the levels with the CISO\", then \"The Azure staff keep going\". A grey tag at the foot, on the white ground below the panel, reads \"None of this needs a budget line yet\". The slide ends on the panel, the four lines and their nameplates."],
     story: [
       "Sanction the open call and the AI consortium, and sponsor the listening tour with departments.",
       "Keep the agent work going in the infrastructure the City built, with its Azure staff focused on it.",
@@ -78,13 +78,13 @@ export const WHEN_AGENTS_COME: Picture[] = [
     name: "Let's talk",
     show: "Let's talk.",
     say: "That is what we brought back. The world moved fast and mostly moved badly, and the organizations that got value did the foundations first: their own people, honest listening, small reversible wins and controls the system enforces. The City is behind on operationalizing AI and ahead on the thing that matters most, which is staff who have already done this work and are waiting to be asked. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's deck on the security side is in the backup slides, and we are glad to go as deep as you like.",
-    see: ["The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads \"The backup slides\". Nothing moves after that."],
+    see: ["The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads \"Backup slides\". Nothing moves after that."],
     story: [
       "We would like to hear what you would most want a City AI strategy to do first.",
       "We would also like to hear what you would need from us to make these four decisions.",
     ],
     steps: [
-      { id: "play", show: ["The backup slides"] },
+      { id: "play", show: ["Backup slides"] },
     ],
   },
 ];

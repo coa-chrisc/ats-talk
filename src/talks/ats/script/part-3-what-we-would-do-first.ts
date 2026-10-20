@@ -42,7 +42,7 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     part: 3,
     world: "method",
     name: "Listen",
-    show: "Step two is to listen: to department leaders, to staff and to the community, and to write it down in their words.",
+    show: "Step two is to listen to leaders, staff and the community, and to write it in their words.",
     say: "Step two is listening, and the course gives it unusual weight. Its first no-regrets workforce action is an honest channel for staff to raise concerns about AI without being labeled resistant, because leaders who create that channel learn early and leaders who don't learn too late. So we would sit with department leaders and ask what is slow or broken, where they could do more, and their goals for 2027 and 2028. We would ask staff what worries them. We would ask the community how it wants the City to use AI, and what it does not want. Everything goes down in their own words, because that language becomes the problem statement and the measure of success later.",
     see: ["Three round tables draw side by side, each with figures seated: \"Department leaders\", \"Staff\" and \"Community\". Over the first, three speech bubbles rise in turn: \"What is slow or broken\", \"Where they could do more\" and \"Their goals for 2027 and 2028\". Over the second, one bubble: \"What worries them\". Over the third, one bubble: \"How it wants the City to use AI\". A notebook page beside the tables fills line by line under the heading \"In their own words\". The slide ends on the three tables, their bubbles and the filled page."],
     story: [
@@ -76,12 +76,12 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     part: 3,
     world: "plan",
     name: "Two lanes",
-    show: "Run two lanes at once: deliver quick wins now, and build the foundations that make the next ones faster.",
+    show: "Run two lanes at once: quick wins now, and the foundations that make the next ones faster.",
     say: "The plan has two lanes, and the course says to run both at once; it calls them a fast lane and slow lane, rapid experimentation beside structural change. Lane one is what the City can deliver now: small, reversible tools that come out of the listening and the sorting, many of them plain tools built with AI help. Lane two is the longer work that makes lane one faster every quarter: training, a shared software lifecycle, one toolset and the infrastructure the City already built, extended rather than replaced. Each piece of lane two is an arrow into lane one. The course's warning about pilot purgatory applies here: every lane one project names a sponsor accountable for adoption and a transition plan before it starts, not after.",
     see: ["Two lanes draw, one above the other. The lower lane is labeled \"Deliver quick wins now\", and small green boxes ship along it one after another. The upper lane is labeled \"Build the foundations\", and four pieces fill in turn: \"Training\", \"Software lifecycle\", \"One toolset\", \"The infrastructure the City already built\". An arrow runs down from each piece into the lower lane, and the boxes there move faster after each arrow lands. A small indigo tag at the right reads \"Fast lane and slow lane\", with the caption \"Both at once\". The slide ends on both lanes full and the tag."],
     story: [
-      "Lane one ships small, reversible tools that come out of listening and sorting.",
-      "Lane two builds training, a shared software lifecycle, one toolset and the infrastructure.",
+      "Lane one is where we deliver quick wins now: small, reversible tools out of listening and sorting.",
+      "In lane two we build the foundations: training, a software lifecycle, one toolset, infrastructure.",
     ],
     steps: [
       { id: "play", show: ["Deliver quick wins now", "Build the foundations", "Training", "Software lifecycle", "One toolset", "The infrastructure the City already built", "Fast lane and slow lane", "Both at once"] },
