@@ -35,9 +35,9 @@ for (const line of text.split("\n")) {
     field = opens[1];
     if (field === "On screen") s.show = opens[2];
     else if (field === "You say") s.say = opens[2];
-    else s.see.push(opens[2]);
+    else if (opens[2]) s.see.push(opens[2]);
   } else if (field === "On screen" && bullet) s.story.push(bullet[1].replace(/ \*\(click \d\)\*$/, ""));
-  else if (field === "They see" && bullet) s.see.push(bullet[1]);
+  else if (field === "They see" && (bullet || line.match(/^\d+\. (.*)$/))) s.see.push((bullet ?? line.match(/^\d+\. (.*)$/))[1]);
 }
 
 const problems = [];

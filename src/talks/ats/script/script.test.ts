@@ -58,7 +58,7 @@ const quotedIn = (see: readonly string[]) => [...new Set([...see.join(" ").match
 
 /**
  * The pictures and their clicks, in the order shown (docs/ats-talk-script.md):
- * one click a picture, `play`, since the script marks no slide "(two clicks)".
+ * one click a picture, `play`, but slide 12b, the roll, which the script marks "(two clicks)".
  */
 const PLAN: [string, string[]][] = [
   ["title", ["play"]],
@@ -76,7 +76,7 @@ const PLAN: [string, string[]][] = [
   ["control", ["play"]],
   ["exists", ["play"]],
   ["noticed", ["play"]],
-  ["community", ["play"]],
+  ["community", ["roll", "themes"]],
   ["infrastructure", ["play"]],
   ["fits", ["play"]],
   ["fleet", ["play"]],
@@ -107,7 +107,7 @@ const WORLD_OF_SLIDES: [WorldId, string[]][] = [
 ];
 
 /** The slides given two clicks: none, as draft 2 of the ATS script writes the script. */
-const TWO_CLICKS: string[] = [];
+const TWO_CLICKS: string[] = ["12b"];
 
 const labels = SCRIPT.flatMap((picture) => picture.steps.flatMap((step) => step.show));
 // Every string the audience reads or the presenter says.
@@ -183,10 +183,10 @@ describe("the talk's script", () => {
     for (const world of WORLDS) expect(new Set(SCRIPT.filter((picture) => picture.world === world).map((picture) => picture.part)).size, world).toBe(1);
   });
 
-  it("gives every picture one click, and two only where the script says so: 33 in all", () => {
+  it("gives every picture one click, and two only where the script says so: 34 in all", () => {
     expect(SOURCE.pictures.filter((picture) => picture.twoClicks).map((picture) => picture.number)).toEqual(TWO_CLICKS);
     for (const picture of SCRIPT) expect(picture.steps.length, picture.id).toBe(TWO_CLICKS.includes(picture.number) ? 2 : 1);
-    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(33);
+    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(34);
   });
 
   it("leaves no string empty", () => {
