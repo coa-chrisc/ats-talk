@@ -38,15 +38,15 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * ends on. Set in Geist bold at 72 px with the title's -0.025em tracking
  * (measured from the font's advance widths), the longest line here (slide
  * 25's first) is about 1700 px, inside the 1728 px field. Slides 24, 25, 27
- * and 28 take two lines; 26 fits on one. Slide 27's lines are about 1310
- * and 1560 px. Slide 28 on one line would run past 2000 px; broken after
- * its eighth word, about 1430 and 1215.
+ * and 28 take two lines; 26 fits on one (about 1160). Slide 24 breaks at
+ * its full stop, about 1650 and 1570; slide 27 at its comma, about 1300 and
+ * 1560; slide 28 at its comma, about 1440 and 640.
  */
 const BREAKS: Record<string, string[]> = {
-  levels: ["own,"],
+  levels: ["own."],
   "who-decides": ["decides"],
   "could-be": ["done,"],
-  applied: ["ideas"],
+  applied: ["lessons,"],
 };
 
 /** The white slides' titles, at the field's top left; the close sets its own. */

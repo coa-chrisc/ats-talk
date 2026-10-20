@@ -27,12 +27,12 @@ const NAME_Y = TOP + 24;
 const FENCE = box(96, TOP + 58, 1152, 160);
 const POST_PITCH = 72;
 
-/** Three tiles, 18 px inside the fence top and foot and 24 from its sides, 24 apart. */
-const TILE = { pad: 24, gap: 24, top: 18 } as const;
+/** Three tiles, 18 px inside the fence top and foot and 15 from its sides, 18 apart: 362 wide each, room for the longest name at the layout's safe measure. */
+const TILE = { pad: 15, gap: 18, top: 18 } as const;
 const TILE_W = (FENCE.w - 2 * TILE.pad - 2 * TILE.gap) / 3;
 const TILE_H = FENCE.h - 2 * TILE.top;
-/** A tile's words: its name 34 px under its top, its caption's first row 36 under that, its rows 30 apart, all 20 px in from its left. */
-export const TILE_WORDS = { inset: 20, name: 34, caption: 70, pitch: 30 } as const;
+/** A tile's words: its name 34 px under its top, its caption's first row 36 under that, its rows 30 apart, all 12 px in from its left. */
+export const TILE_WORDS = { inset: 12, name: 34, caption: 70, pitch: 30 } as const;
 
 /** A caption broken on two rows where it would run past its tile at the label size, after the word the layout names. */
 const CAPTION_BREAKS: Record<string, string[]> = { [MODELS_CAPTION]: ["and"], [ROUTE_CAPTION]: ["designed,"] };

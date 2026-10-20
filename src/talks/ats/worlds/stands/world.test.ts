@@ -110,8 +110,8 @@ describe("one slide at a time", () => {
     }
   });
 
-  it("breaks the titles after the words the layout names, two lines each", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2, 2, 2]);
+  it("breaks the titles after the words the layout names, two lines each but slide 11's one", () => {
+    expect(TITLES.map((title) => title.lines.length)).toEqual([1, 2, 2, 2, 2, 2, 2, 2]);
   });
 });
 

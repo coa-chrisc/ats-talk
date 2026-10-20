@@ -24,6 +24,11 @@ const T = TRACK;
 const C = CONTROL;
 /** A large figure's box at `size`, its numerals' cap over its baseline, at 0.56 of the size a letter, as wordsWidth sets words (Geist Bold measures 0.49 for this one). */
 const big = (at: Point, words: string, size: number, anchor: "start" | "end") => box(anchor === "start" ? at.x : at.x - Math.ceil(words.length * size * 0.56), at.y - Math.ceil(size * 0.72), Math.ceil(words.length * size * 0.56), Math.ceil(size * 0.72) + 8);
+/** A large figure on rows about their middles, ending at its point, at the same letter width. */
+const bigRows = (at: Point, rows: readonly string[], size: number, pitch: number) => {
+  const w = Math.max(...rows.map((row) => Math.ceil(row.length * size * 0.56)));
+  return box(at.x - w, at.y - size / 2, w, pitch * (rows.length - 1) + size);
+};
 const E = EXISTS;
 const N = NOTICED;
 const I = INFRASTRUCTURE;
@@ -49,7 +54,7 @@ const DRAWN: Record<string, Box[]> = {
     ...C.stair.steps.map((step) => step.at),
     text(C.stair.name.at, C.stair.name.text, "start"),
     label(C.stair.caption.at, C.stair.caption.text, "start"),
-    big(C.big.at, C.big.text, BIG.size, "end"),
+    bigRows(C.big.at, C.big.rows, BIG.size, BIG.pitch),
     label(C.big.caption.at, C.big.caption.text, "end"),
     C.budget.at,
   ],
@@ -125,9 +130,10 @@ describe("the stands world's layout", () => {
 });
 
 describe("the track, fixed for slides 11, 15 and 27", () => {
-  it("stands under a two-line title's story band on both its slides here, at the documented numbers", () => {
-    expect(TRACK_TOP).toBe(contentTop("track"));
+  it("stands at the documented numbers on both its slides here: under slide 15's two-line title's story band, and no higher on slide 11, whose one-line title leaves room over it", () => {
     expect(TRACK_TOP).toBe(contentTop("fleet"));
+    expect(TRACK_TOP).toBeGreaterThanOrEqual(contentTop("track"));
+    expect(TRACK_TOP - contentTop("track")).toBeLessThanOrEqual(STORY.pitch * 2);
     expect(OUTER).toEqual({ x: 96, y: 564, w: 1728, h: 344 });
     expect([LANES, R]).toEqual([96, 172]);
     expect(INNER).toEqual({ x: 192, y: 660, w: 1536, h: 152 });
@@ -206,7 +212,7 @@ describe("slide 11a, the control", () => {
   const post = box(C.post.x, C.post.top, C.post.w, C.post.foot - C.post.top);
   const gauge = box(GAUGE.cx - GAUGE.r - GAUGE.band, GAUGE.cy - GAUGE.r - GAUGE.band / 2, 2 * (GAUGE.r + GAUGE.band), GAUGE.r + GAUGE.band / 2 + GAUGE.hub);
   const stair = bounds(C.stair.steps.map((step) => step.at));
-  const figure = big(C.big.at, C.big.text, BIG.size, "end");
+  const figure = bigRows(C.big.at, C.big.rows, BIG.size, BIG.pitch);
 
   it("draws the post as slide 11 does, its tick on its cap and its name to its right", () => {
     expect([C.post.w, C.post.tick.r]).toEqual([T.post.w, T.post.tick.r]);
@@ -248,9 +254,12 @@ describe("slide 11a, the control", () => {
     expect(CLIMBER.w).toBeLessThan(first.w / 2);
   });
 
-  it("sets the indigo figure beside the stair at the right edge, its caption under it, and the plain tag at the foot, all apart", () => {
+  it("sets the indigo figure on two rows beside the stair at the right edge, its caption under it, and the plain tag at the foot, all apart", () => {
+    expect(C.big.rows).toHaveLength(2);
+    expect(C.big.rows.join(" ")).toBe(C.big.text);
     expect(figure.x).toBeGreaterThan(right(stair) + 24);
     expect(right(figure)).toBe(SAFE.right - 16);
+    expect(bottom(figure)).toBeLessThan(bottom(stair));
     const caption = label(C.big.caption.at, C.big.caption.text, "end");
     expect(caption.y).toBeGreaterThan(bottom(figure) - 8);
     expect(C.budget.at.y).toBeGreaterThan(bottom(caption) + 24);

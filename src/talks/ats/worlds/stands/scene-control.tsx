@@ -1,9 +1,9 @@
-/** Slide 11a's picture: the post with its tick and name, the four city nameplates, the grey gauge with its needle, figure and caption; the stair with its name, caption and climber, the indigo figure and its caption, and the plain tag at the foot. */
+/** Slide 11a's picture: the post with its tick and name, the four city nameplates, the grey gauge with its needle, figure and caption; the stair with its name, caption and climber, the indigo figure on two rows and its caption, and the plain tag at the foot. */
 "use client";
 
 import { Part, PassTick } from "@/components/deck/kit";
-import { CLIMBER, CONTROL, GAUGE } from "./layout-control";
-import { Big, Layer, StoryOf, Stroke, Tagged, Words } from "./parts";
+import { BIG, CLIMBER, CONTROL, GAUGE } from "./layout-control";
+import { Big, Layer, Rows, StoryOf, Stroke, Tagged, Words } from "./parts";
 import { ClimbStep, Climber, FencePost, Gauge, Host } from "./parts-figures";
 
 const C = CONTROL;
@@ -29,7 +29,7 @@ export function ControlMarks() {
       <Words id={S.name.key} at={S.name.at} text={S.name.text} anchor="start" size="text" strong />
       <Words id={S.caption.key} at={S.caption.at} text={S.caption.text} anchor="start" soft />
       <Climber id={C.climber.key} at={C.climber.at} w={CLIMBER.w} h={CLIMBER.h} />
-      <Big id={C.big.key} at={C.big.at} text={C.big.text} className="sn-big" anchor="end" />
+      <Rows id={C.big.key} at={C.big.at} rows={C.big.rows} pitch={BIG.pitch} anchor="end" size="text" extra="sn-big" />
       <Words id={C.big.caption.key} at={C.big.caption.at} text={C.big.caption.text} anchor="end" soft />
       <Tagged id={C.budget.key} at={C.budget.at} text={C.budget.text} tone="plain" />
     </Part>

@@ -12,7 +12,7 @@ import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
 import { LABEL_LINE, SAFE, contentTop, layerOf, note, round } from "./layout";
 
-const [AUTOMATION, FIXED, COPILOT, APPROVES, WORKFLOW, SET, AGENT, CHOOSES, STOP, MORE, TOOL_NAME, NO_AI] = shown("ladder", "play");
+const [AUTOMATION, FIXED, COPILOT, APPROVES, WORKFLOW, SET, AGENT, CHOOSES, DONE, MORE, TOOL_NAME, NO_AI] = shown("ladder", "play");
 const NAMES = [AUTOMATION, COPILOT, WORKFLOW, AGENT] as const;
 const CAPTIONS = [FIXED, APPROVES, SET, CHOOSES] as const;
 
@@ -51,7 +51,7 @@ const WALK = STAIR_X - 6 - (FIGURE.x + FIGURE.w);
 const CLIMB = { x: STAIR_X + 74 - (FIGURE.x + FIGURE.w / 2), y: -FIRST } as const;
 const STANDS = { x: FIGURE.x + FIGURE.w / 2 + CLIMB.x, top: FIGURE.y + CLIMB.y };
 
-/** The tick 22 px over the figure's head once it stands on the first block, and its label 38 px over the tick. */
+/** The tick 22 px over the figure's head once it stands on the first block, and its label 38 px over the tick (the label is four short words, 223 px at 26 px semibold, well clear of the second block). */
 const TICK_R = 14;
 const TICK: Point = { x: STANDS.x, y: STANDS.top - 8 - TICK_R };
 const STOP_AT: Point = { x: STANDS.x, y: TICK.y - TICK_R - 6 - LABEL_LINE / 2 };
@@ -92,7 +92,7 @@ export const LADDER = {
   }),
   walker: { key: "ladder.walker", at: FIGURE, walk: WALK, climb: CLIMB },
   tick: { key: "ladder.tick", at: TICK, r: TICK_R },
-  stop: { key: "ladder.stop", text: STOP, at: STOP_AT },
+  stop: { key: "ladder.stop", text: DONE, at: STOP_AT },
   more: {
     key: "ladder.more",
     tail: { x: TAIL_X, y: arrowY(TAIL_X) } as Point,

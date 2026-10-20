@@ -31,25 +31,25 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 /**
  * Where each title breaks, by the words a line ends on. Titles are set in
  * Geist Bold at 72 px and must end by x 1824, 1728 px from their left edge;
- * the widths in the comments are measured from the font's advances.
+ * the widths in the comments are measured from the font's advances. Slide
+ * 11's title is one line of 1305 px and does not break.
  */
 const BREAKS: Record<string, string[]> = {
-  /** 1374 and 893 px. */
-  track: ["budget,"],
-  /** 1505 and 1565 px. */
-  control: ["control."],
-  /** 1396 and 1082 px: after the second "has", not the first. */
-  exists: ["it has"],
-  /** 1352 and 1175 px. */
-  noticed: ["already"],
-  /** 1534 and 1462 px. */
-  community: ["build,"],
-  /** 1406 and 1432 px. */
+  track: [],
+  /** 1489 and 1694 px. */
+  control: ["move."],
+  /** 1512 and 914 px. */
+  exists: ["work"],
+  /** 1265 and 947 px. */
+  noticed: ["noticed"],
+  /** 1569 and 1420 px. */
+  community: ["run,"],
+  /** 1483 and 1666 px. */
   infrastructure: ["AI,"],
-  /** 1065 and 1084 px. */
-  fits: ["onto"],
-  /** 1292 and 1368 px. */
-  fleet: ["third of"],
+  /** 1614 and 894 px. */
+  fits: ["the ones"],
+  /** 1662 and 1454 px: after "the way", as a break at "third of" leaves 1753 px on the second line. */
+  fleet: ["the way"],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));
@@ -57,7 +57,7 @@ export const titleOf = (pictureId: string) => TITLES.find((title) => title.pictu
 
 const BANDS = ["one", "two", "three"] as const satisfies readonly StoryBand[];
 
-/** Each slide's story lines, in the band under its title: one row each, as every line fits the band's 1728 px at 32 px (the longest, slide 12a's line A, is 1565 px). */
+/** Each slide's story lines, in the band under its title: one row each, as every line fits the band's 1728 px at 32 px (the longest, slide 13's line A, is 1535 px). */
 export const STORIES = PICTURES.map((picture) => ({
   picture: picture.id,
   id: storyId(picture.id),

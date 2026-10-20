@@ -36,16 +36,17 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 /**
  * A title at 72 px fits one line inside x 1824 only up to about 1728 px of
  * Geist bold; each title names the word its first line ends on, so every
- * title here takes two lines. Measured in Geist 700 at -0.025em, the
- * longest line is 1640 px or less.
+ * title here takes two lines. Measured in Geist 700 at -0.025em with its
+ * kerning, the longest line is slide 17's first, 1710 px; every other line
+ * is 1680 px or less.
  */
 const BREAKS: Record<string, string[]> = {
   "not-proposing": ["buy an"],
   consortium: ["department,"],
   "program-team": ["drawn from"],
-  listen: ["staff and"],
+  listen: ["leaders,"],
   sort: ["by value"],
-  lanes: ["now, with"],
+  lanes: ["now, and"],
   "level-up": ["has,"],
   outcomes: ["Strategic Plan"],
 };

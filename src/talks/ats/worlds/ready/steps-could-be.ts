@@ -3,7 +3,7 @@
  * draws, its two edges round the lap and its lanes filling with them, then
  * its start stripe; the pack comes up on the far straight, named, and the
  * City's runner lands where slide 15 left it on the bend. The dashed runner
- * opens at the pack's tail and its name comes up under it. Then the four
+ * opens at the pack's tail and its name comes up under it. Then the five
  * markers are set down one at a time along the lane from the solid runner
  * toward the dashed one, each one's leader drawing down to the key and its
  * entry rising as the leader arrives; line A comes in with the first, line

@@ -5,6 +5,11 @@
  * the grey tag centred in the infield; and a fence post in the ground just
  * outside the track beside the start, its tick on its cap and its name to
  * its right. Words are read from the script, by position.
+ *
+ * The title is one line, so the story band ends higher here than on slide
+ * 15, but the track keeps its fixed place (TRACK_TOP, 548) so that slides
+ * 11, 15 and 27 draw it pixel for pixel the same; the room over it is
+ * left open.
  */
 import { box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
