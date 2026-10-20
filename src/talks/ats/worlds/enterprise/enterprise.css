@@ -1,0 +1,282 @@
+/* The enterprise world's own marks and type, under the kit's rules (kit.css,
+   kit-parts.css) and the brand roles: words and outlines in navy (paper) on
+   the white ground; the process, agents at work and a company's own
+   knowledge in green; evidence from the outside world in indigo (catalog);
+   grey (soft, raised) for problems and what was missing; the pass green
+   only on a cell's passed tick (the kit's board cell) and the orange only
+   through the kit's HumanMark. A part's state arrives as the kit's custom
+   properties (--d, --k) or autoAlpha. Selectors are doubled where they
+   refine a kit class, so the order the sheets load in never decides a
+   picture. */
+
+/* A slide's HTML as one part, holding no room of its own. */
+.en-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Every name the viewer reads is navy; a caption under a name is slate; a measure from outside is indigo. */
+.dk-label.en-word--paper,
+.dk-text.en-word--paper {
+  fill: var(--dk-paper);
+}
+
+.dk-label.en-word--soft,
+.dk-text.en-word--soft {
+  fill: var(--dk-soft);
+}
+
+.dk-label.en-word--catalog,
+.dk-text.en-word--catalog {
+  fill: var(--dk-catalog);
+}
+
+.en-word--strong.en-word--strong {
+  font-weight: 600;
+}
+
+/* Words in HTML, wrapping inside their box, their lines balanced. */
+.en-note {
+  position: absolute;
+  font-family: var(--dk-face);
+  font-weight: 500;
+  color: var(--dk-paper);
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.en-note--label {
+  font-size: var(--dk-label);
+  line-height: 32px;
+  letter-spacing: 0.01em;
+}
+
+.en-note--text {
+  font-size: var(--dk-text);
+  line-height: 45px;
+}
+
+.en-note--tag {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.en-note--name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.015em;
+}
+
+.en-note--center {
+  text-align: center;
+}
+
+.en-note--strong {
+  font-weight: 600;
+}
+
+/* A large figure: the number bold, the words round it semibold, in indigo. */
+.en-figure {
+  font-family: var(--dk-face);
+  font-variant-numeric: lining-nums;
+  fill: var(--dk-catalog);
+}
+
+.en-figure__number {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.en-figure__words {
+  font-weight: 600;
+}
+
+/* Slide 3: the columns rise from their floor; the bar's parts fill from the left. */
+.en-column {
+  fill: var(--dk-catalog);
+  transform: scaleY(var(--k, 0));
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+}
+
+.en-floor {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.en-bar {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.en-split {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.en-part {
+  transform: scaleX(var(--k, 0));
+  transform-origin: 0 50%;
+  transform-box: fill-box;
+}
+
+.en-part.en-part--bought {
+  fill: var(--dk-catalog);
+  fill-opacity: var(--dk-tint-idle);
+}
+
+.en-part.en-part--own {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+}
+
+.en-bracket {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Slide 4: the timeline in navy, heavier than a rule, since it is the picture. */
+.en-line {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.en-bubble path {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.en-bubble__dot {
+  fill: var(--dk-paper);
+}
+
+.en-copilot__page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.en-copilot__writing {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.en-tool-agent__body {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.en-tool-agent__legs {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.en-tool-agent__belt {
+  fill: var(--dk-process);
+}
+
+.en-tool-agent__tool {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* The agent's loop: a ring in navy, its stops lighting green, and the bar where it stops. */
+.en-loop {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.en-stop__ring {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.en-stop__lit {
+  fill: var(--dk-process);
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  opacity: var(--k, 0);
+}
+
+.en-boundary {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+/* Slide 5: the desk, the board's frame (its ground coming up as it draws, as the kit's board does), and the thin wall. */
+.en-desk {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.en-board {
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.72);
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+}
+
+.en-wall {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* Slide 6: the cards, their grey bands and tags, and the rule under them. */
+.en-card__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.en-card__band {
+  fill: var(--dk-soft);
+}
+
+.en-tag.en-tag {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 2px solid var(--dk-soft);
+  background: var(--dk-raised);
+}
+
+.en-rule {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}

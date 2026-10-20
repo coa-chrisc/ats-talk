@@ -1,0 +1,111 @@
+/**
+ * Each of Part 1's clicks, beat by beat, against what its They see says it
+ * shows and in what order, and the flow every click keeps: the stage never
+ * still for more than 3 s (flow.test.ts checks only the worlds the deck
+ * lists, so it is checked here too).
+ */
+import { describe, expect, it } from "vitest";
+import { CHAIN, HOLD, storyKeys } from "@/components/deck/kit";
+import { storyId } from "../steps";
+import { OPENING, storyKeysOf, titleKey } from "./layout";
+import { FOUR_IDEAS } from "./layout-four-ideas";
+import { ARRIVE } from "./moves";
+import { at, elements, endOf, ids, playOf, playsAt, startOf, stepOf, world } from "./harness";
+
+const storyAt = (pictureId: string, line: 0 | 1) => startOf(stepOf(pictureId), storyKeys(storyId(pictureId), 2)[line]);
+
+describe("every click", () => {
+  it.each(ids)("keeps %s moving: never still for more than 3 s", (id) => {
+    let landed = 0;
+    let still = 0;
+    for (const play of [...world.plays[ids.indexOf(id)]].sort((a, b) => a.at - b.at)) {
+      still = Math.max(still, play.at - landed);
+      const many = "key" in play ? elements(play.key) : 1;
+      landed = Math.max(landed, play.at + play.duration + play.stagger * Math.max(0, many - 1));
+    }
+    expect(still).toBeLessThanOrEqual(CHAIN.still);
+  });
+
+  it.each(ids)("ends %s on a drawing or a story line landing, not a hold", (id) => {
+    const plays = playsAt(id);
+    const last = Math.max(...plays.map((play) => play.at + play.duration));
+    expect(plays.some((play) => play.at > last - 1)).toBe(true);
+  });
+});
+
+describe("slide 1, the title", () => {
+  const id = stepOf("title");
+  it("brings the title up first, then grows the rule, then story line A, then B, and moves nothing else", () => {
+    expect(startOf(id, OPENING.title.key)).toBe(ARRIVE);
+    expect(startOf(id, OPENING.rule.key)).toBeGreaterThan(startOf(id, OPENING.title.key));
+    expect(storyAt("title", 0)).toBeGreaterThan(startOf(id, OPENING.rule.key));
+    expect(storyAt("title", 1)).toBeGreaterThan(storyAt("title", 0));
+    expect([...new Set(playsAt(id).map((play) => play.key))].sort()).toEqual([OPENING.html, OPENING.title.key, OPENING.rule.key, ...storyKeysOf("title")].sort());
+  });
+});
+
+describe("slide 2, the four ideas", () => {
+  const id = stepOf("four-ideas");
+  const F = FOUR_IDEAS;
+  const R = F.route;
+  const panels = F.panels.map((panel) => startOf(id, panel.key));
+  const names = F.panels.map((panel) => startOf(id, panel.name.key));
+
+  it("draws the four panels left to right, each numeral landing as its panel draws", () => {
+    for (let i = 1; i < panels.length; i++) expect(panels[i]).toBeGreaterThan(panels[i - 1]);
+    for (const [i, panel] of F.panels.entries()) {
+      expect(startOf(id, panel.numeral.key)).toBeGreaterThan(panels[i]);
+      expect(startOf(id, panel.numeral.key)).toBeLessThan(endOf(id, panel.key));
+    }
+  });
+
+  it("lands every numeral before any name, then names the panels in turn", () => {
+    const numerals = F.panels.map((panel) => endOf(id, panel.numeral.key));
+    expect(names[0]).toBeGreaterThan(Math.max(...numerals));
+    for (let i = 1; i < names.length; i++) expect(names[i]).toBeGreaterThan(names[i - 1]);
+  });
+
+  it("raises story line A with the first two names and B with the last two, after a hold to read", () => {
+    expect(storyAt("four-ideas", 0)).toBeGreaterThan(names[0]);
+    expect(storyAt("four-ideas", 0)).toBeLessThan(names[2]);
+    expect(names[2] - endOf(id, storyKeysOf("four-ideas")[0])).toBeGreaterThanOrEqual(HOLD.read);
+    expect(storyAt("four-ideas", 1)).toBeGreaterThan(names[2]);
+  });
+
+  it("then draws the route left to right, each stop arriving as the front reaches it and named, and lights the stops left to right", () => {
+    const line = playOf(id, R.key)[0];
+    expect(line.at).toBeGreaterThan(endOf(id, storyKeysOf("four-ideas")[1]));
+    const arrive = R.stops.map((stop) => playOf(id, stop.key).find((play) => "autoAlpha" in play.on)!.at);
+    const light = R.stops.map((stop) => playOf(id, stop.key).find((play) => "--k" in play.on)!.at);
+    for (const [i, stop] of R.stops.entries()) {
+      expect(arrive[i]).toBeGreaterThan(line.at);
+      expect(arrive[i]).toBeLessThan(line.at + line.duration);
+      expect(startOf(id, stop.name.key)).toBeGreaterThan(arrive[i]);
+      expect(light[i]).toBeGreaterThanOrEqual(line.at + line.duration);
+      if (i > 0) {
+        expect(arrive[i] - arrive[i - 1]).toBeGreaterThan(0.5);
+        expect(light[i]).toBeGreaterThan(light[i - 1]);
+      }
+    }
+  });
+
+  it("ends on the four named panels over the lit route", () => {
+    const end = at(id);
+    for (const panel of F.panels) {
+      expect(end[panel.key]["--d"]).toBe(1);
+      expect(end[panel.numeral.key].autoAlpha).toBe(1);
+      expect(end[panel.name.key].autoAlpha).toBe(1);
+    }
+    expect(end[R.key]["--d"]).toBe(1);
+    for (const stop of R.stops) {
+      expect(end[stop.key]).toMatchObject({ autoAlpha: 1, "--k": 1 });
+      expect(end[stop.name.key].autoAlpha).toBe(1);
+    }
+  });
+
+  it("changes the title at the start of its click, slide 1's gone at once", () => {
+    expect(startOf(id, titleKey("title"))).toBe(0);
+    expect(at(id)[titleKey("title")].autoAlpha).toBe(0);
+    expect(at(id)[titleKey("four-ideas")].yPercent).toBe(0);
+  });
+});
