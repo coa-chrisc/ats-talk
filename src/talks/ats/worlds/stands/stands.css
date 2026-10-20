@@ -411,15 +411,16 @@
   fill: var(--dk-catalog);
 }
 
-/* Slide 12b: the quotes at 36 px, and the theme rows' white bands and green rules. */
+/* Slide 12b: the quotes at 36 px, and the theme rows' words at 40 px over their green rules. */
 .sn-quote.sn-quote {
   font-size: 36px;
   font-weight: 500;
   fill: var(--dk-paper);
 }
 
-.sn-theme-band {
-  fill: var(--dk-night);
+.sn-theme.sn-theme {
+  font-size: 40px;
+  font-weight: 600;
 }
 
 .sn-theme-rule {

@@ -1,4 +1,4 @@
-/** Slide 12b's picture: the column of names in its window, the four quotes beside it with their attributions and leaders; then the three theme rows on their white bands, each its words over a green rule. */
+/** Slide 12b's picture: the column of names in its window, the four quotes beside it with their attributions and leaders; then all of it rolled on out of view, and the three theme rows in the empty band, each its words over a green rule. */
 "use client";
 
 import { Part } from "@/components/deck/kit";
@@ -17,23 +17,26 @@ export function CommunityMarks() {
         </clipPath>
       </defs>
       <g clipPath={`url(#${W.id})`}>
-        <g data-build={C.column.key}>
-          {C.column.names.map((name) => (
-            <Words key={name.text} at={name.at} text={name.text} anchor="start" size="text" strong />
-          ))}
+        <g data-build={C.block.key}>
+          <g data-build={C.column.key}>
+            {C.column.names.map((name) => (
+              <Words key={name.text} at={name.at} text={name.text} anchor="start" size="text" strong />
+            ))}
+          </g>
+          {C.quotes.flatMap((quote) => [
+            <Stroke key={quote.leader.key} id={quote.leader.key} from={quote.leader.from} to={quote.leader.to} className="sn-leader" />,
+            <g key={quote.key} data-build={quote.key}>
+              <Rows at={quote.at} rows={quote.rows} pitch={QUOTE.row} size="text" extra="sn-quote" />
+              <Words at={quote.by.at} text={quote.by.text} anchor="start" soft />
+            </g>,
+          ])}
         </g>
       </g>
-      {C.quotes.flatMap((quote) => [
-        <Stroke key={quote.leader.key} id={quote.leader.key} from={quote.leader.from} to={quote.leader.to} className="sn-leader" />,
-        <g key={quote.key} data-build={quote.key}>
-          <Rows at={quote.at} rows={quote.rows} pitch={QUOTE.row} size="text" extra="sn-quote" />
-          <Words at={quote.by.at} text={quote.by.text} anchor="start" soft />
-        </g>,
-      ])}
       {C.themes.flatMap((theme) => [
-        <rect key={theme.band.key} className="sn-theme-band" data-build={theme.band.key} x={theme.band.at.x} y={theme.band.at.y} width={theme.band.at.w} height={theme.band.at.h} />,
         <Stroke key={theme.rule.key} id={theme.rule.key} from={{ x: theme.rule.x0, y: theme.rule.y }} to={{ x: theme.rule.x1, y: theme.rule.y }} className="sn-theme-rule" />,
-        <Words key={theme.key} id={theme.key} at={theme.at} text={theme.text} anchor="start" size="text" strong />,
+        <text key={theme.key} className="dk-text sn-word sn-theme" data-build={theme.key} x={theme.at.x} y={theme.at.y} dominantBaseline="central">
+          {theme.text}
+        </text>,
       ])}
     </Part>
   );

@@ -4,9 +4,10 @@
  * through a window the drawing's height (nothing of it shows under the
  * drawing's foot); four quotes in a column to its right, each with its
  * attribution under it, each set as close to level with its department as
- * the four blocks allow, and joined to it by a short leader. Click two:
- * three theme rows across the full band, each its words over a green rule
- * on a white band that covers what lies under it, 64 px apart. Words are
+ * the four blocks allow, and joined to it by a short leader; all of it
+ * inside the window. Click two: the whole of it rolls on up out of the
+ * window, and three theme rows draw into the empty band, each its words
+ * over a green rule across the full band, 96 px apart. Words are
  * read from the script, by position.
  *
  * The drawing has y 548 to 992. The names settle from y 572 to 924.
@@ -82,23 +83,26 @@ const quotes = QUOTES.map((quote, i) => {
 
 /* The themes, click two */
 
-/** Three rows 64 apart, centred on the drawing's band: each its words, a rule 26 px under them, and a white band from 30 over the words to 6 under the rule. */
-export const THEME = { pitch: 64, rule: 26, over: 30, under: 6 } as const;
-const THEME_TOP = Math.round((TOP + DRAW_FOOT) / 2 - THEME.pitch);
+/** The roll on, click two: everything in the window rises by the window's height, so all of it is gone over its top. */
+export const ROLL_ON = { by: -WINDOW.h, seconds: 1.5 } as const;
+/** Three rows 96 apart, each its words at 40 px with a rule 34 px under their middle; the middle row's middle (words and rule together, 26 px over the rule) on the band's middle. */
+export const THEME = { pitch: 96, rule: 34, size: 40, line: 52 } as const;
+const BAND_MIDDLE = (TOP + DRAW_FOOT) / 2;
 const themes = THEMES.map((text, i) => {
-  const y = THEME_TOP + i * THEME.pitch;
+  const y = Math.round(BAND_MIDDLE + (i - 1) * THEME.pitch - THEME.rule + 26);
   return {
     key: `community.theme.${i}`,
     text,
     at: { x: SAFE.left + 16, y } as Point,
     rule: { key: `community.theme.${i}.rule`, x0: SAFE.left + 16, x1: SAFE.right, y: y + THEME.rule },
-    band: { key: `community.theme.${i}.band`, at: box(SAFE.left, y - THEME.over, SAFE.right - SAFE.left, THEME.over + THEME.rule + THEME.under) },
   };
 });
 
 export const COMMUNITY = {
   ...layerOf("community"),
   window: { id: "sn-community-window", at: WINDOW },
+  /** What rolls on, click two: the column, the quotes and the leaders together. */
+  block: { key: "community.block" },
   column: { key: "community.column", names: NAMES.map((text, i) => ({ text, at: { x: COLUMN.x, y: nameY(i) } as Point })) },
   quotes,
   themes,

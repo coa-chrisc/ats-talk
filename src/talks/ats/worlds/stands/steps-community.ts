@@ -4,14 +4,15 @@
  * each quote slides in from the right to its place as its department comes
  * fully into view, story line A with the first; once the column has
  * settled each leader draws from its name to its quote. Click two,
- * `themes`: the column, the quotes and the leaders step back; the three
- * theme rows come one after another, each band up, its rule drawing across
- * the band and its words rising over it, story line B with the first.
+ * `themes`: the column, the quotes and the leaders roll on up out of the
+ * window at the same pace, leaving the band empty; the three theme rows
+ * draw into it one after another, each rule drawing across the band and
+ * its words rising over it, story line B with the first.
  */
 import type { StepDef } from "@/components/deck/engine";
-import { dim, draw, rise, show, to } from "@/components/deck/kit";
+import { draw, rise, show, to } from "@/components/deck/kit";
 import { picture, story } from "../steps";
-import { COLUMN, COMMUNITY, ROLL } from "./layout-community";
+import { COLUMN, COMMUNITY, ROLL, ROLL_ON } from "./layout-community";
 import { DRAW_FOOT } from "./layout";
 import { into, play, slideIn } from "./moves";
 
@@ -28,8 +29,8 @@ export const QUOTE_AT = C.quotes.map((quote) => START + reaches(COLUMN.top + quo
 const LEADER = 0.15;
 /** Each theme row this long after the last. */
 const THEME = 0.9;
-/** A theme row: its band comes up, its rule draws across, its words rise over it. */
-const themeRow = (theme: (typeof C.themes)[number]) => [show(theme.band.key, { at: 0, duration: 0.3 }), draw(theme.rule.key, { at: 0.1, duration: 0.8 }), rise(theme.key, { at: 0.3, duration: 0.6 })];
+/** A theme row: its rule draws across the band, its words rise over it. */
+const themeRow = (theme: (typeof C.themes)[number]) => [draw(theme.rule.key, { at: 0, duration: 0.8 }), rise(theme.key, { at: 0.25, duration: 0.6 })];
 
 export const community = (): StepDef[] =>
   picture("community", {
@@ -39,6 +40,7 @@ export const community = (): StepDef[] =>
         with: true,
         hold: 0,
         moves: [
+          show(C.block.key, { at: 0, duration: 0.1 }),
           show(C.column.key, { at: START, duration: 0.2 }),
           to(C.column.key, { y: 0 }, { y: ROLL.from }, { at: START, duration: ROLL.seconds, ease: "none" }),
           ...C.quotes.flatMap((quote, i) => slideIn(quote.key, 64, { at: QUOTE_AT[i] })),
@@ -48,8 +50,8 @@ export const community = (): StepDef[] =>
       { with: true, hold: QUOTE_AT[0] + 0.3, moves: [story("community", 0)] },
     ]),
     themes: play([
-      { moves: [dim([C.column.key, ...C.quotes.flatMap((quote) => [quote.key, quote.leader.key])], { at: 0, stagger: 0 })] },
-      { with: true, hold: 0.3, moves: themeRow(C.themes[0]) },
+      { moves: [to(C.block.key, { y: ROLL_ON.by }, { y: 0 }, { at: 0, duration: ROLL_ON.seconds, ease: "none" })] },
+      { hold: 0.2, moves: themeRow(C.themes[0]) },
       { with: true, hold: 0.4, moves: [story("community", 1)] },
       { with: true, hold: THEME - 0.4, moves: themeRow(C.themes[1]) },
       { with: true, hold: THEME, moves: themeRow(C.themes[2]) },

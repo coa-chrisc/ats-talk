@@ -5,9 +5,9 @@
 import { describe, expect, it } from "vitest";
 import type { Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TEXT_LINE, contentTop, wordsWidth } from "./layout";
-import { COLUMN, COMMUNITY, QUOTE, ROLL, THEME, WINDOW } from "./layout-community";
+import { COLUMN, COMMUNITY, QUOTE, ROLL, ROLL_ON, THEME, WINDOW } from "./layout-community";
 import { QUOTE_AT } from "./steps-community";
-import { at, before, bottom, endOf, overlaps, playOf, playsAt, right, startOf, wordsBox } from "./harness";
+import { at, before, bottom, endOf, playOf, playsAt, right, startOf, wordsBox } from "./harness";
 
 const C = COMMUNITY;
 const roll = "community.roll";
@@ -66,20 +66,24 @@ describe("slide 12b's layout", () => {
     }
   });
 
-  it("lays the three theme rows across the full band, 64 px apart, each band holding its words and rule, the bands apart", () => {
+  it("lays the three theme rows across the full band, 96 px apart, centred on it, each its words over its rule", () => {
     for (const [i, theme] of C.themes.entries()) {
       expect(theme.rule.x0).toBe(SAFE.left + 16);
       expect(theme.rule.x1).toBe(SAFE.right);
       expect(theme.at.x).toBe(theme.rule.x0);
       if (i > 0) expect(theme.at.y - C.themes[i - 1].at.y).toBe(THEME.pitch);
-      const words = wordsBox(theme.at, wordsWidth(theme.text, 32), TEXT_LINE, "start");
-      expect(words.y).toBeGreaterThanOrEqual(theme.band.at.y);
-      expect(theme.rule.y).toBeLessThan(bottom(theme.band.at));
-      expect(theme.rule.y).toBeGreaterThan(theme.at.y);
-      if (i > 0) expect(overlaps(theme.band.at, C.themes[i - 1].band.at)).toBe(false);
+      const words = wordsBox(theme.at, wordsWidth(theme.text, THEME.size), THEME.line, "start");
+      expect(bottom(words)).toBeLessThan(theme.rule.y);
+      expect(theme.rule.y - theme.at.y).toBe(THEME.rule);
     }
-    expect(C.themes[0].band.at.y).toBeGreaterThanOrEqual(WINDOW.y);
-    expect(bottom(C.themes[2].band.at)).toBeLessThanOrEqual(DRAW_FOOT);
+    const top = C.themes[0].at.y - THEME.line / 2;
+    const foot = C.themes[2].rule.y;
+    expect(Math.abs((top + foot) / 2 - (WINDOW.y + bottom(WINDOW)) / 2)).toBeLessThanOrEqual(8);
+  });
+
+  it("rolls everything in the window out over its top on the second click", () => {
+    const lowest = Math.max(...C.quotes.map((quote) => bottom(quote.box)), C.column.names[8].at.y + TEXT_LINE / 2);
+    expect(lowest + ROLL_ON.by).toBeLessThanOrEqual(WINDOW.y);
   });
 });
 
@@ -118,23 +122,23 @@ describe("slide 12b's first click, the roll", () => {
 });
 
 describe("slide 12b's second click, the themes", () => {
-  it("steps the column, the quotes and the leaders back at once, and moves nothing else of the first click", () => {
-    const dims = [C.column.key, ...C.quotes.flatMap((quote) => [quote.key, quote.leader.key])];
-    for (const key of dims) {
-      expect(startOf(themes, key), key).toBe(0);
-      expect(at(themes)[key].autoAlpha, key).toBe(0.45);
-    }
+  it("rolls the column, the quotes and the leaders on up out of the window together, linearly, and moves nothing else of the first click", () => {
+    const [on] = playOf(themes, C.block.key);
+    expect(on).toMatchObject({ at: 0, ease: "none", on: { y: ROLL_ON.by } });
+    expect(on.duration).toBe(ROLL_ON.seconds);
+    expect(before(themes)[C.block.key].y).toBe(0);
     const moved = new Set(playsAt(themes).map((play) => play.key));
-    expect([...moved].filter((key) => !dims.includes(key) && !C.themes.some((theme) => key.startsWith(theme.key)) && key !== "story.community.b")).toEqual([]);
+    expect([...moved].filter((key) => key !== C.block.key && !C.themes.some((theme) => key.startsWith(theme.key)) && key !== "story.community.b")).toEqual([]);
   });
 
-  it("brings the three theme rows one after another, each band up, its rule drawing across, its words over it, story line B with the first", () => {
-    const rows = C.themes.map((theme) => startOf(themes, theme.band.key));
+  it("draws the three theme rows into the emptied band one after another, each rule then its words, story line B with the first", () => {
+    const rows = C.themes.map((theme) => startOf(themes, theme.rule.key));
+    expect(rows[0]).toBeGreaterThanOrEqual(ROLL_ON.seconds);
     for (let i = 1; i < 3; i++) expect(rows[i] - rows[i - 1]).toBeGreaterThanOrEqual(0.6);
     for (const theme of C.themes) {
-      expect(startOf(themes, theme.rule.key)).toBeGreaterThan(startOf(themes, theme.band.key));
       expect(startOf(themes, theme.key)).toBeGreaterThan(startOf(themes, theme.rule.key));
       expect(at(themes)[theme.rule.key]["--d"]).toBe(1);
+      expect(at(themes)[theme.key].autoAlpha).toBe(1);
     }
     expect(startOf(themes, "story.community.b")).toBeGreaterThan(rows[0]);
     expect(startOf(themes, "story.community.b")).toBeLessThan(rows[1]);
