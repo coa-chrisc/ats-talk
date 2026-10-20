@@ -180,7 +180,7 @@ Speaker: Chris
 <!-- beat: idea four; gates, the six tests, and the handoff to measuring the City against all four -->
 Speaker: Stefan
 
-**On screen:** Idea four: start where a mistake is small and reversible. Earn each next step with evidence.
+**On screen:** Idea four: start where mistakes are small. Earn each next step with evidence.
 - Four gates, explore, validate, deploy, scale, and a project advances only when the evidence says so.
 - Six tests pick the first projects, from decision frequency to whether a mistake can be undone.
 

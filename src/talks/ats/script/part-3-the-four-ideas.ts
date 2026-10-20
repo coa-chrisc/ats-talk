@@ -59,7 +59,7 @@ export const THE_FOUR_IDEAS: Picture[] = [
     part: 3,
     world: "ideas",
     name: "Four: start small and earn the next step",
-    show: "Idea four: start where a mistake is small and reversible. Earn each next step with evidence.",
+    show: "Idea four: start where mistakes are small. Earn each next step with evidence.",
     say: "Idea four is the course's answer to pilot purgatory, where everything is a proof of concept and nothing ships. Every project passes four gates: explore, validate, deploy and scale, and it advances only when the evidence from the last gate says it should. The course also gives six tests for choosing the first projects: frequent decisions, measurable impact, friction in the current process, ready data, rules that can be written down, and contained risk, meaning a mistake is recoverable. Most first picks score well on all six and are assist-only work. Those are the four ideas. The rest of the talk is where the City stands against the four.",
     see: ["A stair of four gates rises left to right, each a step with a small gate drawn on it: \"Explore\", \"Validate\", \"Deploy\", \"Scale\". A small green project box climbs onto the first step, and a deep-green tick lands beside it with the caption \"Evidence\". The box climbs to the second step and a second tick lands; the third step stays empty. Beside the stair a checklist draws with six lines, each taking a deep-green tick in turn: \"Frequent decisions\", \"Measurable impact\", \"Friction\", \"Ready data\", \"Rules that can be written\", \"Contained risk\". A short line at the foot reads \"Where the City stands against the four\". The slide ends on the stair with the box on its second step, the checklist and the foot line."],
     story: [
