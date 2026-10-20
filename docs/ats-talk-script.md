@@ -118,7 +118,7 @@ Speaker: Stefan
 <!-- beat: the practice changed; a person reviewing every output worked for chatbots, and agents now produce more than staff can read, so review runs in the system first and people take the high-risk cases; idea two before it is named -->
 Speaker: Stefan
 
-**On screen:** A person reviewing every AI output worked for chatbots. Agents now produce more than anyone can read.
+**On screen:** Review by a person worked for chatbots. Agents produce more than anyone can read.
 - Anthropic merged 2,500 code changes a day in May and over 30,000 a day by September.
 - Enterprise moved review into the system: a model checks first, and people take the high-risk cases.
 
