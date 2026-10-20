@@ -80,7 +80,7 @@ Speaker: Stefan
 - Least autonomy that does the job. Rules the system enforces, scaled to risk.
 - People before platforms. Start small and earn the next step.
 
-**They see:** Four tall panels draw across the slide, numbered "One" to "Four" in large green numerals at their tops, and each takes its name in turn: "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step". Under the panels a route draws as a line with three stops that light left to right: "Enterprise now", "The City now", "What we would do first". The slide ends on the four named panels over the lit route.
+**They see:** Four tall panels draw across the slide, numbered "One", "Two", "Three" and "Four" in large green numerals at their tops, and each takes its name in turn: "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step". Under the panels a route draws as a line with three stops that light left to right: "Enterprise now", "The City now", "What we would do first". The slide ends on the four named panels over the lit route.
 
 **You say:** Four ideas. One, use the least autonomy that does the job: most of what the City wants from AI needs far less independence than the word agent suggests. Two, enforce rules in the system and scale the controls to the risk, because a rule a model is asked to follow is a request, and a rule the system enforces is a control. Three, build people before platforms: the organizations getting value trained their own staff first. Four, start where mistakes are small and earn each next step with evidence. That can sound like a lot. We will take them one at a time, in three stops: enterprise now, the City now, and what we would do first.
 
@@ -104,7 +104,7 @@ Speaker: Chris
 <!-- beat: definition; what an agent is, in one picture, so the word means one thing for the rest of the talk -->
 Speaker: Stefan
 
-**On screen:** An agent takes a goal, plans its own steps, uses tools, acts in other systems and stops at a boundary.
+**On screen:** An agent takes a goal, plans its own steps, uses tools, acts, and stops at a boundary.
 - A chatbot answers. A copilot drafts while a person decides. An agent does the work.
 - The value and the risk come from the same place: it acts without a person doing each step.
 
@@ -432,7 +432,7 @@ Speaker: Stefan
 - Least autonomy: plain tools first. Enforced rules: the sandbox and the four levels.
 - People first: the consortium and the program team. Earn the next step: the gates and the two lanes.
 
-**They see:** The four numbered panels from slide 2 return across the top with their names: "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step". Under each, a green line draws down to a tile that lands in turn: "Plain tools and assist-only work", "The sandbox and the four levels", "The consortium and the program team", "The gates and the two lanes". A deep-green tick lands on each panel. The slide ends on the four panels, their four tiles and the four ticks.
+**They see:** The four panels from slide 2 return across the top, numbered "One", "Two", "Three" and "Four", with their names: "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step". Under each, a green line draws down to a tile that lands in turn: "Plain tools and assist-only work", "The sandbox and the four levels", "The consortium and the program team", "The gates and the two lanes". A deep-green tick lands on each panel. The slide ends on the four panels, their four tiles and the four ticks.
 
 **You say:** One more look at slide 2. Idea one, the least autonomy that does the job: the plan starts with plain tools and assist-only work, and climbs only when the evidence says so. Idea two, rules the system enforces, scaled to risk: the sandbox already enforces them, and the four levels scale them. Idea three, people before platforms: the consortium, the program team, the three tiers of training, and the Azure staff kept on what they built. Idea four, start small and earn the next step: the four gates and the two lanes. We did not add the course to the plan afterward. We built the plan from it, and the City's own staff had already laid most of the ground.
 

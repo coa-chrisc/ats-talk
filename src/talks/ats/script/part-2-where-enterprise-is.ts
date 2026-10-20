@@ -25,7 +25,7 @@ export const WHERE_ENTERPRISE_IS: Picture[] = [
     part: 2,
     world: "enterprise",
     name: "From chatbots to agents",
-    show: "An agent takes a goal, plans its own steps, uses tools, acts in other systems and stops at a boundary.",
+    show: "An agent takes a goal, plans its own steps, uses tools, acts, and stops at a boundary.",
     say: "The word agent gets used for everything, so this is the definition we will hold to. In 2023 a chatbot answered a question; by 2026 an agent does the work. A copilot drafts, and a person approves each step. An agent is given a goal, breaks it into steps, chooses tools, takes actions in other systems, checks the result and adjusts, and keeps going until the goal is met or it reaches a boundary someone set. The loop is the whole point. It is why agents are useful, because the person no longer does every step, and it is why they need different controls, because the person no longer sees every step either. Everything in the course follows from that one sentence.",
     see: ["A timeline draws left to right from \"2023\" to \"2026\" with three figures on it: a speech bubble labeled \"Chatbot\" with the caption \"Answers\", a page with a person beside it labeled \"Copilot\" with \"Drafts while a person decides\", and a figure with a tool belt labeled \"Agent\" with \"Does the work\". Under the agent a loop draws as five small stops joined in a ring, each lighting in turn: \"Goal\", \"Plans\", \"Tools\", \"Acts\", \"Adjusts\". A short bar closes the loop, labeled \"Stops at a boundary\". The slide ends on the timeline and the lit loop."],
     story: [

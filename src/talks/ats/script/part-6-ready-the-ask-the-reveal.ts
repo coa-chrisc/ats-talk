@@ -78,13 +78,13 @@ export const READY_THE_ASK_THE_REVEAL: Picture[] = [
     name: "That was the course, applied",
     show: "The plan you just heard was the four ideas from the course, applied to the City.",
     say: "One more look at slide 2. Idea one, the least autonomy that does the job: the plan starts with plain tools and assist-only work, and climbs only when the evidence says so. Idea two, rules the system enforces, scaled to risk: the sandbox already enforces them, and the four levels scale them. Idea three, people before platforms: the consortium, the program team, the three tiers of training, and the Azure staff kept on what they built. Idea four, start small and earn the next step: the four gates and the two lanes. We did not add the course to the plan afterward. We built the plan from it, and the City's own staff had already laid most of the ground.",
-    see: ["The four numbered panels from slide 2 return across the top with their names: \"Least autonomy that does the job\", \"Rules the system enforces, scaled to risk\", \"People before platforms\", \"Start small and earn the next step\". Under each, a green line draws down to a tile that lands in turn: \"Plain tools and assist-only work\", \"The sandbox and the four levels\", \"The consortium and the program team\", \"The gates and the two lanes\". A deep-green tick lands on each panel. The slide ends on the four panels, their four tiles and the four ticks."],
+    see: ["The four panels from slide 2 return across the top, numbered \"One\", \"Two\", \"Three\" and \"Four\", with their names: \"Least autonomy that does the job\", \"Rules the system enforces, scaled to risk\", \"People before platforms\", \"Start small and earn the next step\". Under each, a green line draws down to a tile that lands in turn: \"Plain tools and assist-only work\", \"The sandbox and the four levels\", \"The consortium and the program team\", \"The gates and the two lanes\". A deep-green tick lands on each panel. The slide ends on the four panels, their four tiles and the four ticks."],
     story: [
       "Least autonomy: plain tools first. Enforced rules: the sandbox and the four levels.",
       "People first: the consortium and the program team. Earn the next step: the gates and the two lanes.",
     ],
     steps: [
-      { id: "play", show: ["Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Plain tools and assist-only work", "The sandbox and the four levels", "The consortium and the program team", "The gates and the two lanes"] },
+      { id: "play", show: ["One", "Two", "Three", "Four", "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Plain tools and assist-only work", "The sandbox and the four levels", "The consortium and the program team", "The gates and the two lanes"] },
     ],
   },
   {
