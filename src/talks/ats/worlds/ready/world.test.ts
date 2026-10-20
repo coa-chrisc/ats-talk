@@ -154,10 +154,10 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses orange only through the kit's HumanMark, on slides 25 and 26, and the pass green only through its PassTick, on slides 26 and 28", () => {
+  it("uses orange only through the kit's HumanMark, on slides 25 and 26, and the pass green only through its PassTick, on slide 28", () => {
     for (const [file, text] of sources) expect(text, file).not.toMatch(/--dk-human|--dk-pass|#f4642c|#1f573b/i);
     expect(sources.filter(([, text]) => /<HumanMark\b/.test(text)).map(([file]) => file)).toEqual(["scene-residents.tsx", "scene-who-decides.tsx"]);
-    expect(sources.filter(([, text]) => /<PassTick\b/.test(text)).map(([file]) => file)).toEqual(["scene-applied.tsx", "scene-residents.tsx"]);
+    expect(sources.filter(([, text]) => /<PassTick\b/.test(text)).map(([file]) => file)).toEqual(["scene-applied.tsx"]);
     for (const [file, text] of sources) expect(text, file).not.toMatch(VENDOR_COLOURS);
   });
 

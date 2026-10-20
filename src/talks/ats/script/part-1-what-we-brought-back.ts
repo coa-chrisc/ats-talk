@@ -25,11 +25,11 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     part: 1,
     world: "brought",
     name: "The course",
-    show: "This fall we took Carnegie Mellon's course on leading AI agents, meaning AI that does work on its own.",
+    show: "We took Carnegie Mellon's course on AI agents, meaning AI that does work on its own.",
     say: "First, what the course was. Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is written for executives who have to decide what AI agents may do inside their organizations, rather than for the engineers who build them. Our classmates were chief data officers and technology leaders from banks, hospitals and manufacturers. Four half-day modules covered the foundations, the data and architecture underneath, security, risk and trust, and strategy and transformation. What made it worth the time is that each module ended with a build of our own. We each specified an agent, gave it tools, set its limits, watched it work, and then watched it get attacked. You come out knowing what an agent is because you ran one, and knowing what goes wrong because you saw it happen.",
     see: ["Four indigo tiles land in a row across the stage, each named in turn: \"Foundations\", \"Data and architecture\", \"Security, risk and trust\", \"Strategy and transformation\". Under the row a caption settles: \"Heinz College\". A green workbench outline draws beneath each tile in turn, and one caption sits under the four benches: \"A build of our own\". The slide ends on the four tiles, the caption and the four benches."],
     story: [
-      "Four half-day modules at Heinz College: foundations, data and architecture, security, and strategy.",
+      "Four half-day modules at Heinz College this fall: foundations, data and architecture, security, and strategy.",
       "Each module ended with a build of our own, so we learned what an agent is by running one.",
     ],
     steps: [

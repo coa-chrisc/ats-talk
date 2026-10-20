@@ -12,7 +12,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
-import { LABEL_LINE, SAFE, contentTop, layerOf, round } from "./layout";
+import { LABEL_LINE, contentTop, layerOf, round } from "./layout";
 
 const [BLOCKS, APPROVAL_FIRST, TYPED, CHECKS, STRONGEST, ASSIST, LIGHT, APPROVAL, NAMED, COSTLY, HEAVY] = shown("enforce", "play");
 const NAMES = [BLOCKS, APPROVAL_FIRST, TYPED, CHECKS] as const;
@@ -60,23 +60,24 @@ const ARROW_LABEL_W = 140;
 /* The dial */
 
 /**
- * The dial: a 160 px radius, its settings' words centred over its top and
- * under its two outer ticks (at 160 and 20 degrees a tick stands 150 px
- * out from the hub, so the outer words sit 10 px in from the arc's ends).
- * The boxes differ: the light setting's words need about 190 px, the heavy
- * setting's name about 290 (Geist at 26 px semibold with the notes'
- * tracking), so the boxes are 200, 240 and 300 wide, and the heavy one ends
- * 2 px inside the stage's right edge, which puts the hub at 1522 and 50 px
- * between the two outer boxes. The light setting's box then starts 36 px
- * right of the floor's end. The middle setting's two lines sit 12 px over
- * the arc's top, the outer two's 12 px under the baseline, at 880, so the
- * words run from 644 to 956 down the stage.
+ * The dial sits right of the stair's low end: a 170 px radius, the hub at
+ * (1536, 820). Each setting is a bold name over a caption, wrapping in its
+ * box: the middle one's over the arc's top in a 360 px box (name and
+ * caption a line each), the outer two's under the baseline, each centred
+ * under its tick (at 160 and 20 degrees a tick stands 160 px out from the
+ * hub), in 250 px boxes. The light setting's caption wraps to two lines,
+ * so its box holds three; the heavy setting's name and caption each wrap
+ * to two, so its box holds four. Measured in Geist at 26 px, the longest
+ * line in an outer box is about 240 px. That puts the light box from 1251
+ * (15 px right of the floor's end) to 1501, the heavy box from 1571 to
+ * 1821, 70 px apart, the middle box's top 18 px under where drawing may
+ * start, and the heavy box's foot at 960, over the safe line.
  */
-const R = 160;
-/** How far out from the hub the outer ticks stand: 160 times the cosine of 20 degrees. */
-const END = 150;
-const SETTING_W = [200, 240, 300] as const;
-const HUB: Point = { x: SAFE.right - 2 - SETTING_W[2] / 2 - END, y: 880 };
+const R = 170;
+const OUT = 160;
+const SETTING_W = [250, 360, 250] as const;
+const SETTING_LINES = [3, 2, 4] as const;
+const HUB: Point = { x: 1536, y: 820 };
 /** The settings' angles, counterclockwise from the hub's right: the first (light) at the left. */
 export const ANGLES = [160, 90, 20] as const;
 /** The needle points up, at the middle setting, before it settles on the first. */
@@ -84,10 +85,10 @@ export const NEEDLE_FROM = 90;
 const NEEDLE = R - 34;
 const at = (angle: number, r: number): Point => ({ x: round(HUB.x + r * Math.cos((angle * Math.PI) / 180)), y: round(HUB.y - r * Math.sin((angle * Math.PI) / 180)) });
 /** Where a setting's words sit: the middle's over the arc's top, the outer two's under the baseline, each under its tick. */
-const wordsAt = (i: number): Box =>
-  i === 1
-    ? box(HUB.x - SETTING_W[1] / 2, HUB.y - R - 12 - 2 * LABEL_LINE, SETTING_W[1], 2 * LABEL_LINE)
-    : box(HUB.x + (i === 0 ? -END : END) - SETTING_W[i] / 2, HUB.y + 12, SETTING_W[i], 2 * LABEL_LINE);
+const wordsAt = (i: number): Box => {
+  const h = SETTING_LINES[i] * LABEL_LINE;
+  return i === 1 ? box(HUB.x - SETTING_W[1] / 2, HUB.y - R - 12 - h, SETTING_W[1], h) : box(HUB.x + (i === 0 ? -OUT : OUT) - SETTING_W[i] / 2, HUB.y + 12, SETTING_W[i], h);
+};
 
 export const ENFORCE = {
   ...layerOf("enforce"),

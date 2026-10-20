@@ -1,4 +1,4 @@
-/** Slide 23's picture: the plan's six tiles, named once; the first lit and named; the project dots; the grey tally, named; and the measure line from its first point to the point it aims at, each named, with the nameplate under it. */
+/** Slide 23's picture: the plan's six tiles, named once; the first lit and named; the bracket under the other five with its caption; the project dots; the grey tally, named; and the measure line from its first point to the point it aims at, each named, with the nameplate under it. */
 "use client";
 
 import { Part } from "@/components/deck/kit";
@@ -22,6 +22,8 @@ export function OutcomesMarks() {
           <Label key={line.text} at={line.at} text={line.text} strong />
         ))}
       </g>
+      <path className="fs-brace dk-draw" data-build={O.others.key} d={O.others.d} pathLength={1} />
+      <Label id={O.others.caption.key} at={O.others.caption.at} text={O.others.caption.text} />
       {O.dots.map((dot) => (
         <circle key={dot.key} className="fs-project" data-build={dot.key} cx={dot.at.x} cy={dot.at.y} r={O.dot.r} />
       ))}

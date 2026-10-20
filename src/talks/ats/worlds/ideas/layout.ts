@@ -31,14 +31,14 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * Where each title breaks, on two lines each. At 72 px bold a line holds
  * 1728 px, the band's width (measured in Geist bold with the title's
  * tracking): slides 7, 8 and 9 break after the lesson's number, their first
- * sentence (402 and 1585 px, 408 and 1704 px, 460 and 1659 px); slide 10
- * after its second sentence (1588 and 1488 px).
+ * sentence (402 and 1585 px, 408 and 1553 px, 460 and 1694 px); slide 10
+ * after its second sentence (1501 and 1488 px).
  */
 const BREAKS: Record<string, string[]> = {
   ladder: ["one."],
-  enforce: ["system,"],
+  enforce: ["two."],
   people: ["three."],
-  earn: ["little."],
+  earn: ["cheap."],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

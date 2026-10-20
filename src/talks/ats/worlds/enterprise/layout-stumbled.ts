@@ -26,9 +26,9 @@ export const TOP = contentTop("stumbled");
  * the drawing's top (its capitals clear the top by 3 px); the number at
  * 128 px and the words after it at 40 px share a second baseline 108 px
  * lower; the caption, at the text size, wraps under that in the column on
- * one or two lines.
+ * up to four lines.
  */
-export const FIGURE = { size: 128, small: 40, w: 400, lead: 32, drop: 108, captionGap: 22, captionLines: 2 } as const;
+export const FIGURE = { size: 128, small: 40, w: 400, lead: 32, drop: 108, captionGap: 22, captionLines: 4 } as const;
 const FIGURE_X = SAFE.left + 16;
 const FIRST_BASE = TOP + FIGURE.lead;
 const SECOND_BASE = FIRST_BASE + FIGURE.drop;

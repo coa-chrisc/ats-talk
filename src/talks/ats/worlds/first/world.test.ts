@@ -114,14 +114,14 @@ describe("one slide at a time", () => {
   it("breaks every title onto two lines after the word the layout names", () => {
     const lines = (id: string) => TITLES.find((title) => title.picture === id)!.lines;
     const ends: Record<string, string> = {
-      "not-proposing": "buy an",
+      "not-proposing": "citywide,",
       consortium: "department,",
-      "program-team": "drawn from",
-      listen: "leaders,",
+      "program-team": "team,",
+      listen: "words,",
       sort: "by value",
       lanes: "now, and",
       "level-up": "has,",
-      outcomes: "Strategic Plan",
+      outcomes: "priority.",
     };
     for (const [id, words] of Object.entries(ends)) {
       expect(lines(id), id).toHaveLength(2);
@@ -142,11 +142,14 @@ describe("the words on the stage", () => {
     for (const text of texts) expect(allowed.some((words) => words.includes(text)), text).toBe(true);
   });
 
-  it("include every title, story line and label the script gives these slides, whole, but the first tile's name on slide 23, broken over two lines", () => {
+  it("include every title, story line and label the script gives these slides, whole, but the first tile's name on slide 23 and the figure's caption on slide 22, each broken over two lines", () => {
     const split = labelsOf("outcomes")[1];
-    for (const words of [...PICTURES.flatMap((picture) => picture.steps.flatMap((step) => step.show)).filter((words) => words !== split), ...stories]) expect(texts, words).toContain(words);
+    const caption = LEVEL_UP.caption;
+    for (const words of [...PICTURES.flatMap((picture) => picture.steps.flatMap((step) => step.show)).filter((words) => words !== split && words !== caption.text), ...stories]) expect(texts, words).toContain(words);
     expect(texts).toContain(split.slice(0, split.lastIndexOf(" ")));
     expect(texts).toContain(split.slice(split.lastIndexOf(" ") + 1));
+    expect(caption.lines).toHaveLength(2);
+    for (const line of caption.lines) expect(texts).toContain(line.text);
     const shown = texts.join(" ");
     for (const picture of PICTURES) for (const word of picture.show.split(" ")) expect(shown, picture.show).toContain(word);
   });

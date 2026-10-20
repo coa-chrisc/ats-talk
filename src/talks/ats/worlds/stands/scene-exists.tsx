@@ -1,4 +1,4 @@
-/** Slide 12's picture: the grid of department boxes, named; the lanterns lit in nine of them, six named in two columns with leaders; the ring of nine dots round the grid, named; the tag under it and the grey tag apart. */
+/** Slide 12's picture: the grid of department boxes, named; the lanterns lit in nine of them, six named in a column each side of the ring, each joined to its box by a straight leader; the ring of nine dots round the grid, named; the tag under it and the grey tag apart. */
 "use client";
 
 import { Part } from "@/components/deck/kit";
@@ -26,8 +26,8 @@ export function ExistsMarks() {
       ))}
       {E.named.flatMap((lit) => [
         <path key={lit.leader.key} className="sn-leader dk-draw" data-build={lit.leader.key} d={lit.leader.d} pathLength={1} />,
-        <Words key={lit.name.key} id={lit.name.key} at={lit.name.at} text={lit.name.text} anchor="start" size="text" strong />,
-        <Rows key={lit.caption.key} id={lit.caption.key} at={lit.caption.at} rows={lit.caption.rows} pitch={CAPTION.pitch} soft />,
+        <Words key={lit.name.key} id={lit.name.key} at={lit.name.at} text={lit.name.text} anchor={lit.anchor} size="text" strong />,
+        <Rows key={lit.caption.key} id={lit.caption.key} at={lit.caption.at} rows={lit.caption.rows} pitch={CAPTION.pitch} anchor={lit.anchor} soft />,
       ])}
       <rect className="sn-ring" data-build={R.key} x={R.at.x} y={R.at.y} width={R.at.w} height={R.at.h} rx={R.r} pathLength={1} />
       {R.dots.map((dot) => (

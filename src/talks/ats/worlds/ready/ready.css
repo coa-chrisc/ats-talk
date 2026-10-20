@@ -41,9 +41,9 @@
 }
 
 /* Slide 27's key under the track: five names and captions across the
-   field, at 24 px so the five keep apart (layout-could-be.ts). */
+   field, at 22 px so the five keep apart (layout-could-be.ts). */
 .dk-label.rd-word--key {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 /* A person, stroked in navy. */

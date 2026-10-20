@@ -27,13 +27,14 @@
   font-weight: 600;
 }
 
-/* Words in HTML, wrapping inside their box. */
+/* Words in HTML, wrapping inside their box, their lines balanced so no word is left alone on the last. */
 .id-note {
   position: absolute;
   font-family: var(--dk-face);
   font-weight: 500;
   color: var(--dk-paper);
   white-space: normal;
+  text-wrap: balance;
 }
 
 .id-note--label {

@@ -1,4 +1,4 @@
-/** Slide 22's picture: the pyramid's three tiers, each with its lit fill, name and caption; the row of developers at their desks, named once; the tag over the row in its two states; the slab under the desks; and the figure with its caption at the foot. */
+/** Slide 22's picture: the pyramid's three tiers, each with its lit fill, name and caption; the row of developers at their desks, named once; the tag over the row in its two states; the slab under the desks; and the figure under the slab with its caption under it on two lines. */
 "use client";
 
 import { Part, Person } from "@/components/deck/kit";
@@ -34,8 +34,12 @@ export function LevelUpMarks() {
           </g>
         ))}
       </g>
-      <Label id={L.figure.key} at={L.figure.at} text={L.figure.text} anchor="end" tone="indigo" strong size="figure" />
-      <Label id={L.caption.key} at={L.caption.at} text={L.caption.text} anchor="start" />
+      <Label id={L.figure.key} at={L.figure.at} text={L.figure.text} anchor="start" tone="indigo" strong size="figure" />
+      <g data-build={L.caption.key}>
+        {L.caption.lines.map((line) => (
+          <Label key={line.text} at={line.at} text={line.text} anchor="start" />
+        ))}
+      </g>
     </Part>
   );
 }

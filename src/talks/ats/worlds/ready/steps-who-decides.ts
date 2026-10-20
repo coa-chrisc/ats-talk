@@ -1,10 +1,11 @@
 /**
  * Slide 25's click: the slide before goes and the title changes. The stack
  * draws top to bottom, each tier's name and caption coming up as its edge
- * closes; the middle tier takes the orange mark. The arrow down the left
- * side draws and is named, then the arrow up the right side; line A comes in
- * after them. Then the three question cards land one under another on the
- * right, and line B comes up with the last of them.
+ * closes, and line A comes in with it, as it says who the top tier is; the
+ * middle tier takes the orange mark, and line B comes in with it. The arrow
+ * down the left side draws and is named, then the arrow up the right side.
+ * Then the heading comes up on the right, the three question cards land one
+ * under it after another, and the slide ends as the last lands.
  */
 import { EASE, draw, mark, rise, to } from "@/components/deck/kit";
 import { picture, story } from "../steps";
@@ -33,17 +34,18 @@ export const whoDecides = picture("who-decides", {
         ...rise(tier.caption.key, { at: i * TIERS.apart + TIERS.caption }),
       ]),
     },
-    // The middle tier takes the orange mark.
+    { with: true, hold: 1.2, moves: [story("who-decides", 0)] },
+    // The middle tier takes the orange mark, as line B says what it decides.
     { hold: 0.2, moves: [mark(W.mark.key, { at: 0 })] },
-    // Authority runs down the left, evidence up the right.
+    { with: true, hold: 1.2, moves: [story("who-decides", 1)] },
+    // Decisions run down the left, results and incidents up the right.
     { hold: 0.2, moves: [draw(W.down.key, { at: 0, duration: ARROWS.draw, ease: EASE.page }), rise(W.down.label.key, { at: ARROWS.label })] },
-    { hold: 0.1, moves: [draw(W.up.key, { at: 0, duration: ARROWS.draw, ease: EASE.page }), rise(W.up.label.key, { at: ARROWS.label })] },
-    { with: true, hold: 0.5, moves: [story("who-decides", 0)] },
-    // The three questions land on the right, one under another.
+    { hold: 0.3, moves: [draw(W.up.key, { at: 0, duration: ARROWS.draw, ease: EASE.page }), rise(W.up.label.key, { at: ARROWS.label })] },
+    // The heading on the right, then the three questions under it, one after another.
+    { hold: 0.1, moves: [rise(W.heading.key, { at: 0 })] },
     {
-      hold: 0.5,
+      hold: 0,
       moves: W.cards.flatMap((card, i) => to(card.key, { autoAlpha: 1, x: 0 }, { autoAlpha: 0, x: CARDS.from }, { at: i * CARDS.apart, duration: CARDS.duration, ease: EASE.out })),
     },
-    { with: true, hold: 2 * CARDS.apart + 0.3, moves: [story("who-decides", 1)] },
   ),
 });

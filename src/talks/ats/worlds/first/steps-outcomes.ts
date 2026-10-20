@@ -1,6 +1,7 @@
 /**
  * Slide 23's click: the six tiles draw across under the plan's name; the
- * first lights and its name comes up in it; project dots come up from below
+ * first lights and its name comes up in it; a bracket draws under the
+ * other five and their one caption comes up under it; project dots come up from below
  * and attach to the tiles' feet, most to the first. Under them a grey tally
  * draws stroke by stroke, named; then it fades, and in its place the first
  * point comes up, named, the line rises from it to the point it aims at,
@@ -28,6 +29,8 @@ export const outcomes = picture("outcomes", {
     { with: true, hold: 0.4, moves: [rise(O.plan.key, { at: 0 }), draw(keys(O.tiles), { at: 0.1, duration: 0.7, stagger: 0.08 })] },
     // The first tile lights and its name comes up in it.
     { hold: 0.2, moves: [show(O.lit.key, { at: 0, duration: 0.5 }), rise(O.name.key, { at: 0.2 })] },
+    // A bracket draws under the other five, and their one caption comes up under it.
+    { hold: 0.3, moves: [draw(O.others.key, { at: 0, duration: 0.5 }), rise(O.others.caption.key, { at: 0.3 })] },
     // Projects come up from below and attach to the tiles, most to the first.
     { hold: 0.3, moves: [to(keys(O.dots), comeUp(O.dot.from).on, comeUp(O.dot.from).off, { at: 0, duration: 0.6, ease: EASE.out, stagger: DOTS_APART })] },
     // The grey tally draws stroke by stroke, named.

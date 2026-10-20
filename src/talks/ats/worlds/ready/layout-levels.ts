@@ -36,7 +36,9 @@ export const PLATE = { h: 34, pad: 14, icon: 22 } as const;
 const bandTop = (i: number) => TOP + i * (BAND.h + BAND.gap);
 const bandsFoot = bandTop(4) - BAND.gap;
 const rowY = (i: number) => bandsFoot + LIST.gap + i * LIST.pitch;
-const plateW = PLATE.pad + PLATE.icon + 10 + wordsWidth(OWNER) + PLATE.pad;
+/** The plate's word as Geist sets it at 26 px semibold with the label's tracking (85 px, from the font), so it keeps its pad on both sides. */
+const OWNER_W = Math.max(85, wordsWidth(OWNER));
+const plateW = PLATE.pad + PLATE.icon + 10 + OWNER_W + PLATE.pad;
 
 const BANDS = [
   { hue: "grey" as BandHue, name: NO_GO, caption: NO_GO_CAPTION },

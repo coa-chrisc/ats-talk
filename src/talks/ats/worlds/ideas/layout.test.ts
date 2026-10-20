@@ -231,8 +231,10 @@ describe("slide 8, the descending stair and the dial", () => {
     for (const a of D.settings) {
       expect(overlaps(a.at, arc), a.key).toBe(false);
       for (const b of D.settings) if (a !== b) expect(overlaps(a.at, b.at), `${a.key} ${b.key}`).toBe(false);
-      // Each name and caption on one line: Geist sets these at 0.86 of the rough measure or less.
-      for (const words of [a.name, a.caption]) expect(wordsWidth(words, 26) * 0.9, words).toBeLessThanOrEqual(a.at.w);
+      // The name over the caption, each wrapping in the box, on no more lines than the box holds.
+      expect((linesIn(a.name, 26, a.at.w) + linesIn(a.caption, 26, a.at.w)) * LABEL_LINE, a.key).toBeLessThanOrEqual(a.at.h);
+      // No word wider than the box.
+      for (const word of `${a.name} ${a.caption}`.split(" ")) expect(wordsWidth(word, 26), word).toBeLessThanOrEqual(a.at.w);
     }
   });
 });
@@ -359,7 +361,7 @@ describe("slide 10, the stair of gates and the checklist", () => {
     for (const row of G.list) {
       expect(row.check.x - (stair.x + stair.w), row.key).toBeGreaterThanOrEqual(80);
       const words = text(row.words, row.text, "start");
-      // The rough measure runs wide at 32 px: Geist sets the longest row in about 383 px.
+      // The rough measure runs wide at 32 px: Geist sets the longest row in about 475 px, at 0.88 of it.
       expect(words.x + words.w * 0.9, row.key).toBeLessThanOrEqual(SAFE.right);
       expect(row.rule.y, row.key).toBeGreaterThan(row.check.y + row.check.h);
     }

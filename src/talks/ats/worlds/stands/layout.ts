@@ -30,25 +30,26 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
 /**
  * Where each title breaks, by the words a line ends on. Titles are set in
- * Geist Bold at 72 px and must end by x 1824, 1728 px from their left edge;
- * the widths in the comments are measured from the font's advances. Slide
- * 11's title is one line of 1305 px and does not break.
+ * Geist Bold at 72 px with -0.025 em tracking (kit.css) and must end by
+ * x 1824, 1728 px from their left edge; the widths in the comments are
+ * measured from the font's advances with that tracking. Slide 11's title
+ * is one line of 1233 px and does not break.
  */
 const BREAKS: Record<string, string[]> = {
   track: [],
-  /** 1630 and 1655 px: a break at "move." leaves 1795 px on the second line, so the break falls one word on. */
+  /** At the full stop: 1414 and 1650 px. */
   control: ["move."],
-  /** 1512 and 914 px. */
-  exists: ["work"],
-  /** 1265 and 947 px. */
-  noticed: ["noticed"],
-  /** 1569 and 1420 px. */
-  community: ["run,"],
-  /** 1483 and 1666 px. */
-  infrastructure: ["AI,"],
-  /** 1614 and 894 px. */
+  /** 1230 and 1236 px, the two halves level. */
+  exists: ["AI work"],
+  /** 1378 and 612 px. */
+  noticed: ["recognized"],
+  /** At the full stop: 1601 and 1556 px. */
+  community: ["AI."],
+  /** 1669 and 1638 px. */
+  infrastructure: ["infrastructure"],
+  /** 1533 and 849 px. */
   fits: ["the ones"],
-  /** 1662 and 1454 px: after "the way", as a break at "third of" leaves 1753 px on the second line. */
+  /** 1576 and 1697 px: the break at "pack," leaves 2369 px on the first line. */
   fleet: ["the way"],
 };
 

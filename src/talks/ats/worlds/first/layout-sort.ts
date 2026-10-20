@@ -10,7 +10,7 @@ import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
 import { SAFE, TEXT_LINE, contentTop, layerOf, round } from "./layout";
 
-const [VALUE, READINESS, SCALE, PREPARE, EXPERIMENT, DEFER, ...TESTS] = shown("sort", "play");
+const [VALUE, READINESS, START_HERE, PREPARE, EXPERIMENT, DEFER, ...TESTS] = shown("sort", "play");
 
 /** Where the slide's drawing starts, under its story band. */
 const TOP = contentTop("sort");
@@ -77,7 +77,7 @@ export const SORT = {
   },
   /** The quarters, named in the order they label themselves: top right, top left, bottom right, bottom left. */
   quarters: [
-    { text: SCALE, at: box(MID.x, CHART.y, CHART.w / 2, CHART.h / 2) },
+    { text: START_HERE, at: box(MID.x, CHART.y, CHART.w / 2, CHART.h / 2) },
     { text: PREPARE, at: box(CHART.x, CHART.y, CHART.w / 2, CHART.h / 2) },
     { text: EXPERIMENT, at: box(MID.x, MID.y, CHART.w / 2, CHART.h / 2) },
     { text: DEFER, at: box(CHART.x, MID.y, CHART.w / 2, CHART.h / 2) },

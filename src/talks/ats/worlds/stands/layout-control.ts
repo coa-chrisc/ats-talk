@@ -81,12 +81,14 @@ const CLIMBS: Point = { x: steps[1].x + steps[1].w / 2, y: steps[1].y };
  * one row, wider than the room beside the stair), broken after the count,
  * ending at the drawing's right edge, its rows 54 apart about their
  * middles, the second row's middle 28 px over the second step's tread;
- * its caption under the second row.
+ * its caption on two rows under the second row.
  */
 export const BIG = { size: 48, pitch: 54 } as const;
 const BIG_ROWS = breakAfter(GREW, "3,000");
 const BIG_AT: Point = { x: SAFE.right - 16, y: steps[1].y - 28 - BIG.pitch };
 const PENNSYLVANIA_AT: Point = { x: BIG_AT.x, y: BIG_AT.y + BIG.pitch + 47 };
+/** The figure's caption on two rows, 32 apart, flush right under it: whole, it would run back over the stair. */
+const PENNSYLVANIA_ROWS = breakAfter(PENNSYLVANIA, "staff");
 /** The plain tag at the foot, ending at the drawing's right edge. */
 const BUDGET_AT = box(SAFE.right - 16 - tagWidth(BUDGET), DRAW_FOOT - TAG.h, tagWidth(BUDGET), TAG.h);
 
@@ -110,6 +112,6 @@ export const CONTROL = {
     caption: { key: "control.boston", text: BOSTON, at: BOSTON_AT },
   },
   climber: { key: "control.climber", at: STANDS, to: CLIMBS, rise: CLIMBS.y - STANDS.y, run: CLIMBS.x - STANDS.x },
-  big: { key: "control.big", text: GREW, rows: BIG_ROWS, at: BIG_AT, caption: { key: "control.big.caption", text: PENNSYLVANIA, at: PENNSYLVANIA_AT } },
+  big: { key: "control.big", text: GREW, rows: BIG_ROWS, at: BIG_AT, caption: { key: "control.big.caption", text: PENNSYLVANIA, rows: PENNSYLVANIA_ROWS, at: PENNSYLVANIA_AT } },
   budget: { key: "control.budget", text: BUDGET, at: BUDGET_AT },
 };

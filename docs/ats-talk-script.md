@@ -88,8 +88,8 @@ Speaker: Chris
 <!-- beat: what the course was, who it was for and why it was worth the time, before any of its ideas are named -->
 Speaker: Chris
 
-**On screen:** This fall we took Carnegie Mellon's course on leading AI agents, meaning AI that does work on its own.
-- Four half-day modules at Heinz College: foundations, data and architecture, security, and strategy.
+**On screen:** We took Carnegie Mellon's course on AI agents, meaning AI that does work on its own.
+- Four half-day modules at Heinz College this fall: foundations, data and architecture, security, and strategy.
 - Each module ended with a build of our own, so we learned what an agent is by running one.
 
 **They see:** Four indigo tiles land in a row across the stage, each named in turn: "Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation". Under the row a caption settles: "Heinz College". A green workbench outline draws beneath each tile in turn, and one caption sits under the four benches: "A build of our own". The slide ends on the four tiles, the caption and the four benches.
@@ -371,8 +371,8 @@ Note: the people to invite first, from the October 2026 research, for the speake
 <!-- beat: step two; a small team drawn from the consortium, led by people already doing the work, with the Azure staff kept on the infrastructure -->
 Speaker: Chris
 
-**On screen:** Step two. Form an AI program team from the consortium, led by staff already doing the work.
-- Its job is strategy, architecture and advising departments. It teaches them rather than building for them.
+**On screen:** Step two. Form an AI program team, led by staff already doing the work.
+- Drawn from the consortium, its job is strategy, architecture and advising departments, not building for them.
 - It does not need to wait for a program manager. The people who have done this for years are ready to start.
 
 **They see:** The round table from slide 17 sits at the left with people around it. Four of them light brighter and step out to a box drawn in the middle, labeled "AI program team"; one of the four takes a small nameplate, "Lead". Three tiles land under the box: "Strategy", "Architecture", "Consulting". A line draws from the box to a department outline at the right, labeled "Departments", with the caption "Advises and teaches". Below the team box the fenced yard from slide 13 is drawn small, with two green people inside it and the caption "The staff who built the Azure infrastructure stay on it". The slide ends on the table, the team box with its tiles and lead, the line to the department, and the small yard.
@@ -383,7 +383,7 @@ Speaker: Chris
 <!-- beat: step three; department leaders, staff and the community, in their own words -->
 Speaker: Chris
 
-**On screen:** Step three. The program team listens to department leaders, staff and the community.
+**On screen:** Step three. Listen, in their own words, to department leaders, staff and the community.
 - Ask what is slow or broken, where they could do more, and what they want done by 2027 and 2028.
 - Before any tool is chosen, staff get a safe way to raise concerns about AI without being seen as resisting it.
 
@@ -487,9 +487,9 @@ Speaker: Chris and Stefan
 - Leadership can make the consortium and program team official, sponsor the listening tour, and adopt the levels.
 - It can keep Austin Public Health's agent work running, and add data tiers and a budget line.
 
-**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, five green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: "The consortium and the program team" with "The people are ready now", "Listening tour" with "Costs only calendar time", "Four levels" with "Drafted with the CISO", "Keep the Azure work running" with "Already running", "Data tiers and a budget line" with "Authorized tools is the first tier". The slide ends on the track with the solid runner, the five markers and their row, and the dashed runner at the pack's tail.
+**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, five green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: "Consortium and program team" with "The people are ready now", "Listening tour" with "Costs only calendar time", "Four levels" with "Drafted with the CISO", "Keep the Azure work running" with "Already running", "Data tiers and a budget line" with "Authorized tools are tier one". The slide ends on the track with the solid runner, the five markers and their row, and the dashed runner at the pack's tail.
 
-**You say:** Five decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Make the consortium and the program team official; the people are ready now and could start without waiting for a hire. Sponsor the listening tour; it costs only calendar time, and we would run it. Adopt the four levels; they are drafted with the CISO, and Stefan is doing that now. Keep Austin Public Health's agent work running on the infrastructure it built, with the Azure staff on it; it is already running. Add data tiers and a budget line, with an approved enterprise AI tool for data that cannot yet be connected safely; the authorized-tools rule is the first tier. None of this starts from zero. All of it starts from work your own staff already did.
+**You say:** Five decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Make the consortium and program team official; the people are ready now and could start without waiting for a hire. Sponsor the listening tour; it costs only calendar time, and we would run it. Adopt the four levels; they are drafted with the CISO, and Stefan is doing that now. Keep Austin Public Health's agent work running on the infrastructure it built, with the Azure staff on it; it is already running. Add data tiers and a budget line, with an approved enterprise AI tool for data that cannot yet be connected safely; the authorized-tools rule is tier one. None of this starts from zero. All of it starts from work your own staff already did.
 
 ### 28. That was the course, applied
 <!-- beat: the reveal; the four lessons from slide 2a return, each matched to what was proposed -->

@@ -1,7 +1,8 @@
 /**
  * Slide 23's places: six tiles edge to edge across the top of the field,
  * named once above the first; the first tile's lit fill and its name, on
- * two lines inside it; project dots that come up from below and attach
+ * two lines inside it; a bracket under the other five, its one caption
+ * under it; project dots that come up from below and attach
  * inside the tiles' feet, most to the first. Under the tiles, in the
  * middle of the stage, a grey tally of three fives, named at its left; and
  * across the same place the measure line, rising from its first point at
@@ -12,13 +13,13 @@
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { LABEL_LINE, SAFE, contentTop, groupOf, labelBox, labelsOf, wordsWidth } from "./layout-plan";
 
-const [PLAN, PRIORITY, PILOTS, BASELINE, TARGET, OWNER] = labelsOf("outcomes");
+const [PLAN, PRIORITY, OTHERS, PILOTS, BASELINE, TARGET, OWNER] = labelsOf("outcomes");
 
 /** 556: under the two-line title's two story rows. */
 const TOP = contentTop("outcomes");
 
-/** Six tiles across the field, 24 apart, 150 tall, under the plan's name. */
-const TILE = { y: TOP + LABEL_LINE + 10, h: 150, gap: 24, count: 6 } as const;
+/** Six tiles across the field, 24 apart, 136 tall (room under them for the other five's bracket and caption), under the plan's name. */
+const TILE = { y: TOP + LABEL_LINE + 10, h: 136, gap: 24, count: 6 } as const;
 const TILE_W = (SAFE.right - SAFE.left - (TILE.count - 1) * TILE.gap) / TILE.count;
 const tileX = (i: number) => SAFE.left + i * (TILE_W + TILE.gap);
 const TILE_FOOT = TILE.y + TILE.h;
@@ -34,15 +35,27 @@ const DOT = { r: 12, pitch: 36, from: 180, inset: 12 } as const;
 const DOT_Y = TILE_FOOT - DOT.inset - DOT.r;
 
 /**
+ * The bracket under the other five tiles: a line 14 px under their feet
+ * from the second tile's left edge to the last one's right, its ends
+ * turned up 10 px toward the tiles; their one caption centred under it,
+ * 12 px down.
+ */
+const BRACE = { y: TILE_FOOT + 14, up: 10, x0: tileX(1), x1: tileX(TILE.count - 1) + TILE_W } as const;
+const OTHERS_AT: Point = { x: (BRACE.x0 + BRACE.x1) / 2, y: BRACE.y + 12 + LABEL_LINE / 2 };
+
+/**
  * The measure line, in the room under the tiles: from (560, 952) up to
  * (1360, 816), a long gentle rise through the middle of the stage, where
  * the tally stood.
  */
 const MEASURE = { from: { x: 560, y: 952 }, to: { x: 1360, y: 816 }, r: { from: 10, to: 16 } } as const;
 const MID: Point = { x: (MEASURE.from.x + MEASURE.to.x) / 2, y: (MEASURE.from.y + MEASURE.to.y) / 2 };
-/** The nameplate, 40 px under the line's middle. */
+/**
+ * The nameplate, 36 px under the line's middle and 120 px right of it,
+ * where the line has risen far enough to clear the plate's long name.
+ */
 const PLATE_W = wordsWidth(OWNER) + 40;
-const PLATE = box(MID.x - PLATE_W / 2, MID.y + 36, PLATE_W, 44);
+const PLATE = box(MID.x + 120 - PLATE_W / 2, MID.y + 36, PLATE_W, 44);
 
 /**
  * The tally: three fives, each four strokes 18 apart and a fifth across
@@ -69,6 +82,11 @@ export const OUTCOMES = {
   /** The first tile lights: a green fill and a heavier edge over its outline. */
   lit: { key: "outcomes.lit", at: box(tileX(0), TILE.y, TILE_W, TILE.h) },
   name: { key: "outcomes.name", text: PRIORITY, lines: nameLines.map((text, i) => ({ text, at: { x: tileX(0) + TILE_W / 2, y: TILE.y + 38 + i * 34 } as Point })) },
+  others: {
+    key: "outcomes.others",
+    d: `M${BRACE.x0} ${BRACE.y - BRACE.up}V${BRACE.y}H${BRACE.x1}V${BRACE.y - BRACE.up}`,
+    caption: { key: "outcomes.others.caption", text: OTHERS, at: OTHERS_AT },
+  },
   dots: DOTS.flatMap((count, tile) =>
     Array.from({ length: count }, (_, i) => ({ key: `outcomes.dot.${tile}.${i}`, tile, at: { x: tileX(tile) + TILE_W / 2 + (i - (count - 1) / 2) * DOT.pitch, y: DOT_Y } as Point })),
   ),
@@ -99,6 +117,8 @@ const ringBox = (at: Point, r: number) => box(at.x - r, at.y - r, 2 * r, 2 * r);
 export const OUTCOMES_BOXES: Box[] = [
   labelBox(OUTCOMES.plan.at, PLAN, "start"),
   ...OUTCOMES.tiles.map((tile) => tile.at),
+  box(BRACE.x0, BRACE.y - BRACE.up, BRACE.x1 - BRACE.x0, BRACE.up),
+  labelBox(OTHERS_AT, OTHERS),
   ...OUTCOMES.dots.flatMap((dot) => [dotBox(dot.at), dotBox({ x: dot.at.x, y: dot.at.y + DOT.from })]),
   OUTCOMES.tally.at,
   labelBox(OUTCOMES.tally.label.at, PILOTS, "end"),

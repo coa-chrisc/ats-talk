@@ -42,11 +42,11 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     part: 5,
     world: "first",
     name: "An AI program team from staff we have",
-    show: "Step two. Form an AI program team from the consortium, led by staff already doing the work.",
+    show: "Step two. Form an AI program team, led by staff already doing the work.",
     say: "Step two gives the consortium a working core. An AI program team, drawn from it, with one of them as lead and all of them already doing this work, takes on strategy, architecture and consulting with departments. It advises and teaches department staff to do the work themselves. It does not build for them, because a central team that builds everything becomes the bottleneck. The staff who built the Azure infrastructure stay on it, and the team is organized around them rather than over them. It does not need to wait for a program manager to be hired; the consortium and a governance team could assemble themselves now. That is lesson three in practice. The organizations that got value from AI trained their own people and put them in charge of the work, and the City already has those people.",
     see: ["The round table from slide 17 sits at the left with people around it. Four of them light brighter and step out to a box drawn in the middle, labeled \"AI program team\"; one of the four takes a small nameplate, \"Lead\". Three tiles land under the box: \"Strategy\", \"Architecture\", \"Consulting\". A line draws from the box to a department outline at the right, labeled \"Departments\", with the caption \"Advises and teaches\". Below the team box the fenced yard from slide 13 is drawn small, with two green people inside it and the caption \"The staff who built the Azure infrastructure stay on it\". The slide ends on the table, the team box with its tiles and lead, the line to the department, and the small yard."],
     story: [
-      "Its job is strategy, architecture and advising departments. It teaches them rather than building for them.",
+      "Drawn from the consortium, its job is strategy, architecture and advising departments, not building for them.",
       "It does not need to wait for a program manager. The people who have done this for years are ready to start.",
     ],
     steps: [
@@ -59,7 +59,7 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     part: 5,
     world: "first",
     name: "Listen",
-    show: "Step three. The program team listens to department leaders, staff and the community.",
+    show: "Step three. Listen, in their own words, to department leaders, staff and the community.",
     say: "Step three is listening, and the course weights it heavily. Its first no-regrets workforce action is an honest channel for staff to raise concerns about AI without being labeled resistant, because leaders who open that channel learn early. So the program team sits down with department leaders and asks what is slow or broken, where they could do more, and what they want done by 2027 and 2028. It asks staff what worries them. It asks the community how it wants the City to use AI, and what it does not want. Everything goes down in their own words, because that language becomes the problem statement and the measure of success, and it is how departments come to see ATS as their partner rather than their gatekeeper.",
     see: ["Three round tables draw side by side, each with six chairs: \"Department leaders\", \"Staff\" and \"Community\". Speech bubbles rise over them in turn: three stacked over the first, \"What is slow or broken\", \"Where they could do more\" and \"What they want done by 2027 and 2028\"; one over the second, \"What worries them\"; one over the third, \"How it wants the City to use AI\". A notebook page at the right fills with green rules under the heading \"In their own words\". The slide ends on the three tables, their bubbles and the filled page."],
     story: [

@@ -32,19 +32,18 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * Where each title breaks, by the word a line ends on. At 72 px bold a line
  * holds the band's 1728 px (measured in Geist from the font's advance
  * widths with the kit's tracking, less the 2 per cent the browser kerns
- * away): slide 3 breaks at its first comma (about 1240 and 1615 px); slide
- * 4 at its first sentence's end (about 1010 and 1430 px); slide 4a after
- * its second sentence's first word, since that sentence alone runs about
- * 1825 px (about 1570 and 1570 px); slide 5 at its second comma (about 1615
- * and 1270 px); slide 6 at its first sentence's end (about 1620 and 1705
- * px).
+ * away): slide 3 breaks at its first sentence's end (about 1485 and 1620
+ * px); slide 4 at its first sentence's end (about 1010 and 1430 px); slide
+ * 4a after its second sentence's first word, since that sentence alone runs
+ * about 1825 px (about 1570 and 1570 px); slide 5 at its second comma
+ * (about 1615 and 1270 px); slide 6 at its colon (about 1390 and 1315 px).
  */
 const BREAKS: Record<string, string[]> = {
   spending: ["tripled."],
   agents: ["question."],
   review: ["Agents"],
   "fleet-defined": ["job,"],
-  stumbled: ["stumbled."],
+  stumbled: ["cause:"],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

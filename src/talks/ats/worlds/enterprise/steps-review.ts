@@ -5,7 +5,8 @@
  * beside them grows page by page until it towers over the desk, named once
  * it does; then the funnel draws from its mouth down to its outlet, named
  * at the mouth, the person stands under the outlet and the mark lands, with
- * story line B; and the figure lands under the funnel with its caption.
+ * story line B; and the figure lands on its own at the right with its
+ * caption.
  */
 import type { StepDef } from "@/components/deck/engine";
 import { EASE, draw, fill, mark, rise, show } from "@/components/deck/kit";
@@ -63,7 +64,7 @@ export const review = (): StepDef[] =>
         ],
       },
       { with: true, hold: 0.9, moves: [story("review", 1)] },
-      // The figure under the funnel, and its caption.
+      // The figure on its own at the right, and its caption.
       { hold: 0.3, moves: [rise(R.figure.key, { at: 0, duration: 0.75 }), rise(R.figure.caption.key, { at: 0.15, duration: 0.75 })] },
     ]),
   });

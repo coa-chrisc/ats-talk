@@ -21,8 +21,8 @@ export const TOP = contentTop("course");
  * between, so the row spans 96 to 1824; 168 tall. Its name starts 42 px
  * down in a 340 px column at 32 px semibold on 42 px lines, two lines at
  * most (the longest name runs about 440 px, measured in Geist SemiBold),
- * so a one-line name sits a little over the tile's middle and a two-line
- * name's foot is 42 px over the tile's.
+ * so a two-line name's foot is 42 px over the tile's, as far as its top
+ * is under the tile's.
  */
 export const TILE = { w: 396, gap: 48, h: 168, inset: 28, nameDown: 42, nameW: 340, nameLine: 42, nameLines: 2 } as const;
 const tileAt = (i: number): Box => box(SAFE.left + 16 + i * (TILE.w + TILE.gap), TOP, TILE.w, TILE.h);
@@ -34,10 +34,11 @@ const COLLEGE_Y = TOP + TILE.h + CAPTION_DOWN;
 
 /**
  * A workbench under each tile, 92 px under the row so the college's
- * caption sits between: a slab 300 wide and 12 deep centred under the
- * tile, two legs 24 px in from the slab's ends down 70 px, and a stretcher
- * between them 38 px under the slab. The build's caption is centred under
- * the four benches.
+ * caption sits between, about 20 px clear of each: a slab 300 wide and
+ * 12 deep centred under the tile, two legs 24 px in from the slab's ends
+ * down 70 px, and a stretcher between them 38 px under the slab. The
+ * build's caption is centred under the four benches, its foot about 35 px
+ * over the drawing's foot.
  */
 export const BENCH = { gap: 92, w: 300, slab: 12, legIn: 24, leg: 70, stretcher: 38 } as const;
 const BENCH_TOP = TOP + TILE.h + BENCH.gap;

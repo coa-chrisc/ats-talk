@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
-import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, wordsWidth } from "./layout";
+import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, tagWords, wordsWidth } from "./layout";
 import { BIG, CAPTION_PITCH, CITY, CLIMBER, CONTROL, GAUGE, GAUGE_FIGURE, NEEDLE_TURN } from "./layout-control";
 import { DOT_R, EXISTS, namedRows } from "./layout-exists";
 import { FITS, ROW, TICK_R } from "./layout-fits";
@@ -57,7 +57,7 @@ const DRAWN: Record<string, Box[]> = {
     text(C.stair.name.at, C.stair.name.text, "start"),
     label(C.stair.caption.at, C.stair.caption.text, "start"),
     bigRows(C.big.at, C.big.rows, BIG.size, BIG.pitch),
-    label(C.big.caption.at, C.big.caption.text, "end"),
+    ...C.big.caption.rows.map((row, i) => label({ x: C.big.caption.at.x, y: C.big.caption.at.y + i * CAPTION_PITCH }, row, "end")),
     C.budget.at,
   ],
   exists: [
@@ -266,8 +266,11 @@ describe("slide 11a, the control", () => {
     expect(figure.x).toBeGreaterThan(right(stair) + 24);
     expect(right(figure)).toBe(SAFE.right - 16);
     expect(bottom(figure)).toBeLessThan(bottom(stair));
-    const caption = label(C.big.caption.at, C.big.caption.text, "end");
+    expect(C.big.caption.rows).toHaveLength(2);
+    expect(C.big.caption.rows.join(" ")).toBe(C.big.caption.text);
+    const caption = bounds(C.big.caption.rows.map((row, i) => label({ x: C.big.caption.at.x, y: C.big.caption.at.y + i * CAPTION_PITCH }, row, "end")));
     expect(caption.y).toBeGreaterThan(bottom(figure) - 8);
+    expect(caption.x).toBeGreaterThan(right(stair) + 24);
     expect(C.budget.at.y).toBeGreaterThan(bottom(caption) + 24);
     expect(bottom(C.budget.at)).toBe(DRAW_FOOT);
   });
@@ -303,7 +306,8 @@ describe("slide 12a, the wall", () => {
       const name = text(plaque.name.at, plaque.name.text);
       expect(inside(name, inner(plaque.at)), plaque.name.text).toBe(true);
       if (plaque.caption) {
-        const caption = label(plaque.caption.at, plaque.caption.text);
+        // A plaque's caption is one centred row, measured as a tag's words are (0.52 of the size a letter; Geist measures 0.48 at 26 px).
+        const caption = wordsBox(plaque.caption.at, tagWords(plaque.caption.text, 26), LABEL_LINE, "middle");
         expect(inside(caption, inner(plaque.at)), plaque.caption.text).toBe(true);
         expect(caption.y).toBeGreaterThanOrEqual(bottom(name) - 6);
       }
@@ -343,6 +347,7 @@ describe("slide 13, the yard", () => {
       for (const row of tileRows(tile)) expect(row.y - row.line / 2, tile.key).toBeGreaterThanOrEqual(tile.at.y + 4);
       const last = tileRows(tile).at(-1)!;
       expect(last.y + last.line / 2, tile.key).toBeLessThanOrEqual(bottom(tile.at) - 4);
+      expect(tile.caption.rows.length, tile.caption.text).toBeLessThanOrEqual(2);
       for (const row of tile.caption.rows) expect(TILE_WORDS.inset + wordsWidth(row, 26), row).toBeLessThanOrEqual(tile.at.w - 8);
       expect(TILE_WORDS.inset + wordsWidth(tile.name.text, 32), tile.name.text).toBeLessThanOrEqual(tile.at.w - 8);
       expect(tile.caption.rows.join(" "), tile.key).toBe(tile.caption.text);
@@ -364,6 +369,7 @@ describe("slide 13, the yard", () => {
     expect(q.y).toBe(m.y);
     expect(q.x - right(m)).toBeLessThanOrEqual(20);
     expect(I.joining.at.x - right(q)).toBeGreaterThanOrEqual(48);
+    expect(right(I.joining.at)).toBe(SAFE.right - 16);
     expect(partners.y).toBeGreaterThan(bottom(yard) + 16);
     for (const plate of [...I.plates, I.joining]) expect(plate.at.w, plate.text).toBeGreaterThanOrEqual(wordsWidth(plate.text, 32) + 24);
     expect(label(I.joining.caption.at, I.joining.caption.text).y).toBeGreaterThan(bottom(I.joining.at));

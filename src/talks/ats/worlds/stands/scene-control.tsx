@@ -1,4 +1,4 @@
-/** Slide 11a's picture: the post with its tick and name, the four city nameplates, the grey gauge with its needle, figure and caption; the stair with its name, caption and climber, the indigo figure on two rows and its caption, and the plain tag at the foot. */
+/** Slide 11a's picture: the post with its tick and name, the four city nameplates, the grey gauge with its needle, figure and caption; the stair with its name, caption and climber, the indigo figure and its caption, each on two rows, and the plain tag at the foot. */
 "use client";
 
 import { Part, PassTick } from "@/components/deck/kit";
@@ -30,7 +30,7 @@ export function ControlMarks() {
       <Words id={S.caption.key} at={S.caption.at} text={S.caption.text} anchor="start" soft />
       <Climber id={C.climber.key} at={C.climber.at} w={CLIMBER.w} h={CLIMBER.h} />
       <Rows id={C.big.key} at={C.big.at} rows={C.big.rows} pitch={BIG.pitch} anchor="end" size="text" extra="sn-big" />
-      <Words id={C.big.caption.key} at={C.big.caption.at} text={C.big.caption.text} anchor="end" soft />
+      <Rows id={C.big.caption.key} at={C.big.caption.at} rows={C.big.caption.rows} pitch={CAPTION_PITCH} anchor="end" soft />
       <Tagged id={C.budget.key} at={C.budget.at} text={C.budget.text} tone="plain" />
     </Part>
   );
