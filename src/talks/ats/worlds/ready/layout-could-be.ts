@@ -76,31 +76,30 @@ export { MARKER_R };
 const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 30 } as const;
 export const KEY_MEASURED = [482, 177, 404, 231, 313] as const;
 const entryX = KEY_MEASURED.reduce<number[]>((xs, w, i) => [...xs, (i === 0 ? OUTER.x + OUTER.w : xs[i - 1] - KEY.gap) - w], []);
-/** Where a leader ends: over the middle of its entry, 4 over the name's line. */
-const footOf = (i: number): Point => ({ x: Math.round(entryX[i] + KEY_MEASURED[i] / 2), y: KEY.name - LABEL_LINE / 2 - 4 });
+/** Where a leader ends: 20 in from its entry's right end, the end nearer the markers, 4 over the name's line; the first entry's at x 1800 (see below). */
+const footOf = (i: number): Point => ({ x: i === 0 ? FIRST_DROP_X : entryX[i] + KEY_MEASURED[i] - 20, y: KEY.name - LABEL_LINE / 2 - 4 });
 
 /**
  * The leaders: a thin rule from each marker to its entry, so a reader pairs
- * them by position. Each runs straight down from its marker into the
- * infield, left along its own channel near the infield's foot, then
- * straight down across the near straight to its entry. The channels step
- * down 9 px from the last marker's (768, under the dashed runner's name) to
- * the first's (804), so no leader crosses another. The first marker is on
- * the bend over the City's runner, so its leader first runs in from it to
- * (1700, 700), inside the infield's round end, then down at x 1700, which
- * keeps it clear of the runner, whose drawing starts about 1730.
+ * them by position, with one bend at most. Each drops straight down from its
+ * marker through the infield to the near straight's inner edge, and from
+ * there runs straight to its entry. The first marker is on the bend over the
+ * City's runner, so its leader runs out from it to x 1800, in the outer lane
+ * right of the runner (whose drawing ends about 1776), and drops straight
+ * down from there past the outer edge to its entry, which spans x 1800.
  */
-const CHANNEL = PAIRS.map((_, i) => 804 - 9 * i);
-const FIRST_TURN = { x: 1700, y: 700 } as const;
+const FIRST_DROP_X = 1800;
+const FIRST_TURN = { x: FIRST_DROP_X, y: 720 } as const;
+const BEND_Y = INNER.y + INNER.h;
 const leaderOf = (at: Point, i: number): Point[] => {
   const foot = footOf(i);
   if (i === 0) {
     const dx = FIRST_TURN.x - at.x;
     const dy = FIRST_TURN.y - at.y;
     const d = Math.hypot(dx, dy);
-    return [{ x: round(at.x + (dx / d) * MARKER_R), y: round(at.y + (dy / d) * MARKER_R) }, FIRST_TURN, { x: FIRST_TURN.x, y: CHANNEL[0] }, { x: foot.x, y: CHANNEL[0] }, foot];
+    return [{ x: round(at.x + (dx / d) * MARKER_R), y: round(at.y + (dy / d) * MARKER_R) }, FIRST_TURN, foot];
   }
-  return [{ x: at.x, y: at.y + MARKER_R }, { x: at.x, y: CHANNEL[i] }, { x: foot.x, y: CHANNEL[i] }, foot];
+  return [{ x: at.x, y: at.y + MARKER_R }, { x: at.x, y: BEND_Y }, foot];
 };
 
 /**

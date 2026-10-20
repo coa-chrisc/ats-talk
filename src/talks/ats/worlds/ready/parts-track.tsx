@@ -44,7 +44,13 @@ type RunnerProps = {
   h: number;
   tone: "catalog" | "process";
   facing?: "left" | "right";
-  /** A runner not there yet: its outline only, dashed, no fill (slide 27). */
+  /**
+   * A runner not there yet: its outline only, dashed, no fill (slide 27).
+   * Its limbs are a dashed stroke 5 px wider than the figure's with the
+   * figure's own strokes over it in the lane's grey, so only a dashed edge
+   * shows each side of each limb; a dashed round-capped stroke as wide as
+   * the figure's would close its own gaps and read solid.
+   */
   dashed?: boolean;
 };
 
@@ -53,10 +59,12 @@ export function Runner({ id, at, h, tone, facing = "right", dashed = false }: Ru
   const k = h / 40;
   const f = facing === "left" ? -1 : 1;
   const p = (x: number, y: number) => `${Math.round((at.x + f * x * k) * 100) / 100} ${Math.round((at.y + y * k) * 100) / 100}`;
+  const limbs = `M${p(1, -26)}L${p(-2, -13)}M${p(-2, -13)}L${p(6, -6)}L${p(4, 0)}M${p(-2, -13)}L${p(-9, -5)}L${p(-14, -6)}M${p(1, -24)}L${p(9, -18)}M${p(1, -24)}L${p(-7, -20)}`;
   return (
     <g className={`rd-runner rd-runner--${tone}${dashed ? " rd-runner--dashed dk-wipe" : ""}`} data-build={id}>
       <circle className="rd-runner__head" cx={at.x + f * 3 * k} cy={at.y - 34 * k} r={5.5 * k} />
-      <path className="rd-runner__limb" style={{ strokeWidth: 5 * k }} d={`M${p(1, -26)}L${p(-2, -13)}M${p(-2, -13)}L${p(6, -6)}L${p(4, 0)}M${p(-2, -13)}L${p(-9, -5)}L${p(-14, -6)}M${p(1, -24)}L${p(9, -18)}M${p(1, -24)}L${p(-7, -20)}`} />
+      {dashed && <path className="rd-runner__outline" style={{ strokeWidth: 5 * k + 5 }} d={limbs} />}
+      <path className="rd-runner__limb" style={{ strokeWidth: 5 * k }} d={limbs} />
     </g>
   );
 }

@@ -255,7 +255,9 @@
   stroke: var(--dk-process);
 }
 
-/* The runner not there yet: its outline only, dashed. */
+/* The runner not there yet: its outline only, dashed, nothing inside it:
+   its head a dashed ring, its limbs a dashed green edge round strokes in
+   the lane's grey. */
 .rd-runner--dashed .rd-runner__head {
   fill: none;
   stroke: var(--dk-process);
@@ -263,8 +265,16 @@
   stroke-dasharray: 5 4;
 }
 
-.rd-runner--dashed .rd-runner__limb {
-  stroke-dasharray: 6 5;
+.rd-runner__outline {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 4;
+}
+
+.rd-runner--dashed.rd-runner--dashed .rd-runner__limb {
+  stroke: var(--dk-raised);
 }
 
 /* A leader from a marker to its entry in the key: a thin rule. */

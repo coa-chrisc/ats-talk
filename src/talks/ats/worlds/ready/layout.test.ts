@@ -293,7 +293,7 @@ describe("slide 27, where the City could be", () => {
     entries.slice(1).forEach((entry, i) => expect(right(entry) + 30).toBeLessThanOrEqual(entries[i].x));
   });
 
-  it("joins each marker to its entry by a leader that starts at the marker, ends on the entry's small marker, and crosses no other leader, word or runner", () => {
+  it("joins each marker to its entry by a leader with one bend at most that starts at the marker, ends over its entry, and crosses no other leader, word or runner", () => {
     type P = { x: number; y: number };
     const segments = (points: readonly P[]) => points.slice(1).map((p, i) => [points[i], p] as const);
     const hits = (a: readonly [P, P], b: Box) => {
@@ -318,7 +318,12 @@ describe("slide 27, where the City could be", () => {
       const points = marker.leader.points;
       expect(near(points[0], marker.at)).toBeCloseTo(MARKER_R, 1);
       const foot = points.at(-1)!;
-      expect(foot.x).toBe(Math.round(marker.entry.at.x + marker.entry.at.w / 2));
+      expect(foot.x).toBeGreaterThan(marker.entry.at.x);
+      expect(foot.x).toBeLessThan(right(marker.entry.at));
+      // One bend at most: three points.
+      expect(points.length).toBeLessThanOrEqual(3);
+      // Inside the infield, a leader runs straight down from its marker, or (the first, over the City's runner) out to the outer lane.
+      if (i > 0) expect(points[1]).toEqual({ x: marker.at.x, y: bottom(T.inner) });
       expect(foot.y).toBeGreaterThan(bottom(T.outer));
       expect(foot.y).toBeLessThan(marker.entry.at.y);
       for (const segment of segments(points)) for (const block of blocks) expect(hits(segment, block), `${i} ${JSON.stringify(block)}`).toBe(false);
