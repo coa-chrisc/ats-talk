@@ -240,9 +240,10 @@
 }
 
 .en-funnel {
-  fill: none;
+  fill: var(--dk-raised);
+  fill-opacity: calc(var(--d, 0) * 0.72);
   stroke: var(--dk-paper);
-  stroke-width: 4;
+  stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }

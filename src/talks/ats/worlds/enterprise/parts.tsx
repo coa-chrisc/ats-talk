@@ -148,10 +148,10 @@ export function Card({ id, at, band }: { id: string; at: Box; band: Box }) {
   );
 }
 
-/** A funnel: its two sides from a wide mouth down to a narrow outlet and a short spout, drawn on as one line (`draw`); its mouth left open. */
+/** A funnel: one closed outline, its wide mouth, two sides narrowing to a neck and the neck's short walls and foot, drawn on as one line (`draw`), its body washing in as it draws. */
 export function Funnel({ id, x0, x1, top, outlet, outletY, spout }: { id: string; x0: number; x1: number; top: number; outlet: number; outletY: number; spout: number }) {
   const c = (x0 + x1) / 2;
   const l = c - outlet / 2;
   const r = c + outlet / 2;
-  return <path className="en-funnel dk-draw" data-build={id} d={`M${x0} ${top}L${l} ${outletY}V${outletY + spout}M${x1} ${top}L${r} ${outletY}V${outletY + spout}`} pathLength={1} />;
+  return <path className="en-funnel dk-draw" data-build={id} d={`M${x0} ${top}H${x1}L${r} ${outletY}V${outletY + spout}H${l}V${outletY}Z`} pathLength={1} />;
 }

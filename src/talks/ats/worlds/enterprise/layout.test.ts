@@ -24,7 +24,7 @@ const R = REVIEW;
 const reviewMark = () => box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48);
 const shareBox = () => box(R.figure.at.x, R.figure.at.y - capOf(SHARE.size), figureWidth(R.figure.runs, SHARE.size, SHARE.small), capOf(SHARE.size) + 8);
 const reviewZones = () => ({
-  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), text(bar.caption.at, bar.caption.text)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
+  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), text(bar.caption.at, bar.caption.text, bar.caption.anchor)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
   middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), text(R.stack.name.at, R.stack.name.text)]),
   right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), text(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox(), label(R.figure.caption.at, R.figure.caption.text, "start")]),
 });
@@ -239,8 +239,12 @@ describe("slide 4a, the review in three zones", () => {
     expect(bottom(may.at)).toBe(R.floor.y);
     expect(bottom(september.at)).toBe(R.floor.y);
     expect(september.at.h / may.at.h).toBe(BARS.ratio);
+    // The first caption starts at its bar's left edge and ends clear of the second bar; the second is centred on its own.
+    expect(may.caption.at.x).toBe(may.at.x);
+    expect(right(text(may.caption.at, may.caption.text, "start"))).toBeLessThan(september.at.x - 16);
+    expect(september.caption.at.x).toBe(september.at.x + september.at.w / 2);
     for (const bar of R.bars) {
-      expect(bottom(text(bar.caption.at, bar.caption.text))).toBeLessThan(bar.at.y);
+      expect(bottom(text(bar.caption.at, bar.caption.text, bar.caption.anchor))).toBeLessThan(bar.at.y);
       expect(text(bar.name.at, bar.name.text).y).toBeGreaterThan(R.floor.y);
     }
   });

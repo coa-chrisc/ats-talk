@@ -14,7 +14,7 @@ export function ReviewMarks() {
       {R.bars.map((bar) => [
         <Column key={bar.key} id={bar.key} at={bar.at} />,
         <Words key={bar.name.key} id={bar.name.key} at={bar.name.at} text={bar.name.text} size="text" strong />,
-        <Words key={bar.caption.key} id={bar.caption.key} at={bar.caption.at} text={bar.caption.text} size="text" strong tone="catalog" />,
+        <Words key={bar.caption.key} id={bar.caption.key} at={bar.caption.at} text={bar.caption.text} anchor={bar.caption.anchor} size="text" strong tone="catalog" />,
       ])}
       <Stroke id={R.floor.key} from={{ x: R.floor.x0, y: R.floor.y }} to={{ x: R.floor.x1, y: R.floor.y }} className="en-floor" />
       <Person id={R.seated.key} at={R.seated.at} />

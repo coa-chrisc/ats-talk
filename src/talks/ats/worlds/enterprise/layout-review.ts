@@ -29,8 +29,15 @@ const DRAW_TOP = TOP + 52;
 
 /** The floor the bars stand on; their names 30 px under it at the text size. */
 const FLOOR_Y = 900;
-/** The bars: 100 wide, 40 apart, from x 130; the taller from about the drawing's top to the floor, a whole number of twelfths, the shorter one twelfth of it. Each caption sits 28 px over its bar's top. */
-export const BARS = { x: 130, w: 100, gap: 40, ratio: 12, nameGap: 30, captionGap: 28 } as const;
+/**
+ * The bars: 100 wide, 120 apart, from the drawing's left edge; the taller
+ * from about the drawing's top to the floor, a whole number of twelfths,
+ * the shorter one twelfth of it. Each caption sits 28 px over its own
+ * bar's top: the first set from its bar's left edge, so it ends (about
+ * 170 px, 200 measured wide) clear of the second bar; the second centred
+ * on its bar.
+ */
+export const BARS = { x: 96, w: 100, gap: 120, ratio: 12, nameGap: 30, captionGap: 28 } as const;
 const TALL = BARS.ratio * Math.floor((FLOOR_Y - DRAW_TOP) / BARS.ratio);
 const barAt = (i: number): Box => {
   const h = i === 0 ? TALL / BARS.ratio : TALL;
@@ -39,20 +46,20 @@ const barAt = (i: number): Box => {
 
 /* Middle: the desk and the stack */
 
-/** The desk: its top at y 880 from x 520 to 900, its legs 40 px; the person seated behind it at its left, 56 by 96, their foot on the desk's line. */
-const DESK = { x0: 520, x1: 900, y: 880, legs: 40, inset: 24 } as const;
-const SEATED = box(560, DESK.y - 96, 56, 96);
-/** The stack: pages 180 wide from x 680, one every 8 px from just over the desk to the drawing's top, so it stands twice the person's height. */
-export const STACK = { x: 680, w: 180, pitch: 8 } as const;
+/** The desk: its top at y 880 from x 580 to 960, its legs 40 px; the person seated behind it at its left, 56 by 96, their foot on the desk's line. */
+const DESK = { x0: 580, x1: 960, y: 880, legs: 40, inset: 24 } as const;
+const SEATED = box(620, DESK.y - 96, 56, 96);
+/** The stack: pages 180 wide from x 740, one every 8 px from just over the desk to the drawing's top, so it stands twice the person's height. */
+export const STACK = { x: 740, w: 180, pitch: 8 } as const;
 const PAGES = Math.floor((DESK.y - 8 - DRAW_TOP) / STACK.pitch) + 1;
 
 /* Right: the funnel, the person at its outlet, and the figure */
 
-/** The funnel: a mouth 460 wide from x 1180 at the drawing's top, centred in the zone right of the stack, 90 px down to an outlet 56 wide, a spout 18 px under it. */
+/** The funnel: a closed outline, a mouth 460 wide from x 1180 at the drawing's top, centred in the zone right of the stack, its sides 90 px down to a neck 56 wide and 18 px long. */
 export const FUNNEL = { x0: 1180, x1: 1640, outlet: 56, depth: 90, spout: 18 } as const;
 const FUNNEL_C = (FUNNEL.x0 + FUNNEL.x1) / 2;
 const OUTLET_Y = DRAW_TOP + FUNNEL.depth;
-/** The person stands 10 px under the spout, 40 by 64; the mark beside them, 50 px right of their middle; their words 28 px under their foot, at the label size. */
+/** The person stands 10 px under the neck, 40 by 64; the mark beside them, 50 px right of their middle; their words 28 px under their foot, at the label size. */
 const STANDING = box(FUNNEL_C - 20, OUTLET_Y + FUNNEL.spout + 10, 40, 64);
 const MARK: Point = { x: FUNNEL_C + 50, y: STANDING.y + STANDING.h / 2 };
 /**
@@ -80,7 +87,7 @@ export const REVIEW = {
       key: `review.bar.${i}`,
       at,
       name: { key: `review.bar.${i}.name`, text: name, at: { x, y: FLOOR_Y + BARS.nameGap } as Point },
-      caption: { key: `review.bar.${i}.caption`, text: caption, at: { x, y: at.y - BARS.captionGap } as Point },
+      caption: { key: `review.bar.${i}.caption`, text: caption, at: { x: i === 0 ? at.x : x, y: at.y - BARS.captionGap } as Point, anchor: i === 0 ? ("start" as const) : ("middle" as const) },
     };
   }),
   desk: { key: "review.desk", ...DESK },
