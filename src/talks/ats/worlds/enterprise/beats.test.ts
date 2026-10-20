@@ -49,7 +49,7 @@ describe("slide 3, the spending", () => {
     expect(startOf(id, titleKey("spending"))).toBe(ARRIVE);
   });
 
-  it("raises the two columns from the floor, the shorter first and the taller longer, each named as it tops out, story line A with them", () => {
+  it("raises the two columns from the floor, the shorter first and the taller longer, each year under it as it starts and its figure and name as it tops out, story line A with them", () => {
     const [five, seventeen] = S.columns.map((column) => playOf(id, column.key)[0]);
     expect(startOf(id, S.floor.key)).toBeLessThanOrEqual(five.at);
     expect(seventeen.at).toBeGreaterThan(five.at);
@@ -57,40 +57,46 @@ describe("slide 3, the spending", () => {
     for (const column of S.columns) {
       const play = playOf(id, column.key)[0];
       expect(play.on).toEqual({ "--k": 1 });
-      expect(startOf(id, column.name.key)).toBeGreaterThan(play.at);
-      expect(startOf(id, column.name.key)).toBeLessThan(play.at + play.duration);
+      expect(startOf(id, column.year.key)).toBeGreaterThanOrEqual(play.at);
+      expect(startOf(id, column.year.key)).toBeLessThan(play.at + play.duration / 2);
+      expect(startOf(id, column.figure.key)).toBeGreaterThan(play.at + play.duration / 2);
+      expect(startOf(id, column.figure.key)).toBeLessThan(play.at + play.duration);
+      expect(startOf(id, column.name.key) - startOf(id, column.figure.key)).toBeLessThanOrEqual(0.2);
     }
+    expect(startOf(id, S.ofIt.key)).toBeGreaterThan(startOf(id, S.columns[1].figure.key));
     expect(storyAt("spending", 0)).toBeGreaterThan(seventeen.at);
     expect(storyAt("spending", 0)).toBeLessThan(endOf(id, S.columns[1].name.key));
   });
 
-  it("then raises the figure beside them, its caption with it", () => {
-    expect(startOf(id, S.figure.key)).toBeGreaterThan(endOf(id, S.columns[1].name.key));
-    expect(startOf(id, S.figure.caption.key) - startOf(id, S.figure.key)).toBeLessThanOrEqual(0.2);
-  });
-
-  it("after a hold to read, draws the bar, splits it, names its parts, and fills them left to right, the middle one's bracket and caption with it, story line B as they fill", () => {
+  it("after a hold to read, raises the heading, draws the bar under it, splits it, names its parts, and fills them left to right, each caption with its part, story line B as they fill", () => {
+    const heading = startOf(id, S.heading.key);
+    expect(heading - endOf(id, storyKeysOf("spending")[0])).toBeGreaterThanOrEqual(HOLD.read);
     const bar = startOf(id, B.key);
-    expect(bar - endOf(id, storyKeysOf("spending")[0])).toBeGreaterThanOrEqual(HOLD.read);
+    expect(bar).toBeGreaterThan(heading);
     for (const split of B.splits) expect(startOf(id, split.key)).toBeGreaterThan(bar);
     const fills = B.parts.map((part) => playOf(id, part.key)[0]);
     for (const [i, part] of B.parts.entries()) {
       expect(startOf(id, part.name.key)).toBeLessThan(fills[0].at);
       if (i > 0) expect(fills[i].at).toBeGreaterThanOrEqual(fills[i - 1].at + fills[i - 1].duration);
+      expect(startOf(id, part.caption.key)).toBeGreaterThanOrEqual(fills[i].at);
+      expect(startOf(id, part.caption.key)).toBeLessThan(fills[i].at + fills[i].duration);
     }
-    expect(startOf(id, B.bracket.key)).toBeGreaterThan(fills[1].at);
-    expect(startOf(id, B.bracket.key)).toBeLessThan(fills[1].at + fills[1].duration);
-    expect(startOf(id, B.caption.key)).toBeLessThan(fills[1].at + fills[1].duration);
     expect(storyAt("spending", 1)).toBeGreaterThan(fills[0].at);
     expect(storyAt("spending", 1)).toBeLessThan(fills[2].at + fills[2].duration);
   });
 
-  it("ends on the two columns, the figure and the three-part bar, its middle part filled", () => {
+  it("ends on the two columns and the three-part bar, its middle part filled, every caption up", () => {
     const end = at(id);
-    for (const column of S.columns) expect(end[column.key]["--k"]).toBe(1);
-    expect(end[S.figure.key].autoAlpha).toBe(1);
-    for (const part of B.parts) expect(end[part.key]["--k"]).toBe(1);
-    expect(end[B.caption.key].autoAlpha).toBe(1);
+    for (const column of S.columns) {
+      expect(end[column.key]["--k"]).toBe(1);
+      for (const key of [column.year.key, column.figure.key, column.name.key]) expect(end[key].autoAlpha, key).toBe(1);
+    }
+    expect(end[S.ofIt.key].autoAlpha).toBe(1);
+    expect(end[S.heading.key].autoAlpha).toBe(1);
+    for (const part of B.parts) {
+      expect(end[part.key]["--k"]).toBe(1);
+      expect(end[part.caption.key].autoAlpha).toBe(1);
+    }
   });
 });
 
@@ -213,6 +219,7 @@ describe("slide 4a, review moved off the person", () => {
 describe("slide 5, what a fleet is", () => {
   const id = stepOf("fleet-defined");
   const F = FLEET;
+  const K = F.keys;
   const cells = F.board.rows.flatMap((row) => row.cells);
 
   it("lands the leads at their desk first, named, their rings filling, then draws the board beside them and splits it into rows", () => {
@@ -224,7 +231,7 @@ describe("slide 5, what a fleet is", () => {
     for (let i = 1; i < rows.length; i++) expect(rows[i]).toBeGreaterThan(rows[i - 1]);
   });
 
-  it("lands the six builders under it and has them fill the cells together, a row at a time, story line A as they work", () => {
+  it("lands the six builders over it and has them fill the cells together, a row at a time, story line A as they work", () => {
     const builders = Math.min(...F.builders.keys.map((key) => startOf(id, key)));
     expect(builders).toBeGreaterThan(startOf(id, F.board.key));
     const waves = F.board.rows.map((row) => row.cells.map((cell) => startOn(id, cell.key, "--k")));
@@ -232,15 +239,30 @@ describe("slide 5, what a fleet is", () => {
     for (let i = 1; i < waves.length; i++) expect(waves[i][0]).toBeGreaterThan(waves[i - 1][0]);
     for (const cell of cells) expect(startOn(id, cell.key, "--hold")).toBeLessThan(startOn(id, cell.key, "--k"));
     expect(storyAt("fleet-defined", 0)).toBeGreaterThan(builders);
-    expect(storyAt("fleet-defined", 0)).toBeLessThan(waves[2][0]);
+    expect(storyAt("fleet-defined", 0)).toBeLessThan(waves[1][0] + 0.5);
   });
 
-  it("then draws the wall, named, story line B with it, and only after it the reviewers come and pass the cells row by row", () => {
+  it("once the cells are filled, draws the gate over the builders, lands the keys agent in it with its keys, named with its caption, and runs a line to each builder in turn, story line B with it", () => {
     const filled = Math.max(...cells.flatMap((cell) => playOf(id, cell.key).filter((play) => "--k" in play.on).map((play) => play.at + play.duration)));
+    const gate = startOf(id, K.gate.key);
+    expect(gate).toBeGreaterThanOrEqual(filled);
+    expect(startOf(id, K.key)).toBeGreaterThan(gate);
+    expect(startOn(id, K.key, "--k")).toBeGreaterThan(startOf(id, K.key));
+    expect(startOf(id, K.ring.key)).toBeGreaterThan(startOf(id, K.key));
+    expect(startOf(id, K.name.key)).toBeGreaterThan(startOf(id, K.key));
+    expect(startOf(id, K.caption.key)).toBeGreaterThan(startOf(id, K.name.key));
+    const lines = K.lines.map((line) => startOf(id, line.key));
+    expect(lines[0]).toBeGreaterThan(startOf(id, K.key));
+    for (let i = 1; i < lines.length; i++) expect(lines[i]).toBeGreaterThan(lines[i - 1]);
+    expect(storyAt("fleet-defined", 1)).toBeGreaterThan(gate);
+    expect(storyAt("fleet-defined", 1)).toBeLessThan(Math.max(...lines));
+  });
+
+  it("then draws the wall, named, and only after it the reviewers come and pass the cells row by row", () => {
     const wall = startOf(id, F.wall.key);
-    expect(wall).toBeGreaterThanOrEqual(filled);
+    expect(wall).toBeGreaterThanOrEqual(Math.max(...K.lines.map((line) => endOf(id, line.key))));
+    expect(wall).toBeGreaterThan(storyAt("fleet-defined", 1));
     expect(startOf(id, F.wall.name.key)).toBeGreaterThan(wall);
-    expect(storyAt("fleet-defined", 1)).toBeGreaterThan(wall);
     const reviewers = Math.min(...F.reviewers.keys.map((key) => startOf(id, key)));
     expect(reviewers).toBeGreaterThan(endOf(id, F.wall.key));
     const passes = F.board.rows.map((row) => startOn(id, row.cells[0].key, "--pass"));
@@ -255,10 +277,13 @@ describe("slide 5, what a fleet is", () => {
     expect(endOf(id, F.mark.key)).toBe(Math.max(...playsAt(id).map((play) => play.at + play.duration)));
   });
 
-  it("ends on the four groups in a row, every cell filled and passed, the mark at the end", () => {
+  it("ends on the five groups, every cell filled and passed, the keys agent in its gate with a line to each builder, the mark at the end", () => {
     const end = at(id);
     for (const cell of cells) expect(end[cell.key]).toMatchObject({ autoAlpha: 1, "--hold": 1, "--k": 1, "--pass": 1 });
-    for (const key of [...F.leads.keys, ...F.builders.keys, ...F.reviewers.keys]) expect(end[key]).toMatchObject({ autoAlpha: 1, "--k": 1 });
+    for (const key of [...F.leads.keys, ...F.builders.keys, ...F.reviewers.keys, K.key]) expect(end[key]).toMatchObject({ autoAlpha: 1, "--k": 1 });
+    expect(end[K.gate.key]["--d"]).toBe(1);
+    for (const line of K.lines) expect(end[line.key]["--d"]).toBe(1);
+    for (const key of [K.ring.key, K.name.key, K.caption.key]) expect(end[key].autoAlpha, key).toBe(1);
     expect(end[F.wall.key]["--d"]).toBe(1);
     expect(end[F.mark.key]).toMatchObject({ autoAlpha: 1, "--d": 1 });
   });

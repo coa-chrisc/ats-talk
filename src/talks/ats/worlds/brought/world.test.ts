@@ -1,5 +1,5 @@
 /**
- * The brought world as a whole: its two slides in order, one at a time,
+ * The brought world as a whole: its three slides in order, one at a time,
  * every word from the script, the house rules, and the story lines. Each
  * slide's own picture is tested in beats.test.ts; what they share is in
  * harness.ts, where things go in layout.test.ts.
@@ -21,9 +21,9 @@ const sources = readdirSync(dir)
   .map((file) => [file, readFileSync(join(dir, file), "utf8")] as const);
 
 describe("the brought world", () => {
-  it("holds the script's slides 1 and 2 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["1", "2"]);
-    expect(PICTURES.map((picture) => picture.id)).toEqual(["title", "four-ideas"]);
+  it("holds the script's slides 1, 2 and 2a in the order shown, one click each", () => {
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["1", "2", "2a"]);
+    expect(PICTURES.map((picture) => picture.id)).toEqual(["title", "course", "lessons"]);
     expect(brought.steps.map((step) => step.id)).toEqual(ids);
     expect(ids).toEqual(PICTURES.map((picture) => stepOf(picture.id)));
   });
@@ -35,11 +35,11 @@ describe("the brought world", () => {
   it("moves every part in its scene, so none shows by default where no step put it", () => {
     const moved = new Set(world.keys);
     /** Shown by their parent: the last slide's picture, which nothing puts away. */
-    const byParent = new Set(Object.values(layerOf("four-ideas")));
+    const byParent = new Set(Object.values(layerOf("lessons")));
     expect([...new Set(built)].filter((key) => !moved.has(key) && !byParent.has(key))).toEqual([]);
   });
 
-  it("gives every part one element, but a title's lines and slide 1's broken story line", () => {
+  it("gives every part one element, but a title's lines", () => {
     const counted = (key: string) => built.filter((id) => id === key).length;
     expect([...new Set(built)].filter((key) => counted(key) !== (COUNTS[key] ?? 1))).toEqual([]);
   });
@@ -57,8 +57,8 @@ describe("the brought world", () => {
     expect(startOf(stepOf("title"), titleKey("title"))).toBe(ARRIVE);
   });
 
-  it("sets slide 1 on navy and slide 2 on the deck's white", () => {
-    expect(brought.steps.map((step) => step.ground)).toEqual(["navy", undefined]);
+  it("sets slide 1 on navy and slides 2 and 2a on the deck's white", () => {
+    expect(brought.steps.map((step) => step.ground)).toEqual(["navy", undefined, undefined]);
   });
 
   it("shows no picture file: every slide is drawn", () => {
@@ -100,8 +100,8 @@ describe("one slide at a time", () => {
     }
   });
 
-  it("breaks the titles after the words the layout names, three lines on slide 1 and two on slide 2", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([3, 2]);
+  it("breaks the titles after the words the layout names: three lines on slide 1, two on slide 2 and one on slide 2a", () => {
+    expect(TITLES.map((title) => title.lines.length)).toEqual([3, 2, 1]);
   });
 });
 
@@ -144,14 +144,14 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses no orange and no pass green: nobody decides and nothing is checked on these two slides", () => {
+  it("uses no orange and no pass green: nobody decides and nothing is checked on these slides", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     for (const [file, source] of sources) expect(source, file).not.toMatch(/<HumanMark\b|<PassTick\b/);
     expect(markup).not.toMatch(/class="dk-human"|class="dk-pass-tick"/);
   });
 
-  it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green and navy", () => {
+  it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, the catalog's indigo and navy", () => {
     for (const [file, source] of sources) expect(strayTokens(source), file).toEqual([]);
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-(lead|review|fix|dept-|share-)|data-hue="(lead|review|fix|dept|share)/);
     for (const [file, source] of sources.filter(([name]) => name !== "brought.css")) expect(source, file).not.toMatch(/--dk-|#[0-9a-f]{3,6}\b/i);

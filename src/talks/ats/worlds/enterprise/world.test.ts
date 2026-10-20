@@ -11,6 +11,7 @@ import { HOME } from "@/components/deck/engine/camera";
 import { CHAIN, storyKeys, storyRows } from "@/components/deck/kit";
 import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { COUNTS, PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
+import { SPENDING } from "./layout-spending";
 import { ARRIVE, partsOf } from "./moves";
 import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { enterprise } from "./world";
@@ -115,10 +116,12 @@ describe("the words on the stage", () => {
     for (const text of texts) expect(allowed.some((words) => words.includes(text)), text).toBe(true);
   });
 
-  it("include every label, once, and every story line, whole", () => {
-    /** A label is set once on each slide that shows it: a figure in runs reads as one SVG text, a dashed plate's name as one HTML text. */
+  it("include every label, once, but the name slide 3's two columns each carry, and every story line, whole", () => {
+    /** A label is set once on each slide that shows it: a figure in runs reads as one SVG text, a dashed plate's name as one HTML text. Slide 3's They see puts one name on each of its two columns. */
     const set = [...svgTexts, ...texts.filter((text) => !svgTexts.some((whole) => whole.includes(text)))];
-    for (const label of new Set(labels)) expect(set.filter((text) => text === label), label).toHaveLength(labels.filter((entry) => entry === label).length);
+    const carried = SPENDING.columns[0].name.text;
+    expect(SPENDING.columns.map((column) => column.name.text)).toEqual(SPENDING.columns.map(() => carried));
+    for (const label of new Set(labels)) expect(set.filter((text) => text === label), label).toHaveLength(label === carried ? SPENDING.columns.length : labels.filter((entry) => entry === label).length);
     const joined = texts.join(" ");
     for (const line of stories) expect(joined, line).toContain(line);
     const shown = texts.join(" ");

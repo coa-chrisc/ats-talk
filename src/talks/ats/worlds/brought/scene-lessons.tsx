@@ -1,14 +1,14 @@
-/** Slide 2's picture: the four tall panels, each with its numeral and its name, and the route under them with its three named stops. */
+/** Slide 2a's picture: the four tall panels, each with its numeral and its name, and the route under them with its three named stops. */
 "use client";
 
 import { Part } from "@/components/deck/kit";
-import { FOUR_IDEAS, ROUTE } from "./layout-four-ideas";
+import { LESSONS, ROUTE } from "./layout-lessons";
 import { Layer, Note, Panel, Stop, StoryOf, Stroke, Words } from "./parts";
 
-const F = FOUR_IDEAS;
+const F = LESSONS;
 const R = F.route;
 
-export function FourIdeasMarks() {
+export function LessonsMarks() {
   return (
     <Part id={F.marks}>
       {F.panels.map((panel) => [
@@ -24,10 +24,10 @@ export function FourIdeasMarks() {
   );
 }
 
-export function FourIdeasHtml() {
+export function LessonsHtml() {
   return (
     <Layer id={F.html}>
-      <StoryOf picture="four-ideas" />
+      <StoryOf picture="lessons" />
       {F.panels.map((panel) => (
         <Note key={panel.name.key} id={panel.name.key} at={panel.name.at}>
           {panel.name.text}
