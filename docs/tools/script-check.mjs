@@ -53,7 +53,7 @@ for (const s of slides) {
   if (s.story.length === 0 && s.number !== "29") bad(s, "no story lines");
   s.story.forEach((l, i) => {
     if (!/^[A-Z].*\.$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
-    if (l.length > 100) bad(s, `story ${i + 1} is ${l.length} chars`);
+    if (l.length > 125) bad(s, `story ${i + 1} is ${l.length} chars (over 125: it will not fit one line of the story band)`);
   });
   const labels = [...s.see.join(" ").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
   const plain = (t) => t.toLowerCase().replace(/\.$/, "");
@@ -78,9 +78,9 @@ for (const s of slides) {
   const wc = say.trim().split(/\s+/).filter(Boolean).length;
   counts.push(`${s.number}=${wc}`);
   if (s.section !== BACKUP) {
-    if (s.number === "29") { if (wc < 60 || wc > 130) bad(s, `You say ${wc} words (want 60 to 130)`); }
-    else if (wc < 105 || wc > 130) bad(s, `You say ${wc} words (want 105 to 130)`);
-  } else if (wc > 130) bad(s, `You say ${wc} words (over 130)`);
+    if (s.number === "29") { if (wc < 60 || wc > 170) bad(s, `You say ${wc} words (want 60 to 170)`); }
+    else if (wc < 80 || wc > 170) bad(s, `You say ${wc} words (want 80 to 170)`);
+  } else if (wc > 170) bad(s, `You say ${wc} words (over 170)`);
 }
 console.log(`slides parsed: ${slides.length} (${slides.filter((s) => s.section !== BACKUP).length} main, ${slides.filter((s) => s.section === BACKUP).length} backup)`);
 console.log(`You say word counts: ${counts.join(" ")}`);

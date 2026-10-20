@@ -8,13 +8,13 @@ describe("reading the script by id", () => {
     expect(pictureOf("fleet").world).toBe("stands");
     expect(pictureOf("lanes").world).toBe("first");
     expect(pictureOf("lets-talk").world).toBe("ready");
-    expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Stop at the first rung that works", "More to govern", "Plain tool", "No AI inside"]);
-    expect(stepOf("four-ideas", "play").show).toEqual(["One", "Two", "Three", "Four", "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Enterprise now", "The City now", "What we would do first"]);
+    expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Gets the job done", "More to govern", "Plain tool", "No AI at all"]);
+    expect(stepOf("lessons", "play").show).toEqual(["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Make the system enforce the rules", "Train your own people first", "Start small, earn each next step", "Enterprise now", "The City now", "What we would do first"]);
     expect(shown("who-decides", "play")).toEqual(["Leadership", "Sets the bright lines", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know"]);
   });
 
   it("finds a picture's story lines, A then B", () => {
-    expect(storyOf("residents")).toEqual(["AI helps City staff serve residents, and it never judges a resident or replaces a person's decision.", "The test is whether residents would see the City serving them better over the long term."]);
+    expect(storyOf("residents")).toEqual(["AI helps City staff serve residents. It never judges a resident or replaces a person's decision.", "The test is whether residents would see the City serving them better over the long term."]);
     expect(storyOf("lets-talk")).toHaveLength(2);
     expect(() => storyOf("nowhere")).toThrow(/nowhere/);
   });
