@@ -141,21 +141,22 @@ describe("slide 12, what exists", () => {
     expect(Math.min(...[...E.named, ...E.unnamed].map((lit) => startOf(id, lit.key)))).toBeGreaterThan(startOf(id, E.name.key));
   });
 
-  it("lights the first named box, then the second, each named as it lights, story line A between them", () => {
-    const [a, b] = E.named;
-    expect(startOf(id, b.key)).toBeGreaterThan(startOf(id, a.key));
-    for (const lit of E.named) {
-      expect(startOf(id, lit.leader.key)).toBeGreaterThan(startOf(id, lit.key));
-      expect(startOf(id, lit.name.key)).toBeGreaterThan(startOf(id, lit.leader.key));
-      expect(startOf(id, lit.caption.key)).toBeGreaterThan(startOf(id, lit.name.key));
+  it("lights the six named boxes in turn, each leader drawing as its lantern lights, then its name and caption, story line A with the first", () => {
+    const lit = E.named.map((entry) => startOf(id, entry.key));
+    for (let i = 1; i < lit.length; i++) expect(lit[i] - lit[i - 1], E.named[i].name.text).toBeGreaterThanOrEqual(0.5);
+    for (const [i, entry] of E.named.entries()) {
+      expect(startOf(id, entry.leader.key)).toBeGreaterThan(lit[i]);
+      expect(startOf(id, entry.leader.key)).toBeLessThan(endOf(id, entry.key));
+      expect(startOf(id, entry.name.key)).toBeGreaterThan(startOf(id, entry.leader.key));
+      expect(startOf(id, entry.caption.key)).toBeGreaterThan(startOf(id, entry.name.key));
     }
-    expect(storyAt("exists", 0)).toBeGreaterThan(startOf(id, a.key));
-    expect(storyAt("exists", 0)).toBeLessThan(startOf(id, b.key));
+    expect(storyAt("exists", 0)).toBeGreaterThan(lit[0]);
+    expect(storyAt("exists", 0)).toBeLessThan(lit[1]);
   });
 
   it("then the smaller lanterns, then the ring of nine dots as it draws, with story line B, then the tag and the grey tag apart", () => {
     const small = E.unnamed.map((lit) => startOf(id, lit.key));
-    expect(small[0]).toBeGreaterThan(startOf(id, E.named[1].caption.key));
+    expect(small[0]).toBeGreaterThan(startOf(id, E.named[5].caption.key));
     for (let i = 1; i < small.length; i++) expect(small[i]).toBeGreaterThan(small[i - 1]);
     const ring = playOf(id, E.ring.key)[0];
     expect(ring.at).toBeGreaterThan(Math.max(...small));

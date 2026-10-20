@@ -1,9 +1,9 @@
-/** Slide 12's picture: the grid of department boxes, named; the lanterns lit in seven of them, two named with leaders; the ring of nine dots round the grid, named; the tag under it and the grey tag apart. */
+/** Slide 12's picture: the grid of department boxes, named; the lanterns lit in nine of them, six named in two columns with leaders; the ring of nine dots round the grid, named; the tag under it and the grey tag apart. */
 "use client";
 
 import { Part } from "@/components/deck/kit";
-import { DOT_R, EXISTS, LANTERN } from "./layout-exists";
-import { Layer, StoryOf, Stroke, Tagged, Words } from "./parts";
+import { CAPTION, DOT_R, EXISTS, LANTERN } from "./layout-exists";
+import { Layer, Rows, StoryOf, Tagged, Words } from "./parts";
 import { Lantern } from "./parts-figures";
 
 const E = EXISTS;
@@ -25,9 +25,9 @@ export function ExistsMarks() {
         <Lantern key={lit.key} id={lit.key} cell={lit.at} at={lit.centre} scale={LANTERN.small} />
       ))}
       {E.named.flatMap((lit) => [
-        <Stroke key={lit.leader.key} id={lit.leader.key} from={lit.leader.from} to={lit.leader.to} className="sn-leader" />,
+        <path key={lit.leader.key} className="sn-leader dk-draw" data-build={lit.leader.key} d={lit.leader.d} pathLength={1} />,
         <Words key={lit.name.key} id={lit.name.key} at={lit.name.at} text={lit.name.text} anchor="start" size="text" strong />,
-        <Words key={lit.caption.key} id={lit.caption.key} at={lit.caption.at} text={lit.caption.text} anchor="start" soft />,
+        <Rows key={lit.caption.key} id={lit.caption.key} at={lit.caption.at} rows={lit.caption.rows} pitch={CAPTION.pitch} soft />,
       ])}
       <rect className="sn-ring" data-build={R.key} x={R.at.x} y={R.at.y} width={R.at.w} height={R.at.h} rx={R.r} pathLength={1} />
       {R.dots.map((dot) => (

@@ -71,6 +71,23 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     ],
   },
   {
+    id: "community",
+    number: "12b",
+    part: 4,
+    world: "stands",
+    name: "A community already at work",
+    show: "Across nine departments, staff are already building, running, governing and teaching AI, in their own words.",
+    say: "Here is the scale of it: Austin Public Health, Development Services, Austin Energy, Fire, Police, Austin Water, the Library, the Budget Office and Technology Services, in the words of the people doing the work. Divya Rathanlal, Chief Information Officer at Austin Water: It's always business-driven and technology-enabled. Jose Ruiz-Vazquez, Milwood Branch of the Library: We do governance all the time. We just don't call it that. José Roig, former director of Development Services: If you invest in AI, then you have to use it. Daniel Culotta, Assistant Director in the Budget Office: Austin is taking a proactive approach. Three themes run through everything they said. Value to residents. Staff already doing it. Governance in the open. That is the community this program walks into.",
+    see: ["A column of entries rises slowly up the left half of the stage like film credits, each a department name over a role, in this order: \"Austin Public Health\", \"Development Services\", \"Austin Energy\", \"Fire\", \"Police\", \"Austin Water\", \"Library\", \"Budget Office\", \"Technology Services\". As four of them pass the middle of the stage, a quote slides in from the right beside its entry, in large type with the speaker's name and title under it: beside Austin Water, \"It's always business-driven and technology-enabled.\" with \"Divya Rathanlal, Chief Information Officer\"; beside the Library, \"We do governance all the time. We just don't call it that.\" with \"Jose Ruiz-Vazquez, Milwood Branch\"; beside Development Services, \"If you invest in AI, then you have to use it.\" with \"José Roig, former director\"; beside the Budget Office, \"Austin is taking a proactive approach.\" with \"Daniel Culotta, Assistant Director\". The roll settles with all nine entries visible, and three green lines draw across the stage under them, each with its words: \"Value to residents\", \"Staff already doing it\", \"Governance in the open\". The slide ends on the column, the four quotes and the three lines."],
+    story: [
+      "Water, the Library, Development Services and the Budget Office said in public what they learned.",
+      "Three themes run through it all: value to residents, staff already doing it, governance in the open.",
+    ],
+    steps: [
+      { id: "play", show: ["Austin Public Health", "Development Services", "Austin Energy", "Fire", "Police", "Austin Water", "Library", "Budget Office", "Technology Services", "It's always business-driven and technology-enabled.", "Divya Rathanlal, Chief Information Officer", "We do governance all the time. We just don't call it that.", "Jose Ruiz-Vazquez, Milwood Branch", "If you invest in AI, then you have to use it.", "José Roig, former director", "Austin is taking a proactive approach.", "Daniel Culotta, Assistant Director", "Value to residents", "Staff already doing it", "Governance in the open"] },
+    ],
+  },
+  {
     id: "infrastructure",
     number: "13",
     part: 4,

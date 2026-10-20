@@ -37,11 +37,11 @@ Beyond the checker's rules: no title of the form "X, and Y." more than one in fi
 | 1. What we brought back | 1 to 2 | 2 |
 | 2. Where enterprise is | 3 to 6 | 6 |
 | 3. The four ideas | 7 to 10 | 5 |
-| 4. Where the City stands | 11 to 15 | 8 |
+| 4. Where the City stands | 11 to 15 | 9 |
 | 5. What we would do first | 16 to 23 | 8 |
 | 6. Ready, the ask, the reveal | 24 to 29 | 5 |
 
-About 32 clicks in 34 minutes. To reach 28 minutes, fold slide 5 into slide 4, slide 12a into slide 12, and slide 23 into slide 21.
+About 33 clicks in 35 minutes. To reach 28 minutes, fold slide 5 into slide 4, slides 12a and 12b into slide 12, and slide 23 into slide 21.
 
 ## Branding and color cues
 
@@ -259,6 +259,20 @@ Speaker: Chris
 **You say:** The pockets were noticed outside the building before inside it, and some of the recognition is this department's own. Austin placed seventh among cities over 500,000 in the 2025 Digital Cities Survey, which cited the AI governance pilot and the assistant test. The City CIO nominated the Austin Public Health work for the Texas IT Leadership Forum and it won the Innovative Leader Award. Bloomberg Cities featured the permitting work in September. Bloomberg Philanthropies selected Austin for its City Data Alliance. The City has been invited to present by NYC Health, Tacoma, Mesa and Texas DIR. A program that starts here walks into a community with a reputation attached. And this is only what we found by asking around. There is more, and finding it is step one.
 
 Note: Digital Cities, the award, Bloomberg Cities (17 September 2026) and the City Data Alliance (1 August 2025) are verified in the October 2026 research; the four invitations are from the Austin Public Health record and should be confirmed. Austin Energy's Utility Analytics Institute panels and the Library's TSLAC feature can replace a plaque if a department prefers.
+
+### 12b. A community already at work
+<!-- beat: scale, then pattern; a slow roll of the departments and people on the public record, with their own words, settling on the themes they share -->
+Speaker: Chris
+
+**On screen:** Across nine departments, staff are already building, running, governing and teaching AI, in their own words.
+- Water, the Library, Development Services and the Budget Office said in public what they learned.
+- Three themes run through it all: value to residents, staff already doing it, governance in the open.
+
+**They see:** A column of entries rises slowly up the left half of the stage like film credits, each a department name over a role, in this order: "Austin Public Health", "Development Services", "Austin Energy", "Fire", "Police", "Austin Water", "Library", "Budget Office", "Technology Services". As four of them pass the middle of the stage, a quote slides in from the right beside its entry, in large type with the speaker's name and title under it: beside Austin Water, "It's always business-driven and technology-enabled." with "Divya Rathanlal, Chief Information Officer"; beside the Library, "We do governance all the time. We just don't call it that." with "Jose Ruiz-Vazquez, Milwood Branch"; beside Development Services, "If you invest in AI, then you have to use it." with "José Roig, former director"; beside the Budget Office, "Austin is taking a proactive approach." with "Daniel Culotta, Assistant Director". The roll settles with all nine entries visible, and three green lines draw across the stage under them, each with its words: "Value to residents", "Staff already doing it", "Governance in the open". The slide ends on the column, the four quotes and the three lines.
+
+**You say:** Here is the scale of it: Austin Public Health, Development Services, Austin Energy, Fire, Police, Austin Water, the Library, the Budget Office and Technology Services, in the words of the people doing the work. Divya Rathanlal, Chief Information Officer at Austin Water: It's always business-driven and technology-enabled. Jose Ruiz-Vazquez, Milwood Branch of the Library: We do governance all the time. We just don't call it that. José Roig, former director of Development Services: If you invest in AI, then you have to use it. Daniel Culotta, Assistant Director in the Budget Office: Austin is taking a proactive approach. Three themes run through everything they said. Value to residents. Staff already doing it. Governance in the open. That is the community this program walks into.
+
+Note: every quote is verbatim from a public source in the October 2026 research (GovTech Fall 2025; TSLAC, 12 June 2026; McKinsey, 5 May 2026; City newsroom, 14 November 2025). Titles are as the sources give them; confirm current titles, and tell each person their words are on a slide before it is shown.
 
 ### 13. Infrastructure ready for AI
 <!-- beat: the second correction; a sandbox with deployed models, a CISO-approved pilot path and a production route, built with partners over years -->

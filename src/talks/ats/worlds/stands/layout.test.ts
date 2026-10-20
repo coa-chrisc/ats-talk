@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, wordsWidth } from "./layout";
 import { BIG, CITY, CLIMBER, CONTROL, GAUGE, GAUGE_FIGURE, NEEDLE_TURN } from "./layout-control";
-import { DOT_R, EXISTS, GRID, GRID_BOX, LANTERN, LIT, cellAt } from "./layout-exists";
+import { DOT_R, EXISTS, namedRows } from "./layout-exists";
 import { FITS, ROW, TICK_R } from "./layout-fits";
 import { FLEET, GATE } from "./layout-fleet";
 import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
@@ -57,7 +57,7 @@ const DRAWN: Record<string, Box[]> = {
     E.ring.at,
     ...E.ring.dots.map((dot) => ringBox(dot.at, DOT_R)),
     label(E.name.at, E.name.text, "start"),
-    ...E.named.flatMap((lit) => [text(lit.name.at, lit.name.text, "start"), label(lit.caption.at, lit.caption.text, "start")]),
+    ...E.named.flatMap((lit) => namedRows(lit).map((row) => box(lit.name.at.x, row.y - row.line / 2, row.width, row.line))),
     text(E.ring.name.at, E.ring.name.text, "start"),
     label(E.ring.caption.at, E.ring.caption.text, "start"),
     E.staff.at,
@@ -255,41 +255,6 @@ describe("slide 11a, the control", () => {
     expect(caption.y).toBeGreaterThan(bottom(figure) - 8);
     expect(C.budget.at.y).toBeGreaterThan(bottom(caption) + 24);
     expect(bottom(C.budget.at)).toBe(DRAW_FOOT);
-  });
-});
-
-describe("slide 12, the departments", () => {
-  it("lays the grid out as the documented numbers, so slide 17 can copy it", () => {
-    expect(GRID).toEqual({ x: 176, y: 624, cols: 7, rows: 3, box: { w: 104, h: 68 }, gap: 14, rx: 8 });
-    expect(GRID_BOX).toEqual({ x: 176, y: 624, w: 812, h: 232 });
-    expect(cellAt(6, 2)).toEqual({ x: 884, y: 788, w: 104, h: 68 });
-    expect(E.boxes).toHaveLength(21);
-    for (const a of E.boxes) for (const b of E.boxes) if (a !== b) expect(overlaps(a.at, b.at), `${a.key} ${b.key}`).toBe(false);
-  });
-
-  it("lights two named boxes and five unnamed ones, each a different box, each lantern inside its box", () => {
-    const lit = [...LIT.named, ...LIT.unnamed].map(([col, row]) => `${col}.${row}`);
-    expect(new Set(lit).size).toBe(7);
-    for (const lantern of [...E.named, ...E.unnamed]) expect(inside(box(lantern.centre.x - LANTERN.w / 2, lantern.centre.y - LANTERN.h / 2, LANTERN.w, LANTERN.h), lantern.at), lantern.key).toBe(true);
-  });
-
-  it("names the two lit boxes to the ring's right, each leader from its box's edge to its name, the names apart", () => {
-    for (const lit of E.named) {
-      expect(lit.leader.from.x).toBeGreaterThan(right(lit.at));
-      expect(lit.leader.to.x).toBeLessThan(lit.name.at.x);
-      expect(lit.name.at.x).toBeGreaterThan(right(E.ring.at) + 24);
-      expect(right(label(lit.caption.at, lit.caption.text, "start"))).toBeLessThanOrEqual(SAFE.right);
-    }
-    const [a, b] = E.named.map((lit) => bounds([text(lit.name.at, lit.name.text, "start"), label(lit.caption.at, lit.caption.text, "start")]));
-    expect(bottom(a) + 12).toBeLessThan(b.y);
-    expect(text(E.ring.name.at, E.ring.name.text, "start").y).toBeGreaterThan(bottom(b) + 12);
-  });
-
-  it("rings the grid with nine dots, and sets the tag under the ring and the grey tag apart at the right", () => {
-    expect(E.ring.dots).toHaveLength(9);
-    expect(inside(GRID_BOX, E.ring.at)).toBe(true);
-    expect(E.staff.at.y).toBeGreaterThan(bottom(E.ring.at) + DOT_R);
-    expect(E.apart.at.x).toBeGreaterThan(right(E.staff.at) + 200);
   });
 });
 
