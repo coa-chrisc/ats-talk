@@ -36,7 +36,7 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * 4 at its first sentence's end (about 1010 and 1430 px); slide 4a after
  * its second sentence's first word, since that sentence alone runs about
  * 1825 px (about 1570 and 1570 px); slide 5 at its second comma (about 1615
- * and 1270 px); slide 6 at its first sentence's end (about 1585 and 1110
+ * and 1270 px); slide 6 at its first sentence's end (about 1620 and 1705
  * px).
  */
 const BREAKS: Record<string, string[]> = {

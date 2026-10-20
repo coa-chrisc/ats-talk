@@ -43,14 +43,14 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     world: "brought",
     name: "Four lessons",
     show: "We came back with four lessons for the City.",
-    say: "Here are the four lessons we would ask you to remember. One: use the least autonomy that gets the job done. Most of what the City wants from AI needs far less independence than the word agent suggests, and some of it needs no AI at all. Two: build the rules into the system, where the AI cannot break them. If you tell an AI a rule, it can be talked out of it. If the system blocks the action, it cannot. Three: train your own people first, before you buy a platform. Every organization the course held up as a success did that. Four: start small, earn each next step with evidence. We will spend a minute or two on each. Then we will use them at three stops: enterprise now, the City now, and what we would do first.",
-    see: ["Four tall panels draw across the slide, numbered \"One\", \"Two\", \"Three\" and \"Four\" in large green numerals at their tops, and each takes its name in turn: \"The least autonomy that gets the job done\", \"Build the rules into the system\", \"Train your own people first\", \"Start small, earn each next step\". Under the panels a route draws as a line with three stops that light left to right: \"Enterprise now\", \"The City now\", \"What we would do first\". The slide ends on the four named panels over the lit route."],
+    say: "Here are the four lessons we would ask you to remember. One: use the least autonomy that gets the job done. Most of what the City wants from AI needs far less independence than the word agent suggests, and some of it needs no AI at all. Two: build the rules into the system, where the AI cannot break them. If you tell an AI a rule, it can be talked out of it. If the system blocks the action, it cannot. Three: train your own people first, before you buy a platform. Every organization the course held up as a success did that. Four: start where a mistake costs little, and when you have command of that use case, take on a more complex one. We will spend a minute or two on each. Then we will use them at three stops: enterprise now, the City now, and what we would do first.",
+    see: ["Four tall panels draw across the slide, numbered \"One\", \"Two\", \"Three\" and \"Four\" in large green numerals at their tops, and each takes its name in turn: \"The least autonomy that gets the job done\", \"Build the rules into the system\", \"Train your own people first\", \"Start where a mistake costs little\". Under the panels a route draws as a line with three stops that light left to right: \"Enterprise now\", \"The City now\", \"What we would do first\". The slide ends on the four named panels over the lit route."],
     story: [
       "Use the least autonomy that gets the job done. Build the rules into the system, out of the AI's reach.",
-      "Train your own people before you buy a platform. Start small, and earn each next step with evidence.",
+      "Train your own people before you buy a platform. Start where a mistake costs little, then take on harder work.",
     ],
     steps: [
-      { id: "play", show: ["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start small, earn each next step", "Enterprise now", "The City now", "What we would do first"] },
+      { id: "play", show: ["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start where a mistake costs little", "Enterprise now", "The City now", "What we would do first"] },
     ],
   },
 ];

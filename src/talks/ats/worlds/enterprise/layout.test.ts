@@ -112,7 +112,7 @@ describe("the enterprise world's layout", () => {
     agents: [["A chatbot answers a question.", 1008], ["An agent is given a goal and does the work.", 1428]],
     review: [["Human in the loop worked for chatbots. Agents", 1569], ["produce more than anyone can feasibly review.", 1568]],
     "fleet-defined": [["A fleet is a team of agents, each with its own job,", 1617], ["and a person who approves the result.", 1268]],
-    stumbled: [["Plenty of organizations rushed in and stumbled.", 1586], ["In every case, a limit was missing.", 1111]],
+    stumbled: [["Plenty of organizations rushed in and stumbled.", 1619], ["Each time, no one had limited what the AI could do.", 1707]],
   };
 
   it("sets every title on two lines, each inside the band", () => {
@@ -398,17 +398,17 @@ describe("slide 6, the figure and the three incidents", () => {
     expect(linesIn(T.figure.caption.text, 32, BIG.w)).toBeLessThanOrEqual(2);
   });
 
-  it("spans the rest of the band with three 384 px cards and two 48 px gaps, the text inset 32 px", () => {
+  it("spans the rest of the band with three 400 px cards and two 40 px gaps, the text inset 28 px", () => {
     expect(T.cards).toHaveLength(3);
     expect(T.cards[0].at.x).toBe(CARD.x);
     expect(right(T.cards[2].at)).toBe(STORY.x + STORY.w);
     for (const card of T.cards) {
-      expect(card.at.w, card.key).toBe(384);
-      expect(card.name.at.x - card.at.x, card.key).toBe(32);
-      expect(right(card.at) - right(card.name.at), card.key).toBe(32);
-      expect(card.name.at.y - bottom(card.band), card.key).toBe(32);
+      expect(card.at.w, card.key).toBe(400);
+      expect(card.name.at.x - card.at.x, card.key).toBe(28);
+      expect(right(card.at) - right(card.name.at), card.key).toBe(28);
+      expect(card.name.at.y - bottom(card.band), card.key).toBe(28);
     }
-    for (let i = 1; i < T.cards.length; i++) expect(T.cards[i].at.x - right(T.cards[i - 1].at)).toBe(48);
+    for (let i = 1; i < T.cards.length; i++) expect(T.cards[i].at.x - right(T.cards[i - 1].at)).toBe(40);
   });
 
   it("fits each card's words inside it: the name on one line, the description in its lines, the tag in two, apart", () => {

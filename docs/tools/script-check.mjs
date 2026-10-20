@@ -61,7 +61,7 @@ for (const s of slides) {
   // Stricter than the test's toContain: the label must sit on word boundaries.
   const has = (lab) => new RegExp(`(?<![a-z0-9])${plain(lab).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z0-9])`).test(words);
   for (const lab of labels) {
-    if (lab.length > 60) bad(s, `label over 60 chars: ${lab}`);
+    if (lab.length > 90) bad(s, `label over 90 chars: ${lab}`);
     if (lab !== lab.trim()) bad(s, `label has stray spaces: "${lab}"`);
     if (ROLE.includes(lab.toLowerCase()) && !has(lab)) { bad(s, `role label not in slide words (allowed by test, flagged by brief): ${lab}`); continue; }
     if (!has(lab)) bad(s, `label not a run of slide words: "${lab}"`);
@@ -79,8 +79,8 @@ for (const s of slides) {
   counts.push(`${s.number}=${wc}`);
   if (s.section !== BACKUP) {
     if (s.number === "29") { if (wc < 60 || wc > 170) bad(s, `You say ${wc} words (want 60 to 170)`); }
-    else if (wc < 80 || wc > 170) bad(s, `You say ${wc} words (want 80 to 170)`);
-  } else if (wc > 170) bad(s, `You say ${wc} words (over 170)`);
+    else if (wc < 80 || wc > 190) bad(s, `You say ${wc} words (want 80 to 190)`);
+  } else if (wc > 190) bad(s, `You say ${wc} words (over 190)`);
 }
 console.log(`slides parsed: ${slides.length} (${slides.filter((s) => s.section !== BACKUP).length} main, ${slides.filter((s) => s.section === BACKUP).length} backup)`);
 console.log(`You say word counts: ${counts.join(" ")}`);

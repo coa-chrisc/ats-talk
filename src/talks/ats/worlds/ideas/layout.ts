@@ -37,9 +37,9 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  */
 const BREAKS: Record<string, string[]> = {
   ladder: ["one."],
-  enforce: ["two."],
+  enforce: ["system,"],
   people: ["three."],
-  earn: ["small,"],
+  earn: ["little."],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

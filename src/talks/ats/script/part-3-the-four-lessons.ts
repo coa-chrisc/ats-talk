@@ -58,16 +58,16 @@ export const THE_FOUR_LESSONS: Picture[] = [
     number: "10",
     part: 3,
     world: "ideas",
-    name: "Lesson four: start small and earn each next step",
-    show: "Lesson four. Start where mistakes are small, and earn each next step with evidence.",
-    say: "Lesson four is the course's answer to pilot purgatory, where everything is a proof of concept and nothing ships. Every project passes four gates, explore, validate, deploy and scale, and it moves up only when the evidence from the last gate says it should. The course also gives six tests for choosing the first projects: frequent decisions, measurable impact, friction in the current process, ready data, rules that can be written down, and contained risk, meaning a mistake is easy to fix. Most first picks score well on all six, and most of them are work where AI only assists. Those are the four lessons. The rest of the talk is where the City stands against the four, and it is a better picture than you might think.",
-    see: ["A stair of four gates rises left to right, each a step with a small gate drawn on it: \"Explore\", \"Validate\", \"Deploy\", \"Scale\". A small green project box climbs onto the first step, and a deep-green tick lands beside it with the caption \"Evidence\". The box climbs to the second step and a second tick lands; the third step stays empty. Beside the stair a checklist draws with six lines, each taking a deep-green tick in turn: \"Frequent decisions\", \"Measurable impact\", \"Friction\", \"Ready data\", \"Rules that can be written\", \"Contained risk\". A short line at the foot reads \"Where the City stands against the four\". The slide ends on the stair with the box on its second step, the checklist and the foot line."],
+    name: "Lesson four: start where a mistake costs little",
+    show: "Lesson four. Start where a mistake costs little. Once that works, take on something harder.",
+    say: "Lesson four is the course's answer to pilot purgatory, where everything is a proof of concept and nothing ships. Start where a mistake has little impact and costs little to fix. When you have command of that use case, take on a more complex one, and let the results decide when, not hope or a vendor's calendar. The course formalizes that as four gates, explore, validate, deploy and scale, and a project passes each one on results. The course also gives six tests for choosing the first projects: frequent decisions, measurable impact, friction in the current process, ready data, rules that can be written down, and contained risk. Most first picks score well on all six, and most of them are work where AI only assists. Those are the four lessons. The rest of the talk is where the City stands against the four, and it is a better picture than you might think.",
+    see: ["A stair of four gates rises left to right, each a step with a small gate drawn on it: \"Explore\", \"Validate\", \"Deploy\", \"Scale\". A small green project box climbs onto the first step, and a deep-green tick lands beside it with the caption \"Results\". The box climbs to the second step and a second tick lands; the third step stays empty. Beside the stair a checklist draws with six lines, each taking a deep-green tick in turn: \"Frequent decisions\", \"Measurable impact\", \"Friction\", \"Ready data\", \"Rules that can be written\", \"Contained risk\". A short line at the foot reads \"Where the City stands against the four\". The slide ends on the stair with the box on its second step, the checklist and the foot line."],
     story: [
-      "Four gates: explore, validate, deploy, scale. A project moves up only when the evidence says so.",
-      "Six tests pick the first projects, from how often a decision recurs to how easy a mistake is to fix.",
+      "Pick work where a mistake has little impact and costs little to fix.",
+      "When you have command of that use case, take on a more complex one. Results decide when, not hope.",
     ],
     steps: [
-      { id: "play", show: ["Explore", "Validate", "Deploy", "Scale", "Evidence", "Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk", "Where the City stands against the four"] },
+      { id: "play", show: ["Explore", "Validate", "Deploy", "Scale", "Results", "Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk", "Where the City stands against the four"] },
     ],
   },
 ];
