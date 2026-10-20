@@ -9,14 +9,14 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     world: "stands",
     name: "On paper, the start line",
     show: "On paper, the City is at the start line.",
-    say: "On paper, measured the way a consultant would measure it, the City is at the start line. No AI strategy, no AI team, no AI budget line, while the enterprise pack we just described spends 17 percent of its IT budgets. One control takes effect at the end of October, and it matters more than it looks. Staff may use only authorized tools, the AI tools the Chief Information Security Officer has approved, and the system enforces that rather than a memo asking for it. On the course's ladder of controls that is the strongest kind. Hold this picture. We are going to redraw it twice before we are done.",
-    see: ["A running track draws as a long oval seen from above, filling the drawing width. A pack of small indigo runners labeled \"Enterprise\" is far along the back straight. A single green runner, twice their size, stands on a white start line at the lower left, labeled \"The City\" beneath the track. A grey tag sits in the infield: \"No AI strategy, no AI team, no AI budget line\". A fence post plants in the ground outside the track beside the start line, a deep-green tick on its cap, labeled \"Authorized tools\". The slide ends on the track, the pack, the City at the line and the ticked post."],
+    say: "On paper, measured the way a consultant would measure it, the City is at the start line. No AI strategy, no AI team, no AI budget line, while the enterprise pack we just described spends 17 percent of its IT budgets. One real control is in place: an acceptable use policy that limits staff to approved AI tools. It is a sensible first control, and we are not here to debate its details. Hold this picture. We are going to redraw it twice before we are done.",
+    see: ["A running track draws as a long oval seen from above, filling the drawing width. A pack of small indigo runners labeled \"Enterprise\" is far along the back straight. A single green runner, twice their size, stands on a white start line at the lower left, labeled \"The City\" beneath the track. A grey tag sits in the infield: \"No AI strategy, no AI team, no AI budget line\". A fence post plants in the ground outside the track beside the start line, a deep-green tick on its cap, labeled \"Approved tools only\". The slide ends on the track, the pack, the City at the line and the ticked post."],
     story: [
       "No AI strategy, no AI team, no AI budget line.",
-      "One real control starts at the end of October: staff may use only the AI tools the security office approved.",
+      "One real control is in place: an acceptable use policy that limits staff to approved AI tools.",
     ],
     steps: [
-      { id: "play", show: ["Enterprise", "The City", "No AI strategy, no AI team, no AI budget line", "Authorized tools"] },
+      { id: "play", show: ["Enterprise", "The City", "No AI strategy, no AI team, no AI budget line", "Approved tools only"] },
     ],
   },
   {
@@ -24,16 +24,16 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     number: "11a",
     part: 4,
     world: "stands",
-    name: "The control bought time",
-    show: "Authorized tools was the right first move. Next, approve more tools for less sensitive data.",
-    say: "A word about the policy, because the room has heard about it. From the end of October, staff may use the Copilot that comes with Microsoft 365 and nothing else. That was the right first move, and the mainstream one. Seattle made the same rule in May; Minnesota, San Francisco and Houston run the same way. But it has a shelf life. Gartner finds 69 percent of organizations see staff using other tools anyway, and Microsoft finds 28 percent of staff say no approved option exists for what they need. The cities ahead of us sort AI tools into tiers by how sensitive the data is, so staff can use more tools on less sensitive data, with one approved enterprise AI tool, kept separate from City systems, for data that cannot yet be connected safely, and a budget to pay for the tools. Pennsylvania went from 175 staff to 3,000 on one approved tool in a year.",
-    see: ["The fence post from slide 11 stands at the left with its tick, labeled \"Authorized tools\", and four small city nameplates settle beside it: \"Seattle\", \"Minnesota\", \"San Francisco\", \"Houston\". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled \"69 percent\", with the caption \"Of organizations see staff use other tools anyway\". On the right a stair of three steps rises, labeled \"More tools for less sensitive data\", with the caption \"Boston\"; a green figure climbs from the first step to the second. Beside the stair an indigo figure lands: \"175 staff to 3,000 in a year\", with the caption \"Pennsylvania staff on one approved AI tool\". A plain tag at the foot reads \"A budget to pay for the tools\". The slide ends on the post and nameplates, the gauge, the stair with its climber, the figure and the tag."],
+    name: "Limits alone breed shadow IT",
+    show: "Strict limits alone push staff toward shadow IT. Approved options give the City real control.",
+    say: "This is one of the clearest lessons from the course. Strict limits on their own, with human review of everything and no approved path to other tools, do not stop people from using AI. They push it out of sight. Staff who need a tool and cannot get one find one on their own, and that is shadow IT: tools IT cannot see, protect or support. Gartner finds it at 69 percent of organizations, and Microsoft finds 28 percent of staff say no approved option exists for what they need. The course put it bluntly: agent sprawl is the new shadow IT, and controls have to be technical and automatic, not only human review. The answer is a range of approved tools, matched to how sensitive the data is, so staff have a sanctioned way to do the work and the City can see and control how AI is used. Boston works this way, and Pennsylvania went from 175 staff to 3,000 on one approved tool in a year.",
+    see: ["On the left a fence post stands with its tick, labeled \"Approved tools only\", and beside it a closed gate. Around the gate, small grey paths wear into the ground leading off the edge of the stage, labeled \"Shadow IT\", with the caption \"Tools IT cannot see\". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled \"69 percent\", with the caption \"Of organizations find staff using unapproved AI tools, Gartner reports\". On the right a stair of three steps rises, labeled \"A range of approved tools\", with the caption \"Matched to how sensitive the data is\"; a green figure climbs from the first step to the second, and a green eye mark settles over the stair, labeled \"Visibility and control\". Beside the stair an indigo figure lands: \"175 staff to 3,000 in a year\", with the caption \"Pennsylvania staff on one approved AI tool\". The slide ends on the post and its worn paths, the gauge, the stair with its climber and eye mark, and the figure."],
     story: [
-      "Other cities and states have the same rule. Gartner finds staff use other tools at 69 percent of organizations.",
-      "Boston approves more tools for less sensitive data. Pennsylvania put 3,000 staff on one approved AI tool.",
+      "Shadow IT is tools staff use on their own that IT cannot see. Gartner finds it at 69 percent of organizations.",
+      "A range of approved tools, matched to how sensitive the data is, gives the City visibility and real control.",
     ],
     steps: [
-      { id: "play", show: ["Authorized tools", "Seattle", "Minnesota", "San Francisco", "Houston", "69 percent", "Of organizations see staff use other tools anyway", "More tools for less sensitive data", "Boston", "175 staff to 3,000 in a year", "Pennsylvania staff on one approved AI tool", "A budget to pay for the tools"] },
+      { id: "play", show: ["Approved tools only", "Shadow IT", "Tools IT cannot see", "69 percent", "Of organizations find staff using unapproved AI tools, Gartner reports", "A range of approved tools", "Matched to how sensitive the data is", "Visibility and control", "175 staff to 3,000 in a year", "Pennsylvania staff on one approved AI tool"] },
     ],
   },
   {

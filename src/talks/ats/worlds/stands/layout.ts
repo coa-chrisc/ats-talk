@@ -37,8 +37,8 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  */
 const BREAKS: Record<string, string[]> = {
   track: [],
-  /** At the full stop: 1414 and 1650 px. */
-  control: ["move."],
+  /** At the full stop: 1606 and 1481 px. */
+  control: ["IT."],
   /** 1230 and 1236 px, the two halves level. */
   exists: ["AI work"],
   /** 1378 and 612 px. */

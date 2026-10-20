@@ -70,17 +70,18 @@ export { MARKER_R };
  * captions a label line under them, so the captions end 2 over the floor.
  * The row is set from the right edge leftward, in landing order, as the
  * markers run leftward round the lap, so each entry sits in the same order
- * as its marker. The five pairs at the label's 26 px run to about 1850 px
- * of words, more than the 1728 px field, and the 84 px under the track hold
- * no third line, so the key is set at 22 px (ready.css, the floor for
- * words): each entry's room is its longer line as Geist sets it at 22 px
- * with the label's 0.01em tracking (measured from the font, the names in
- * semibold, the captions in medium), about 1566 px in all, with 40 between
- * them so the last begins 2 inside the left edge.
+ * as its marker. The five pairs at the label's 26 px run to about 1770 px
+ * of words, more than the 1728 px field, and at 24 px they would stand
+ * only 22 apart; the 84 px under the track hold no third line, so the key
+ * is set at 22 px (ready.css, the floor for words): each entry's room is
+ * its longer line as Geist sets it at 22 px with the label's 0.01em
+ * tracking (measured from the font, the names in semibold, the captions in
+ * medium), about 1500 px in all, with 54 between them so the last begins 9
+ * inside the left edge.
  */
 export const KEY_SIZE = 22;
-const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 40 } as const;
-export const KEY_MEASURED = [415, 265, 235, 316, 335] as const;
+const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 54 } as const;
+export const KEY_MEASURED = [332, 265, 235, 316, 355] as const;
 const entryX = KEY_MEASURED.reduce<number[]>((xs, w, i) => [...xs, (i === 0 ? OUTER.x + OUTER.w : xs[i - 1] - KEY.gap) - w], []);
 /** Where a leader ends: 20 in from its entry's right end, the end nearer the markers, 4 over the name's line; the first entry's at x 1800 (see below). */
 const footOf = (i: number): Point => ({ x: i === 0 ? FIRST_DROP_X : entryX[i] + KEY_MEASURED[i] - 20, y: KEY.name - LABEL_LINE / 2 - 4 });

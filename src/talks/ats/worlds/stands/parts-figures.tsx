@@ -22,6 +22,42 @@ export function FencePost({ id, x, w, top, foot }: { id: string; x: number; w: n
 /* Slide 11a */
 
 /**
+ * A closed gate hung from the post: its frame, upright bars and a brace
+ * from the hinge foot to the latch top, and the latch post that ends it.
+ * It lands as one part.
+ */
+export function Gate({ id, at, bars, latch }: { id: string; at: Box; bars: number; latch: { x: number; w: number; top: number; foot: number } }) {
+  const pitch = at.w / (bars + 1);
+  return (
+    <g className="sn-hung-gate" data-build={id}>
+      <rect className="sn-hung-gate__frame" x={at.x} y={at.y} width={at.w} height={at.h} />
+      {Array.from({ length: bars }, (_, i) => (
+        <path key={i} className="sn-hung-gate__bar" d={`M${at.x + (i + 1) * pitch} ${at.y}V${at.y + at.h}`} />
+      ))}
+      <path className="sn-hung-gate__bar" d={`M${at.x} ${at.y + at.h}L${at.x + at.w} ${at.y}`} />
+      <path className="sn-post" d={`M${latch.x} ${latch.foot}V${latch.top}H${latch.x + latch.w}V${latch.foot}Z`} />
+    </g>
+  );
+}
+
+/** A path worn into the ground, in grey, that wears in from where it starts (`draw`). */
+export function WornPath({ id, d }: { id: string; d: string }) {
+  return <path className="sn-worn dk-draw" data-build={id} d={d} pathLength={1} />;
+}
+
+/** A green eye, open: an almond outline, a green iris and a white pupil. It settles as one part. */
+export function Eye({ id, at, w, h, iris, pupil }: { id: string; at: Point; w: number; h: number; iris: number; pupil: number }) {
+  const [l, r] = [at.x - w / 2, at.x + w / 2];
+  return (
+    <g className="sn-eye" data-build={id}>
+      <path className="sn-eye__lid" d={`M${l} ${at.y}Q${at.x} ${at.y - h} ${r} ${at.y}Q${at.x} ${at.y + h} ${l} ${at.y}Z`} />
+      <circle className="sn-eye__iris" cx={at.x} cy={at.y} r={iris} />
+      <circle className="sn-eye__pupil" cx={at.x} cy={at.y} r={pupil} />
+    </g>
+  );
+}
+
+/**
  * A grey gauge: a half circle's band, the part of it the needle has swept
  * drawing on in the darker grey (`draw`), a short tick at each end, and a
  * needle from the hub that turns clockwise from the low end (`--r`, in
