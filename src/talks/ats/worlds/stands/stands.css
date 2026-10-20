@@ -1,0 +1,350 @@
+/* The stands world's own marks and type, under the kit's rules (kit.css,
+   kit-parts.css) and the brand roles: words and outlines in navy (paper) on
+   the white ground; the process and the City's own people in green;
+   evidence from the course and the outside world in indigo (catalog); grey
+   (soft, raised) for problems, blockers and what is not yet in place; the
+   deep-green tick only through the kit's PassTick and the orange only
+   through the kit's HumanMark. A part's state arrives as the kit's custom
+   properties (--d, --k, --s) or autoAlpha. Selectors are doubled where they
+   refine a kit class, so the order the sheets load in never decides a
+   picture. */
+
+/* A slide's HTML as one part, holding no room of its own. */
+.sn-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Every name the viewer reads is navy; a caption under a name is slate. */
+.dk-label.sn-word,
+.dk-text.sn-word {
+  fill: var(--dk-paper);
+}
+
+.sn-word--strong.sn-word--strong {
+  font-weight: 600;
+}
+
+.sn-word--soft.sn-word--soft {
+  fill: var(--dk-soft);
+}
+
+/* A tag: grey for a problem, white in a navy edge for a fact. */
+.sn-tag {
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.sn-tag.sn-tag--grey {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+}
+
+.sn-tag.sn-tag--plain {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+}
+
+.sn-tag__hole {
+  fill: var(--dk-night);
+  stroke-width: 1.5;
+}
+
+.sn-tag__hole.sn-tag__hole--grey {
+  stroke: var(--dk-soft);
+}
+
+.sn-tag__hole.sn-tag__hole--plain {
+  stroke: var(--dk-paper);
+}
+
+/* Slides 11 and 15: the track seen from above, its lanes in the raised grey, its edges in navy. */
+.sn-track__lanes {
+  fill: var(--dk-raised);
+  fill-rule: evenodd;
+  fill-opacity: var(--d, 0);
+}
+
+.sn-track__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.sn-track__lane {
+  fill: none;
+  stroke: var(--dk-night);
+  stroke-width: 2;
+  stroke-opacity: var(--d, 0);
+}
+
+.sn-start {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 14;
+}
+
+/* The start stripe: white inside its navy edge, so it reads on the grey lanes. */
+.sn-start.sn-start--stripe {
+  stroke: var(--dk-night);
+  stroke-width: 8;
+}
+
+.sn-runner__head {
+  stroke: none;
+}
+
+.sn-runner__limb {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sn-runner--catalog .sn-runner__head {
+  fill: var(--dk-catalog);
+}
+
+.sn-runner--catalog .sn-runner__limb {
+  stroke: var(--dk-catalog);
+}
+
+.sn-runner--process .sn-runner__head {
+  fill: var(--dk-process);
+}
+
+.sn-runner--process .sn-runner__limb {
+  stroke: var(--dk-process);
+}
+
+.sn-post {
+  fill: var(--dk-paper);
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+/* Slide 12: a department's box, and the lantern lit in it. */
+.sn-box {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+}
+
+.sn-lantern__wash {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--k, 0) * var(--dk-wash) * 2);
+}
+
+.sn-lantern__lamp {
+  transform: scale(var(--k, 0));
+}
+
+.sn-lantern__glass {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+.sn-lantern__cap {
+  fill: var(--dk-process);
+}
+
+.sn-lantern__line {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.sn-leader {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sn-ring {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--d, 0));
+  stroke-opacity: calc(min(1, var(--d, 0) * 100) * 0.5);
+}
+
+.sn-dot {
+  fill: var(--dk-process);
+}
+
+/* Slide 13: the yard inside its fence. */
+.sn-fence__yard {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--d, 0) * var(--dk-wash));
+}
+
+.sn-fence__rail {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+}
+
+.sn-fence__post {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: min(1, calc(var(--d, 0) * 2));
+}
+
+.sn-plate__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* Slide 15's stair: grey risers until a step lights; the top step stays grey. */
+.sn-step__riser {
+  fill: var(--dk-raised);
+}
+
+.sn-step__lit {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--k, 0) * var(--dk-tint-active) * 0.6);
+}
+
+.sn-step__tread {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.sn-floor {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sn-gate {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.sn-gate.sn-gate--lit {
+  stroke: var(--dk-process);
+  stroke-opacity: var(--k, 0);
+}
+
+/* The dashed plate's name, set as a plate's is. */
+.sn-dashed-name {
+  font-family: var(--dk-face);
+  font-size: var(--dk-text);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--dk-paper);
+}
+
+/* Slide 15: the markers the runner has passed, green discs in a white ring on the lane's line. */
+.sn-marker {
+  fill: var(--dk-process);
+  stroke: var(--dk-night);
+  stroke-width: 3;
+}
+
+/* Slide 27's runner not there yet: its outline only, dashed. */
+.sn-runner--dashed .sn-runner__head {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 4;
+}
+
+.sn-runner--dashed .sn-runner__limb {
+  stroke-dasharray: 6 5;
+}
+
+/* Slide 12a: the rail, the cords and nails, the plaques in their indigo edges, the small nameplates. */
+.sn-rail {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sn-cord {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.sn-nail {
+  fill: var(--dk-paper);
+  opacity: min(1, calc(var(--d, 0) * 4));
+}
+
+.sn-plaque__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-catalog);
+  stroke-width: 3;
+}
+
+.sn-plaque__inset {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 1.5;
+}
+
+.sn-host__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-catalog);
+  stroke-width: 1.5;
+}
+
+/* Slide 13: the tiles in the yard, the calendar's weeks and their green fill. */
+.sn-tile__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.sn-tile__edge {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.sn-week {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 1.5;
+}
+
+.sn-week-fill {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-process);
+  stroke-width: 1.5;
+}
+
+/* Slide 14: the heads' rules and the short rules joining each pair to its tick. */
+.sn-head-rule {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.sn-join {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
