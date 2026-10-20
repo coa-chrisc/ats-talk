@@ -236,7 +236,7 @@ Note: confirm each item with the department it belongs to, and add any recogniti
 <!-- beat: the second correction; a sandbox with deployed models, a CISO-approved pilot path and a production route, built with partners over years -->
 Speaker: Chris
 
-**On screen:** The City already has infrastructure ready for AI, built with the security office and its partners over years.
+**On screen:** The City already has infrastructure for AI, built with the security office and partners.
 - An Azure sandbox with deployed models, a CISO-approved pilot pathway, and a production route.
 - Weekly sessions with Microsoft and Quisitive for over two years; Amazon is joining the conversation.
 
@@ -262,13 +262,13 @@ Speaker: Stefan
 <!-- beat: the second track; the City redrawn where it is once people, infrastructure and a working fleet are counted -->
 Speaker: Chris
 
-**On screen:** Counted properly, the City is a third of the way around, with a working fleet and a method it can teach.
+**On screen:** Counted properly, the City is a third of the way around, with a fleet it can teach.
 - Austin Public Health builds with a fleet of agents today: 20 applications from 145 reusable modules.
 - Explore, validate and deploy are passed. Scale is the gate the City is not ready for yet.
 
-**They see:** The track from slide 11 returns with the same pack. The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: "People", "Infrastructure", "A working fleet". In the infield a short stair of four gates lights three steps green, "Explore", "Validate", "Deploy", with the fourth grey, "Scale", and a grey tag above it, "Not ready yet". A tag under the track reads "20 applications from 145 reusable modules". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag.
+**They see:** The track from slide 11 returns with the same pack, labeled "Enterprise". The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: "People", "Infrastructure", "A working fleet". In the infield a short stair of four gates lights three steps green, "Explore", "Validate", "Deploy", with the fourth grey, "Scale", and a grey tag beside it, "Not ready yet". A tag under the track reads "20 applications from 145 reusable modules". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag.
 
-**You say:** Here is the track redrawn. Since late 2025 Austin Public Health has built its applications with a fleet of the kind we defined earlier: lead agents plan, builders work in parallel, two reviewers check every change, and a person approves. That fleet has produced 20 applications from 145 reusable modules, and the process is written down well enough to teach another team. On the course's gates the sandbox has passed explore, validate and deploy. Scale is the one gate it has not earned; it is not ready yet, and should not try until the organization exists. Counted properly, the City is a third of the way around, past three markers: people, infrastructure, a working fleet. The next part is how to close the rest.
+**You say:** Here is the track redrawn. Since late 2025 Austin Public Health has built its applications with a fleet of the kind we defined earlier: lead agents plan, builders work in parallel, two reviewers check every change, and a person approves. That fleet has produced 20 applications from 145 reusable modules, and the process is written down well enough to teach. The enterprise pack is still ahead. On the course's gates the sandbox has passed explore, validate and deploy. Scale is the one gate it has not earned; it is not ready yet, and should not try until the organization exists. Counted properly, the City is a third of the way around, past three markers: people, infrastructure, a working fleet. The next part is how to close the rest.
 
 Note: confirm the application and module counts as of October 2026.
 
@@ -420,9 +420,9 @@ Speaker: Chris and Stefan
 - Sanction the consortium and the program team. Sponsor the listening tour. Adopt the four levels.
 - Keep the agent work going in the infrastructure the City built, with a budget line to match.
 
-**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead. A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, four green markers land in turn, each with a short caption under it: "The consortium and the program team" with "Exists informally today", "Listening tour" with "Calendar time", "Four levels" with "Stefan drafts them with the CISO", "The infrastructure" with "Already running". A tag in the infield reads "A budget line to match". The slide ends on the track with the solid runner, the four markers, the dashed runner at the pack's tail and the tag.
+**They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, four green markers land in turn, each with a short caption under it: "The consortium and the program team" with "Exists informally today", "Listening tour" with "Calendar time", "Four levels" with "Stefan drafts them with the CISO", "The infrastructure" with "Already running". A tag in the infield reads "A budget line to match". The slide ends on the track with the solid runner, the four markers, the dashed runner at the pack's tail and the tag.
 
-**You say:** Four decisions would move the City from where it stands to the tail of the pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs a few weeks of calendar time, and we would run it. Adopt the four levels and the bright lines; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it and a budget line to match; it is already running, and it is the reason the distance is short. None of this starts from zero. All of it starts from work your own staff already did.
+**You say:** Four decisions would move the City from where it stands to the tail of the enterprise pack within a year, and each is already half done. Sanction the consortium and the program team; the group exists informally today and the leaders are already in it. Sponsor the listening tour; it costs a few weeks of calendar time, and we would run it. Adopt the four levels and the bright lines; Stefan drafts them with the CISO. Keep the agent work going in the infrastructure the City built, with the Azure staff on it and a budget line to match; it is already running, and it is the reason the distance is short. None of this starts from zero. All of it starts from work your own staff already did.
 
 ### 28. That was the course, applied
 <!-- beat: the reveal; the four ideas from slide 2 return, each matched to what was proposed -->

@@ -9,7 +9,7 @@ describe("reading the script by id", () => {
     expect(pictureOf("lanes").world).toBe("first");
     expect(pictureOf("lets-talk").world).toBe("ready");
     expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Stop at the first rung that works", "More to govern", "Plain tool", "No AI inside"]);
-    expect(stepOf("four-ideas", "play").show).toEqual(["One", "Four", "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Enterprise now", "The City now", "What we would do first"]);
+    expect(stepOf("four-ideas", "play").show).toEqual(["One", "Two", "Three", "Four", "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Enterprise now", "The City now", "What we would do first"]);
     expect(shown("who-decides", "play")).toEqual(["Leadership", "Sets the bright lines", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know"]);
   });
 

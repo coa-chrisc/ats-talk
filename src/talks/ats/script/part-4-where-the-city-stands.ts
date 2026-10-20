@@ -59,7 +59,7 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     part: 4,
     world: "stands",
     name: "Infrastructure ready for AI",
-    show: "The City already has infrastructure ready for AI, built with the security office and its partners over years.",
+    show: "The City already has infrastructure for AI, built with the security office and partners.",
     say: "The second correction is infrastructure. Austin Public Health built an Azure sandbox with the Information Security Office, Microsoft and Quisitive. It inherits the City's tenant controls, sign-in and central logging, and it cannot reach other City systems; data gets in only when someone places it. Inside it, models are already deployed through Azure OpenAI and Azure AI Foundry, so a team does not start by asking for a model. There is a CISO-approved pilot pathway, and the production route is prepared: landing zone designed, demand request filed, waiting on a decision. The partners have been in the room every week for over two years, and Amazon is now joining the conversation.",
     see: ["A fenced yard draws across the left two thirds, labeled \"Azure sandbox\", with the caption \"Cannot reach other City systems\". Inside it three tiles land in a row: \"Deployed models\" with the caption \"Azure OpenAI and Azure AI Foundry\", \"Pilot pathway\" with \"CISO-approved\", and \"Production route\" with \"Landing zone designed, demand request filed\". Under the fence a calendar strip fills week by week, labeled \"Every week for over two years\", with two nameplates beside it, \"Microsoft\" and \"Quisitive\", and a third in a dashed outline a little apart, \"Amazon\", with the caption \"Joining the conversation\". The slide ends on the yard with its three tiles, the full calendar and the three nameplates."],
     story: [
@@ -93,15 +93,15 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     part: 4,
     world: "stands",
     name: "Where the City stands",
-    show: "Counted properly, the City is a third of the way around, with a working fleet and a method it can teach.",
-    say: "Here is the track redrawn. Since late 2025 Austin Public Health has built its applications with a fleet of the kind we defined earlier: lead agents plan, builders work in parallel, two reviewers check every change, and a person approves. That fleet has produced 20 applications from 145 reusable modules, and the process is written down well enough to teach another team. On the course's gates the sandbox has passed explore, validate and deploy. Scale is the one gate it has not earned; it is not ready yet, and should not try until the organization exists. Counted properly, the City is a third of the way around, past three markers: people, infrastructure, a working fleet. The next part is how to close the rest.",
-    see: ["The track from slide 11 returns with the same pack. The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: \"People\", \"Infrastructure\", \"A working fleet\". In the infield a short stair of four gates lights three steps green, \"Explore\", \"Validate\", \"Deploy\", with the fourth grey, \"Scale\", and a grey tag above it, \"Not ready yet\". A tag under the track reads \"20 applications from 145 reusable modules\". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag."],
+    show: "Counted properly, the City is a third of the way around, with a fleet it can teach.",
+    say: "Here is the track redrawn. Since late 2025 Austin Public Health has built its applications with a fleet of the kind we defined earlier: lead agents plan, builders work in parallel, two reviewers check every change, and a person approves. That fleet has produced 20 applications from 145 reusable modules, and the process is written down well enough to teach. The enterprise pack is still ahead. On the course's gates the sandbox has passed explore, validate and deploy. Scale is the one gate it has not earned; it is not ready yet, and should not try until the organization exists. Counted properly, the City is a third of the way around, past three markers: people, infrastructure, a working fleet. The next part is how to close the rest.",
+    see: ["The track from slide 11 returns with the same pack, labeled \"Enterprise\". The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: \"People\", \"Infrastructure\", \"A working fleet\". In the infield a short stair of four gates lights three steps green, \"Explore\", \"Validate\", \"Deploy\", with the fourth grey, \"Scale\", and a grey tag beside it, \"Not ready yet\". A tag under the track reads \"20 applications from 145 reusable modules\". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag."],
     story: [
       "Austin Public Health builds with a fleet of agents today: 20 applications from 145 reusable modules.",
       "Explore, validate and deploy are passed. Scale is the gate the City is not ready for yet.",
     ],
     steps: [
-      { id: "play", show: ["People", "Infrastructure", "A working fleet", "Explore", "Validate", "Deploy", "Scale", "Not ready yet", "20 applications from 145 reusable modules"] },
+      { id: "play", show: ["Enterprise", "People", "Infrastructure", "A working fleet", "Explore", "Validate", "Deploy", "Scale", "Not ready yet", "20 applications from 145 reusable modules"] },
     ],
   },
 ];
