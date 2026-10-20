@@ -1,4 +1,4 @@
-/** Slide 18's picture: the floor; the member of staff seated behind the desk with the green helper beside them and the orange mark above them; the low fence on the floor; the resident across it; the card that crosses it; and the checklist heading with its two ticked lines. */
+/** Slide 26's picture: the floor; the member of staff seated behind the desk with the green helper beside them and the orange mark above them; the low fence on the floor; the resident across it; the card that crosses it; and the checklist heading with its two ticked lines. */
 "use client";
 
 import { Agent, HumanMark, Part, PassTick } from "@/components/deck/kit";

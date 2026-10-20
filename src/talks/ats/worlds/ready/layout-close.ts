@@ -1,5 +1,5 @@
 /**
- * Slide 20, the close, on navy, set as the talk's title slide is: the title
+ * Slide 29, the close, on navy, set as the talk's title slide is: the title
  * large and centred across the stage, the short green rule centred under it,
  * and the two story lines centred under that, line A at 40 px in the words'
  * colour and line B at the story size in the softer one. The block sits on

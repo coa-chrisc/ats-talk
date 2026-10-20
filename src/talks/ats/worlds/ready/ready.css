@@ -1,9 +1,9 @@
-/* Part 4's own marks, under the kit's rules (kit.css, kit-parts.css) and
+/* Part 6's own marks, under the kit's rules (kit.css, kit-parts.css) and
    docs/aph-brand-reference.md: words and outlines in navy (paper) on the
    white ground, the process and the City's people at work in green, grey
    for what is not needed or kept apart, and the three further hues only for
-   the agent levels on slide 16. Indigo is the course's evidence: slide 19's
-   panel. Orange is the kit's HumanMark and deep green its PassTick, never
+   the agent levels on slide 24. Indigo is the pack, enterprise, on slide
+   27's track. Orange is the kit's HumanMark and deep green its PassTick, never
    named here. A part's state arrives as the kit's custom properties (--d,
    --k). Selectors are doubled where they refine a kit class, so the order
    the sheets load in never decides a picture. */
@@ -89,7 +89,7 @@
   stroke-linecap: round;
 }
 
-/* Slide 16: four bands. Each grows from its left (--k), its body at the
+/* Slide 24: four bands. Each grows from its left (--k), its body at the
    idle tint of its level's hue and a solid cap at its left end in the full
    hue, 12 px wide; the first band, no-go, in grey. The band's left edge,
    its origin, is set on it in stage pixels (scene-levels.tsx). */
@@ -110,7 +110,7 @@
   fill: var(--hue);
 }
 
-/* Slide 17: the stack's tiers in the raised grey, their edges in navy; the
+/* Slide 25: the stack's tiers in the raised grey, their edges in navy; the
    arrows in navy, heavier than a rule, since authority and evidence travel
    along them; the question cards white, with a green stripe down the left. */
 .rd-tier__ground {
@@ -147,7 +147,7 @@
   fill: var(--dk-process);
 }
 
-/* Slide 18: the floor in the rule colour; the desk's front panel in the
+/* Slide 26: the floor in the rule colour; the desk's front panel in the
    raised grey, its ground coming in as its navy edge draws so it hides the
    member of staff's lower half, and its top a solid navy slab that comes in
    with it; the fence's pickets in navy, growing up from the floor, and its
@@ -193,22 +193,150 @@
   stroke-width: 3;
 }
 
-/* Slide 19: the indigo panel, its white discs and their green numerals. The
-   panel grows down from its top (--k). */
-.rd-panel {
+/* Slide 27: the track as slides 11 and 15 draw it. Its lanes in the raised
+   grey and the line between them in white come in as its navy edges draw;
+   the start stripe white in a navy edge. The pack in indigo, enterprise;
+   the City's runner and its dashed outline in the process's green; the
+   markers green in a white ring, so they read on the grey lanes, their
+   leaders in the rule colour. */
+.rd-track__lanes {
+  fill: var(--dk-raised);
+  fill-rule: evenodd;
+  fill-opacity: var(--d, 0);
+}
+
+.rd-track__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.rd-track__lane {
+  fill: none;
+  stroke: var(--dk-night);
+  stroke-width: 2;
+  stroke-opacity: var(--d, 0);
+}
+
+.rd-start {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 14;
+}
+
+.rd-start.rd-start--stripe {
+  stroke: var(--dk-night);
+  stroke-width: 8;
+}
+
+.rd-runner__head {
+  stroke: none;
+}
+
+.rd-runner__limb {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rd-runner--catalog .rd-runner__head {
   fill: var(--dk-catalog);
-  transform: scaleY(var(--k, 0));
 }
 
-.rd-disc {
-  fill: var(--dk-mount);
+.rd-runner--catalog .rd-runner__limb {
+  stroke: var(--dk-catalog);
 }
 
-.rd-numeral {
+.rd-runner--process .rd-runner__head {
   fill: var(--dk-process);
 }
 
-/* Slide 20, set as the opening is: type centred across the stage, line A at
+.rd-runner--process .rd-runner__limb {
+  stroke: var(--dk-process);
+}
+
+/* The runner not there yet: its outline only, dashed, nothing inside it:
+   its head a dashed ring, its limbs a dashed green edge round strokes in
+   the lane's grey. */
+.rd-runner--dashed .rd-runner__head {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 4;
+}
+
+.rd-runner__outline {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 4;
+}
+
+.rd-runner--dashed.rd-runner--dashed .rd-runner__limb {
+  stroke: var(--dk-raised);
+}
+
+/* A leader from a marker to its entry in the key: a thin rule. */
+.rd-leader {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.rd-marker {
+  fill: var(--dk-process);
+  stroke: var(--dk-night);
+  stroke-width: 3;
+}
+
+/* Slide 28, as slide 2 sets its panels: square, a navy edge drawn on, no
+   fill; their numerals in the process's green; their names in HTML
+   as slide 2 sets them, wrapping in their column, the lines balanced; the
+   line down to each tile in green; the tiles on the process's idle tint in
+   a green edge. */
+.rd-note {
+  position: absolute;
+  font-family: var(--dk-face);
+  font-size: var(--dk-text);
+  font-weight: 600;
+  line-height: 42px;
+  letter-spacing: -0.005em;
+  color: var(--dk-paper);
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.rd-panel {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.rd-numeral {
+  font-family: var(--dk-face);
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  fill: var(--dk-process);
+}
+
+.rd-drop {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.rd-tile {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+/* Slide 29, set as the opening is: type centred across the stage, line A at
    40 px, line B in the softer colour, the short rule under the title in the
    process's green growing out from its middle, and the foot's short rule in
    the rule colour. */

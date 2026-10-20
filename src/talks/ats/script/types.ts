@@ -1,9 +1,10 @@
 /**
- * The talk's worlds, in the order the deck gives them: one for each part,
- * but Part 3, which turns at slide 13 from the method (`method`, slides 9
- * to 12) to the plan (`plan`, slides 13 to 15).
+ * The talk's worlds, in the order the deck gives them, one for each part
+ * of the script: what we brought back, where enterprise is, the four
+ * ideas, where the City stands, what we would do first, and ready, the
+ * ask and the reveal.
  */
-export const WORLDS = ["stand", "taught", "method", "plan", "ready"] as const;
+export const WORLDS = ["brought", "enterprise", "ideas", "stands", "first", "ready"] as const;
 export type WorldId = (typeof WORLDS)[number];
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Slide 16's places: four bands across the whole field, stacked from the
+ * Slide 24's places: four bands across the whole field, stacked from the
  * least autonomy at the top to the most at the foot, each in its own hue
  * with its level's name at its left and its caption in a column after it.
  * Three agents are put in a level each: an agent lands in its band, right of
@@ -76,7 +76,7 @@ export const LEVELS = {
   tag: { key: "levels.tag", text: LIST_TAG, at: box(NAME_X, rowY(1) - TAG.h / 2, tagWidth(LIST_TAG), TAG.h) },
 };
 
-/** Everything slide 16 draws under its story band, for the layout test: each agent in its band and in its row. */
+/** Everything slide 24 draws under its story band, for the layout test: each agent in its band and in its row. */
 export const LEVELS_BOXES: Box[] = [
   ...LEVELS.bands.flatMap((band) => [band.at, wordsBox(band.name.at, band.name.text, 32, "start"), wordsBox(band.caption.at, band.caption.text, 26, "start")]),
   ...LEVELS.rows.flatMap((row) => [

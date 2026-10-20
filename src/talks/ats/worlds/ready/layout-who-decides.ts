@@ -1,5 +1,5 @@
 /**
- * Slide 17's places, in two zones. On the left, a short stack of three tiers
+ * Slide 25's places, in two zones. On the left, a short stack of three tiers
  * in the middle of the zone, top to bottom, each its name over its caption;
  * the middle tier takes the orange mark at its right end. A long arrow runs
  * down the stack's left side, its label to its left, and another up its
@@ -67,7 +67,7 @@ export const WHO_DECIDES = {
 /** An arrowhead's reach past its line's end. */
 const HEAD = 14;
 
-/** Everything slide 17 draws under its story band, for the layout test. */
+/** Everything slide 25 draws under its story band, for the layout test. */
 export const WHO_DECIDES_BOXES: Box[] = [
   ...WHO_DECIDES.tiers.flatMap((tier) => [tier.at, wordsBox(tier.name.at, tier.name.text, 32, "start"), wordsBox(tier.caption.at, tier.caption.text, 26, "start")]),
   box(WHO_DECIDES.mark.at.x - 24, WHO_DECIDES.mark.at.y - 24, 48, 48),

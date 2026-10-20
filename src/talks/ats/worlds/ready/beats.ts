@@ -5,11 +5,11 @@
  * result. A slide's click puts the last slide's picture away at once and
  * changes the title; nothing carries from one slide to the next. Each
  * slide's moves are in its own module (steps-levels.ts,
- * steps-who-decides.ts, steps-residents.ts, steps-decisions.ts,
- * steps-close.ts).
+ * steps-who-decides.ts, steps-residents.ts, steps-could-be.ts,
+ * steps-applied.ts, steps-close.ts).
  */
 import type { PartMove } from "@/components/deck/engine/types";
-import { chain, hide, retitle, type ChainBeat } from "@/components/deck/kit";
+import { EASE, chain, hide, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import { COUNTS, PICTURES, groupOf, titleKey } from "./layout";
 
 /** The world's first title waits for the world's arrival fade to be under way. */
@@ -38,3 +38,9 @@ export const before = (pictureId: string) => {
 export const into = (pictureId: string): ChainBeat => ({ moves: [leave(before(pictureId)), retitle(titleKey(before(pictureId)), titleKey(pictureId))] });
 
 export const keys = <T extends { key: string }>(list: readonly T[]) => list.map((entry) => entry.key);
+
+/** A part lands: it fades in from a little high and settles (a marker set down on the lane, a tile on its line). */
+export const land = (key: string, at: number, duration = 0.5): PartMove[] => to(key, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -14 }, { at, duration, ease: EASE.out });
+
+/** A tag drops onto its place about its hole: it fades in a little high and a little small, and settles. */
+export const drop = (key: string, at: number, duration = 0.6): PartMove[] => to(key, { autoAlpha: 1, "--y": 0, "--s": 1 }, { autoAlpha: 0, "--y": -18, "--s": 0.9 }, { at, duration, ease: EASE.out });

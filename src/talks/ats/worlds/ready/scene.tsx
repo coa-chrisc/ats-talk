@@ -11,7 +11,8 @@
 import { Plane, SetText } from "@/components/deck/kit";
 import { TITLE, TITLES } from "./layout";
 import { CloseHtml } from "./scene-close";
-import { DecisionsHtml, DecisionsMarks } from "./scene-decisions";
+import { AppliedHtml, AppliedMarks } from "./scene-applied";
+import { CouldBeHtml, CouldBeMarks } from "./scene-could-be";
 import { LevelsHtml, LevelsMarks } from "./scene-levels";
 import { ResidentsHtml, ResidentsMarks } from "./scene-residents";
 import { WhoDecidesHtml, WhoDecidesMarks } from "./scene-who-decides";
@@ -25,7 +26,8 @@ export function Scene() {
           <LevelsMarks />
           <WhoDecidesMarks />
           <ResidentsMarks />
-          <DecisionsMarks />
+          <CouldBeMarks />
+          <AppliedMarks />
         </>
       }
     >
@@ -35,7 +37,8 @@ export function Scene() {
       <LevelsHtml />
       <WhoDecidesHtml />
       <ResidentsHtml />
-      <DecisionsHtml />
+      <CouldBeHtml />
+      <AppliedHtml />
       <CloseHtml />
     </Plane>
   );

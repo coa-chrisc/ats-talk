@@ -1,0 +1,299 @@
+/* The ideas world's own marks, under the kit's rules (kit.css,
+   kit-parts.css) and docs/aph-brand-reference.md: words and outlines in navy
+   (paper) on the white ground, the City's own people and the process in
+   green, evidence from the course in indigo (catalog), slate (soft) for what
+   failed or is not proposed, and the deep-green tick only through the kit's
+   PassTick. A part's state arrives as the kit's custom properties (--d, --k,
+   --x, --y) and this world's --r, a turn in degrees. Selectors are doubled
+   where they refine a kit class, so the order the sheets load in never
+   decides a picture. */
+
+/* A slide's HTML as one part, holding no room of its own. */
+.id-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Words in the marks: navy, the kit's label size. */
+.dk-label.id-word,
+.dk-text.id-word {
+  fill: var(--dk-paper);
+}
+
+.id-word--strong.id-word--strong {
+  font-weight: 600;
+}
+
+/* Words in HTML, wrapping inside their box. */
+.id-note {
+  position: absolute;
+  font-family: var(--dk-face);
+  font-weight: 500;
+  color: var(--dk-paper);
+  white-space: normal;
+}
+
+.id-note--label {
+  font-size: var(--dk-label);
+  line-height: 32px;
+  letter-spacing: 0.01em;
+}
+
+.id-note--text {
+  font-size: var(--dk-text);
+  line-height: 45px;
+}
+
+.id-note--name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.015em;
+}
+
+/* The large figure: 144 px, a word to a line. */
+.id-note--big {
+  font-size: 144px;
+  font-weight: 700;
+  line-height: 140px;
+  letter-spacing: -0.02em;
+}
+
+.id-note--center {
+  text-align: center;
+}
+
+.id-note--strong {
+  font-weight: 600;
+}
+
+.id-note--catalog.id-note--catalog {
+  color: var(--dk-catalog);
+}
+
+.id-note b {
+  display: block;
+  font-weight: 600;
+}
+
+.id-note span {
+  display: block;
+}
+
+/* A stair's floor. */
+.id-floor {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* A stair's block, growing up from the floor. */
+.id-block {
+  fill: var(--dk-raised);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  transform: scaleY(var(--k, 0));
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+}
+
+/* Slide 7's figure and slide 9's people, in the process green. */
+.id-walker circle,
+.id-walker path,
+.id-figure circle,
+.id-figure path {
+  fill: var(--dk-process);
+}
+
+/* Arrows: grey for what grows with each rung, green for the strongest kind. */
+.id-arrow {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.id-arrow--soft {
+  stroke: var(--dk-soft);
+}
+
+.id-arrow--process {
+  stroke: var(--dk-process);
+}
+
+/* The plain tool: its outline draws on, then its face fills solid. */
+.id-hammer__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.id-hammer__face {
+  fill: var(--dk-paper);
+  opacity: var(--k, 0);
+}
+
+/* Slide 9's balance. */
+.id-stand path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.id-stand .id-stand__foot,
+.id-stand .id-stand__cap {
+  fill: var(--dk-paper);
+  opacity: var(--d, 0);
+}
+
+.id-beam {
+  transform: rotate(calc(var(--r, 0) * 1deg));
+}
+
+.id-beam path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.id-beam .id-beam__pin {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  opacity: var(--d, 0);
+}
+
+.id-pan path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+}
+
+.id-pan .id-pan__plate {
+  fill: var(--dk-paper);
+  opacity: var(--d, 0);
+}
+
+/* The technology: an indigo box with a blank tag. */
+.id-box__face {
+  fill: color-mix(in srgb, var(--dk-catalog) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  stroke: var(--dk-catalog);
+  stroke-width: 3;
+}
+
+.id-box__lid,
+.id-box__string {
+  fill: none;
+  stroke: var(--dk-catalog);
+  stroke-width: 3;
+}
+
+.id-box__tag {
+  fill: var(--dk-night);
+  stroke: var(--dk-catalog);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.id-box__hole {
+  fill: var(--dk-catalog);
+}
+
+/* The plaque: a raised face inside a navy frame with a second rule inset. */
+.id-plaque__face {
+  fill: var(--dk-raised);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.id-plaque__inset {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 1.5;
+}
+
+/* The dial and its needle, which turns counterclockwise by --r degrees. */
+.id-dial path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.id-dial .id-dial__base {
+  stroke-width: 3;
+}
+
+.id-dial__tick {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.id-needle {
+  transform: rotate(calc(var(--r, 0) * -1deg));
+}
+
+.id-needle path,
+.id-needle circle {
+  fill: var(--dk-paper);
+}
+
+/* Slide 10's stair: raised risers, a navy tread edge, a navy gate on each tread. */
+.id-step__riser {
+  fill: var(--dk-raised);
+}
+
+.id-step__tread {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.id-gate {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* The project box, in the process green. */
+.id-project__face {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+.id-project__lid {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+/* The checklist: a white box on each row and a faint rule under its words. */
+.id-list__rule {
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.id-list__box {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* The plaque's name, large over its caption. */
+.id-note .id-plaque__name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.015em;
+}

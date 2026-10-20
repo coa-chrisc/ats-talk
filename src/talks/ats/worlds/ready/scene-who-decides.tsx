@@ -1,4 +1,4 @@
-/** Slide 17's picture, in two zones: the stack of three tiers with the orange mark on the middle one and an arrow down its left side and up its right, each named; and the three question cards on the right. */
+/** Slide 25's picture, in two zones: the stack of three tiers with the orange mark on the middle one and an arrow down its left side and up its right, each named; and the three question cards on the right. */
 "use client";
 
 import { HumanMark, Part, type Point } from "@/components/deck/kit";

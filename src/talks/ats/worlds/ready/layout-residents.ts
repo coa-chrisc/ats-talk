@@ -1,5 +1,5 @@
 /**
- * Slide 18's places: a counter scene seen from the front, large, on a floor
+ * Slide 26's places: a counter scene seen from the front, large, on a floor
  * line, with the parts that must touch drawn touching. Every word is read
  * from the script, by position.
  *
@@ -116,7 +116,7 @@ export const CARD_PLACES = {
 /** Measures the layout test checks against. */
 export const RESIDENTS_MEASURES = { floor: FLOOR_Y, deskFront: DESK.x + DESK.w, scale: SCALE } as const;
 
-/** Everything slide 18 draws under its story band, for the layout test, the card at each of its places. */
+/** Everything slide 26 draws under its story band, for the layout test, the card at each of its places. */
 export const RESIDENTS_BOXES: Box[] = [
   RESIDENTS.staff.at,
   RESIDENTS.desk.at,

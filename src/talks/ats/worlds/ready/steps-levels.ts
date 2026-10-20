@@ -1,5 +1,5 @@
 /**
- * Slide 16's click, the world's first: the title comes up as the world
+ * Slide 24's click, the world's first: the title comes up as the world
  * arrives. The four bands grow across the field one under another, top to
  * bottom, each named and captioned as it grows; line A comes in with them.
  * Then three agents, one at a time: each lands in its band, drops straight

@@ -4,12 +4,12 @@ import { breakAfter, elide, pictureOf, shown, stepOf, storyOf } from "./find";
 describe("reading the script by id", () => {
   it("finds a picture, a step and what the step shows", () => {
     expect(pictureOf("title").part).toBe(1);
-    expect(pictureOf("fleet").number).toBe("4a");
-    expect(pictureOf("fleet").world).toBe("stand");
-    expect(pictureOf("lanes").world).toBe("plan");
+    expect(pictureOf("fleet").number).toBe("15");
+    expect(pictureOf("fleet").world).toBe("stands");
+    expect(pictureOf("lanes").world).toBe("first");
     expect(pictureOf("lets-talk").world).toBe("ready");
     expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Stop at the first rung that works", "More to govern", "Plain tool", "No AI inside"]);
-    expect(stepOf("fleet", "play").show).toEqual(["Sandbox", "Built with the security office", "Lead agents", "Reviewers", "A person approves", "Microsoft", "Quisitive", "Amazon", "Joining the conversation", "Explore", "Validate", "Deploy", "Scale", "Not ready to scale that yet", "Over years"]);
+    expect(stepOf("four-ideas", "play").show).toEqual(["One", "Two", "Three", "Four", "Least autonomy that does the job", "Rules the system enforces, scaled to risk", "People before platforms", "Start small and earn the next step", "Enterprise now", "The City now", "What we would do first"]);
     expect(shown("who-decides", "play")).toEqual(["Leadership", "Sets the bright lines", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know"]);
   });
 

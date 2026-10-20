@@ -1,8 +1,9 @@
 /**
- * The ready world (Part 4, slides 16 to 20) on one plane the size of the
+ * The ready world (Part 6, slides 24 to 29) on one plane the size of the
  * stage: what every slide's layout shares. Each slide's own places are in
  * its own module (layout-levels.ts, layout-who-decides.ts,
- * layout-residents.ts, layout-decisions.ts, layout-close.ts). Every word is
+ * layout-residents.ts, layout-could-be.ts, layout-applied.ts,
+ * layout-close.ts). Every word is
  * read from the script, a label by its place in its step's `show`, and a
  * title's line break by the word it falls after. Each white slide's picture
  * is gathered under two ids, its marks and its HTML (its story lines among
@@ -34,14 +35,18 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
 /**
  * Titles too long for one line at 72 px inside x 1824, by the word each line
- * ends on. Set in Geist bold, the longest line here (slide 17's first) is
- * about 1700 px, inside the 1728 px field. Slides 16, 17 and 19 take two
- * lines; 18 fits on one.
+ * ends on. Set in Geist bold at 72 px with the title's -0.025em tracking
+ * (measured from the font's advance widths), the longest line here (slide
+ * 25's first) is about 1700 px, inside the 1728 px field. Slides 24, 25, 27
+ * and 28 take two lines; 26 fits on one. Slide 27's lines are about 1310
+ * and 1560 px. Slide 28 on one line would run past 2000 px; broken after
+ * its eighth word, about 1430 and 1215.
  */
 const BREAKS: Record<string, string[]> = {
   levels: ["own,"],
   "who-decides": ["decides"],
-  decisions: ["this,"],
+  "could-be": ["done,"],
+  applied: ["ideas"],
 };
 
 /** The white slides' titles, at the field's top left; the close sets its own. */

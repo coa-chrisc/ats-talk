@@ -1,5 +1,5 @@
 /**
- * Slide 17's click: the slide before goes and the title changes. The stack
+ * Slide 25's click: the slide before goes and the title changes. The stack
  * draws top to bottom, each tier's name and caption coming up as its edge
  * closes; the middle tier takes the orange mark. The arrow down the left
  * side draws and is named, then the arrow up the right side; line A comes in

@@ -1,19 +1,23 @@
-import { WHERE_THE_CITY_STANDS } from "./part-1-where-the-city-stands";
-import { WHAT_THE_COURSE_TAUGHT } from "./part-2-what-the-course-taught";
-import { WHAT_WE_WOULD_DO_FIRST } from "./part-3-what-we-would-do-first";
-import { WHEN_AGENTS_COME } from "./part-4-when-agents-come";
+import { WHAT_WE_BROUGHT_BACK } from "./part-1-what-we-brought-back";
+import { WHERE_ENTERPRISE_IS } from "./part-2-where-enterprise-is";
+import { THE_FOUR_IDEAS } from "./part-3-the-four-ideas";
+import { WHERE_THE_CITY_STANDS } from "./part-4-where-the-city-stands";
+import { WHAT_WE_WOULD_DO_FIRST } from "./part-5-what-we-would-do-first";
+import { READY_THE_ASK_THE_REVEAL } from "./part-6-ready-the-ask-the-reveal";
 import type { Picture } from "./types";
 
 export type { Picture, Step, WorldId } from "./types";
 export { WORLDS } from "./types";
 
-/** The four parts, by number from 1, as the script heads them: `PARTS[part - 1]` is a part's name and its length in minutes. */
+/** The six parts, by number from 1, as the script heads them: `PARTS[part - 1]` is a part's name and its length in minutes. */
 export const PARTS = [
-  { name: "Where the City stands", minutes: 5 },
-  { name: "What the course taught", minutes: 6 },
-  { name: "What we would do first", minutes: 9 },
-  { name: "When agents come, and the ask", minutes: 6 },
+  { name: "What we brought back", minutes: 2 },
+  { name: "Where enterprise is", minutes: 5 },
+  { name: "The four ideas", minutes: 5 },
+  { name: "Where the City stands", minutes: 6 },
+  { name: "What we would do first", minutes: 8 },
+  { name: "Ready, the ask, the reveal", minutes: 5 },
 ] as const;
 
 /** Every picture of the talk, in the order it is given. */
-export const SCRIPT: Picture[] = [...WHERE_THE_CITY_STANDS, ...WHAT_THE_COURSE_TAUGHT, ...WHAT_WE_WOULD_DO_FIRST, ...WHEN_AGENTS_COME];
+export const SCRIPT: Picture[] = [...WHAT_WE_BROUGHT_BACK, ...WHERE_ENTERPRISE_IS, ...THE_FOUR_IDEAS, ...WHERE_THE_CITY_STANDS, ...WHAT_WE_WOULD_DO_FIRST, ...READY_THE_ASK_THE_REVEAL];

@@ -1,4 +1,4 @@
-/** Slide 20, the close, set as the opening is: its title centred, the green rule under it, its two story lines and the small line at the foot, on the navy the step asks for. */
+/** Slide 29, the close, set as the opening is: its title centred, the green rule under it, its two story lines and the small line at the foot, on the navy the step asks for. */
 "use client";
 
 import { STAGE, place, type Box } from "@/components/deck/kit";

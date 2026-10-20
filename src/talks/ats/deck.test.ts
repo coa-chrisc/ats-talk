@@ -55,9 +55,9 @@ describe("the talk's deck", () => {
     expect(deck.worlds.flatMap(({ world }) => world.steps).every((step) => step.ground === undefined || step.ground === "navy")).toBe(true);
   });
 
-  it.skipIf(!COMPLETE)("sets slide 1 and the close (slide 20) on navy, and every other step on the deck's white", () => {
+  it.skipIf(!COMPLETE)("sets slide 1 and the close (slide 29) on navy, and every other step on the deck's white", () => {
     const navy = deck.worlds.flatMap(({ world }) => world.steps.filter((step) => step.ground === "navy").map((step) => `${world.id}/${step.id}`));
-    expect(navy).toEqual(SCRIPT.filter((picture) => ["1", "20"].includes(picture.number)).flatMap((picture) => picture.steps.map((step) => `${picture.world}/${picture.id}.${step.id}`)));
+    expect(navy).toEqual(SCRIPT.filter((picture) => ["1", "29"].includes(picture.number)).flatMap((picture) => picture.steps.map((step) => `${picture.world}/${picture.id}.${step.id}`)));
     expect(navy).toHaveLength(2);
   });
 });

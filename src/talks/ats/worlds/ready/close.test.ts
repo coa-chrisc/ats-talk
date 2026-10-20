@@ -1,5 +1,5 @@
 /**
- * Slide 20, the close, as the opening plays: the navy ground; the last
+ * Slide 29, the close, as the opening plays: the navy ground; the last
  * picture and its title go; the title settles, the rule grows under it,
  * line A, line B, and the small line at the foot last, nothing after it.
  */
@@ -14,7 +14,7 @@ const click = "lets-talk.play";
 const [A, B] = storyKeys("story.lets-talk", 2);
 const start = (key: string) => startOf(click, key);
 
-describe("20, the close", () => {
+describe("29, the close", () => {
   it("is on navy", () => {
     expect(ready.steps.at(-1)!.ground).toBe("navy");
   });

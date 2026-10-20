@@ -1,5 +1,5 @@
 /**
- * Slide 18's own drawings: the floor line, a desk seen from the front, a low
+ * Slide 26's own drawings: the floor line, a desk seen from the front, a low
  * picket fence standing on the floor, and the card that crosses it. SVG for
  * the plane's marks, moved with the house moves only: `draw` (`--d`),
  * `fill` (`--k`), `rise`, and `x`/`y` for travel. Colours are in ready.css.

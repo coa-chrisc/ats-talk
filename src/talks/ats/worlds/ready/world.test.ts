@@ -1,8 +1,8 @@
 /**
- * The ready world as a whole: its five slides in order, one click each,
+ * The ready world as a whole: its six slides in order, one click each,
  * every word from the script, the house rules, and the story lines. Each
  * slide's own picture is tested in its own file (levels, who-decides,
- * residents, decisions and close .test.ts), its places in layout.test.ts;
+ * residents, could-be, applied and close .test.ts), its places in layout.test.ts;
  * what they share is in harness.ts.
  */
 import { readFileSync, readdirSync } from "node:fs";
@@ -24,10 +24,10 @@ const sources = readdirSync(dir)
 const source = (file: string) => sources.find(([name]) => name === file)![1];
 
 describe("the ready world", () => {
-  it("holds the script's slides 16 to 20 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["16", "17", "18", "19", "20"]);
+  it("holds the script's slides 24 to 29 in the order shown, one click each", () => {
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["24", "25", "26", "27", "28", "29"]);
     expect(ready.steps.map((step) => step.id)).toEqual(ids);
-    expect(ids).toEqual(["levels.play", "who-decides.play", "residents.play", "decisions.play", "lets-talk.play"]);
+    expect(ids).toEqual(["levels.play", "who-decides.play", "residents.play", "could-be.play", "applied.play", "lets-talk.play"]);
   });
 
   it("has in its scene every part a step names", () => {
@@ -68,7 +68,7 @@ describe("the ready world", () => {
   });
 
   it("puts only the close on navy, the other slides on the deck's white", () => {
-    expect(ready.steps.map((step) => step.ground ?? "white")).toEqual(["white", "white", "white", "white", "navy"]);
+    expect(ready.steps.map((step) => step.ground ?? "white")).toEqual(["white", "white", "white", "white", "white", "navy"]);
   });
 
   it("shows no picture file: every slide is drawn", () => {
@@ -111,8 +111,10 @@ describe("one slide at a time", () => {
     expect(lines("who-decides")).toHaveLength(2);
     expect(lines("who-decides")[0].endsWith("decides")).toBe(true);
     expect(lines("residents")).toHaveLength(1);
-    expect(lines("decisions")).toHaveLength(2);
-    expect(lines("decisions")[0].endsWith("this,")).toBe(true);
+    expect(lines("could-be")).toHaveLength(2);
+    expect(lines("could-be")[0].endsWith("done,")).toBe(true);
+    expect(lines("applied")).toHaveLength(2);
+    expect(lines("applied")[0].endsWith("ideas")).toBe(true);
     expect(CLOSE.title.lines).toHaveLength(1);
   });
 });
@@ -127,8 +129,9 @@ describe("the words on the stage", () => {
     for (const text of texts) expect(allowed.some((words) => words.includes(text)), text).toBe(true);
   });
 
-  it("include every title, story line and label the script gives this part, whole", () => {
-    for (const words of [...named, ...stories]) expect(texts, words).toContain(words);
+  it("include every title, story line and label the script gives this part, whole or broken over consecutive lines", () => {
+    const over = (words: string) => texts.some((_, i) => [2, 3].some((k) => texts.slice(i, i + k).join(" ") === words));
+    for (const words of [...named, ...stories]) expect(texts.includes(words) || over(words), words).toBe(true);
     const shown = texts.join(" ");
     for (const picture of PICTURES) for (const word of picture.show.split(" ")) expect(shown, picture.show).toContain(word);
   });
@@ -151,10 +154,10 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses orange only through the kit's HumanMark, on slides 17 and 18, and the pass green only through its PassTick, on slide 18", () => {
+  it("uses orange only through the kit's HumanMark, on slides 25 and 26, and the pass green only through its PassTick, on slides 26 and 28", () => {
     for (const [file, text] of sources) expect(text, file).not.toMatch(/--dk-human|--dk-pass|#f4642c|#1f573b/i);
     expect(sources.filter(([, text]) => /<HumanMark\b/.test(text)).map(([file]) => file)).toEqual(["scene-residents.tsx", "scene-who-decides.tsx"]);
-    expect(sources.filter(([, text]) => /<PassTick\b/.test(text)).map(([file]) => file)).toEqual(["scene-residents.tsx"]);
+    expect(sources.filter(([, text]) => /<PassTick\b/.test(text)).map(([file]) => file)).toEqual(["scene-applied.tsx", "scene-residents.tsx"]);
     for (const [file, text] of sources) expect(text, file).not.toMatch(VENDOR_COLOURS);
   });
 
@@ -163,12 +166,12 @@ describe("the house rules", () => {
     for (const [file, text] of sources.filter(([file]) => file.endsWith(".css"))) expect(text, file).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(/i);
   });
 
-  it("puts the level hues on slide 16's bands and agents only, and indigo on slide 19's panel only", () => {
+  it("puts the level hues on slide 24's bands and agents only, and indigo on slide 27's pack only", () => {
     for (const [file, text] of sources.filter(([file]) => file !== "layout-levels.ts")) expect(text, file).not.toMatch(/"(?:review|lead|fix)"/);
     const css = source("ready.css").replace(/\/\*[\s\S]*?\*\//g, "");
     expect(css).not.toMatch(/--dk-(?:review|lead|fix|dept-[abc])\b/);
     const indigo = [...css.matchAll(/([^{}]+)\{[^}]*--dk-catalog[^}]*\}/g)].map(([, selector]) => selector.trim());
-    expect(indigo).toEqual([".rd-panel"]);
+    expect(indigo).toEqual([".rd-runner--catalog .rd-runner__head", ".rd-runner--catalog .rd-runner__limb"]);
   });
 
   it("moves nothing on a clock, a transition or chance, and repeats nothing", () => {

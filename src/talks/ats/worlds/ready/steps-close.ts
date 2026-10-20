@@ -1,6 +1,6 @@
 /**
- * Slide 20's click, the close, timed as the opening's: the step puts the
- * stage on navy, slide 19's picture and title go, and the title settles;
+ * Slide 29's click, the close, timed as the opening's: the step puts the
+ * stage on navy, slide 28's picture and title go, and the title settles;
  * 0.75 s after it starts, the green rule grows out from its middle under it;
  * then line A, then line B, then the small line at the foot. The chain ends
  * there and nothing moves after it.

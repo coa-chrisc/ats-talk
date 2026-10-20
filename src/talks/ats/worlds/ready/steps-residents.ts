@@ -1,5 +1,5 @@
 /**
- * Slide 18's click: the floor draws, the member of staff takes their seat
+ * Slide 26's click: the floor draws, the member of staff takes their seat
  * behind the desk, named, and the green helper comes up right beside them,
  * named. The resident walks up from the right across the floor, named, and
  * the first story line comes in with them. The low fence rises from the

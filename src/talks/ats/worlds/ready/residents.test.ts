@@ -1,5 +1,5 @@
 /**
- * Slide 18, in the order its They see gives: the floor, staff behind a desk
+ * Slide 26, in the order its They see gives: the floor, staff behind a desk
  * with the AI helper beside them, and a resident; the fence between them; the card crosses the
  * fence while the helper stays at the desk; the orange mark lands on the
  * member of staff; the card reaches the resident only after it; the
@@ -17,7 +17,7 @@ const [A] = storyKeys("story.residents", 2);
 /** The card's own legs: up clear of the fence and down to the resident (its y), and across (its x); not its rise into view. */
 const legs = (prop: "x" | "y") => movesOf(click, R.card.key, prop).filter((play) => [R.card.lift, R.card.served, R.card.across].includes(play.on[prop] as number));
 
-describe("18, residents", () => {
+describe("26, residents", () => {
   it("sets the desk side up, then the resident walks in, then the fence rises between them", () => {
     const [walk] = movesOf(click, R.resident.key, "x");
     expect(walk.at).toBeGreaterThan(startOf(click, R.helper.key));

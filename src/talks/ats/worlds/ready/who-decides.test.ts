@@ -1,5 +1,5 @@
 /**
- * Slide 17, in the order its They see gives: the stack top to bottom, each
+ * Slide 25, in the order its They see gives: the stack top to bottom, each
  * tier named; the orange mark on the middle tier; the arrow down the left,
  * then the arrow up the right, each named; the three question cards in
  * turn; line A after the arrows, line B with the last card.
@@ -14,7 +14,7 @@ const W = WHO_DECIDES;
 const [A, B] = storyKeys("story.who-decides", 2);
 const start = (key: string) => startOf(click, key);
 
-describe("17, who decides", () => {
+describe("25, who decides", () => {
   it("draws the tiers top to bottom, each named and captioned as it draws", () => {
     const starts = W.tiers.map((tier) => start(tier.key));
     expect([...starts].sort((a, b) => a - b)).toEqual(starts);

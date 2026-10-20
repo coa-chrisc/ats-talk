@@ -1,4 +1,4 @@
-/** Slide 16's picture: four bands stacked across the field, each in its level's hue, named and captioned; three agents, each put in a band and dropped into the short list under them with its level and an owner's nameplate; and the grey tag at the list's left. */
+/** Slide 24's picture: four bands stacked across the field, each in its level's hue, named and captioned; three agents, each put in a band and dropped into the short list under them with its level and an owner's nameplate; and the grey tag at the list's left. */
 "use client";
 
 import { Agent, Part } from "@/components/deck/kit";

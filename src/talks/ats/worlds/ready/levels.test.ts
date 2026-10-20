@@ -1,5 +1,5 @@
 /**
- * Slide 16, in the order its They see gives: the four bands top to bottom,
+ * Slide 24, in the order its They see gives: the four bands top to bottom,
  * each with its name and caption; then the short list, each agent landing
  * in its band and dropping into its row before its level and nameplate come
  * up; the grey tag last; line A with the bands, line B with the tag.
@@ -14,7 +14,7 @@ const L = LEVELS;
 const [A, B] = storyKeys("story.levels", 2);
 const start = (key: string) => startOf(click, key);
 
-describe("16, the four levels", () => {
+describe("24, the four levels", () => {
   it("grows the bands one after another, top to bottom, each from its left edge", () => {
     const starts = L.bands.map((band) => start(band.key));
     expect([...starts].sort((a, b) => a - b)).toEqual(starts);
