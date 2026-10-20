@@ -8,12 +8,12 @@ export const WHERE_ENTERPRISE_IS: Picture[] = [
     part: 2,
     world: "enterprise",
     name: "Enterprise is spending big",
-    show: "Enterprise spending on AI has tripled, and most of the money goes to one kind of work.",
-    say: "Money first, because it sets the scale. BCG's October survey puts AI investment at 17 percent of IT budgets in 2026, up from five percent in 2025. Where that money is going matters more than how much there is. The course splits it three ways. Buy is off-the-shelf tools for commodity work, about a third of the spending. Build is custom systems for the rare case where nothing on the market will do, about a tenth. Boost is the middle and the largest share: your own data on rented AI, the same models anyone can pay to use, in the hands of your own staff. That middle is where the City's advantage lies, because nobody sells the City's knowledge of its own services. Hold that thought until we get to the City's own budget line, which is zero.",
+    show: "Enterprise AI spending has tripled. Most of it goes to putting their own data to work.",
+    say: "Money first, because it sets the scale. BCG's October survey puts AI investment at 17 percent of IT budgets in 2026, up from five percent in 2025, more than three times as much. Where that money is going matters more than how much there is. The course splits it three ways. Buy is off-the-shelf tools for commodity work, about a third of the spending. Build is custom systems for the rare case where nothing on the market will do, about a tenth. Boost is the middle and the largest share: your own data on rented AI, the same models anyone can pay to use, in the hands of your own staff. So the money is not mostly buying new AI. It is paying to connect AI to what a company already knows. That is where the City's value lies too, because no vendor can sell the City its knowledge of its own services. Hold that thought until we get to the City's own budget line, which is zero.",
     see: ["Two indigo columns rise side by side on the left, labeled \"2025\" and \"2026\" under their feet, each column carrying the label \"AI investment\" and its figure, \"Five percent\" and \"17 percent\"; the second column is more than three times the first. One caption sits under both columns: \"Of IT budgets\". On the right, under the heading \"Where that money is going\", a wide bar splits into three parts labeled \"Buy\", \"Boost\" and \"Build\", sized about 35, 55 and 10, each with a caption: \"Off-the-shelf tools\", \"Your own data on rented AI\", \"Custom systems\". The middle part fills green. The slide ends on the two columns and the three-part bar."],
     story: [
-      "AI investment rose from five percent of IT budgets in 2025 to 17 percent in 2026.",
-      "More than half of it pays to put a company's own data and people to work on AI that anyone can rent.",
+      "Most companies rent the AI and spend the money pairing it with their own data and their own staff.",
+      "That is where the City's value lies too: no vendor can sell the City its knowledge of its own services.",
     ],
     steps: [
       { id: "play", show: ["2025", "2026", "AI investment", "Five percent", "17 percent", "Of IT budgets", "Where that money is going", "Buy", "Boost", "Build", "Off-the-shelf tools", "Your own data on rented AI", "Custom systems"] },

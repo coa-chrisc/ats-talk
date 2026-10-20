@@ -108,7 +108,7 @@ describe("the enterprise world's layout", () => {
    * A changed title fails here until it is measured again.
    */
   const MEASURED: Record<string, readonly [string, number][]> = {
-    spending: [["Enterprise spending on AI has tripled,", 1241], ["and most of the money goes to one kind of work.", 1613]],
+    spending: [["Enterprise AI spending has tripled.", 1168], ["Most of it goes to putting their own data to work.", 1661]],
     agents: [["A chatbot answers a question.", 1008], ["An agent is given a goal and does the work.", 1428]],
     review: [["Human in the loop worked for chatbots. Agents", 1569], ["produce more than anyone can feasibly review.", 1568]],
     "fleet-defined": [["A fleet is a team of agents, each with its own job,", 1617], ["and a person who approves the result.", 1268]],

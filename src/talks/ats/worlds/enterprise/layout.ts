@@ -40,7 +40,7 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * px).
  */
 const BREAKS: Record<string, string[]> = {
-  spending: ["tripled,"],
+  spending: ["tripled."],
   agents: ["question."],
   review: ["Agents"],
   "fleet-defined": ["job,"],
