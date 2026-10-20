@@ -5,12 +5,13 @@
  * lists, so it is checked here too).
  */
 import { describe, expect, it } from "vitest";
-import { CHAIN, HOLD, storyKeys } from "@/components/deck/kit";
+import { CHAIN, HOLD, RISE, storyKeys } from "@/components/deck/kit";
 import { storyId } from "../steps";
 import { OPENING, storyKeysOf, titleKey } from "./layout";
-import { FOUR_IDEAS } from "./layout-four-ideas";
+import { COURSE } from "./layout-course";
+import { LESSONS } from "./layout-lessons";
 import { ARRIVE } from "./moves";
-import { at, elements, endOf, ids, playOf, playsAt, startOf, stepOf, world } from "./harness";
+import { at, before, elements, endOf, ids, playOf, playsAt, startOf, stepOf, world } from "./harness";
 
 const storyAt = (pictureId: string, line: 0 | 1) => startOf(stepOf(pictureId), storyKeys(storyId(pictureId), 2)[line]);
 
@@ -44,9 +45,67 @@ describe("slide 1, the title", () => {
   });
 });
 
-describe("slide 2, the four ideas", () => {
-  const id = stepOf("four-ideas");
-  const F = FOUR_IDEAS;
+describe("slide 2, the course", () => {
+  const id = stepOf("course");
+  const C = COURSE;
+  const tiles = C.tiles.map((tile) => startOf(id, tile.key));
+  const names = C.tiles.map((tile) => startOf(id, tile.name.key));
+  const benches = C.tiles.map((tile) => startOf(id, tile.bench.key));
+
+  it("lands the four tiles left to right, each settling down onto its place", () => {
+    for (let i = 1; i < tiles.length; i++) expect(tiles[i]).toBeGreaterThan(tiles[i - 1]);
+    for (const tile of C.tiles) {
+      expect(before(id)[tile.key]).toMatchObject({ autoAlpha: 0, y: -RISE });
+      expect(playOf(id, tile.key)[0].on).toMatchObject({ y: 0, autoAlpha: 1 });
+    }
+  });
+
+  it("lands every tile before any name, then names the tiles in turn", () => {
+    expect(names[0]).toBeGreaterThan(Math.max(...C.tiles.map((tile) => endOf(id, tile.key))));
+    for (let i = 1; i < names.length; i++) expect(names[i]).toBeGreaterThan(names[i - 1]);
+  });
+
+  it("settles the college's caption under the row once the names are up, and raises story line A with it", () => {
+    expect(startOf(id, C.college.key)).toBeGreaterThan(Math.max(...C.tiles.map((tile) => endOf(id, tile.name.key))));
+    expect(storyAt("course", 0)).toBeGreaterThan(startOf(id, C.college.key));
+    expect(storyAt("course", 0)).toBeLessThan(endOf(id, C.college.key));
+  });
+
+  it("then draws a bench under each tile in turn, after a hold to read, story line B rising as they draw", () => {
+    expect(benches[0] - endOf(id, storyKeysOf("course")[0])).toBeGreaterThanOrEqual(HOLD.read);
+    for (let i = 1; i < benches.length; i++) expect(benches[i]).toBeGreaterThan(benches[i - 1]);
+    expect(storyAt("course", 1)).toBeGreaterThan(benches[0]);
+    expect(storyAt("course", 1)).toBeLessThan(Math.max(...C.tiles.map((tile) => endOf(id, tile.bench.key))));
+  });
+
+  it("lands the build's caption under the four benches last, and ends on it", () => {
+    const build = startOf(id, C.build.key);
+    expect(build).toBeGreaterThan(Math.max(...C.tiles.map((tile) => endOf(id, tile.bench.key))));
+    expect(build).toBeGreaterThan(endOf(id, storyKeysOf("course")[1]));
+    expect(endOf(id, C.build.key)).toBe(Math.max(...playsAt(id).map((play) => play.at + play.duration)));
+  });
+
+  it("ends on the four named tiles, the caption and the four benches", () => {
+    const end = at(id);
+    for (const tile of C.tiles) {
+      expect(end[tile.key]).toMatchObject({ autoAlpha: 1, y: 0 });
+      expect(end[tile.name.key].autoAlpha).toBe(1);
+      expect(end[tile.bench.key]["--d"]).toBe(1);
+    }
+    expect(end[C.college.key].autoAlpha).toBe(1);
+    expect(end[C.build.key].autoAlpha).toBe(1);
+  });
+
+  it("changes the title at the start of its click, slide 1's gone at once", () => {
+    expect(startOf(id, titleKey("title"))).toBe(0);
+    expect(at(id)[titleKey("title")].autoAlpha).toBe(0);
+    expect(at(id)[titleKey("course")].yPercent).toBe(0);
+  });
+});
+
+describe("slide 2a, the four lessons", () => {
+  const id = stepOf("lessons");
+  const F = LESSONS;
   const R = F.route;
   const panels = F.panels.map((panel) => startOf(id, panel.key));
   const names = F.panels.map((panel) => startOf(id, panel.name.key));
@@ -66,15 +125,15 @@ describe("slide 2, the four ideas", () => {
   });
 
   it("raises story line A with the first two names and B with the last two, after a hold to read", () => {
-    expect(storyAt("four-ideas", 0)).toBeGreaterThan(names[0]);
-    expect(storyAt("four-ideas", 0)).toBeLessThan(names[2]);
-    expect(names[2] - endOf(id, storyKeysOf("four-ideas")[0])).toBeGreaterThanOrEqual(HOLD.read);
-    expect(storyAt("four-ideas", 1)).toBeGreaterThan(names[2]);
+    expect(storyAt("lessons", 0)).toBeGreaterThan(names[0]);
+    expect(storyAt("lessons", 0)).toBeLessThan(names[2]);
+    expect(names[2] - endOf(id, storyKeysOf("lessons")[0])).toBeGreaterThanOrEqual(HOLD.read);
+    expect(storyAt("lessons", 1)).toBeGreaterThan(names[2]);
   });
 
   it("then draws the route left to right, each stop arriving as the front reaches it and named, and lights the stops left to right", () => {
     const line = playOf(id, R.key)[0];
-    expect(line.at).toBeGreaterThan(endOf(id, storyKeysOf("four-ideas")[1]));
+    expect(line.at).toBeGreaterThan(endOf(id, storyKeysOf("lessons")[1]));
     const arrive = R.stops.map((stop) => playOf(id, stop.key).find((play) => "autoAlpha" in play.on)!.at);
     const light = R.stops.map((stop) => playOf(id, stop.key).find((play) => "--k" in play.on)!.at);
     for (const [i, stop] of R.stops.entries()) {
@@ -103,9 +162,9 @@ describe("slide 2, the four ideas", () => {
     }
   });
 
-  it("changes the title at the start of its click, slide 1's gone at once", () => {
-    expect(startOf(id, titleKey("title"))).toBe(0);
-    expect(at(id)[titleKey("title")].autoAlpha).toBe(0);
-    expect(at(id)[titleKey("four-ideas")].yPercent).toBe(0);
+  it("changes the title at the start of its click, slide 2's gone at once", () => {
+    expect(startOf(id, titleKey("course"))).toBe(0);
+    expect(at(id)[titleKey("course")].autoAlpha).toBe(0);
+    expect(at(id)[titleKey("lessons")].yPercent).toBe(0);
   });
 });

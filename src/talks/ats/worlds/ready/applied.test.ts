@@ -16,7 +16,7 @@ const A = APPLIED;
 const [LINE_A, LINE_B] = storyKeys("story.applied", 2);
 const start = (key: string) => startOf(click, key);
 
-describe("28, the four ideas applied", () => {
+describe("28, the four lessons applied", () => {
   it("draws the panels left to right, each numbered and named before its edge has closed", () => {
     const starts = A.panels.map((panel) => start(panel.key));
     expect([...starts].sort((a, b) => a - b)).toEqual(starts);

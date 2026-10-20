@@ -317,7 +317,7 @@ describe("slide 19", () => {
 
   it("asks three questions over the first table and one over each of the others, in the script's order", () => {
     expect(L.tables.map((table) => table.bubbles.map((bubble) => bubble.text))).toEqual([
-      ["What is slow or broken", "Where they could do more", "Their goals for 2027 and 2028"],
+      ["What is slow or broken", "Where they could do more", "What they want done by 2027 and 2028"],
       ["What worries them"],
       ["How it wants the City to use AI"],
     ]);

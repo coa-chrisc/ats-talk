@@ -6,7 +6,8 @@
  * 120 down in a 340 px column of 42 px lines, set in HTML and balanced by
  * the browser as slide 2's are, so the two slides break them alike. Under
  * each panel, a green line 48 long from the middle of its foot down to a
- * square tile the panel's width, whose words are set on two lines; and on each
+ * square tile the panel's width, whose words are set on one or two lines,
+ * centred in it up and down; and on each
  * panel's top right corner, inside it, the passed tick. Words are read from
  * the script, by position: the four numerals, the four names, then the
  * four tiles.
@@ -24,13 +25,13 @@ const TILES = LABELS.slice(8, 12);
 export const PANEL = { w: 396, gap: 48, h: 300, inset: 28, name: 120, column: 340, nameLine: 42, nameLines: 3 } as const;
 /** The numeral, as slide 2 sets it: 56 px type centred on the middle of a 72 px line under the 28 px inset, so its middle is 64 under the panel's top. */
 export const NUMERAL = { size: 56, slot: 72, middle: 28 + 36 } as const;
-/** The line from a panel's foot down to its tile, and the tile, 88 tall, its two lines of words 24 in and 32 apart, centred in it. */
+/** The line from a panel's foot down to its tile, and the tile, 88 tall, its lines of words 24 in and 32 apart, centred in it. */
 export const TILE = { line: 48, h: 88, rx: 0, inset: 24 } as const;
 /** The passed tick: radius 20, centred 40 in from the panel's top right corner, so it sits on the corner and inside the drawing's top. */
 export const TICK = { r: 20, in: 40 } as const;
 
-/** Where each tile's words break, by the word a line ends on: set in Geist SemiBold at 26 px, a tile's lines measure at most about 250 px. */
-const TILE_BREAKS = [["and"], ["sandbox and"], ["and"], ["and"]] as const;
+/** Where each tile's words break, by the word a line ends on: set in Geist SemiBold at 26 px, a tile's lines measure at most about 250 px. The first tile's words fit on one line (about 200 px) and stay on one. */
+const TILE_BREAKS: readonly (readonly string[])[] = [[], ["sandbox and"], ["and"], ["and"]];
 
 const TOP = contentTop("applied");
 const panelX = (i: number) => SAFE.left + i * (PANEL.w + PANEL.gap);

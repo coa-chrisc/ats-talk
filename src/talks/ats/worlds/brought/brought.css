@@ -35,7 +35,7 @@
   transform-origin: 50% 50%;
 }
 
-/* Slide 2: the panels, square-cornered and calm, in navy. */
+/* Slide 2a: the panels, square-cornered and calm, in navy. */
 .br-panel {
   fill: none;
   stroke: var(--dk-paper);
@@ -89,4 +89,27 @@
   stroke: var(--dk-process);
   stroke-width: 3;
   opacity: var(--k, 0);
+}
+
+/* Slide 2: a module tile in the catalog's indigo, its edge full and its fill at the idle tint, square-cornered like the panels. */
+.br-tile {
+  fill: var(--dk-catalog);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-catalog);
+  stroke-width: 2.5;
+}
+
+/* A workbench under a tile: the process's green, drawn as one outline. */
+.br-bench {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* A caption under the row or the benches: the text size, medium, in the soft ink. */
+.dk-text.br-caption {
+  font-weight: 500;
+  fill: var(--dk-soft);
 }

@@ -8,9 +8,9 @@ import { describe, expect, it } from "vitest";
 import { AGENT_R, STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, capOf, contentTop, figureWidth, linesIn, titleOf, wordsWidth } from "./layout";
 import { AGENTS, CAPTION_Y, LOOP_RING } from "./layout-agents";
-import { BUILDER_R, FLEET } from "./layout-fleet";
+import { BUILDER_R, FLEET, GATE } from "./layout-fleet";
 import { BARS, FIGURE as SHARE, FUNNEL, REVIEW, STACK } from "./layout-review";
-import { BAR, COLUMN, SPENDING, figureBox as spendingFigure } from "./layout-spending";
+import { BAR, COLUMN, SPENDING } from "./layout-spending";
 import { CARD, FIGURE as BIG, INNER, STUMBLED, figureBox as stumbledFigure } from "./layout-stumbled";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 
@@ -20,30 +20,32 @@ const S = SPENDING;
 const A = AGENTS;
 const L = A.loop;
 const F = FLEET;
+const K = F.keys;
 const R = REVIEW;
 const reviewMark = () => box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48);
 const shareBox = () => box(R.figure.at.x, R.figure.at.y - capOf(SHARE.size), figureWidth(R.figure.runs, SHARE.size, SHARE.small), capOf(SHARE.size) + 8);
 const reviewZones = () => ({
-  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), text(bar.caption.at, bar.caption.text, bar.caption.anchor)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
-  middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), text(R.stack.name.at, R.stack.name.text)]),
-  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), text(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox(), label(R.figure.caption.at, R.figure.caption.text, "start")]),
+  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), label(bar.caption.at, bar.caption.text, bar.caption.anchor)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
+  middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), label(R.stack.name.at, R.stack.name.text)]),
+  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), label(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), label(R.people.at, R.people.text), shareBox(), label(R.figure.caption.at, R.figure.caption.text)]),
 });
 const T = STUMBLED;
 
 /** The person's mark: its ring, and its words to its right (the kit sets them 44 px from its middle). */
 const markBox = () => box(F.mark.at.x - 24, F.mark.at.y - 24, 48, 48);
 const markWords = () => label({ x: F.mark.at.x + 44, y: F.mark.at.y }, F.mark.text, "start");
+/** The gate's posts and lintel, and the ring of keys with its keys hanging 21 px under its middle (parts.tsx). */
+const gateBox = () => box(K.gate.x0 - 2, K.gate.top - 2, K.gate.x1 - K.gate.x0 + 4, K.gate.foot - K.gate.top + 2);
+const keyRingBox = () => box(K.ring.at.x - 11, K.ring.at.y - 7, 24, 34);
 
 const DRAWN: Record<string, Box[]> = {
   spending: [
-    ...S.columns.flatMap((column) => [column.at, text(column.name.at, column.name.text)]),
+    ...S.columns.flatMap((column) => [column.at, label(column.name.at, column.name.text), text(column.figure.at, column.figure.text), text(column.year.at, column.year.text)]),
     box(S.floor.x0, S.floor.y - 2, S.floor.x1 - S.floor.x0, 4),
     text(S.ofIt.at, S.ofIt.text),
-    spendingFigure(),
-    text(S.figure.caption.at, S.figure.caption.text, "start"),
+    text(S.heading.at, S.heading.text, "start"),
     S.bar.at,
-    ...S.bar.parts.map((part) => text(part.name.at, part.name.text)),
-    text(S.bar.caption.at, S.bar.caption.text),
+    ...S.bar.parts.flatMap((part) => [text(part.name.at, part.name.text), label(part.caption.at, part.caption.text, part.caption.anchor)]),
   ],
   agents: [
     box(A.line.x0, A.line.y - 14, A.line.x1 - A.line.x0, 28),
@@ -61,6 +63,11 @@ const DRAWN: Record<string, Box[]> = {
     F.board.box,
     ...F.builders.at.map((at) => ringBox(at, BUILDER_R)),
     text(F.builders.name.at, F.builders.name.text),
+    gateBox(),
+    ringBox(K.at, AGENT_R),
+    keyRingBox(),
+    text(K.name.at, K.name.text, "start"),
+    label(K.caption.at, K.caption.text, "start"),
     box(F.wall.x - 2, F.wall.y0, 4, F.wall.y1 - F.wall.y0),
     label(F.wall.name.at, F.wall.name.text),
     ...F.reviewers.at.map((at) => ringBox(at, AGENT_R)),
@@ -101,11 +108,11 @@ describe("the enterprise world's layout", () => {
    * A changed title fails here until it is measured again.
    */
   const MEASURED: Record<string, readonly [string, number][]> = {
-    spending: [["Enterprise AI spending tripled in two years.", 1430], ["Most of it pairs models with a company's own data.", 1691]],
-    agents: [["An agent takes a goal, plans its own steps,", 1410], ["uses tools, acts, and stops at a boundary.", 1368]],
-    review: [["Review by a person worked for chatbots.", 1364], ["Agents produce more than anyone can read.", 1467]],
-    "fleet-defined": [["A fleet is several agents with separate roles.", 1485], ["A person approves the result.", 983]],
-    stumbled: [["Most organizations that rushed into agents are", 1568], ["stumbling. Each failure was a missing limit.", 1419]],
+    spending: [["Enterprise spending on AI has tripled,", 1241], ["and most of the money goes to one kind of work.", 1613]],
+    agents: [["A chatbot answers a question.", 1008], ["An agent is given a goal and does the work.", 1428]],
+    review: [["Human in the loop worked for chatbots. Agents", 1569], ["produce more than anyone can feasibly review.", 1568]],
+    "fleet-defined": [["A fleet is a team of agents, each with its own job,", 1617], ["and a person who approves the result.", 1268]],
+    stumbled: [["Plenty of organizations rushed in and stumbled.", 1586], ["In every case, a limit was missing.", 1111]],
   };
 
   it("sets every title on two lines, each inside the band", () => {
@@ -117,48 +124,67 @@ describe("the enterprise world's layout", () => {
 });
 
 describe("slide 3, the spending", () => {
-  it("stands the two columns on their floor side by side, the second 3.4 times the first, each named over its top", () => {
+  it("stands the two columns on their floor side by side, the second 3.4 times the first, each carrying its figure over its top and the one name over that", () => {
     const [five, seventeen] = S.columns;
     expect(bottom(five.at)).toBe(S.floor.y);
     expect(bottom(seventeen.at)).toBe(S.floor.y);
     expect(seventeen.at.h / five.at.h).toBeGreaterThan(3);
     expect(seventeen.at.h).toBe(COLUMN.tallest);
     expect(seventeen.at.x - right(five.at)).toBe(COLUMN.gap);
+    expect(five.name.text).toBe(seventeen.name.text);
     for (const column of S.columns) {
-      expect(column.name.at.x).toBe(column.at.x + column.at.w / 2);
-      expect(bottom(text(column.name.at, column.name.text))).toBeLessThan(column.at.y);
+      expect(column.figure.at.x).toBe(column.at.x + column.at.w / 2);
+      expect(column.name.at.x).toBe(column.figure.at.x);
+      const figure = text(column.figure.at, column.figure.text);
+      const name = label(column.name.at, column.name.text);
+      expect(bottom(figure)).toBeLessThan(column.at.y);
+      expect(bottom(name)).toBeLessThan(figure.y);
+      expect(figure.w).toBeLessThanOrEqual(column.at.w);
     }
+    // The shorter column's words stay clear of the taller column beside it.
+    expect(overlaps(text(five.figure.at, five.figure.text), seventeen.at)).toBe(false);
+    expect(overlaps(label(five.name.at, five.name.text), seventeen.at)).toBe(false);
   });
 
-  it("captions the pair under the floor, and sets the figure beside them on the floor with its caption on the same line", () => {
-    expect(S.ofIt.at.y).toBeGreaterThan(S.floor.y + TEXT_LINE / 2);
-    expect(S.figure.at.y).toBe(S.floor.y);
-    expect(S.figure.caption.at.y).toBe(S.ofIt.at.y);
-    expect(spendingFigure().x).toBeGreaterThan(right(S.columns[1].at) + 48);
-    expect(overlaps(text(S.ofIt.at, S.ofIt.text), text(S.figure.caption.at, S.figure.caption.text, "start"))).toBe(false);
+  it("sets each year under its column's foot, on one line under the floor, and captions the pair under the years", () => {
+    for (const column of S.columns) {
+      expect(column.year.at.x).toBe(column.at.x + column.at.w / 2);
+      expect(text(column.year.at, column.year.text).y).toBeGreaterThan(S.floor.y);
+    }
+    expect(S.columns[0].year.at.y).toBe(S.columns[1].year.at.y);
+    expect(overlaps(text(S.columns[0].year.at, S.columns[0].year.text), text(S.columns[1].year.at, S.columns[1].year.text))).toBe(false);
+    expect(S.ofIt.at.x).toBe((S.columns[0].at.x + right(S.columns[1].at)) / 2);
+    expect(text(S.ofIt.at, S.ofIt.text).y).toBeGreaterThanOrEqual(bottom(text(S.columns[0].year.at, S.columns[0].year.text)));
   });
 
-  it("splits the bar into three parts by their shares, left to right, filling its width, on the floor, apart from the figure", () => {
+  it("splits the bar into three parts by their shares, left to right, filling its width, on the floor, under its heading and clear of the columns", () => {
     const parts = S.bar.parts.map((part) => part.at);
     expect(parts[0].x).toBe(BAR.x);
     expect(Math.abs(right(parts[2]) - BAR.end)).toBeLessThanOrEqual(1);
     for (let i = 1; i < parts.length; i++) expect(Math.abs(parts[i].x - right(parts[i - 1]))).toBeLessThanOrEqual(1);
     expect(parts.map((part) => Math.round((100 * part.w) / S.bar.at.w))).toEqual([35, 55, 10]);
     expect(bottom(S.bar.at)).toBe(S.floor.y);
-    expect(S.bar.at.x).toBeGreaterThan(right(spendingFigure()) + 40);
+    expect(S.bar.at.x).toBeGreaterThan(S.floor.x1 + 48);
     expect(S.bar.parts.map((part) => part.own)).toEqual([false, true, false]);
+    const heading = text(S.heading.at, S.heading.text, "start");
+    expect(heading.x).toBe(S.bar.at.x);
+    expect(bottom(heading)).toBeLessThan(Math.min(...S.bar.parts.map((part) => text(part.name.at, part.name.text).y)));
   });
 
-  it("names each part over it, the names apart, and brackets and captions the middle part under the bar", () => {
+  it("names each part over it and captions each under the floor, the names apart and the captions apart, the last caption ending at the bar's end", () => {
     const names = S.bar.parts.map((part) => text(part.name.at, part.name.text));
+    const captions = S.bar.parts.map((part) => label(part.caption.at, part.caption.text, part.caption.anchor));
     for (let i = 1; i < names.length; i++) expect(overlaps(names[i], names[i - 1])).toBe(false);
+    for (let i = 1; i < captions.length; i++) expect(overlaps(captions[i], captions[i - 1]), S.bar.parts[i].caption.text).toBe(false);
     for (const name of names) expect(bottom(name)).toBeLessThan(S.bar.at.y);
-    const own = S.bar.parts[1].at;
-    expect(S.bar.bracket.x0).toBeGreaterThan(own.x);
-    expect(S.bar.bracket.x1).toBeLessThan(right(own));
-    expect(S.bar.bracket.y - S.bar.bracket.drop).toBeGreaterThan(bottom(own));
-    expect(S.bar.caption.at.x).toBe(own.x + own.w / 2);
-    expect(text(S.bar.caption.at, S.bar.caption.text).y).toBeGreaterThan(S.bar.bracket.y);
+    for (const [i, caption] of captions.entries()) {
+      expect(caption.y).toBeGreaterThan(S.floor.y);
+      expect(S.bar.parts[i].caption.at.y).toBe(S.columns[0].year.at.y);
+      if (i < 2) expect(S.bar.parts[i].caption.at.x).toBe(S.bar.parts[i].at.x + S.bar.parts[i].at.w / 2);
+    }
+    expect(S.bar.parts[2].caption.anchor).toBe("end");
+    expect(right(captions[2])).toBe(BAR.end);
+    expect(captions[0].x).toBeGreaterThan(right(text(S.ofIt.at, S.ofIt.text)) + 24);
   });
 });
 
@@ -241,10 +267,10 @@ describe("slide 4a, the review in three zones", () => {
     expect(september.at.h / may.at.h).toBe(BARS.ratio);
     // The first caption starts at its bar's left edge and ends clear of the second bar; the second is centred on its own.
     expect(may.caption.at.x).toBe(may.at.x);
-    expect(right(text(may.caption.at, may.caption.text, "start"))).toBeLessThan(september.at.x - 16);
+    expect(right(label(may.caption.at, may.caption.text, "start"))).toBeLessThan(september.at.x - 16);
     expect(september.caption.at.x).toBe(september.at.x + september.at.w / 2);
     for (const bar of R.bars) {
-      expect(bottom(text(bar.caption.at, bar.caption.text, bar.caption.anchor))).toBeLessThan(bar.at.y);
+      expect(bottom(label(bar.caption.at, bar.caption.text, bar.caption.anchor))).toBeLessThan(bar.at.y);
       expect(text(bar.name.at, bar.name.text).y).toBeGreaterThan(R.floor.y);
     }
   });
@@ -256,12 +282,12 @@ describe("slide 4a, the review in three zones", () => {
     const height = R.desk.y - pages.at(-1)!.y;
     expect(height).toBeGreaterThanOrEqual(2 * R.seated.at.h);
     expect(STACK.x).toBeGreaterThan(right(R.seated.at) + 40);
-    expect(bottom(text(R.stack.name.at, R.stack.name.text))).toBeLessThan(pages.at(-1)!.y);
+    expect(bottom(label(R.stack.name.at, R.stack.name.text))).toBeLessThan(pages.at(-1)!.y);
   });
 
   it("narrows the funnel from a wide mouth to a small outlet, the person under it with the mark beside them and their words under them, the figure under all of it", () => {
     expect(FUNNEL.x1 - FUNNEL.x0).toBeGreaterThan(6 * FUNNEL.outlet);
-    expect(bottom(text(R.funnel.name.at, R.funnel.name.text))).toBeLessThan(R.funnel.top);
+    expect(bottom(label(R.funnel.name.at, R.funnel.name.text))).toBeLessThan(R.funnel.top);
     expect(R.standing.at.x + R.standing.at.w / 2).toBe(R.funnel.centre);
     expect(R.standing.at.y).toBeGreaterThan(R.funnel.outletY + FUNNEL.spout);
     expect(overlaps(reviewMark(), R.standing.at)).toBe(false);
@@ -273,12 +299,13 @@ describe("slide 4a, the review in three zones", () => {
     expect(share.x).toBeGreaterThan(FUNNEL.x0);
     expect(right(share)).toBeLessThan(FUNNEL.x1);
     expect(Math.abs(share.x + share.w / 2 - R.funnel.centre)).toBeLessThanOrEqual(4);
-    expect(label(R.figure.caption.at, R.figure.caption.text, "start").y).toBeGreaterThan(R.figure.at.y);
+    expect(R.figure.caption.at.x).toBe(R.funnel.centre);
+    expect(label(R.figure.caption.at, R.figure.caption.text).y).toBeGreaterThan(R.figure.at.y);
   });
 });
 
-describe("slide 5, the fleet, four groups in a row", () => {
-  it("puts the groups left to right, apart: the leads, the board and its builders, the wall, the reviewers, the person", () => {
+describe("slide 5, the fleet, five groups", () => {
+  it("puts the groups left to right, apart: the leads, the board and its builders under the gate, the wall, the reviewers, the person", () => {
     const leads = bounds([...F.leads.at.map((at) => ringBox(at, AGENT_R)), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs)]);
     const reviewers = bounds(F.reviewers.at.map((at) => ringBox(at, AGENT_R)));
     expect(F.board.box.x).toBeGreaterThan(right(leads) + 48);
@@ -287,8 +314,8 @@ describe("slide 5, the fleet, four groups in a row", () => {
     expect(F.person.at.x).toBeGreaterThan(right(reviewers) + 120);
   });
 
-  it("splits the board into three rows of six cells, a builder under each column, the builders under the board", () => {
-    expect(F.board.rows).toHaveLength(3);
+  it("splits the board into two rows of six cells, a builder over each column, the builders over the board", () => {
+    expect(F.board.rows).toHaveLength(2);
     for (const row of F.board.rows) {
       expect(row.cells).toHaveLength(6);
       for (const cell of row.cells) expect(inside(cell, F.board.box)).toBe(true);
@@ -297,22 +324,54 @@ describe("slide 5, the fleet, four groups in a row", () => {
     for (const [i, at] of F.builders.at.entries()) {
       const cell = F.board.rows[0].cells[i];
       expect(at.x).toBe(cell.x + cell.w / 2);
-      expect(at.y - BUILDER_R).toBeGreaterThan(bottom(F.board.box) + 16);
+      expect(at.y + BUILDER_R).toBeLessThan(F.board.box.y - 12);
     }
     expect(BUILDER_R).toBeLessThan(AGENT_R);
   });
 
-  it("stands the wall the board's height and more, its name under its foot", () => {
-    expect(F.wall.y0).toBeLessThanOrEqual(F.board.box.y);
-    expect(F.wall.y1).toBeGreaterThan(bottom(F.board.box));
+  it("stands the keys agent in its gate centred over the builders, the ring of keys at its hand, a line from its foot to each builder, its name and caption to its right", () => {
+    const gate = gateBox();
+    expect(K.at.x).toBe(F.board.box.x + F.board.box.w / 2);
+    expect(K.gate.x0).toBeLessThan(K.at.x - AGENT_R);
+    expect(K.gate.x1).toBeGreaterThan(K.at.x + AGENT_R);
+    expect(K.gate.top).toBeLessThan(K.at.y - AGENT_R);
+    expect(K.gate.foot).toBeGreaterThan(K.at.y + AGENT_R);
+    expect(K.gate.top).toBeGreaterThanOrEqual(contentTop("fleet-defined"));
+    expect(overlaps(keyRingBox(), ringBox(K.at, AGENT_R))).toBe(false);
+    expect(inside(keyRingBox(), gate)).toBe(true);
+    expect(K.lines).toHaveLength(F.builders.at.length);
+    for (const [i, line] of K.lines.entries()) {
+      expect(line.from.x).toBe(K.at.x);
+      expect(line.from.y).toBeGreaterThan(K.gate.foot);
+      expect(line.to.x).toBe(F.builders.at[i].x);
+      expect(line.to.y).toBeLessThan(F.builders.at[i].y - BUILDER_R);
+      expect(line.to.y - line.from.y).toBeGreaterThan(40);
+    }
+    const name = text(K.name.at, K.name.text, "start");
+    const caption = label(K.caption.at, K.caption.text, "start");
+    expect(name.x).toBeGreaterThan(K.gate.x1 + GATE.nameGap - 1);
+    expect(caption.x).toBe(name.x);
+    expect(caption.y).toBeGreaterThanOrEqual(bottom(name));
+    expect(bottom(caption)).toBeLessThan(F.wall.y0);
+    expect(bottom(caption)).toBeLessThan(Math.min(...F.reviewers.at.map((at) => at.y - AGENT_R)));
+    // The lines fan down and right under the words: where a line is level with the words' foot, it is still left of them.
+    for (const words of [name, caption]) for (const line of K.lines) {
+      const k = Math.min(1, Math.max(0, (bottom(words) - line.from.y) / (line.to.y - line.from.y)));
+      expect(line.from.x + k * (line.to.x - line.from.x), line.key).toBeLessThan(words.x - 8);
+    }
+  });
+
+  it("stands the wall from the builders' tops to under the board, its name under its foot", () => {
+    expect(F.wall.y0).toBeLessThan(Math.min(...F.builders.at.map((at) => at.y - BUILDER_R)));
+    expect(F.wall.y1).toBeGreaterThan(bottom(F.board.box) - 16);
     expect(label(F.wall.name.at, F.wall.name.text).y).toBeGreaterThan(F.wall.y1);
   });
 
   it("names the groups on two lines, each name clear of every drawing and every other name", () => {
-    const names = [text(F.leads.name.at, F.leads.name.text), text(F.builders.name.at, F.builders.name.text), label(F.wall.name.at, F.wall.name.text), text(F.reviewers.name.at, F.reviewers.name.text), markWords()];
+    const names = [text(F.leads.name.at, F.leads.name.text), text(F.builders.name.at, F.builders.name.text), label(F.wall.name.at, F.wall.name.text), text(F.reviewers.name.at, F.reviewers.name.text), markWords(), text(K.name.at, K.name.text, "start"), label(K.caption.at, K.caption.text, "start")];
     expect(new Set([F.leads.name.at.y, F.reviewers.name.at.y, F.mark.at.y]).size).toBe(1);
     expect(F.builders.name.at.y).toBe(F.wall.name.at.y);
-    const drawings = [...F.leads.at.map((at) => ringBox(at, AGENT_R)), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs), F.board.box, ...F.builders.at.map((at) => ringBox(at, BUILDER_R)), ...F.reviewers.at.map((at) => ringBox(at, AGENT_R)), F.person.at, markBox()];
+    const drawings = [...F.leads.at.map((at) => ringBox(at, AGENT_R)), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs), F.board.box, ...F.builders.at.map((at) => ringBox(at, BUILDER_R)), gateBox(), keyRingBox(), ...F.reviewers.at.map((at) => ringBox(at, AGENT_R)), F.person.at, markBox(), box(F.wall.x - 2, F.wall.y0, 4, F.wall.y1 - F.wall.y0)];
     for (const [i, name] of names.entries()) {
       for (const drawing of drawings) expect(overlaps(name, drawing), `name ${i}`).toBe(false);
       for (const other of names.slice(i + 1)) expect(overlaps(name, other), `name ${i}`).toBe(false);

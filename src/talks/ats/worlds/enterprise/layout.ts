@@ -30,21 +30,21 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
 /**
  * Where each title breaks, by the word a line ends on. At 72 px bold a line
- * holds the band's 1728 px (measured in Geist with the kit's tracking, and
- * erring wide by 2 per cent): slide 3 breaks at its first sentence's end
- * (about 1430 and 1690 px); slide 4 at its last comma before its verbs
- * (about 1410 and 1370 px); slide 4a at its first sentence's end (about
- * 1365 and 1465 px); slide 5
- * breaks at its first sentence's end (about 1485 and 985 px); slide 6 after
- * its verb, since its first sentence alone runs about 1930 px (about 1570
- * and 1420 px).
+ * holds the band's 1728 px (measured in Geist from the font's advance
+ * widths with the kit's tracking, less the 2 per cent the browser kerns
+ * away): slide 3 breaks at its first comma (about 1240 and 1615 px); slide
+ * 4 at its first sentence's end (about 1010 and 1430 px); slide 4a after
+ * its second sentence's first word, since that sentence alone runs about
+ * 1825 px (about 1570 and 1570 px); slide 5 at its second comma (about 1615
+ * and 1270 px); slide 6 at its first sentence's end (about 1585 and 1110
+ * px).
  */
 const BREAKS: Record<string, string[]> = {
-  spending: ["years."],
-  agents: ["steps,"],
-  review: ["chatbots."],
-  "fleet-defined": ["roles."],
-  stumbled: ["are"],
+  spending: ["tripled,"],
+  agents: ["question."],
+  review: ["Agents"],
+  "fleet-defined": ["job,"],
+  stumbled: ["stumbled."],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));
@@ -52,7 +52,7 @@ export const titleOf = (pictureId: string) => TITLES.find((title) => title.pictu
 
 const BANDS = ["one", "two", "three"] as const satisfies readonly StoryBand[];
 
-/** Each slide's story lines, in the band under its title: one row each, as every line here fits the band's 1728 px at 32 px (the longest about 1490 px). */
+/** Each slide's story lines, in the band under its title: one row each, as every line here fits the band's 1728 px at 32 px (the longest about 1560 px). */
 export const STORIES = PICTURES.map((picture) => ({
   picture: picture.id,
   id: storyId(picture.id),

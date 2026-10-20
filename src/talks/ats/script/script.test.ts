@@ -62,7 +62,8 @@ const quotedIn = (see: readonly string[]) => [...new Set([...see.join(" ").match
  */
 const PLAN: [string, string[]][] = [
   ["title", ["play"]],
-  ["four-ideas", ["play"]],
+  ["course", ["play"]],
+  ["lessons", ["play"]],
   ["spending", ["play"]],
   ["agents", ["play"]],
   ["review", ["play"]],
@@ -98,7 +99,7 @@ const PLAN: [string, string[]][] = [
 
 /** Which world draws each slide: its part's own, but each part is one world. */
 const WORLD_OF_SLIDES: [WorldId, string[]][] = [
-  ["brought", ["1", "2"]],
+  ["brought", ["1", "2", "2a"]],
   ["enterprise", ["3", "4", "4a", "5", "6"]],
   ["ideas", ["7", "8", "9", "10"]],
   ["stands", ["11", "11a", "12", "12a", "12b", "13", "14", "15"]],
@@ -120,11 +121,11 @@ const everything = [...voiced, ...SCRIPT.flatMap((picture) => [picture.name, ...
 const OFF_SCRIPT: string[] = [];
 
 /**
- * Story lines allowed past 100 characters: none, as draft 2 of the ATS script writes them. A
+ * Story lines allowed past 100 characters, each measured under 1700 px at 32 px in Geist. A
  * line wider than the band (1728 px, about 105 characters at 32 px) would be
  * broken onto two rows by its world (`breakAfter`).
  */
-const LONG_STORY: [string, number][] = [];
+const LONG_STORY: [string, number][] = [["lessons", 0], ["infrastructure", 0], ["fits", 0], ["lanes", 1], ["levels", 0]];
 
 /** GitHub's own terms the script may name in a speaker's note: nowhere, as draft 2 of the ATS script writes it. */
 const GITHUB_TERMS_SAID: string[] = [];
@@ -139,7 +140,7 @@ const LONE_DIGIT = /(?<![\d,.])[2-9](?![\d,.])/;
 
 describe("the talk's script", () => {
   it("is the script, word for word: every picture's heading, On screen, story lines, You say and They see", () => {
-    expect(SOURCE.pictures).toHaveLength(33);
+    expect(SOURCE.pictures).toHaveLength(34);
     expect(SCRIPT.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see }))).toEqual(
       SOURCE.pictures.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see })),
     );
@@ -186,7 +187,7 @@ describe("the talk's script", () => {
   it("gives every picture one click, and two only where the script says so: 34 in all", () => {
     expect(SOURCE.pictures.filter((picture) => picture.twoClicks).map((picture) => picture.number)).toEqual(TWO_CLICKS);
     for (const picture of SCRIPT) expect(picture.steps.length, picture.id).toBe(TWO_CLICKS.includes(picture.number) ? 2 : 1);
-    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(34);
+    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(35);
   });
 
   it("leaves no string empty", () => {

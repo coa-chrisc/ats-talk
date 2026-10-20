@@ -14,7 +14,7 @@ export function ReviewMarks() {
       {R.bars.map((bar) => [
         <Column key={bar.key} id={bar.key} at={bar.at} />,
         <Words key={bar.name.key} id={bar.name.key} at={bar.name.at} text={bar.name.text} size="text" strong />,
-        <Words key={bar.caption.key} id={bar.caption.key} at={bar.caption.at} text={bar.caption.text} anchor={bar.caption.anchor} size="text" strong tone="catalog" />,
+        <Words key={bar.caption.key} id={bar.caption.key} at={bar.caption.at} text={bar.caption.text} anchor={bar.caption.anchor} strong tone="catalog" />,
       ])}
       <Stroke id={R.floor.key} from={{ x: R.floor.x0, y: R.floor.y }} to={{ x: R.floor.x1, y: R.floor.y }} className="en-floor" />
       <Person id={R.seated.key} at={R.seated.at} />
@@ -22,14 +22,14 @@ export function ReviewMarks() {
       {R.stack.pages.map((page) => (
         <path key={page.key} className="en-page" data-build={page.key} d={`M${page.x0} ${page.y}H${page.x1}`} />
       ))}
-      <Words id={R.stack.name.key} at={R.stack.name.at} text={R.stack.name.text} size="text" strong />
+      <Words id={R.stack.name.key} at={R.stack.name.at} text={R.stack.name.text} strong />
       <Funnel id={N.key} x0={N.x0} x1={N.x1} top={N.top} outlet={N.outlet} outletY={N.outletY} spout={N.spout} />
-      <Words id={N.name.key} at={N.name.at} text={N.name.text} size="text" strong />
+      <Words id={N.name.key} at={N.name.at} text={N.name.text} strong />
       <Person id={R.standing.key} at={R.standing.at} />
       <HumanMark id={R.mark.key} at={R.mark.at} />
       <Words id={R.people.key} at={R.people.at} text={R.people.text} strong />
       <Figure id={R.figure.key} at={R.figure.at} runs={R.figure.runs} size={FIGURE.size} small={FIGURE.small} />
-      <Words id={R.figure.caption.key} at={R.figure.caption.at} text={R.figure.caption.text} anchor="start" />
+      <Words id={R.figure.caption.key} at={R.figure.caption.at} text={R.figure.caption.text} />
     </Part>
   );
 }

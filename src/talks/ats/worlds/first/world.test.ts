@@ -117,9 +117,9 @@ describe("one slide at a time", () => {
       "not-proposing": "buy an",
       consortium: "department,",
       "program-team": "drawn from",
-      listen: "staff and",
+      listen: "leaders,",
       sort: "by value",
-      lanes: "now, with",
+      lanes: "now, and",
       "level-up": "has,",
       outcomes: "Strategic Plan",
     };
@@ -128,8 +128,8 @@ describe("one slide at a time", () => {
       expect(lines(id)[0].endsWith(words), id).toBe(true);
     }
     for (const band of STORIES) expect(band.band, band.picture).toBe("two");
-    // At 72 px Geist bold a line of about 50 characters is as wide as the band: none is longer.
-    for (const title of TITLES) for (const line of title.lines) expect(line.length, line).toBeLessThanOrEqual(50);
+    // At 72 px Geist bold a line of about 52 characters is as wide as the band: none is longer (slide 17's first line, 51, measures 1710 px of the 1728).
+    for (const title of TITLES) for (const line of title.lines) expect(line.length, line).toBeLessThanOrEqual(52);
   });
 });
 

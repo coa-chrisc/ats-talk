@@ -44,8 +44,8 @@ export const CHAIR_9 = { w: 36, h: 26, rx: 8 } as const;
 const TABLE = { c: { x: 560, y: BELOW_TOP + 14 + 68 + 26 / 2 } as Point, r: 44, ring: 68 } as const;
 const CHAIRS = 6;
 
-/** The calendar page: right of the table's chairs with 90 px of air, its top level with the top chair's outer edge, its foot with the bottom chair's. */
-const CALENDAR = box(TABLE.c.x + TABLE.ring + CHAIR_9.h / 2 + 90, TABLE.c.y - TABLE.ring - CHAIR_9.h / 2, 170, 2 * TABLE.ring + CHAIR_9.h);
+/** The calendar page: right of the table's chairs with 120 px of air, so the two 32 px names under them keep about 60 px between them; its top level with the top chair's outer edge, its foot with the bottom chair's. */
+const CALENDAR = box(TABLE.c.x + TABLE.ring + CHAIR_9.h / 2 + 120, TABLE.c.y - TABLE.ring - CHAIR_9.h / 2, 170, 2 * TABLE.ring + CHAIR_9.h);
 /** The page's header band, how many days a row and how many rows, and the gap round the days. */
 const DAYS = { header: 40, cols: 5, rows: 4, pad: 14, gap: 8 } as const;
 
@@ -54,11 +54,11 @@ const NAMES_Y = TABLE.c.y + TABLE.ring + CHAIR_9.w / 2 + 4 + TEXT_LINE / 2;
 
 /**
  * The tag at the right of the bottom row: a label with a pointed left end,
- * 440 wide for its 32 px semibold words (about 350) past the point and the
+ * 520 wide for its 32 px semibold words (about 420) past the point and the
  * hole, its right end 40 in from the band's edge, level with the table's
  * middle; its caption centred under it.
  */
-const TAG = box(SAFE.right - 40 - 440, TABLE.c.y - 36, 440, 72);
+const TAG = box(SAFE.right - 40 - 520, TABLE.c.y - 36, 520, 72);
 export const TAG_9 = { point: 22, hole: 6, pad: 48 } as const;
 
 export const NOT_PROPOSING = {

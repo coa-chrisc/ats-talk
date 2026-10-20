@@ -1,7 +1,8 @@
 /**
  * Slide 4a's places, in three zones left to right. Left: two bars on a
  * floor line, each named under the floor and captioned over its top, the
- * second 12 times the first. Middle: a person seated behind a desk, and on
+ * second 12 times the first, each named under the floor at the text size
+ * and captioned over its top at the label size. Middle: a person seated behind a desk, and on
  * the desk beside them a stack of pages, thin rules one over another, that
  * towers over the desk and the person, named over its top. Right: a funnel,
  * a wide mouth named over it narrowing to a small outlet, a person standing
@@ -30,14 +31,14 @@ const DRAW_TOP = TOP + 52;
 /** The floor the bars stand on; their names 30 px under it at the text size. */
 const FLOOR_Y = 900;
 /**
- * The bars: 100 wide, 120 apart, from the drawing's left edge; the taller
+ * The bars: 100 wide, 270 apart, from the drawing's left edge; the taller
  * from about the drawing's top to the floor, a whole number of twelfths,
  * the shorter one twelfth of it. Each caption sits 28 px over its own
- * bar's top: the first set from its bar's left edge, so it ends (about
- * 170 px, 200 measured wide) clear of the second bar; the second centred
- * on its bar.
+ * bar's top at the label size: the first set from its bar's left edge, so
+ * it ends (about 330 px, 350 measured wide) clear of the second bar; the
+ * second centred on its bar (about 300 px, 320 measured wide).
  */
-export const BARS = { x: 96, w: 100, gap: 120, ratio: 12, nameGap: 30, captionGap: 28 } as const;
+export const BARS = { x: 96, w: 100, gap: 270, ratio: 12, nameGap: 30, captionGap: 28 } as const;
 const TALL = BARS.ratio * Math.floor((FLOOR_Y - DRAW_TOP) / BARS.ratio);
 const barAt = (i: number): Box => {
   const h = i === 0 ? TALL / BARS.ratio : TALL;
@@ -46,17 +47,17 @@ const barAt = (i: number): Box => {
 
 /* Middle: the desk and the stack */
 
-/** The desk: its top at y 880 from x 580 to 960, its legs 40 px; the person seated behind it at its left, 56 by 96, their foot on the desk's line. */
-const DESK = { x0: 580, x1: 960, y: 880, legs: 40, inset: 24 } as const;
-const SEATED = box(620, DESK.y - 96, 56, 96);
-/** The stack: pages 180 wide from x 740, one every 8 px from just over the desk to the drawing's top, so it stands twice the person's height. */
-export const STACK = { x: 740, w: 180, pitch: 8 } as const;
+/** The desk: its top at y 880 from x 740 to 1120, 60 px past the second bar's caption, its legs 40 px; the person seated behind it at its left, 56 by 96, their foot on the desk's line. */
+const DESK = { x0: 740, x1: 1120, y: 880, legs: 40, inset: 24 } as const;
+const SEATED = box(780, DESK.y - 96, 56, 96);
+/** The stack: pages 180 wide from x 900, one every 8 px from just over the desk to the drawing's top, so it stands twice the person's height; its name (about 480 px at the label size, 525 measured wide) is centred on it, clear of the bars' second caption at the left and the funnel at the right. */
+export const STACK = { x: 900, w: 180, pitch: 8 } as const;
 const PAGES = Math.floor((DESK.y - 8 - DRAW_TOP) / STACK.pitch) + 1;
 
 /* Right: the funnel, the person at its outlet, and the figure */
 
-/** The funnel: a closed outline, a mouth 460 wide from x 1180 at the drawing's top, centred in the zone right of the stack, its sides 90 px down to a neck 56 wide and 18 px long. */
-export const FUNNEL = { x0: 1180, x1: 1640, outlet: 56, depth: 90, spout: 18 } as const;
+/** The funnel: a closed outline, a mouth 460 wide from x 1300 at the drawing's top, right of the stack's name, its sides 90 px down to a neck 56 wide and 18 px long; its centre, 1530, is where the figure and its caption (about 490 px, 525 measured wide, ending about 30 px inside the drawing's right edge) are centred. */
+export const FUNNEL = { x0: 1300, x1: 1760, outlet: 56, depth: 90, spout: 18 } as const;
 const FUNNEL_C = (FUNNEL.x0 + FUNNEL.x1) / 2;
 const OUTLET_Y = DRAW_TOP + FUNNEL.depth;
 /** The person stands 10 px under the neck, 40 by 64; the mark beside them, 50 px right of their middle; their words 28 px under their foot, at the label size. */
@@ -66,8 +67,8 @@ const MARK: Point = { x: FUNNEL_C + 50, y: STANDING.y + STANDING.h / 2 };
  * The figure: the digits at 112 px and its word at 40 px, centred under the
  * funnel by its width measured wide (about 340 px), its baseline 110 px
  * under the person's words so its numerals clear them by about 20 px; its
- * caption 38 px under it at the label size, its foot 18 px over the
- * drawing's foot.
+ * caption 38 px under it at the label size, centred on the funnel, its
+ * foot 18 px over the drawing's foot.
  */
 export const FIGURE = { half: 168, size: 112, small: 40, drop: 110, captionGap: 38 } as const;
 const PEOPLE_Y = STANDING.y + STANDING.h + 28;
@@ -112,6 +113,6 @@ export const REVIEW = {
     text: SHARE,
     runs: figureRuns(SHARE),
     at: { x: FIGURE_X, y: FIGURE_BASE } as Point,
-    caption: { key: "review.figure.caption", text: DECISIONS, at: { x: FIGURE_X, y: FIGURE_BASE + FIGURE.captionGap } as Point },
+    caption: { key: "review.figure.caption", text: DECISIONS, at: { x: FUNNEL_C, y: FIGURE_BASE + FIGURE.captionGap } as Point },
   },
 };

@@ -11,7 +11,7 @@ import { FLOOR, SAFE, STORIES, TAG, bandFoot, contentTop, wordsBox, wordsWidth }
 import { CITY_STANDS, PACK_NAME, RUNNER } from "./track-geometry";
 import { BLOCK_MIDDLE, CLOSE, OPENING } from "./layout-close";
 import { APPLIED, APPLIED_BOXES, PANEL, TICK, TILE, linesBoxes, numeralBox } from "./layout-applied";
-import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, MARKER_R, TRACK_TOP, runnerBox } from "./layout-could-be";
+import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, KEY_SIZE, MARKER_R, TRACK_TOP, runnerBox } from "./layout-could-be";
 import { LEVELS, LEVELS_BOXES, LEVELS_MEASURES, LEVEL_AGENT_R } from "./layout-levels";
 import { CARD_PLACES, HELPER_R, RESIDENTS, RESIDENTS_BOXES, RESIDENTS_MEASURES } from "./layout-residents";
 import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits } from "./layout-who-decides";
@@ -284,6 +284,9 @@ describe("slide 27, where the City could be", () => {
   it("sets the key off the lanes, under the track, from the right edge leftward in landing order, its entries apart", () => {
     const entries = C.markers.map((marker) => marker.entry.at);
     C.markers.forEach((marker, i) => expect(marker.entry.at.w).toBe(KEY_MEASURED[i]));
+    // Each entry's measured room is near its longer line at the key's size by the 0.56 estimate, which runs wide, scaled to it.
+    C.markers.forEach((marker) => expect(marker.entry.at.w).toBeGreaterThanOrEqual(0.85 * Math.max(wordsWidth(marker.entry.name.text, KEY_SIZE), wordsWidth(marker.entry.caption.text, KEY_SIZE))));
+    expect(KEY_SIZE).toBeGreaterThanOrEqual(22);
     for (const entry of entries) {
       expect(entry.y).toBeGreaterThan(bottom(T.outer));
       expect(bottom(entry)).toBeLessThanOrEqual(FLOOR);
@@ -337,7 +340,7 @@ describe("slide 27, where the City could be", () => {
 
 });
 
-describe("slide 28, the four ideas applied", () => {
+describe("slide 28, the four lessons applied", () => {
   const A = APPLIED;
 
   it("sets the four panels on slide 2's numbers: 396 wide, 48 apart, from x 96 to 1824, 300 tall from the content top", () => {
@@ -365,7 +368,7 @@ describe("slide 28, the four ideas applied", () => {
     }
   });
 
-  it("joins each panel to its tile by a 48 px line down from the middle of its foot, the tile its width, its words on two lines inside it", () => {
+  it("joins each panel to its tile by a 48 px line down from the middle of its foot, the tile its width, its words on one or two lines centred inside it", () => {
     for (const panel of A.panels) {
       expect(panel.line.from).toEqual({ x: panel.at.x + panel.at.w / 2, y: bottom(panel.at) });
       expect(panel.line.to.y - panel.line.from.y).toBe(TILE.line);
@@ -373,9 +376,13 @@ describe("slide 28, the four ideas applied", () => {
       expect(panel.tile.at.x).toBe(panel.at.x);
       expect(panel.tile.at.w).toBe(panel.at.w);
       expect(bottom(panel.tile.at)).toBeLessThanOrEqual(FLOOR);
-      expect(panel.tile.lines).toHaveLength(2);
+      expect(panel.tile.lines.length).toBeGreaterThanOrEqual(1);
+      expect(panel.tile.lines.length).toBeLessThanOrEqual(2);
       expect(panel.tile.lines.join(" ")).toBe(panel.tile.text);
-      for (const line of linesBoxes(panel.tile.words, panel.tile.lines, 26, 32)) expect(inside(line, panel.tile.at)).toBe(true);
+      const lines = linesBoxes(panel.tile.words, panel.tile.lines, 26, 32);
+      for (const line of lines) expect(inside(line, panel.tile.at)).toBe(true);
+      // Centred up and down: as much room over the first line as under the last.
+      expect(lines[0].y - panel.tile.at.y).toBe(bottom(panel.tile.at) - bottom(lines.at(-1)!));
     }
   });
 

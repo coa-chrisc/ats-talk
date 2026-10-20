@@ -69,12 +69,17 @@ export { MARKER_R };
  * The key row under the track: names on a row 34 under the oval's foot,
  * captions a label line under them, so the captions end 2 over the floor.
  * The row is set from the right edge leftward, in landing order, as the
- * markers run leftward round the lap. Each entry's room is its longer line
- * as Geist sets it at 26 px (measured from the font, the names in
- * semibold); the five fill the field with 30 between them.
+ * markers run leftward round the lap. The five pairs at the label's 26 px
+ * run to about 1700 px of words, more than the 1728 px field once they are
+ * apart, so the key is set at its own 24 px (ready.css, over the 22 px
+ * floor): each entry's room is its longer line as Geist sets it at 24 px
+ * with the label's 0.01em tracking (measured from the font, the names in
+ * semibold, the captions in medium), about 1570 px in all, with 38 between
+ * them so the last begins 6 inside the left edge.
  */
-const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 30 } as const;
-export const KEY_MEASURED = [482, 177, 404, 231, 313] as const;
+export const KEY_SIZE = 24;
+const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 38 } as const;
+export const KEY_MEASURED = [453, 166, 389, 218, 344] as const;
 const entryX = KEY_MEASURED.reduce<number[]>((xs, w, i) => [...xs, (i === 0 ? OUTER.x + OUTER.w : xs[i - 1] - KEY.gap) - w], []);
 /** Where a leader ends: 20 in from its entry's right end, the end nearer the markers, 4 over the name's line; the first entry's at x 1800 (see below). */
 const footOf = (i: number): Point => ({ x: i === 0 ? FIRST_DROP_X : entryX[i] + KEY_MEASURED[i] - 20, y: KEY.name - LABEL_LINE / 2 - 4 });

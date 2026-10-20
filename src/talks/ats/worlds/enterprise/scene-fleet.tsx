@@ -1,12 +1,13 @@
-/** Slide 5's picture: the leads at their desk, the board beside them split into rows, the builders under it, the wall, the reviewers past it, and the person with the orange mark at the end, each group named. */
+/** Slide 5's picture: the leads at their desk, the board beside them split into rows, the builders over it, the keys agent in its gate over them with a line to each builder, the wall, the reviewers past it, and the person with the orange mark at the end, each group named. */
 "use client";
 
 import { Agent, Cell, HumanMark, Part, Person } from "@/components/deck/kit";
 import { BUILDER_R, FLEET } from "./layout-fleet";
-import { Desk, Layer, Outline, StoryOf, Stroke, Words } from "./parts";
+import { Desk, Gate, KeyRing, Layer, Outline, StoryOf, Stroke, Words } from "./parts";
 
 const F = FLEET;
 const B = F.board;
+const K = F.keys;
 
 export function FleetMarks() {
   return (
@@ -25,6 +26,14 @@ export function FleetMarks() {
         <Agent key={key} id={key} at={F.builders.at[i]} role="builder" r={BUILDER_R} hue="process" />
       ))}
       <Words id={F.builders.name.key} at={F.builders.name.at} text={F.builders.name.text} size="text" strong />
+      <Gate id={K.gate.key} x0={K.gate.x0} x1={K.gate.x1} top={K.gate.top} foot={K.gate.foot} />
+      <Agent id={K.key} at={K.at} role="tester" hue="process" />
+      <KeyRing id={K.ring.key} at={K.ring.at} />
+      {K.lines.map((line) => (
+        <Stroke key={line.key} id={line.key} from={line.from} to={line.to} className="en-key-line" />
+      ))}
+      <Words id={K.name.key} at={K.name.at} text={K.name.text} anchor="start" size="text" strong />
+      <Words id={K.caption.key} at={K.caption.at} text={K.caption.text} anchor="start" tone="soft" />
       <Stroke id={F.wall.key} from={{ x: F.wall.x, y: F.wall.y0 }} to={{ x: F.wall.x, y: F.wall.y1 }} className="en-wall" />
       <Words id={F.wall.name.key} at={F.wall.name.at} text={F.wall.name.text} strong />
       {F.reviewers.keys.map((key, i) => (

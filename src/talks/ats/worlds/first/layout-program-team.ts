@@ -62,14 +62,16 @@ const TILE = { gap: 20, h: 56, y: TEAM_BOX.y + TEAM_BOX.h + 16 } as const;
 const TILE_W = (TEAM_BOX.w - 2 * TILE.gap) / 3;
 
 /**
- * The yard under the tiles: slide 13's fence drawn small, 280 by 88, under
+ * The yard under the tiles: slide 13's fence drawn small, 520 by 88, under
  * the box's middle, 32 px under the tiles; posts every 40 px reaching 7 px
- * over and under its rails. Two people stand inside it, its caption 14 px
- * under the posts' feet.
+ * over and under its rails. It is as wide as its long caption (about 640
+ * px at 26 px) less a little each side, so the caption reads as the yard's
+ * and not as a line across the stage. Two people stand inside it, 72 px
+ * each side of its middle, its caption 14 px under the posts' feet.
  */
-const YARD = box(TEAM_BOX.x + TEAM_BOX.w / 2 - 140, TILE.y + TILE.h + 32, 280, 88);
+const YARD = box(TEAM_BOX.x + TEAM_BOX.w / 2 - 260, TILE.y + TILE.h + 32, 520, 88);
 export const POSTS = { pitch: 40, reach: 7 } as const;
-const YARD_PEOPLE = [YARD.x + YARD.w / 2 - 44, YARD.x + YARD.w / 2 + 44];
+const YARD_PEOPLE = [YARD.x + YARD.w / 2 - 72, YARD.x + YARD.w / 2 + 72];
 
 /* The departments, right */
 

@@ -16,7 +16,7 @@ const [LEADERS, STAFF, COMMUNITY, SLOW, MORE, GOALS, WORRIES, WANTS, OWN_WORDS] 
 const TOP = contentTop("listen");
 
 /** A bubble's height, the room each side of its 26 px words, the gap between stacked bubbles, and how far its tail reaches under it. */
-export const BUBBLE = { h: 44, pad: 14, gap: 12, tail: 14 } as const;
+export const BUBBLE = { h: 44, pad: 12, gap: 12, tail: 14 } as const;
 /** The three slots over a table, top to bottom: the first table's questions fill them in order; the others' one bubble takes the lowest. */
 const SLOTS = [0, 1, 2].map((i) => TOP + i * (BUBBLE.h + BUBBLE.gap));
 const LOWEST = SLOTS[2];
@@ -35,23 +35,25 @@ const REACH = SEATS.ring + SITTER.chair.h / 2;
 
 /**
  * The tables' middles. They stand low enough that the top chair, counted at
- * its widest, clears the lowest bubble's tail by 4 px. The first sits under its widest bubble,
- * whose left edge is the band's; the third leaves its bubble 50 px short of
- * the page; the second is midway.
+ * its widest, clears the lowest bubble's tail by 4 px. The first sits under
+ * its widest bubble, whose left edge is the band's and which runs to x 645;
+ * the third leaves its bubble 40 px short of the page; the second stands
+ * where its bubble clears the first's lowest and the third's by 23 px each
+ * side, all three bubbles being in the lowest slot.
  */
 const TABLE_Y = LOWEST + BUBBLE.h + BUBBLE.tail + 4 + SEATS.ring + SITTER.chair.w / 2;
-const TABLE_X = [300, 740, 1176] as const;
+const TABLE_X = [300, 804, 1201] as const;
 /** The first table's bubbles share one left edge, the band's. */
 const FIRST_LEFT = SAFE.left;
 
 /** The names under the tables: 6 px under the bottom chair. */
 const NAME_Y = TABLE_Y + REACH + 6 + LABEL_LINE / 2;
 
-/** The page: from x 1470 to the band's right edge, as tall as the tables with their bubbles, from 14 px under the drawing's top (its rings reach 14 over it) to the names' foot. */
-const PAGE = box(1470, TOP + 14, SAFE.right - 1470, NAME_Y + LABEL_LINE / 2 - (TOP + 14));
+/** The page: from x 1480 to the band's right edge (344 wide, its heading's 32 px words inside it), as tall as the tables with their bubbles, from 14 px under the drawing's top (its rings reach 14 over it) to the names' foot. */
+const PAGE = box(1480, TOP + 14, SAFE.right - 1480, NAME_Y + LABEL_LINE / 2 - (TOP + 14));
 const RINGS = 6;
 /** The page's lines: the first under the heading's rule, one every 50 px, inset 20 from its sides, each a different length as handwriting runs. */
-const LINES = { first: PAGE.y + 120, pitch: 50, widths: [300, 262, 296, 236, 280, 180], inset: 20 } as const;
+const LINES = { first: PAGE.y + 120, pitch: 50, widths: [292, 254, 288, 228, 272, 176], inset: 20 } as const;
 
 const bubbleAt = (text: string, cx: number, y: number, left?: number): Box => {
   const w = wordsWidth(text, 26) + 2 * BUBBLE.pad;

@@ -1,8 +1,8 @@
 /**
- * The brought world (Part 1, slides 1 and 2) on one plane the size of the
- * stage: what both slides share. Slide 1's own places (the navy title page)
- * are here too; slide 2's drawing is in its own module
- * (layout-four-ideas.ts). Every word is read from the script; a title's
+ * The brought world (Part 1, slides 1, 2 and 2a) on one plane the size of
+ * the stage: what the slides share. Slide 1's own places (the navy title
+ * page) are here too; slide 2's drawing is in layout-course.ts and slide
+ * 2a's in layout-lessons.ts. Every word is read from the script; a title's
  * line break is given by the word it falls after. Every id starts with its
  * picture's id, and each picture's parts sit under two ids, its marks and
  * its HTML, so the next slide's click puts the whole of it away in two
@@ -29,15 +29,16 @@ export const TITLE = { x: 96, y: 152 } as const;
 export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
 /**
- * Where each title breaks, by the word a line ends on. Slide 1 is set at
- * 108 px across the middle of the stage and takes three lines (about 1130,
- * 1090 and 1200 px in Geist Bold). Slide 2 is set at 72 px and breaks at
- * its first sentence's end: its second line runs about 1720 px, inside the
- * band's 1728.
+ * Where each title breaks, by the word a line ends on, measured in Geist
+ * Bold at the kit's tracking. Slide 1 is set at 108 px across the middle of
+ * the stage and takes three lines of about 1590, 1630 and 1200 px, each
+ * inside the band's 1728. Slide 2 is set at 72 px on two lines of about
+ * 1180 and 1330 px. Slide 2a's title runs about 1520 px, so it is one line.
  */
 const BREAKS: Record<string, string[]> = {
-  title: ["City:", "and"],
-  "four-ideas": ["ideas."],
+  title: ["we", "and"],
+  course: ["Mellon's"],
+  lessons: [],
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));
@@ -45,7 +46,7 @@ export const titleOf = (pictureId: string) => TITLES.find((title) => title.pictu
 
 const BANDS = ["one", "two", "three"] as const satisfies readonly StoryBand[];
 
-/** The white slide's story lines, in the band under its title: one row each, as each line fits the band's 1728 px at 32 px. */
+/** The white slides' story lines, in the band under each title: one row each, as each line fits the band's 1728 px at 32 px (the longest runs about 1530). */
 export const STORIES = PICTURES.slice(1).map((picture) => ({
   picture: picture.id,
   id: storyId(picture.id),
@@ -70,13 +71,13 @@ export const storyKeysOf = (pictureId: string) => storyKeys(storyId(pictureId), 
 /**
  * Slide 1: the title set at 108 px and centred on the stage on three lines,
  * the deck's short green rule under it, then the two story lines centred
- * under that: line A at 40 px, broken after the speakers' department, as
- * it runs to about 1800 px on one line; line B at the story size on one
- * line (about 1400 px). The block, title top to line B's foot, sits on the
- * stage's middle a little high, as a title page's optical middle does.
+ * under that: line A at 40 px on one line (about 1120 px); line B at the
+ * story size on one line (about 780 px). The block, title top to line B's
+ * foot, sits on the stage's middle a little high, as a title page's optical
+ * middle does.
  */
 const DISPLAY_LINE = 112;
-const OPENING_TOP = 214;
+const OPENING_TOP = 236;
 const RULE_GAP = 36;
 const RULE = { w: 140, h: 6 };
 const STORY_GAP = 52;
@@ -84,11 +85,10 @@ const STORY_GAP = 52;
 export const LEAD_LINE = 52;
 export const CREDIT_LINE = 48;
 const LINE_GAP = 22;
-const LEAD_BREAKS = ["Services,"];
 
 const ruleY = OPENING_TOP + titleOf("title").lines.length * DISPLAY_LINE + RULE_GAP;
 const [LEAD_KEY, CREDIT_KEY] = storyKeysOf("title");
-const leadLines = breakAfter(scriptStory("title")[0], ...LEAD_BREAKS);
+const leadLines = [scriptStory("title")[0]];
 const creditLines = [scriptStory("title")[1]];
 const leadY = ruleY + RULE.h + STORY_GAP;
 const creditY = leadY + leadLines.length * LEAD_LINE + LINE_GAP;
@@ -101,12 +101,12 @@ export const OPENING = {
   credit: { key: CREDIT_KEY, y: creditY, lines: creditLines, foot: creditY + creditLines.length * CREDIT_LINE },
 };
 
-/** How many elements carry each id that more than one does: a title's lines, and slide 1's line A. A move's stagger runs across all of them. */
+/** How many elements carry each id that more than one does: a title's lines. A move's stagger runs across all of them. */
 export const COUNTS: Readonly<Record<string, number>> = Object.fromEntries(
   [...TITLES.map((title) => [title.key, title.lines.length] as const), [LEAD_KEY, leadLines.length] as const, [CREDIT_KEY, creditLines.length] as const].filter(([, count]) => count > 1),
 );
 
-/* Sizes slide 2 uses */
+/* Sizes slides 2 and 2a use */
 
 /** A line of the 26 px label type is this tall, and a line of the 32 px text. */
 export const LABEL_LINE = 32;

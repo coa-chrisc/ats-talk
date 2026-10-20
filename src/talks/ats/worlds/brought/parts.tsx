@@ -1,9 +1,10 @@
 /**
  * The brought world's plainest pieces: a picture's HTML as one part, its
  * story lines, a word set in the marks, a run of words set in HTML that
- * wraps inside its box, slide 1's centred type and short rule, and slide
- * 2's panel and route stop. Every word set here is passed in from a
- * layout, which reads it from the script. Painted by brought.css.
+ * wraps inside its box, slide 1's centred type and short rule, slide 2's
+ * tile, workbench and caption, and slide 2a's panel and route stop.
+ * Every word set here is passed in from a layout, which reads it from the
+ * script. Painted by brought.css.
  */
 "use client";
 
@@ -36,7 +37,7 @@ export function Words({ id, at, text, anchor = "middle", kind = "name" }: { id: 
   );
 }
 
-/** Words in HTML, wrapping inside their box: a panel's name, 32 px semibold navy. */
+/** Words in HTML, wrapping inside their box: a panel's or a tile's name, 32 px semibold navy. */
 export function Note({ id, at, children }: { id: string; at: Box; children: ReactNode }) {
   return (
     <div className="br-note" data-build={id} style={{ left: at.x, top: at.y, width: at.w, height: at.h }}>
@@ -64,6 +65,25 @@ export function Centred({ id, y, lines, size }: { id: string; y: number; lines: 
 /** Slide 1's short rule under the title, in the process's green: it grows out from its middle (`scaleX`). */
 export function TitleRule({ id, at }: { id: string; at: Box }) {
   return <div className="br-rule" data-build={id} style={place(at)} />;
+}
+
+/** A caption in the marks: the 32 px text, medium, in the soft ink, centred on its point. */
+export function Caption({ id, at, text }: { id: string; at: Point; text: string }) {
+  return (
+    <text className="dk-text br-caption" data-build={id} x={at.x} y={at.y} textAnchor="middle" dominantBaseline="central">
+      {text}
+    </text>
+  );
+}
+
+/** A module tile: a square-cornered plate in the catalog's indigo, its edge full and its fill at the idle tint. */
+export function ModuleTile({ id, at }: { id: string; at: Box }) {
+  return <rect className="br-tile" data-build={id} x={at.x} y={at.y} width={at.w} height={at.h} />;
+}
+
+/** A workbench: an outline in the process's green that draws on along its path (`draw`). */
+export function Bench({ id, d }: { id: string; d: string }) {
+  return <path className="br-bench dk-draw" data-build={id} d={d} pathLength={1} />;
 }
 
 /** A tall panel: a square-cornered outline in navy that draws on round its edge (`draw`). */
