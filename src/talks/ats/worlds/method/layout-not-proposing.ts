@@ -69,7 +69,6 @@ export const NOT_PROPOSING = {
     at,
     name: { key: `not-proposing.outline.${i}.name`, at: { x: at.x + at.w / 2, y: at.y + at.h / 2 } },
     cross: {
-      key: `not-proposing.cross.${i}`,
       /** The first stroke, top left to bottom right, then the second, top right to bottom left. */
       strokes: [
         { key: `not-proposing.cross.${i}.a`, d: `M${at.x + CROSS_IN.x} ${at.y + CROSS_IN.y}L${at.x + at.w - CROSS_IN.x} ${at.y + at.h - CROSS_IN.y}` },

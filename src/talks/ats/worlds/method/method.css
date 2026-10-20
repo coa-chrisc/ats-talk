@@ -26,7 +26,7 @@
   font-weight: 600;
 }
 
-/* Slide 9: a dashed grey outline, its name in slate, and the grey cross over it. */
+/* Slide 9: a dashed grey outline, the grey cross inside it, and its name in slate over the cross. */
 .md-outline {
   position: absolute;
 }
@@ -37,7 +37,7 @@
   left: 0;
 }
 
-.md-outline rect {
+.md-outline .md-outline__edge {
   fill: none;
   stroke: var(--dk-soft);
   stroke-width: 3;

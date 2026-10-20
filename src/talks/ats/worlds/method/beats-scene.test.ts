@@ -10,7 +10,7 @@ import { EASE, storyKeys } from "@/components/deck/kit";
 import { storyId } from "../steps";
 import { NOT_PROPOSING } from "./layout-not-proposing";
 import { PEOPLE, SEAT_10 } from "./layout-people";
-import { arrived, at, before, endOf, playOf, startOf, stepOf } from "./harness";
+import { after, arrived, at, before, endOf, playOf, startOf, stepOf } from "./harness";
 
 const N = NOT_PROPOSING;
 const P = PEOPLE;
@@ -40,7 +40,7 @@ describe("slide 9", () => {
 
   it("settles the outlines and their crosses at half strength, still legible, as the green scene draws below, after every cross, with the second line", () => {
     const crossed = Math.max(...strokes.map((key) => endOf(id, key)));
-    for (const key of [...outlines, ...N.outlines.map((outline) => outline.cross.key)]) {
+    for (const key of outlines) {
       const fade = playOf(id, key).at(-1)!;
       expect(fade.at, key).toBeGreaterThan(crossed);
       expect(end[key].autoAlpha, key).toBe(0.5);
@@ -53,6 +53,20 @@ describe("slide 9", () => {
   it("lands the tag at the foot last, its caption with it", () => {
     expect(startOf(id, N.tag.key)).toBeGreaterThan(endOf(id, N.calendar.name.key));
     expect(startOf(id, N.tag.caption.key) - startOf(id, N.tag.key)).toBeLessThan(0.5);
+  });
+
+  it("draws each cross inside its outline, before the name, so the name sits over the cross", () => {
+    for (const outline of N.outlines) {
+      const html = after(outline.key);
+      const name = html.indexOf(`>${outline.text}<`);
+      expect(name).toBeGreaterThan(-1);
+      for (const stroke of outline.cross.strokes) {
+        const at = html.indexOf(`data-build="${stroke.key}"`);
+        expect(at, stroke.key).toBeGreaterThan(-1);
+        expect(at, stroke.key).toBeLessThan(name);
+      }
+      expect(html.slice(0, name)).not.toContain("</div>");
+    }
   });
 
   it("ends on the half-strength outlines above the table, calendar and tag", () => {

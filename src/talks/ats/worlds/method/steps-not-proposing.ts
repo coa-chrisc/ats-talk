@@ -15,7 +15,7 @@ import { ARRIVE, keys, play } from "./moves";
 const N = NOT_PROPOSING;
 const T = N.table;
 
-/** After their crosses the outlines step back to half strength: still legible in the soft grey, no longer the subject. */
+/** After their crosses the outlines, crosses and names with them, step back to half strength: still legible in the soft grey, no longer the subject. */
 export const SETTLED = 0.5;
 const settle = (list: string[]) => to(list, { autoAlpha: SETTLED }, { autoAlpha: 1 }, { at: 0, stagger: 0, duration: 0.5, ease: EASE.soft });
 
@@ -41,7 +41,7 @@ export const notProposing = picture("not-proposing", {
     {
       hold: 0.6,
       moves: [
-        settle([...keys(N.outlines), ...N.outlines.map((outline) => outline.cross.key)]),
+        settle(keys(N.outlines)),
         draw(T.key, { at: 0.2 }),
         show(keys(T.chairs), { at: 0.5, stagger: 0.07 }),
         rise(T.name.key, { at: 0.9 }),

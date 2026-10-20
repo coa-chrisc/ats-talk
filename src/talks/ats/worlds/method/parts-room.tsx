@@ -15,28 +15,27 @@ import type { Box, Point } from "@/components/deck/kit";
 /** The dashed edge reaches this far outside its box, so the stroke is never clipped. */
 const PAD = 4;
 
-/** A dashed grey outline with its name in its upper part: HTML, so it arrives by its clip (`wipe`). */
-export function Outline({ id, at, text, nameDown }: { id: string; at: Box; text: string; nameDown: number }) {
+/**
+ * A dashed grey outline, crossed out, with its name: HTML, so it arrives by
+ * its clip (`wipe`). The cross's two strokes (each drawing on by `--d`) are
+ * in the outline's own SVG, and the name on its white patch comes after
+ * that SVG, so the name sits over the cross and the cross passes behind it.
+ */
+export function Outline({ id, at, text, nameDown, strokes }: { id: string; at: Box; text: string; nameDown: number; strokes: readonly { key: string; d: string }[] }) {
+  const w = at.w + 2 * PAD;
+  const h = at.h + 2 * PAD;
   return (
-    <div className="md-outline dk-wipe" data-build={id} style={{ left: at.x - PAD, top: at.y - PAD, width: at.w + 2 * PAD, height: at.h + 2 * PAD }}>
-      <svg width={at.w + 2 * PAD} height={at.h + 2 * PAD} viewBox={`0 0 ${at.w + 2 * PAD} ${at.h + 2 * PAD}`} aria-hidden="true">
-        <rect x={PAD} y={PAD} width={at.w} height={at.h} rx={10} />
+    <div className="md-outline dk-wipe" data-build={id} style={{ left: at.x - PAD, top: at.y - PAD, width: w, height: h }}>
+      <svg width={w} height={h} viewBox={`${at.x - PAD} ${at.y - PAD} ${w} ${h}`} aria-hidden="true">
+        <rect className="md-outline__edge" x={at.x} y={at.y} width={at.w} height={at.h} rx={10} />
+        {strokes.map((stroke) => (
+          <path key={stroke.key} className="md-cross dk-draw" data-build={stroke.key} d={stroke.d} pathLength={1} />
+        ))}
       </svg>
       <span className="md-outline__name" style={{ top: PAD + nameDown }}>
         {text}
       </span>
     </div>
-  );
-}
-
-/** A cross: two grey strokes, each drawing on (`--d`) from its own start. The group can step back as one. */
-export function Cross({ id, strokes }: { id: string; strokes: readonly { key: string; d: string }[] }) {
-  return (
-    <g data-build={id}>
-      {strokes.map((stroke) => (
-        <path key={stroke.key} className="md-cross dk-draw" data-build={stroke.key} d={stroke.d} pathLength={1} />
-      ))}
-    </g>
   );
 }
 

@@ -155,7 +155,7 @@ describe("the house rules", () => {
 
   it("draws what is not proposed in grey: the outlines and their crosses in slate", () => {
     const css = sources.find(([file]) => file === "method.css")![1];
-    expect(css).toMatch(/\.md-outline rect \{[^}]*stroke: var\(--dk-soft\)[^}]*stroke-dasharray/);
+    expect(css).toMatch(/\.md-outline \.md-outline__edge \{[^}]*stroke: var\(--dk-soft\)[^}]*stroke-dasharray/);
     expect(css).toMatch(/\.md-cross \{[^}]*stroke: var\(--dk-soft\)/);
   });
 
