@@ -133,7 +133,7 @@ export const WHERE_THE_CITY_STANDS: Picture[] = [
     see: ["The track from slide 11 returns with the same pack, labeled \"Enterprise\". The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: \"People\", \"Infrastructure\", \"A working fleet\". In the infield a short stair of four gates lights three steps green, \"Explore\", \"Validate\", \"Deploy\", with the fourth grey, \"Scale\", and a grey tag beside it, \"Not ready yet\". A tag under the track reads \"20 applications from 145 reusable modules\". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag."],
     story: [
       "Austin Public Health builds with a fleet of agents today: 20 applications from 145 reusable modules.",
-      "Austin Public Health's work has passed the explore, validate and deploy gates. Scale is the one it is not ready for.",
+      "That work has passed the explore, validate and deploy gates. Scale is the one it is not ready for.",
     ],
     steps: [
       { id: "play", show: ["Enterprise", "People", "Infrastructure", "A working fleet", "Explore", "Validate", "Deploy", "Scale", "Not ready yet", "20 applications from 145 reusable modules"] },

@@ -329,7 +329,7 @@ Speaker: Chris
 
 **On screen:** Counted properly, the City is a third of the way to the enterprise pack, with a working agent fleet.
 - Austin Public Health builds with a fleet of agents today: 20 applications from 145 reusable modules.
-- Austin Public Health's work has passed the explore, validate and deploy gates. Scale is the one it is not ready for.
+- That work has passed the explore, validate and deploy gates. Scale is the one it is not ready for.
 
 **They see:** The track from slide 11 returns with the same pack, labeled "Enterprise". The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: "People", "Infrastructure", "A working fleet". In the infield a short stair of four gates lights three steps green, "Explore", "Validate", "Deploy", with the fourth grey, "Scale", and a grey tag beside it, "Not ready yet". A tag under the track reads "20 applications from 145 reusable modules". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag.
 
@@ -484,8 +484,8 @@ Speaker: Chris
 Speaker: Chris and Stefan
 
 **On screen:** Five decisions, each already half done, would put the City with the pack within a year.
-- Leadership can make the consortium and program team official, sponsor the listening tour, and adopt the levels.
-- It can keep Austin Public Health's agent work running, and add data tiers and a budget line.
+- Leadership can make the consortium and program team official, and sponsor the listening tour.
+- It can adopt the four levels, keep Austin Public Health's agent work running, and add data tiers and a budget.
 
 **They see:** The track from slide 15 returns with the City runner a third of the way around and the pack ahead, labeled "Enterprise". A dashed green outline of the runner draws well ahead, at the tail of the pack, labeled "Within a year". Along the lane between the solid runner and the dashed one, five green markers land in turn, and as each lands its name and caption rise in a row under the track, joined to the marker by a thin leader line: "Consortium and program team" with "The people are ready now", "Listening tour" with "Costs only calendar time", "Four levels" with "Drafted with the CISO", "Keep the Azure work running" with "Already running", "Data tiers and a budget line" with "Authorized tools are tier one". The slide ends on the track with the solid runner, the five markers and their row, and the dashed runner at the pack's tail.
 
