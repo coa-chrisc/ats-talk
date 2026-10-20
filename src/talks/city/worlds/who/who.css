@@ -1,0 +1,177 @@
+/* The who world's own marks and type, in stage pixels and under the kit's
+   rules (kit.css): words in the ground's ink, secondary words in soft, lines
+   in ink or rule, and the process's green only for slide 1's short rule,
+   the deck's motif. No hue is named here, no orange and no pass green.
+   Every state arrives as a value a move sets (--d, --k, scaleX, rotationY,
+   autoAlpha), so a cut and a build end alike. */
+
+/* Slide 1: set type centred across the stage. */
+.who-centred {
+  text-align: center;
+}
+
+.who-centred--lead {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.who-centred--credit {
+  color: var(--dk-soft);
+}
+
+/* Slide 1's short rule under the title: it grows out from its middle. */
+.who-rule {
+  position: absolute;
+  background: var(--dk-process);
+  transform-origin: 50% 50%;
+}
+
+/* Slide 2: the timeline in the words' ink, heavier than a rule, since it is the picture. */
+.who-line {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.who-line--tick {
+  stroke-width: 3;
+}
+
+/* A marker's stem up to its name: thin and soft, so the name and the dot lead. */
+.who-stem {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* A marker before it lights: a ring on the line, the ground showing through it. */
+.who-ring {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+}
+
+/* A marker lit: a solid dot and a soft disc round it, both growing from the ring's middle with --k. */
+.who-dot__core,
+.who-dot__halo {
+  fill: var(--dk-paper);
+  transform: scale(var(--k, 0));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.who-dot__halo {
+  fill-opacity: var(--dk-tint-idle);
+}
+
+.who-name {
+  font-weight: 600;
+}
+
+/* Slide 3: a logo on its tile, a plain white tile inside a rule-coloured
+   edge, the logo centred in it at the size the layout gives it. The tile
+   stays white on any ground, so every logo sits on the white it was drawn for. */
+.who-tile {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid var(--dk-rule);
+  border-radius: 10px;
+  background: var(--dk-mount);
+}
+
+.who-logo,
+.who-card__logo {
+  display: block;
+  flex: none;
+}
+
+/* The larger card: the outer part fades, the inner one turns in depth, and
+   each side shows only while it faces the room. */
+.who-card {
+  position: absolute;
+}
+
+.who-card__turn {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.who-card__back,
+.who-card__face {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* The back is the deck's second surface inside a rule-coloured edge, as
+   light as the ground, so the turn never flashes a dark shape. */
+.who-card__back {
+  background: var(--dk-raised);
+  border: 2px solid var(--dk-rule);
+  transform: rotateY(180deg);
+}
+
+/* The face: the ground inside a heavier edge in the words' ink, the
+   institution's logo at its top and the course title under it. */
+.who-card__face {
+  padding: 12px 24px;
+  background: var(--dk-night);
+  border: 3px solid var(--dk-paper);
+}
+
+.who-card__title {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--dk-face);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.01em;
+  color: var(--dk-paper);
+  white-space: nowrap;
+}
+
+.who-card__line {
+  display: block;
+}
+
+/* HTML words on the plane: each group's heading, in the softer colour so
+   the logos lead, and the larger card's school and when at its foot. */
+.who-text {
+  position: absolute;
+  margin: 0;
+  font-family: var(--dk-face);
+  color: var(--dk-paper);
+  white-space: nowrap;
+}
+
+.who-text--heading {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 34px;
+  color: var(--dk-soft);
+}
+
+.who-text--school {
+  font-size: var(--dk-label);
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.who-text--when {
+  font-size: var(--dk-label);
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--dk-soft);
+}

@@ -1,0 +1,243 @@
+import type { Picture } from "./types";
+
+/** Part 2. What Austin Public Health built: slides 4 to 12a, drawn in the world `built`. */
+export const WHAT_WE_BUILT: Picture[] = [
+  {
+    id: "starting-small",
+    number: "4",
+    part: 2,
+    world: "built",
+    name: "Starting small and local",
+    show: "We started early, building one application at a time on local machines.",
+    say: "In April 2023 Phillip Bays, our senior manager, and I realized AI was going to change the world. He gave me a directive to learn as much as I could and make Austin Public Health an exemplar of AI for public health, so we became an early adopter. I taught myself and built at night. The first things were slow to make and impressive to see, and every project started from scratch. In 2024 we went deeper into Python and machine learning. We trained our own BERT model for ServiceNow ticket routing, about 97 percent accurate until the ticket categories it learned from changed. We also built Streamlit dashboards, connected to Asana, that showed the department's project pipeline. We were on the bleeding edge, and we still are.",
+    see: ["A desk lamp switches on at the left of a dark desk, labelled \"Built at night\". Small application tiles appear on the desk one at a time, each a different shape: a square, a tall rectangle, a circle, a wide card. The first two sit over the year \"2023\", and the next two over \"2024\". The two 2024 tiles carry small names: \"Ticket routing\" and \"Project pipeline\". A small tag drops under the row: \"Every project started from scratch\". The slide ends on the lamp lighting the row of four different shapes."],
+    story: [
+      "In April 2023 Phillip Bays and I saw AI would change the world, and he told me to learn all I could.",
+      "In 2024 we dug into machine learning and dashboards, and every project started from scratch.",
+    ],
+    steps: [
+      { id: "play", show: ["Built at night", "2023", "2024", "Ticket routing", "Project pipeline", "Every project started from scratch"] },
+    ],
+  },
+  {
+    id: "safe",
+    number: "5",
+    part: 2,
+    world: "built",
+    name: "Why we moved into a sandbox",
+    show: "This was going to be real, so we needed a protected place to experiment as projects grew.",
+    say: "We realized this was going to take off and be real. We needed a way to experiment in a protected, secure environment, as projects became more complicated and needed City resources. So we reached out to the Information Security Office, and to Microsoft and Quisitive, our Azure partner, to create our sandbox. It is a sanctioned pilot sandbox on its own Azure subscriptions. It inherits the City's tenant controls, like sign-in and central logging, but it cannot reach any other City application or data. Any data in there is data we place there on purpose. Where an application uses AI, it calls Azure OpenAI inside the City's tenant, and our prompts never train the models. We moved a couple of projects in first and brought them up to that standard.",
+    see: ["The City's systems stand as a row of buildings across the top, labelled \"Other City applications\". Below and well apart from them, three figures labelled \"Security Office\", \"Microsoft\" and \"Quisitive\" draw a fence around an empty yard, labelled \"Our sandbox\". No road or line joins the yard to the buildings, and a small label in the gap reads \"Cannot reach other City applications\". A hand carries a single box labelled \"Data we place\" in through the fence's one opening and sets it down inside, and the opening closes behind it. The slide ends on the fenced yard and its box, apart from the row of buildings."],
+    story: [
+      "We built a walled-off sandbox with the Information Security Office, Microsoft and Quisitive.",
+      "It cannot reach other City applications or data, and data gets in only when we place it.",
+    ],
+    steps: [
+      { id: "play", show: ["Other City applications", "Security Office", "Microsoft", "Quisitive", "Our sandbox", "Cannot reach other City applications", "Data we place"] },
+    ],
+  },
+  {
+    id: "weekly",
+    number: "5a",
+    part: 2,
+    world: "built",
+    name: "Weekly, with Security, Microsoft and Quisitive",
+    show: "We have met with the Information Security Office, Microsoft and Quisitive every week for over two and a half years.",
+    say: "These are working sessions. We hold weekly architecture sessions with Quisitive, Microsoft brings Azure platform guidance, and the security office sits in the same meeting. We bring what we built that week and what we want to try next. That rhythm took us one careful step at a time, from the sandbox to pilots. The next step is our production plan, and it is already prepared. In July we presented the production landing zone concept to the new Chief Information Security Officer and filed a demand request in ServiceNow. Quisitive is taking it through change management. Nothing goes to production until leadership decides it should. When that decision comes, we are ready to move.",
+    see: ["A calendar of weeks fills the left half row by row, labelled \"Every week\", and a small meeting mark lands in each week as it passes. Three names sit above the calendar: \"Security Office\", \"Microsoft\", \"Quisitive\". On the right, a short stair of three steps climbs toward a closed door marked \"Go\". The steps light one at a time as the calendar fills: \"Sandbox\", \"Pilots\", \"Production plan\". A small figure climbs to the top step and stands at the door. A small tag beside the door reads \"Demand request is in ServiceNow\". The slide ends with the calendar full, the figure on the top step, the tag beside the door and the door still closed, ready to open."],
+    story: [
+      "We have taken it a step at a time, so that we are ready for production the day leadership says go.",
+      "In July the new CISO saw the production landing zone, and a demand request is in ServiceNow.",
+    ],
+    steps: [
+      { id: "play", show: ["Every week", "Security Office", "Microsoft", "Quisitive", "Go", "Sandbox", "Pilots", "Production plan", "Demand request is in ServiceNow"] },
+    ],
+  },
+  {
+    id: "wrong-question",
+    number: "6",
+    part: 2,
+    world: "built",
+    name: "We stopped throwing spaghetti at the wall",
+    show: "After the sandbox, we stopped throwing spaghetti at the wall and looked at the whole process.",
+    say: "Once the sandbox was running, everyone had ideas. Each request began with the same question, what AI app should we build? The missing link was capability and capacity, so we looked at the whole process. Now we pick use cases with clear value that we know we can build. Those use cases came from the ChatGPT pilot. For about a year, staff could use ChatGPT at work, and many came to rely on its GPTs feature. We rebuilt those use cases as standalone applications in the sandbox, so the staff who relied on them could keep using them. The loop we are working toward turns good ideas into governed services, again and again. We have not closed it yet, and it is the part that matters most.",
+    see: ["Before any words appear, spaghetti flies in from the left and hits a plain wall in the middle, sticks, then slides down and clears. Then the title comes in, and a card labelled \"What AI app should we build?\" sits alone in the middle. It fades to grey and slides to one side. In its place a loop draws in green: \"Good ideas\" on the left, an arrow across to \"Governed services\" on the right, and a return arrow underneath labelled \"Again and again\". A single idea card, labelled \"Clear value\", enters the loop on the left. The slide ends on the finished loop with that one idea on its way in, and the grey card faded to one side."],
+    story: [
+      "Everyone had ideas, and the missing piece was the capability and capacity to build them.",
+      "Now we pick use cases with clear value that we know we can build, and work toward governed services.",
+    ],
+    steps: [
+      { id: "play", show: ["What AI app should we build?", "Good ideas", "Governed services", "Again and again", "Clear value"] },
+    ],
+  },
+  {
+    id: "two-to-twenty",
+    number: "6a",
+    part: 2,
+    world: "built",
+    name: "Modules and reuse, two apps to 20",
+    show: "We break projects into modules and reuse them, so each new build goes faster than the last.",
+    say: "Our method is rapid application development. We break everything we build into modules and reuse them. The data pipelines, the security setup and the deployment code already exist, so each new build starts with those parts already tested and only needs what is new. The more modules we have, the faster the next build goes. Today the library holds 145 tested modules in 13 categories. The reuse figure on the line is our own internal estimate. Each new application adds modules that the next one can use, so the library keeps growing. Most of the code in each new one has already been tested and reviewed in an earlier one.",
+    see: ["A stair of application tiles rises left to right, one step per year: \"2023\", \"2024\", \"2025\", \"Today\". Each step's count lands on top of it: \"Two\", \"Five\", \"11\", \"20\". Behind the stair a green line labelled \"Code reused\" starts low at the left edge, before the first step, at \"About five percent\", and climbs to \"About 90 percent\" at the last step. A small tag under the line reads \"Internal estimate\". The slide ends on the full stair with the line at its peak."],
+    story: [
+      "We had two applications in 2023, five by 2024, 11 by 2025, and 20 today.",
+      "Code reused between applications grew from about five percent to about 90 percent, by our estimate.",
+    ],
+    steps: [
+      { id: "play", show: ["2023", "2024", "2025", "Today", "Two", "Five", "11", "20", "Code reused", "About five percent", "About 90 percent", "Internal estimate"] },
+    ],
+  },
+  {
+    id: "rad-born",
+    number: "6b",
+    part: 2,
+    world: "built",
+    name: "How rapid application development was born",
+    show: "The modules and the process together became our rapid application development method.",
+    say: "That reuse is how our rapid application development process was born. Every build left behind parts the next one could use, so we gathered them into a library and a catalog of tested modules. The module library now spans 145 modules in 13 categories. Then we built a process around the library. It covers infrastructure deployment, the application build-out, and an agile lifecycle practice for creating each application and managing it over its life. All of it runs inside Microsoft Azure and Azure DevOps. With both in place, the next question was what to build first. The library and the process together became the method we use today. We call it RAD.",
+    see: ["Four blocks land in a row, one at a time. The first, labelled \"Module library\", is filled with small module tiles and carries the count \"145 modules\". The next three are green: \"Infrastructure deployment\", \"Application build-out\" and \"Agile lifecycle\". Then a grey base bar slides in under all four, labelled \"Microsoft Azure and Azure DevOps\". A green ring draws around the four blocks and the base together, and a small green bubble pops up at the ring's top right corner, labelled \"RAD\". The slide ends on the four blocks standing on the base inside the ring, with the bubble on its corner."],
+    story: [
+      "Our module library grew to 145 tested modules in 13 categories.",
+      "The process covers infrastructure deployment, application build-out and an agile lifecycle.",
+    ],
+    steps: [
+      { id: "play", show: ["Module library", "145 modules", "Infrastructure deployment", "Application build-out", "Agile lifecycle", "Microsoft Azure and Azure DevOps", "RAD"] },
+    ],
+  },
+  {
+    id: "ai-builds",
+    number: "7",
+    part: 2,
+    world: "built",
+    name: "AI that builds the tool",
+    show: "The quick win is often a tool built with AI that closes a gap we already know about.",
+    say: "When people hear AI, most picture a chatbot inside a product. Foresight, our tool for the City Manager's Office, needs AI, because it reads and scores thousands of sources every night. Often it can be more impactful to use AI to build a tool that closes a gap we already know about. AI can accelerate the process of building an old-fashioned tool. That can be the quick win, and the value right now. The AI agents write and test the code, and the application itself is ordinary, well-tested software. Once it passes review and a person approves it, the finished tool runs on its own. Not every project has to embed AI, and a tool with no AI inside has no AI service to secure or pay for.",
+    see: ["An empty application outline sits on the right. Green agents labelled \"AI agents\" stand outside it and fill it with building blocks, row by row, until it is a complete tool. A person labelled \"A person approves\" gives it the orange approval mark, and the mark stays on the tool with that label beside it. The agents step back and fade, and the tool stays standing on its own, labelled \"Finished tool\". A small tag on its corner reads \"No AI inside\". The slide ends on the finished tool with its tag, its orange mark and the label \"A person approves\" still beside the mark."],
+    story: [
+      "AI accelerates building an old-fashioned tool, and the finished tool runs on its own.",
+      "Many projects need no AI inside the product, which brings value now with less risk.",
+    ],
+    steps: [
+      { id: "play", show: ["AI agents", "A person approves", "Finished tool", "No AI inside"] },
+    ],
+  },
+  {
+    id: "setup",
+    number: "8",
+    part: 2,
+    world: "built",
+    name: "A fleet of AI agents",
+    show: "In late 2025 our process evolved again, and now a fleet of AI agents does the building.",
+    say: "Agentic tools came online toward the end of 2025, and our rapid development process evolved again. We had the stack, the tested modules and the agentic capability, so the AI agents now do nearly all of the building. People spend less time writing code and more time on the planning, the specification and the reviewing. A person starts each build by writing the brief and setting the checks. The lead agents read what we've set up, starting with the lessons from the last project and the permissions that say what they may do. They break the work into epics, sprints and waves and build in parallel. A first reviewer and a second reviewer, both AI, check every change. A person approves it before anyone uses it.",
+    see: ["Lead agents labelled \"Lead agents\" sit at a desk, and six folders land on it one at a time: \"Lessons\", \"Permissions\", \"Skills\", \"Tested modules\", \"Design system\", \"Stack\". The agents open and read each one. A board then opens beside the desk under the heading \"Epics, sprints and waves\". It splits into rows labelled \"Epics\", each divided into \"Sprints\", and green agents arrive in \"Waves\" and fill the cells with moving dots. The view moves in on one finished piece of work, and three marks land under it in turn: \"First reviewer\", \"Second reviewer\", then \"A person approves\" with the orange approval mark. The slide ends on that piece and its three marks, with the board small behind it."],
+    story: [
+      "Lead agents first read our lessons, permissions, skills, tested modules, design system and stack.",
+      "People now do the planning, the specification and the review, and a person approves each build.",
+    ],
+    steps: [
+      { id: "play", show: ["Lead agents", "Lessons", "Permissions", "Skills", "Tested modules", "Design system", "Stack", "Epics, sprints and waves", "Epics", "Sprints", "Waves", "First reviewer", "Second reviewer", "A person approves"] },
+    ],
+  },
+  {
+    id: "too-long",
+    number: "9",
+    part: 2,
+    world: "built",
+    name: "Monday to Friday",
+    show: "We meet the stakeholder on Monday and put a working prototype in their hands on Friday.",
+    say: "Here is what that looks like for the person who asked. On Monday we sit down with the stakeholder and listen. On Friday they have a working prototype they can put their hands on. A couple of rounds of feedback follow, and then a version is ready for a pilot. A recent example shows the pace. A request for a governed partner directory came in on July 30. We had a prototype on day five and a working first version on day eight, with under eight hours of active coding. The other number here is the cost of a failed pilot, about $200 in infrastructure. When failure costs that little, we can try an idea and decide with evidence.",
+    see: ["A single week strip draws across the slide, five days from \"Monday\" to \"Friday\". On Monday a small figure labelled \"Stakeholder\" sits across the table from the team. On Friday a small working app lands in the stakeholder's hands, labelled \"Working prototype\". Two short loops arc after Friday, one after the other, each labelled \"Feedback\". Then a solid tile lands at the far right, labelled \"Ready for a pilot\". A small tag drops under the strip: \"Failed pilot, about $200\". The slide ends on the week strip, the two feedback loops and the pilot-ready tile, with the tag below."],
+    story: [
+      "After a couple of rounds of feedback, a version is ready for a pilot within weeks.",
+      "A pilot that fails costs about $200 in infrastructure, so we can afford to learn from it.",
+    ],
+    steps: [
+      { id: "play", show: ["Monday", "Friday", "Stakeholder", "Working prototype", "Feedback", "Ready for a pilot", "Failed pilot, about $200"] },
+    ],
+  },
+  {
+    id: "rad-evolves",
+    number: "9a",
+    part: 2,
+    world: "built",
+    name: "The process grows into One ATS",
+    show: "Rapid application development evolved, and it is moving from Austin Public Health into One ATS.",
+    say: "That speed comes from a process that kept evolving. Rapid application development grew up inside Austin Public Health, building tools for the department and its partners. Now it sits beside the City's infrastructure, security and AI groups, TSP, and EPMO, the project management group. TSP is the technology selection process. When anyone wants to buy, build or do something new with technology, Austin Technology Services wants the request to come in through a demand request or the technology selection process, which evaluates whether to buy it, build it, approve it or stop it. The RAD process is moving from Austin Public Health into One ATS, with those groups around it. Here is what it has built so far, and for whom.",
+    see: ["A small circle on the left, labelled \"Austin Public Health\", holds a green tile labelled \"RAD process\". To the right a larger ring draws, labelled \"One ATS\". A green arrow draws from the small circle to the ring, and the tile slides along it into the middle of the ring. Five nodes settle around the ring one at a time, each named: \"Infrastructure\", \"Security\", \"AI\", \"TSP\" with \"Technology selection process\" in smaller type under it, and \"EPMO\" with \"Project management\" in smaller type under it. The slide ends on the tile in the middle of the ring with the five nodes around it, and the small circle it came from on the left."],
+    story: [
+      "The RAD process grew up inside Austin Public Health, and it is moving into One ATS.",
+      "It now sits beside infrastructure, security, AI, TSP and EPMO, the project management group.",
+    ],
+    steps: [
+      { id: "play", show: ["Austin Public Health", "RAD process", "One ATS", "Infrastructure", "Security", "AI", "TSP", "Technology selection process", "EPMO", "Project management"] },
+    ],
+  },
+  {
+    id: "portfolio",
+    number: "10",
+    part: 2,
+    world: "built",
+    name: "What we have built, and for whom",
+    show: "We have built tools for departments across the City, from prototypes to tools in use.",
+    say: "Each department speaks for its own results, so the grid shows only what we built, for whom, and its status. One story sits behind it. Third Spaces came from young people in Bloomberg's Create to Code challenge, who designed an app for finding welcoming places. It is a priority for the City Manager's and Mayor's offices, and we built the prototype with the City GIS team. Keep one other tile in mind for later. The AMANDA code intelligence work for Development Services documented a legacy system so a new team could read it. GrantScope and PolicyPulse for Government Relations, AVTAS for Fire and Aviation and the meeting transcriber are pilots. The AI use case catalog for the Big Cities Health Coalition is live.",
+    see: ["A grid of tiles lights up one at a time. Each tile shows its name, the people it serves and its status. \"Foresight\", with \"City Manager's Office\" and \"Sanctioned pilot\". \"GrantScope\" and \"PolicyPulse\", each with \"Government Relations\" and \"Pilot\". \"AVTAS\", with \"Fire and Aviation\" and \"Pilot\". \"AMANDA code intelligence\", with \"Development Services\" and \"Pilot\". \"Third Spaces\", with \"City Manager's and Mayor's offices\" and \"Prototype\". \"Meeting transcriber\", with \"Austin Public Health\" and \"Pilot\". \"Purchasing\" and \"Medical order tracking\", each with \"Austin Public Health\" and \"In use\". \"AI use case catalog\", with \"Big Cities Health Coalition\" and \"Live\". The two \"In use\" tiles have a solid fill. The slide ends on the full grid."],
+    story: [
+      "Foresight is a sanctioned pilot for the City Manager's Office, and most others are pilots.",
+      "Purchasing and medical order tracking are in use at Austin Public Health.",
+    ],
+    steps: [
+      { id: "play", show: ["Foresight", "City Manager's Office", "Sanctioned pilot", "GrantScope", "PolicyPulse", "Government Relations", "Pilot", "AVTAS", "Fire and Aviation", "AMANDA code intelligence", "Development Services", "Third Spaces", "City Manager's and Mayor's offices", "Prototype", "Meeting transcriber", "Austin Public Health", "Purchasing", "Medical order tracking", "In use", "AI use case catalog", "Big Cities Health Coalition", "Live"] },
+    ],
+  },
+  {
+    id: "seen",
+    number: "11",
+    part: 2,
+    world: "built",
+    name: "Who has seen it",
+    show: "Departments, commissions and boards across the City have seen this work.",
+    say: "The Public Health Commission and the Technology Commission both asked us back. The Public Safety Commission, One ATS leadership and the Emerging Technology Board, where I sit, have seen it too. Aviation has had four IT briefings. In an AI Alliance working group, we meet with Austin Energy, Fire and Water. Animal Services found Austin Public Health through St. Edward's University. With St. Edward's, we are exploring how AI can help build tools and do research that improves public services, starting with Animal Services. With the University of Texas engineering department, we are researching how AI and digital twins could help with heat islands, directing emergency resources, and water pooling that raises West Nile risk, so the City can step in early. Peers outside Austin have noticed too.",
+    see: ["A single circle labelled \"Austin Public Health\" sits in the middle. Dots appear around it one at a time, each with its name, and a line draws from each dot to the center as it is named: \"Public Health Commission\", with a small tag \"Asked us back\" directly under its own name, then \"Technology Commission\", with the same tag directly under its own name, so each tag clearly belongs to one commission, then \"Public Safety Commission\", \"Emerging Technology Board\", \"One ATS leadership\", \"Aviation\", \"Animal Services\", \"Austin Energy\", \"AI Alliance working group\", \"University of Texas\" and \"St. Edward's University\". A wider spread of smaller dots follows, labelled once \"Departments\", each joined to the center. Last, a ring of nine small dots forms at the outer edge, labelled \"Practitioner group\". The slide ends on the full web of dots joined to the center."],
+    story: [
+      "We have research partnerships under way with the University of Texas and St. Edward's University.",
+      "A 20-person AI practitioner group spans nine departments.",
+    ],
+    steps: [
+      { id: "play", show: ["Austin Public Health", "Public Health Commission", "Asked us back", "Technology Commission", "Public Safety Commission", "Emerging Technology Board", "One ATS leadership", "Aviation", "Animal Services", "Austin Energy", "AI Alliance working group", "University of Texas", "St. Edward's University", "Departments", "Practitioner group"] },
+    ],
+  },
+  {
+    id: "recognition",
+    number: "12",
+    part: 2,
+    world: "built",
+    name: "Recognition",
+    show: "Peers in Texas and across the country have recognized the work.",
+    say: "Phillip Bays set my goals, and the first goal in my last evaluation was to advance AI-enabled innovation, agile delivery and team enablement across Austin Public Health and partner departments. We met it. City CIO Kerrica Laake nominated me for the Texas award. I've been invited to conferences and onto their stages. The CDC has featured the work, Bloomberg Cities Network wrote about our AMANDA work, and the Johns Hopkins GovEx City Data Alliance is highlighting our rapid application development method as a model. Our Big Cities Health Coalition work is an AI use case catalog built with the coalition. We've been invited to present to NYC Health, Tacoma, Mesa and the Texas Department of Information Resources. They all ask how to get their good ideas built.",
+    see: ["Five plain plaques settle on a wall one at a time, each with a short label: \"Innovative Leader Award\", \"Bloomberg Cities Network\", \"City Data Alliance\", \"Big Cities Health Coalition\", \"Invited to present\". The \"Big Cities Health Coalition\" plaque carries a sub-line in smaller type: \"Catalog built with the coalition\". The last plaque lists four small names under its label: \"NYC Health\", \"Tacoma\", \"Mesa\", \"Texas Department of Information Resources\". The slide ends on the wall of five plaques."],
+    story: [
+      "I won the Innovative Leader Award at the 2025 Texas IT Leadership Awards, nominated by the City CIO.",
+      "My goal was AI innovation and agile delivery for Austin Public Health and partners, and we met it.",
+    ],
+    steps: [
+      { id: "play", show: ["Innovative Leader Award", "Bloomberg Cities Network", "City Data Alliance", "Big Cities Health Coalition", "Invited to present", "Catalog built with the coalition", "NYC Health", "Tacoma", "Mesa", "Texas Department of Information Resources"] },
+    ],
+  },
+  {
+    id: "controls",
+    number: "12a",
+    part: 2,
+    world: "built",
+    name: "Inside the sandbox, the controls",
+    show: "Inside the sandbox, every application sits behind the same layers of control.",
+    say: "Before I turn to that, here is the last piece of what we built, the controls inside the sandbox. People sign in with single sign-on, and what they can reach depends on their role. Firewalls and private networking decide what can talk to each application. Each application runs in its own small container on Azure Container Apps, carrying only what it needs. We declare all of it as code, so the setup is something we can review and repeat, and our source code is managed in Azure DevOps. Austin Public Health funds the whole sandbox, under $1,000 a month. One pattern underlies every application, so a security reviewer checks the pattern once for every app. Now I'd like to spend the rest of our time on the City.",
+    see: ["The fenced yard from slide 5 fills the frame. A small container labelled \"Application\" sits in the middle. Six layers click into place around it one at a time, each with its label: \"Role-based access\", \"Firewalls\", \"Private networking\", \"Minimal footprint\", \"Infrastructure as code\", and last \"Azure DevOps\", drawn as the repository the container is built from. A tag reads \"The whole sandbox, under $1,000 a month\". It sits on its own at the foot of the frame, centered below the fence, well apart from the six layers and the Azure DevOps repository. The slide ends on the container inside its six layers, inside the fence, with the tag at the foot of the frame."],
+    story: [
+      "Role-based access, firewalls and private networking decide who can reach each application.",
+      "We run containerized applications with a minimal footprint, built with infrastructure as code.",
+    ],
+    steps: [
+      { id: "play", show: ["Application", "Role-based access", "Firewalls", "Private networking", "Minimal footprint", "Infrastructure as code", "Azure DevOps", "The whole sandbox, under $1,000 a month"] },
+    ],
+  },
+];

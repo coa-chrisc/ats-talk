@@ -1,0 +1,470 @@
+/* The plan world's own drawings (parts.tsx and the scene modules), in stage
+   pixels and under the kit's rules: navy (paper) words and outlines on the
+   white ground, the process's green for the process and the agents, a
+   department's colour for its people, a lantern's light, and grey for a
+   system nobody looks after. A part's state arrives as the kit's custom
+   properties (--d draws, --k fills and opens), so the same values always
+   draw the same picture. */
+
+/* A picture's HTML, as one part a step can hide. */
+.plan-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Words: navy, but the door's word in the process's green and a name on a navy shape in white. The kit's label type is slate, so each tone names the label class too. */
+.dk-label.plan-word--navy,
+.plan-word--navy {
+  fill: var(--dk-paper);
+}
+
+.dk-label.plan-word--process,
+.plan-word--process {
+  fill: var(--dk-process);
+}
+
+.dk-label.plan-word--white,
+.plan-word--white {
+  fill: var(--dk-night);
+}
+
+.plan-word--strong {
+  font-weight: 600;
+}
+
+/* A person, stroked in navy; the lantern in their hand comes in as they draw on. */
+.plan-figure__line {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.plan-figure .plan-lantern {
+  opacity: var(--d, 0);
+}
+
+.plan-figure--drawn .plan-lantern {
+  opacity: 1;
+}
+
+/* A person found by the survey, filled in their department's colour under their outline. */
+.plan-silhouette {
+  fill: var(--hue);
+  fill-opacity: var(--dk-tint-active);
+}
+
+/* A person who walks in front of other things: filled white, so what is behind them does not show through. The fill comes in as they draw on, so a person not yet drawn leaves no white shape on the slides before theirs. */
+.plan-figure--solid .plan-figure__line {
+  fill: var(--dk-night);
+  fill-opacity: var(--d, 0);
+}
+
+.plan-figure--drawn.plan-figure--solid .plan-figure__line {
+  fill-opacity: 1;
+}
+
+/* A lantern: a round pool of warm light (a faint pool and a brighter middle), the arm that holds it up, and a flame between a navy cap and base. */
+.plan-lantern__pool {
+  fill: var(--dk-lead);
+  fill-opacity: var(--dk-tint-idle);
+}
+
+/* The bright middle of the light, round the flame. */
+.plan-lantern__core {
+  fill: var(--dk-lead);
+  fill-opacity: calc(var(--dk-tint-active) * 0.6);
+}
+
+.plan-lantern__arm {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.plan-lantern__flame {
+  fill: var(--dk-lead);
+}
+
+.plan-lantern__cap {
+  fill: var(--dk-paper);
+}
+
+/* A frame: its edge draws on and its ground comes in with it, a wash of navy or of its role's colour. */
+.plan-frame__ground {
+  fill: var(--hue, var(--dk-paper));
+  fill-opacity: calc(var(--d, 0) * var(--dk-wash));
+}
+
+.plan-frame__edge {
+  fill: none;
+  stroke: var(--hue, var(--dk-paper));
+  stroke-width: 2.5;
+}
+
+.plan-frame--tint .plan-frame__ground {
+  fill-opacity: calc(var(--d, 0) * var(--dk-tint-idle));
+}
+
+.plan-frame--solid .plan-frame__ground {
+  fill: var(--dk-night);
+  fill-opacity: var(--d, 0);
+}
+
+.plan-frame--grey .plan-frame__edge {
+  stroke: var(--dk-soft);
+}
+
+.plan-writing rect {
+  fill: var(--dk-rule);
+}
+
+.plan-writing--tied {
+  opacity: var(--d, 0);
+}
+
+/* A part that grows from one edge (--k); its lines keep their weight as it grows. */
+.plan-grow--x {
+  transform: scaleX(var(--k, 0));
+}
+
+.plan-grow--y {
+  transform: scaleY(var(--k, 0));
+}
+
+.plan-grow rect,
+.plan-grow path {
+  vector-effect: non-scaling-stroke;
+}
+
+/* 18: the lit tile, the project dots, the ringed project and its measure. */
+.plan-lit {
+  fill: var(--dk-lead);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-lead);
+  stroke-width: 4;
+}
+
+.plan-dot {
+  fill: var(--dk-paper);
+  stroke: var(--dk-night);
+  stroke-width: 3;
+}
+
+.plan-ring {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-point {
+  fill: var(--dk-paper);
+}
+
+.plan-measure {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.plan-target {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+/* 19: the form, and a nameplate (21's too). */
+.plan-form__page,
+.plan-plate {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-form__head {
+  fill: var(--dk-paper);
+}
+
+.plan-form__box {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.plan-form__bar {
+  fill: var(--dk-rule);
+}
+
+/* 19a: the team box, which grows with the view and keeps its line weight; its people, lit in navy, the same; a role's tile; the question tag; and a dotted line, an HTML part opened by its clip. */
+.plan-team rect {
+  fill: var(--dk-paper);
+  fill-opacity: var(--dk-wash);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.plan-member .plan-figure__line {
+  vector-effect: non-scaling-stroke;
+}
+
+.plan-member .plan-silhouette {
+  fill: var(--dk-paper);
+}
+
+.plan-role {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+.plan-tag {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-tag__pointer {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-dotted {
+  position: absolute;
+}
+
+.plan-dotted svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.plan-dotted path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0 12;
+}
+
+/* 19b: a desk and its system, a grey stuck mark, the slab's parts filling in the process's green, the cycle-time bar (grey, then a short green one), the pile's cards in grey, and the program team's box. */
+.plan-desk {
+  fill: var(--dk-paper);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.plan-desk__legs {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.plan-system {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-stuck circle {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 3;
+}
+
+.plan-stuck path {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.plan-slab {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.plan-slab__fill {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+.plan-cycle rect {
+  fill: var(--dk-soft);
+  fill-opacity: var(--dk-tint-active);
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+}
+
+.plan-cycle__short {
+  fill: var(--dk-process);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+}
+
+.plan-request {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+}
+
+.plan-crew {
+  fill: var(--dk-paper);
+  fill-opacity: var(--dk-wash);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+/* 20: a box (lane two's pieces are drawn as 19b's slab parts), a checkpoint that fills green as it is passed, and the door. */
+.plan-box {
+  fill: var(--dk-paper);
+}
+
+.plan-check__edge {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-check__fill {
+  fill: var(--dk-process);
+  opacity: var(--k, 0);
+}
+
+.plan-door__way {
+  fill: var(--dk-paper);
+  fill-opacity: var(--dk-tint-idle);
+}
+
+.plan-door__frame {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+
+.plan-door__leaf {
+  transform: scaleX(calc(1 - var(--k, 0) * 0.85));
+}
+
+.plan-door__leaf rect {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.plan-door__knob {
+  fill: var(--dk-paper);
+}
+
+/* 20a: a system's light, and the written record. */
+.plan-alight {
+  fill: var(--dk-lead);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-lead);
+  stroke-width: 3.5;
+}
+
+.plan-page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+/* 20b: the shafts, the tip, its shaft line, the counter and the staff member's turning head. */
+.plan-shaft {
+  fill: var(--dk-paper);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.plan-tip {
+  fill: var(--dk-paper);
+}
+
+/* The spear's shaft line, behind the tip: a heavy navy line. */
+.plan-spear {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 8;
+}
+
+/* The staff member's nose, which shows the way their head faces; it draws on with them, and the head turns (--k) by flipping it across. */
+.plan-face {
+  transform: scaleX(calc(1 - 2 * var(--k, 0)));
+}
+
+.plan-face path {
+  fill: var(--dk-paper);
+  opacity: var(--d, 0);
+}
+
+.plan-counter {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.plan-counter__top {
+  fill: var(--dk-paper);
+}
+
+/* 21: the ground, the buildings and the path. */
+.plan-ground {
+  fill: var(--dk-paper);
+  fill-opacity: calc(var(--d, 0) * var(--dk-tint-idle));
+}
+
+.plan-ground__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.plan-house__roof,
+.plan-house__door {
+  fill: var(--dk-paper);
+}
+
+.plan-house__body {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.plan-house__window {
+  fill: var(--dk-paper);
+  fill-opacity: var(--dk-tint-idle);
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.plan-stone {
+  fill: var(--dk-paper);
+}
+
+/* 21a: the card the agent makes, edged in the process's green, and the checklist's boxes. */
+.plan-card {
+  fill: var(--dk-night);
+  stroke: var(--dk-process);
+  stroke-width: 3;
+}
+
+.plan-tickbox {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}

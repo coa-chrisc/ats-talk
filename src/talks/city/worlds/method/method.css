@@ -1,0 +1,264 @@
+/* The method world's own marks, under the kit's rules (kit.css,
+   kit-parts.css) and docs/bchc-brand.md: words and outlines in navy (paper)
+   on the white ground, the process and its agents in green, slate (soft)
+   for what holds an idea back, and the deep-green tick only through the
+   kit's PassTick. A part's state arrives as the kit's custom properties
+   (--d, --k, --s, --x, --y). Selectors are doubled where they refine a kit
+   class, so the order the sheets load in never decides a picture. */
+
+/* A slide's HTML as one part, holding no room of its own. */
+.method-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Every word the viewer reads is navy, the kit's label type included. */
+.dk-label.method-word,
+.dk-text.method-word {
+  fill: var(--dk-paper);
+}
+
+.method-word--strong.method-word--strong {
+  font-weight: 600;
+}
+
+/* Slides 13 and 16: the wall the cards hang on. */
+.method-wall {
+  fill: var(--dk-raised);
+}
+
+/* The idea card: white, a navy edge, a navy pin, a bulb and two faint lines of writing. */
+.method-card {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.method-card__writing {
+  fill: var(--dk-rule);
+}
+
+.method-card__pin {
+  fill: var(--dk-paper);
+}
+
+.method-bulb {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The grey tag: why an idea stalls. */
+.method-tag {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.method-tag__words.method-tag__words {
+  font-size: 24px;
+}
+
+.method-tag__hole {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 1.5;
+}
+
+/* The hand: white, outlined in navy, in a navy sleeve. */
+.method-hand path {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.method-hand .method-hand__sleeve {
+  fill: var(--dk-paper);
+}
+
+.method-hand .method-hand__cuff {
+  fill: var(--dk-raised);
+}
+
+.method-hand .method-hand__crease {
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Slide 14: a chair, and the figure who sits in it, drawing on in navy and filling as they sit. */
+.method-chair {
+  fill: var(--dk-raised);
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.method-chair.method-chair__seat {
+  fill: var(--dk-rule);
+}
+
+.method-sitter path,
+.method-sitter circle {
+  fill: var(--dk-paper);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+/* The table: its edge draws on, its top coming in with it. */
+.method-table {
+  fill: var(--dk-raised);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--d, 0));
+  stroke-opacity: min(1, calc(var(--d, 0) * 100));
+}
+
+.method-bubble {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+/* The notebook page, and its lines of writing filling in from the left. */
+.method-page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.method-page__ring {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.method-page__rule {
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.method-page__ruled {
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.method-writing {
+  fill: var(--dk-soft);
+  transform: scaleX(var(--k, 0));
+  transform-origin: 0 50%;
+  transform-box: fill-box;
+}
+
+/* Slide 15: a layer under a card, solid, or dashed in grey where it has a gap. */
+.method-stratum {
+  fill: var(--dk-raised);
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.method-stratum.method-stratum--gap {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 10 8;
+}
+
+/* The gap mark: a dashed grey ring round a grey cross. */
+.method-gap circle {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+}
+
+.method-gap path {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* Slide 16: the chart, its quarters, its dots and its washed corner. */
+.method-axes {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.method-mid {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+}
+
+.method-dot {
+  fill: var(--dk-paper);
+}
+
+.method-corner {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--k, 0) * var(--dk-tint-active) / 2);
+}
+
+/* Slide 17: a finished tool, its edge drawing on and its face filling solid, and what it shows. */
+.method-built__face {
+  fill: color-mix(in srgb, var(--dk-paper) calc(var(--dk-tint-idle) * 100%), var(--dk-night));
+  opacity: var(--k, 0);
+}
+
+.method-built__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.method-inside {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.method-inside rect {
+  fill: var(--dk-night);
+}
+
+.method-inside .method-inside__solid {
+  fill: var(--dk-paper);
+  stroke: none;
+}
+
+.method-inside .method-inside__thick {
+  fill: none;
+  stroke-width: 5;
+}
+
+/* Slide 17's bars of time, drawing out from their left ends: then in grey, now in the process green, each light enough for its navy name. */
+.method-bar {
+  transform: scaleX(var(--k, 0));
+  transform-origin: 0 50%;
+  transform-box: fill-box;
+}
+
+.method-bar.method-bar--then {
+  fill: color-mix(in srgb, var(--dk-soft) 35%, var(--dk-night));
+}
+
+.method-bar.method-bar--now {
+  fill: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+}

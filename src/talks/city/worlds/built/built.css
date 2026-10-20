@@ -1,0 +1,412 @@
+/* The built world's own marks and type, in stage pixels and under the kit's
+   rules (the kit's sheet and the brand notes in docs): words and outlines in navy (paper),
+   secondary words in soft, the process and its agents in green, the
+   catalog in indigo, problems in grey, and orange only in the kit's human
+   mark. Every state arrives as a value a move sets (--d, --k, --t, --s,
+   autoAlpha), so a cut and a build end alike. Slides 10 to 12 have a
+   sheet of their own. */
+
+/* A slide's HTML, gathered at the plane's corner so its children keep their stage places. */
+.built-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Words as HTML: the kit's block colours by default (navy words, soft small labels), and soft, strong or the process's green over them where a layout asks. */
+.built-word--paper {
+  color: var(--dk-paper);
+}
+
+.built-word.built-word--soft {
+  color: var(--dk-soft);
+}
+
+.built-word.built-word--process {
+  color: var(--dk-process);
+  font-weight: 600;
+}
+
+.built-word.built-word--strong {
+  color: var(--dk-paper);
+  font-weight: 600;
+}
+
+/* Words set in the marks, in navy. */
+.built-ink {
+  fill: var(--dk-paper);
+}
+
+/* A small tag: its words in an outline with round ends, the ground showing inside. */
+.built-tag {
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 22px;
+  background: var(--dk-night);
+  white-space: nowrap;
+}
+
+.built-tag--solid {
+  color: var(--dk-paper);
+  font-weight: 600;
+}
+
+/* A ring's name on a tab in its edge: the ground behind the words breaks the ring's line. */
+.built-tab {
+  background: var(--dk-night);
+  color: var(--dk-paper);
+  white-space: nowrap;
+}
+
+/* A folder on the desk, its name on its spine. */
+.built-folder {
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  border: 2.5px solid var(--dk-paper);
+  border-radius: 4px 14px 4px 4px;
+  background: var(--dk-night);
+  color: var(--dk-paper);
+  white-space: nowrap;
+}
+
+/* As a folder is read it opens: a green sheet slides out of its right end and back in as --k goes to 1 and back. */
+.built-folder::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  right: -2.5px;
+  width: 40px;
+  border: 2.5px solid var(--dk-process);
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  background: var(--dk-night);
+  opacity: var(--k, 0);
+  transform: translateX(calc(var(--k, 0) * 34px));
+}
+
+/* Lines: outlines in navy, the ground line under things in rule. */
+.built-outline {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.built-ground {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* An arrow, its head coming on as its line's front arrives. */
+.built-arrow path {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.built-arrow--process path {
+  stroke: var(--dk-process);
+}
+
+.built-arrow--paper path {
+  stroke: var(--dk-paper);
+}
+
+.built-arrow__head {
+  opacity: clamp(0, calc(var(--d, 0) * 20 - 19), 1);
+}
+
+/* 4. The dark desk, its slab and legs in navy; the lamp drawn in navy; its light in the raised ground; and the tiles on the desk, white with navy outlines and rules. */
+.built-desk {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 20;
+}
+
+.built-desk__legs {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 14;
+}
+
+.built-lamp path,
+.built-lamp circle {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.built-light {
+  fill: var(--dk-raised);
+}
+
+.built-start__tile {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-start__rule {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* 6. The question's card: navy until it greys (--k) as it steps aside. */
+.built-ask__card {
+  fill: var(--dk-night);
+  stroke: color-mix(in srgb, var(--dk-rule) calc(var(--k, 0) * 100%), var(--dk-paper));
+  stroke-width: 3;
+}
+
+.built-ask__words {
+  fill: color-mix(in srgb, var(--dk-soft) calc(var(--k, 0) * 100%), var(--dk-paper));
+  font-family: var(--dk-face);
+  font-size: var(--dk-text);
+  font-weight: 600;
+}
+
+/* The opening: the plain wall in the raised grey with a rule edge, and the strands thrown at it, wavy lines in grey. */
+.built-wall {
+  fill: var(--dk-raised);
+  stroke: var(--dk-rule);
+  stroke-width: 3;
+}
+
+.built-strand {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The loop's places, in green. */
+.built-place {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3.5;
+}
+
+/* The one idea on its way in: a card in green, its name on it. */
+.built-idea {
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--dk-process);
+  border-radius: 12px;
+  background: var(--dk-night);
+  white-space: nowrap;
+}
+
+/* 6a. The stair's application tiles, and the line of code reused, in green, behind them. */
+.built-app {
+  fill: var(--dk-paper);
+}
+
+.built-reuse {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.built-reuse__end {
+  fill: var(--dk-process);
+}
+
+/* 5. The City's buildings, in the words' ink, with rule panes. */
+.built-building__body {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.built-building__pane {
+  fill: var(--dk-rule);
+}
+
+/* The fence: navy rails and posts, and its gate, which swings out about its top jamb as --k goes to 1. */
+.built-fence {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+
+.built-fence__posts rect,
+.built-gate__jamb {
+  fill: var(--dk-paper);
+}
+
+.built-gate__leaf {
+  fill: var(--dk-paper);
+  transform: rotate(calc(var(--k, 0) * -90deg));
+}
+
+/* The box of data and the hand that carries it, both in navy. */
+.built-data {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-hand {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 12a. The rings round the container, each closing in from a little larger (--s). */
+.built-layer {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  transform: scale(var(--s, 1));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.built-container {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-repo__body {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-repo__branch {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.built-repo__node {
+  fill: var(--dk-night);
+  stroke: var(--dk-process);
+  stroke-width: 4;
+}
+
+/* 5a. The calendar's weeks, each with its meeting in green; the stair, whose steps light green (--k); the closed door. */
+.built-week {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.built-meeting {
+  fill: var(--dk-process);
+}
+
+.built-step {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--k, 0) * var(--dk-tint-active));
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.built-door__leaf {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3.5;
+}
+
+.built-door__knob {
+  fill: var(--dk-paper);
+}
+
+/* 8. The board's lines, its cells filling green from the left (--k) with their dots; the reading dots; the finished piece. */
+.built-board__line {
+  fill: none;
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+}
+
+.built-cell__fill {
+  fill: var(--dk-process);
+  fill-opacity: var(--dk-tint-idle);
+  transform: scaleX(var(--k, 0));
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+}
+
+.built-cell__dot,
+.built-read {
+  fill: var(--dk-process);
+}
+
+.built-piece {
+  fill: var(--dk-night);
+  stroke: var(--dk-process);
+  stroke-width: 4;
+}
+
+.built-piece__line {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+
+/* 9. The week strip: each day's outline in navy, its fill the board cell's green growing from its left; the table; the app held on the last day, its lines green; the loops in green; and the solid tile, the green at the active tint behind navy words. */
+.built-weekday {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-table {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.built-app-held {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.built-app-held__rule {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.built-loop {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.built-pilot {
+  display: grid;
+  place-items: center;
+  border: 2.5px solid var(--dk-paper);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--dk-process) calc(var(--dk-tint-active) * 100%), var(--dk-night));
+  font-weight: 600;
+  white-space: nowrap;
+}

@@ -1,0 +1,118 @@
+/* The change of ground. The engine swaps the kit's colours outright when a
+   step asks for navy (kit.css `.deck[data-ground="navy"]`); on this deck they
+   fade over half a second instead, so the title and close slides arrive and
+   leave without a flash. Registering them as colours is what lets them
+   animate. The registration is global, but every value any deck gives them
+   is a colour (frame.test.ts checks), so the other decks draw exactly as
+   before; the initial values are the kit's white-ground ones. Only this
+   deck, the one whose frame is mounted, gets the transition, and only on a
+   played click (the engine says data-via="advance"); a cut back, a jump or a
+   cold load changes ground at once, as the stage does. */
+
+@property --dk-night {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --dk-raised {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ececf2;
+}
+
+@property --dk-paper {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #22254e;
+}
+
+@property --dk-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6b7086;
+}
+
+@property --dk-rule {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #dde0ea;
+}
+
+@property --dk-catalog {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #44499c;
+}
+
+.deck[data-via="advance"]:has(.city-frame) {
+  transition-property: --dk-night, --dk-raised, --dk-paper, --dk-soft, --dk-rule, --dk-catalog;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+
+/* The frame's three parts, in stage pixels, in the 64 px edge round the
+   safe area: the logo above it, the footer and the number below it. The
+   number's right edge stops at 1648, clear of the deck's corner (its counter
+   and its back and forward buttons). The corner is laid out in window pixels,
+   about 150 px wide, so in a 1280 window it covers about 225 stage pixels. */
+
+.city-frame__logo {
+  position: absolute;
+  top: 14px;
+  left: 96px;
+}
+
+.city-frame__footer,
+.city-frame__number {
+  position: absolute;
+  top: 1034px;
+  margin: 0;
+  font-family: var(--dk-face);
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--dk-soft);
+  white-space: nowrap;
+}
+
+.city-frame__footer {
+  left: 96px;
+}
+
+.city-frame__footer b {
+  font-weight: 600;
+  color: var(--dk-paper);
+}
+
+.city-frame__number {
+  right: 272px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The frame's own box lays nothing out: its parts sit on the stage as before. */
+
+.city-frame {
+  display: contents;
+}
+
+/* The two logos cross-fade with the ground, and the footer fades out on navy
+   and back. The number stays on both grounds: the room names a slide by it. */
+
+.deck[data-via="advance"] .city-frame__logo,
+.deck[data-via="advance"] .city-frame__footer {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.city-frame__logo--white {
+  opacity: 0;
+}
+
+.city-frame[data-ground="navy"] .city-frame__logo--white {
+  opacity: 1;
+}
+
+.city-frame[data-ground="navy"] .city-frame__logo--ink,
+.city-frame[data-ground="navy"] .city-frame__footer {
+  opacity: 0;
+}
