@@ -252,7 +252,7 @@ describe("the story lines", () => {
     for (const picture of SCRIPT)
       for (const line of picture.story) {
         expect(line, picture.id).toBe(line.trim());
-        expect(line, picture.id).toMatch(/^[A-Z].*\.$/);
+        expect(line, picture.id).toMatch(/^[A-Z].*[.?]$/);
       }
   });
 

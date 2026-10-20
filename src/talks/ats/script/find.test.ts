@@ -8,13 +8,13 @@ describe("reading the script by id", () => {
     expect(pictureOf("fleet").world).toBe("stands");
     expect(pictureOf("lanes").world).toBe("first");
     expect(pictureOf("lets-talk").world).toBe("ready");
-    expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules", "Copilot", "A person approves every step", "Workflow", "The steps are set", "Agent", "Chooses its own steps", "Stop here if it gets the job done", "More independence, so more to control, review and answer for", "Plain tool", "Some jobs need no AI at all"]);
-    expect(stepOf("lessons", "play").show).toEqual(["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start where a mistake costs little", "Enterprise now", "The City now", "What we would do first"]);
-    expect(shown("who-decides", "play")).toEqual(["Leadership", "Draws the lines AI may never cross", "DCIO", "Decides authority", "CISO", "Owns the controls", "Authority flows down", "Evidence flows up", "What can it touch", "What enforces its limits", "Who would know if it went wrong"]);
+    expect(shown("ladder", "play")).toEqual(["Automation", "Fixed rules, no AI", "Copilot", "A person approves every step", "Workflow", "People set the steps; AI helps inside them", "Agent", "Chooses its own steps", "Stop here if it gets the job done", "More autonomy, so more to control, review and answer for", "Plain tool", "Some jobs need no AI at all"]);
+    expect(stepOf("lessons", "play").show).toEqual(["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Put the rules where AI cannot break them", "Train your own staff first", "Start where a mistake is cheap", "Enterprise now", "The City now", "What we would do first"]);
+    expect(shown("who-decides", "play")).toEqual(["Leadership", "Draws the lines AI may never cross", "DCIO", "Decides how much each system may do on its own", "CISO", "Owns the controls", "Decisions flow down", "Results and incidents are reported up", "Three questions for any AI proposal", "What can it touch", "What enforces its limits", "Who would know if it went wrong"]);
   });
 
   it("finds a picture's story lines, A then B", () => {
-    expect(storyOf("residents")).toEqual(["AI helps City staff serve residents. It never judges a resident or replaces a person's decision.", "The test is whether residents would see the City serving them better over the long term."]);
+    expect(storyOf("residents")).toEqual(["AI helps City staff serve residents. It never judges a resident or replaces a staff member's decision about one.", "The test is whether residents would see the City serving them better over the long term."]);
     expect(storyOf("lets-talk")).toHaveLength(2);
     expect(() => storyOf("nowhere")).toThrow(/nowhere/);
   });

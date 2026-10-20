@@ -54,7 +54,7 @@ for (const s of slides) {
   if (s.story.length > 2) bad(s, `${s.story.length} story lines`);
   if (s.story.length === 0 && s.number !== "29") bad(s, "no story lines");
   s.story.forEach((l, i) => {
-    if (!/^[A-Z].*\.$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
+    if (!/^[A-Z].*[.?]$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
     if (storyWidth(l) > 1728) bad(s, `story ${i + 1} is ${Math.round(storyWidth(l))} px at 32 px; the band is 1728`);
   });
   const labels = [...s.see.join(" ").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
