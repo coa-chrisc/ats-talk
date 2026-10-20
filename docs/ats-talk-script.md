@@ -222,7 +222,7 @@ Speaker: Chris
 <!-- beat: the honest word about the policy; the authorized tools list is the mainstream first rung and the pressure is now on it; the next rung is tiers with a budget, not a longer ban -->
 Speaker: Chris
 
-**On screen:** The authorized tools rule was the right first control. The next control is a pathway, with tiers and a budget.
+**On screen:** Authorized tools were the right first control. The next is a pathway, with tiers and a budget.
 - Seattle, Minnesota and Houston made the same rule. Gartner: 69 percent see staff using tools anyway.
 - Boston moved to tiers by data sensitivity. Pennsylvania, in a year, went from 175 to 3,000 staff.
 
