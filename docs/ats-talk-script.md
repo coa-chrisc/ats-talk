@@ -251,7 +251,7 @@ Note: each example is from the October 2026 research (Bloomberg Cities, APPA, De
 Speaker: Chris
 
 **On screen:** Other cities and national bodies already treat the City's AI work as a model.
-- Austin placed seventh among large cities in the 2025 Digital Cities Survey, citing its AI governance pilots.
+- Austin placed seventh among large cities in the 2025 Digital Cities Survey, its AI pilots cited.
 - This is only what we found by asking around. There is more, and finding it is step one.
 
 **They see:** Five plain plaques settle on a wall one at a time, each with a short label: "Digital Cities Survey", with the caption "Seventh among cities over 500,000"; "Innovative Leader Award", with "Texas IT Leadership Forum"; "Bloomberg Cities", with "Featured the permitting work"; "City Data Alliance", with "Bloomberg Philanthropies"; and "Invited to present", with four small names under it, "NYC Health", "Tacoma", "Mesa", "Texas DIR". A grey tag sits apart below the wall: "Only what we found by asking around". The slide ends on the wall of five plaques and the tag.
