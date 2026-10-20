@@ -1,7 +1,7 @@
 /**
  * The stands world (Part 4, slides 11 to 15) on one plane the size of the
  * stage: what every slide shares. Each slide's drawing is in its own module
- * (layout-track.ts, layout-exists.ts, layout-noticed.ts,
+ * (layout-track.ts, layout-control.ts, layout-exists.ts, layout-noticed.ts,
  * layout-infrastructure.ts, layout-fits.ts, layout-fleet.ts). Every word is
  * read from the script; a title's line break is given by the word it falls
  * after. Every id starts with its picture's id, and each picture's parts sit
@@ -36,6 +36,8 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
 const BREAKS: Record<string, string[]> = {
   /** 1374 and 893 px. */
   track: ["budget,"],
+  /** 1505 and 1565 px. */
+  control: ["control."],
   /** 1396 and 1082 px: after the second "has", not the first. */
   exists: ["it has"],
   /** 1352 and 1175 px. */

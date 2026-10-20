@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 import { CHAIN, HOLD } from "@/components/deck/kit";
 import { storyKeysOf, titleKey } from "./layout";
+import { CONTROL } from "./layout-control";
 import { EXISTS } from "./layout-exists";
 import { FITS } from "./layout-fits";
 import { FLEET, TRIP } from "./layout-fleet";
@@ -40,7 +41,7 @@ describe("every click", () => {
 
   it("changes each slide's title at the start of its click, the old one gone at once; the first comes up as the world arrives", () => {
     expect(startOf(stepOf("track"), titleKey("track"))).toBe(ARRIVE);
-    for (const pictureId of ["exists", "noticed", "infrastructure", "fits", "fleet"]) {
+    for (const pictureId of ["control", "exists", "noticed", "infrastructure", "fits", "fleet"]) {
       const id = stepOf(pictureId);
       expect(startOf(id, titleKey(pictureId)), pictureId).toBeLessThan(0.5);
       expect(before(id)[titleKey(pictureId)].yPercent, pictureId).toBe(120);
@@ -79,6 +80,55 @@ describe("slide 11, the track", () => {
     for (const key of [P.track.key, P.start.key]) expect(end[key]["--d"], key).toBe(1);
     for (const key of [...P.pack.keys, P.pack.name.key, P.city.key, P.city.name.key, P.tag.key, P.post.key, P.post.tick.key, P.post.name.key]) expect(end[key].autoAlpha, key).toBe(1);
     expect(end[P.tag.key]).toMatchObject({ "--y": 0, "--s": 1 });
+  });
+});
+
+describe("slide 11a, the control", () => {
+  const id = stepOf("control");
+  const C = CONTROL;
+  const G = C.gauge;
+  const [swing] = playOf(id, G.needle.key).filter((play) => "--r" in play.on);
+
+  it("lands the post with its tick and name first, then the four cities one after another", () => {
+    expect(startOf(id, C.post.tick.key)).toBeGreaterThan(startOf(id, C.post.key));
+    const cities = C.cities.map((city) => startOf(id, city.key));
+    expect(cities[0]).toBeGreaterThan(startOf(id, C.post.name.key));
+    for (let i = 1; i < cities.length; i++) expect(cities[i]).toBeGreaterThan(cities[i - 1]);
+  });
+
+  it("swings the needle from the low end to the high end once the gauge is up, the swept band drawing with it, the figure as it settles, story line A after", () => {
+    expect(swing.on["--r"]).toBe(G.needle.turn);
+    expect(before(id)[G.needle.key]["--r"]).toBe(0);
+    expect(swing.at).toBeGreaterThan(startOf(id, G.key));
+    expect(swing.at).toBeGreaterThan(Math.max(...C.cities.map((city) => startOf(id, city.key))));
+    expect(swing.duration).toBeGreaterThanOrEqual(1);
+    const [band] = playOf(id, G.reached.key);
+    expect(band.at).toBe(swing.at);
+    expect(band.duration).toBe(swing.duration);
+    expect(startOf(id, G.figure.key)).toBeGreaterThan(swing.at + swing.duration / 2);
+    expect(startOf(id, G.caption.key)).toBeGreaterThan(startOf(id, G.figure.key));
+    expect(storyAt("control", 0)).toBeGreaterThan(startOf(id, G.figure.key));
+    expect(at(id)[G.needle.key]["--r"]).toBe(G.needle.turn);
+  });
+
+  it("then rises the stair, and the green figure climbs from the first step to the second: up, then over", () => {
+    const steps = C.stair.steps.map((step) => startOf(id, step.key));
+    expect(Math.min(...steps)).toBeGreaterThan(endOf(id, storyKeysOf("control")[0]) - 0.6);
+    const climb = playOf(id, C.climber.key).filter((play) => "--x" in play.on || "--y" in play.on);
+    const up = climb.find((play) => "--y" in play.on)!;
+    const over = climb.find((play) => "--x" in play.on)!;
+    expect(up.at).toBeGreaterThan(startOf(id, C.climber.key));
+    expect(up.at).toBeGreaterThan(Math.max(...steps));
+    expect(over.at).toBeGreaterThan(up.at);
+    expect(at(id)[C.climber.key]).toMatchObject({ "--x": C.climber.run, "--y": C.climber.rise, autoAlpha: 1 });
+  });
+
+  it("lands the indigo figure once the climb is done, with story line B, and drops the tag at the foot last", () => {
+    expect(startOf(id, C.big.key)).toBeGreaterThan(endOf(id, C.climber.key) - 0.05);
+    expect(startOf(id, C.big.caption.key) - startOf(id, C.big.key)).toBeLessThanOrEqual(0.2);
+    expect(storyAt("control", 1)).toBeGreaterThan(startOf(id, C.big.key));
+    expect(startOf(id, C.budget.key)).toBeGreaterThan(storyAt("control", 1));
+    expect(Math.max(...playsAt(id).map((play) => play.at))).toBe(startOf(id, C.budget.key));
   });
 });
 

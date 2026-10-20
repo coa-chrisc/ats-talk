@@ -23,8 +23,8 @@ const sources = readdirSync(dir)
 
 describe("the stands world", () => {
   it("holds the script's slides 11 to 15 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["11", "12", "12a", "13", "14", "15"]);
-    expect(PICTURES.map((picture) => picture.id)).toEqual(["track", "exists", "noticed", "infrastructure", "fits", "fleet"]);
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["11", "11a", "12", "12a", "13", "14", "15"]);
+    expect(PICTURES.map((picture) => picture.id)).toEqual(["track", "control", "exists", "noticed", "infrastructure", "fits", "fleet"]);
     expect(stands.steps.map((step) => step.id)).toEqual(ids);
     expect(ids).toEqual(PICTURES.map((picture) => stepOf(picture.id)));
     expect(standsEntry.world).toBe(stands);
@@ -66,6 +66,10 @@ describe("the stands world", () => {
   it("shows no picture file: every slide is drawn", () => {
     expect(markup).not.toMatch(/\.(?:webp|png|jpg|svg)\b/);
   });
+
+  it("draws every shape at a number: no coordinate is missing", () => {
+    expect(markup).not.toMatch(/NaN|undefined/);
+  });
 });
 
 describe("one slide at a time", () => {
@@ -103,7 +107,7 @@ describe("one slide at a time", () => {
   });
 
   it("breaks the titles after the words the layout names, two lines each", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2]);
+    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2, 2]);
   });
 });
 
@@ -145,13 +149,13 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses no orange, and the pass green only through the kit's PassTick, on slides 11 and 14", () => {
+  it("uses no orange, and the pass green only through the kit's PassTick, on slides 11, 11a and 14", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     expect(sources.filter(([, source]) => /<HumanMark\b/.test(source))).toEqual([]);
-    expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-fits.tsx", "scene-track.tsx"]);
+    expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-control.tsx", "scene-fits.tsx", "scene-track.tsx"]);
     expect(markup).not.toMatch(/class="dk-human"/);
-    expect(markup.match(/class="dk-pass-tick"/g)).toHaveLength(5);
+    expect(markup.match(/class="dk-pass-tick"/g)).toHaveLength(6);
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, indigo and grey", () => {

@@ -10,6 +10,7 @@
 
 import { Plane, SetText } from "@/components/deck/kit";
 import { TITLE, TITLES } from "./layout";
+import { ControlHtml, ControlMarks } from "./scene-control";
 import { ExistsHtml, ExistsMarks } from "./scene-exists";
 import { FitsHtml, FitsMarks } from "./scene-fits";
 import { FleetHtml, FleetMarks } from "./scene-fleet";
@@ -24,6 +25,7 @@ export function Scene() {
       marks={
         <>
           <TrackMarks />
+          <ControlMarks />
           <ExistsMarks />
           <NoticedMarks />
           <InfrastructureMarks />
@@ -36,6 +38,7 @@ export function Scene() {
         <SetText key={title.key} id={title.key} x={TITLE.x} y={TITLE.y} size="title" lines={title.lines} />
       ))}
       <TrackHtml />
+      <ControlHtml />
       <ExistsHtml />
       <NoticedHtml />
       <InfrastructureHtml />

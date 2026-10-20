@@ -1,6 +1,7 @@
 /**
  * The stands world's drawings for what the kit has no part for: slide 11's
- * fence post; slide 12's lantern; slide 12a's plaque and the cord it hangs
+ * fence post; slide 11a's gauge, a step of its stair and its climber;
+ * slide 12's lantern; slide 12a's plaque and the cord it hangs
  * by; slide 13's fence, a tile inside it and a nameplate; slide 15's step of
  * the stair with its gate. Script-free: every word is passed in. SVG for
  * the plane's marks, moved with the house moves only (stands.css paints
@@ -16,6 +17,52 @@ import type { Box, Point } from "@/components/deck/kit";
 /** A solid fence post with a pointed cap, its foot on the ground. */
 export function FencePost({ id, x, w, top, foot }: { id: string; x: number; w: number; top: number; foot: number }) {
   return <path className="sn-post" data-build={id} d={`M${x} ${foot}V${top + w / 2}L${x + w / 2} ${top}L${x + w} ${top + w / 2}V${foot}Z`} />;
+}
+
+/* Slide 11a */
+
+/**
+ * A grey gauge: a half circle's band, the part of it the needle has swept
+ * drawing on in the darker grey (`draw`), a short tick at each end, and a
+ * needle from the hub that turns clockwise from the low end (`--r`, in
+ * degrees). The band, ticks and hub are drawn with the gauge's group.
+ */
+export function Gauge({ id, track, reached, needle, cx, cy, length, hub }: { id: string; track: string; reached: { id: string; d: string }; needle: { id: string }; cx: number; cy: number; length: number; hub: number }) {
+  return (
+    <>
+      <g data-build={id}>
+        <path className="sn-gauge__band" d={track} />
+        <path className="sn-gauge__base" d={`M${cx - length - 30} ${cy}H${cx + length + 30}`} />
+      </g>
+      <path className="sn-gauge__reached dk-draw" data-build={reached.id} d={reached.d} pathLength={1} />
+      <g className="sn-needle" data-build={needle.id} style={{ transformOrigin: `${cx}px ${cy}px` }}>
+        <path className="sn-needle__arm" d={`M${cx} ${cy}H${cx - length}`} />
+        <circle className="sn-needle__hub" cx={cx} cy={cy} r={hub} />
+      </g>
+    </>
+  );
+}
+
+/** A step of a plain stair: its riser box down to the floor, its tread drawn heavier on top. */
+export function ClimbStep({ id, at }: { id: string; at: Box }) {
+  return (
+    <g className="sn-climb-step" data-build={id}>
+      <rect className="sn-climb-step__riser" x={at.x} y={at.y} width={at.w} height={at.h} />
+      <path className="sn-climb-step__tread" d={`M${at.x} ${at.y}H${at.x + at.w}`} />
+    </g>
+  );
+}
+
+/** A small green figure standing with its feet at `at`: a head over a rounded body. It travels by `--x` and `--y`. */
+export function Climber({ id, at, w, h }: { id: string; at: Point; w: number; h: number }) {
+  const r = w * 0.3;
+  const top = at.y - h + 2 * r + 4;
+  return (
+    <g className="sn-climber dk-move" data-build={id}>
+      <circle cx={at.x} cy={at.y - h + r} r={r} />
+      <path d={`M${at.x - w / 2} ${at.y}V${top + w / 2}A${w / 2} ${w / 2} 0 0 1 ${at.x + w / 2} ${top + w / 2}V${at.y}Z`} />
+    </g>
+  );
 }
 
 /* Slide 12 */

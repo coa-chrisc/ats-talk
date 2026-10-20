@@ -4,7 +4,7 @@
  * and the chain ends on the slide's result. A slide's click puts the last
  * slide's picture away at once and changes the title; nothing carries from
  * one slide to the next. Each slide's moves are in its own module
- * (steps-track.ts, steps-exists.ts, steps-noticed.ts,
+ * (steps-track.ts, steps-control.ts, steps-exists.ts, steps-noticed.ts,
  * steps-infrastructure.ts, steps-fits.ts, steps-fleet.ts).
  */
 import type { PartMove } from "@/components/deck/engine/types";
