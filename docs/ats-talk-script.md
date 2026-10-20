@@ -17,15 +17,15 @@ Five things, in the order the talk earns them:
 2. **Three ideas from the course they can repeat in a meeting.** Use the least autonomy that does the job. Talent, not technology, is what separates the organizations that get value from the ones that don't. Govern in proportion to risk, with rules the system enforces.
 3. **A method, in plain steps, that does not require an agent, a platform or a reorganization.** Find the practitioners, listen, sort, run two lanes, level up the staff we have, measure outcomes.
 4. **Clarity about their own role.** Leadership sets the bright lines, the DCIO decides authority, the CISO owns the controls. Their job is the authority decisions, not the plumbing.
-5. **Confidence that Stefan and Chris are the people to run the first steps.** That confidence comes from the method and the evidence, not from a credentials slide. The talk never asks for trust; it demonstrates the thinking and then asks for three decisions.
+5. **Confidence that Stefan and Chris are the people to run the first steps.** That confidence comes from the method and the evidence, not from a credentials slide. The talk never asks for trust; it demonstrates the thinking and then asks for four decisions.
 
 ## The story in five moves
 
-1. Where the City stands: the world moved, we are behind, we are not out of it, and the course's own first step is to see what already exists.
+1. Where the City stands: the world moved, we are behind, we are not out of it, the course's own first step is to see what already exists, and one department already runs a fleet of agents.
 2. What the course taught: three ideas, and why the order matters.
 3. What we would do first: what we are not proposing, then find the people, listen, sort, two lanes, level up, measure.
 4. When agents come: the levels, the owners, who decides what, and the line around residents.
-5. The ask: three decisions, then the floor.
+5. The ask: four decisions, then the floor.
 
 Move 1 is carried mostly by Chris, move 2 mostly by Stefan, move 3 by Chris, move 4 by Stefan, and the close by both. Handing off every few slides keeps both presenters in the room's eye.
 
@@ -33,19 +33,20 @@ Move 1 is carried mostly by Chris, move 2 mostly by Stefan, move 3 by Chris, mov
 
 - **Full blast.** Nothing in the main talk proposes deploying an agent, buying an agent platform, or standing up new infrastructure. Slide 9 says so out loud.
 - **"It didn't come from us."** The course's own step one is an inventory of what exists, built, bought and employee-made. Slide 4 applies that to people and work, and names Austin Public Health and Austin Energy as departments that have been at this for years. The point lands as CMU's advice, not as a complaint.
-- **Vendors will fill the gap.** Slide 6 carries the BCG finding that talent is the differentiator, the buy, boost, build split that puts most value in the enterprise's own knowledge, and BNY training its workforce before granting autonomy.
+- **Vendors will fill the gap.** Slide 6 carries the BCG finding that talent is the differentiator, the buy, boost, build split that puts most value in the enterprise's own knowledge, and BNY training its workforce before granting autonomy. Slide 4a shows the City's own partners (Microsoft, Quisitive, Amazon) working inside City-owned infrastructure, which is the opposite of handing the problem to a vendor.
+- **Losing the momentum.** Slide 4a says plainly that the City is not ready to scale the agent fleet, in the course's gate language, and in the same breath that stopping it would lose the infrastructure built over years and the staff who know Azure. Decision 4 on slide 19 makes keeping it going an explicit ask.
 
 ## Timing
 
 | Part | Slides | Minutes |
 |---|---|---|
-| 1. Where the City stands | 1 to 4 | 5 |
+| 1. Where the City stands | 1 to 4a | 6 |
 | 2. What the course taught | 5 to 8 | 6 |
 | 3. What we would do first | 9 to 15 | 9 |
 | 4. When agents come, and the ask | 16 to 20 | 6 |
 | Backup (the CMU briefing deck) | B1 onward | as needed |
 
-About 20 clicks at a little over a minute each. If it runs long in rehearsal, slides 8 and 15 are the first to fold into neighbors.
+About 21 clicks at a little over a minute each. If it runs long in rehearsal, slides 8 and 15 are the first to fold into neighbors.
 
 ## Branding
 
@@ -60,6 +61,7 @@ Austin Technology Services, or City of Austin if ATS has no mark of its own yet.
 - Slide 3 and slide 4: the authorized AI tools control is described as the CISO's policy, as in Stefan's deck. Confirm the wording the CISO would use.
 - Slide 10: the name of the practitioner group. The script says "AI consortium" because that is the working name; if leadership prefers another, it changes in one place.
 - Slide 15: the 2026 Citywide Strategic Plan priority named is High-Performing Government, as in the city talk.
+- Slide 4a: the partner list. Microsoft and Quisitive are in the weekly sessions with the security office; Amazon is named as a partner the City works with. Confirm Amazon's current role before naming it on a slide, and whether "and others" should name anyone.
 
 ---
 
@@ -75,7 +77,7 @@ Speaker: Chris
 
 **They see:** The slide is navy, with the City of Austin wordmark in white at top right. The title settles in the middle in white with a short green rule under it, and the two story lines rise beneath. Nothing moves after that.
 
-**You say:** Thank you for the time. Stefan and I have spent this fall in Carnegie Mellon's executive course on leading agentic AI development, and we wanted to bring back what is useful to the City rather than everything we heard. We will do that in four parts. First, where the City stands, as plainly as we can put it. Second, three ideas from the course that we think leadership can carry into any meeting. Third, what we would do first, which is deliberately modest. Fourth, what to have ready for the day agents arrive, because they will arrive inside tools we already own. We will close with three decisions. Please interrupt us whenever something catches your interest.
+**You say:** Thank you for the time. Stefan and I have spent this fall in Carnegie Mellon's executive course on leading agentic AI development, and we wanted to bring back what is useful to the City rather than everything we heard. We will do that in four parts. First, where the City stands, as plainly as we can put it. Second, three ideas from the course that we think leadership can carry into any meeting. Third, what we would do first, which is deliberately modest. Fourth, what to have ready for the day agents arrive, because they will arrive inside tools we already own. We will close with four decisions. Please interrupt us whenever something catches your interest.
 
 ### 2. The world moved
 <!-- beat: context; chatbots became agents in about 18 months, and most of the organizations rushing in are stumbling -->
@@ -114,6 +116,19 @@ Speaker: Chris
 **You say:** The course's first move, in its 90-day playbook, is to see what exists before you set policy: everything built, bought, vendor-embedded and employee-made. We would apply that to people and work first. Austin Public Health has 20 applications and a sanctioned sandbox built with the security office. Austin Energy has years of AI work of its own. Other departments have smaller pockets, some of them employee-made and not on anyone's list. A practitioner group already reaches 20 people in nine departments, and 70 to 100 staff came to each Ask About AI session before those paused for the move into One ATS. None of this is yet at one table. That is the gap, and it is a cheap one to close.
 
 Note: confirm the Austin Energy description with Austin Energy, and the practitioner group and Ask About AI numbers, before building.
+
+### 4a. The City already runs agents, in one place
+<!-- beat: proof and candor; APH builds with a fleet of agents today, the City is not ready to scale that, and the work has to continue in the City's own infrastructure or the momentum is lost -->
+Speaker: Chris
+
+**On screen:** Austin Public Health already builds with a fleet of AI agents, and the City is not ready to scale that yet.
+- Lead agents plan, build and review in a sandbox built with the security office; a person approves.
+- The work continues with Microsoft, Quisitive, Amazon and others, in infrastructure the City owns.
+
+**They see:** A fenced yard draws in the middle, labeled "Sandbox", with a small caption "Built with the security office". Inside it, three green agents labeled "Lead agents" fill an application outline with blocks, two smaller agents labeled "Reviewers" check it, and a person gives it the orange approval mark with the label "A person approves". Outside the fence three nameplates settle in a row: "Microsoft", "Quisitive", "Amazon", with a fourth reading "And others". To the right a short stair of gates draws: "Explore", "Validate" and "Deploy" light green in turn, and "Scale" stays grey with a tag "Not ready to scale that yet". A tag at the foot of the fence reads "Over years". The slide ends on the yard, the agents at work, the orange mark, the partner nameplates and the stair with its grey top step.
+
+**You say:** One pocket deserves its own slide, because it is further along than the course expects a city to be. Since late 2025 Austin Public Health has built its applications with a fleet of AI agents: lead agents read the lessons, permissions and tested modules, build in parallel, two AI reviewers check every change, and a person approves before anyone uses it. It runs inside a sandbox built with the security office over years, with Microsoft, Quisitive, Amazon and others in the room every week. In the course's gates it has passed explore, validate and deploy. The City is not ready to scale that yet, and the gates say not to. The work has to continue in that infrastructure, or the momentum and the people who know Azure go with it.
+
 
 ---
 
@@ -227,9 +242,9 @@ Speaker: Chris
 - Lane one ships small, reversible tools that come out of listening and sorting.
 - Lane two builds training, a shared software lifecycle, one toolset and the infrastructure.
 
-**They see:** Two lanes draw, one above the other. The lower lane is labeled "Deliver quick wins now", and small green boxes ship along it one after another. The upper lane is labeled "Build the foundations", and four pieces fill in turn: "Training", "Software lifecycle", "One toolset", "Infrastructure". An arrow runs down from each piece into the lower lane, and the boxes there move faster after each arrow lands. A small indigo tag at the right reads "Fast lane and slow lane", with the caption "Both at once". The slide ends on both lanes full and the tag.
+**They see:** Two lanes draw, one above the other. The lower lane is labeled "Deliver quick wins now", and small green boxes ship along it one after another. The upper lane is labeled "Build the foundations", and four pieces fill in turn: "Training", "Software lifecycle", "One toolset", "The infrastructure the City already built". An arrow runs down from each piece into the lower lane, and the boxes there move faster after each arrow lands. A small indigo tag at the right reads "Fast lane and slow lane", with the caption "Both at once". The slide ends on both lanes full and the tag.
 
-**You say:** The plan has two lanes, and the course says to run both at once; it calls them a fast lane and slow lane, rapid experimentation beside structural change. Lane one is what the City can deliver now: small, reversible tools that come out of the listening and the sorting, many of them plain tools built with AI help. Lane two is the longer work that makes lane one faster every quarter: training, a shared software lifecycle, one toolset and the infrastructure under them. Each piece of lane two is an arrow into lane one. The course's warning about pilot purgatory applies here: every lane one project names a sponsor accountable for adoption and a transition plan before it starts, not after.
+**You say:** The plan has two lanes, and the course says to run both at once; it calls them a fast lane and slow lane, rapid experimentation beside structural change. Lane one is what the City can deliver now: small, reversible tools that come out of the listening and the sorting, many of them plain tools built with AI help. Lane two is the longer work that makes lane one faster every quarter: training, a shared software lifecycle, one toolset and the infrastructure the City already built, extended rather than replaced. Each piece of lane two is an arrow into lane one. The course's warning about pilot purgatory applies here: every lane one project names a sponsor accountable for adoption and a transition plan before it starts, not after.
 
 ### 14. Level up the people we have
 <!-- beat: capacity; three tiers of fluency, developers moving from AI user to AI engineer, and why training beats handing out licenses -->
@@ -295,17 +310,17 @@ Speaker: Chris
 
 **You say:** One line runs under all of this, and it is where the community's voice from the listening step comes back. AI at the City is used for residents, never on them. It helps City staff serve more people, and serve them in their own language. It never judges a resident, decides a benefit or replaces a person's decision about one; that is the no-go level, and it is where leadership's bright line belongs. The course would call it the clearest case for a person always in the loop. The test for any project is whether residents would see it as the City serving them better over the long term. If they would not, the City should not build it, however feasible it is.
 
-### 19. Three decisions
-<!-- beat: the ask; three decisions that cost conversations, each with a named owner in the two presenters -->
+### 19. Four decisions
+<!-- beat: the ask; four decisions that cost conversations and one that costs nothing but permission, each with a named owner in the two presenters -->
 Speaker: Chris and Stefan
 
-**On screen:** Three decisions would start this, and none of them needs a budget line yet.
+**On screen:** Four decisions would start this, and none of them needs a budget line yet.
 - Sanction the open call and the AI consortium, and sponsor the listening tour with departments.
-- Pick one first use case lane, and adopt the four levels and the bright lines before the first agent.
+- Keep the agent work going in the infrastructure the City built, with its Azure staff focused on it.
 
-**They see:** The slide is navy. Three numbered lines settle one at a time in white with gold numerals: "Sanction the open call and the AI consortium", "Sponsor the listening tour", "Pick one first use case lane and adopt the four levels". Under each, a small green nameplate lands: "We would run", "We would run", "Stefan would draft the levels with the CISO". A grey tag at the foot reads "None of this needs a budget line yet". The slide ends on the three lines and their nameplates.
+**They see:** The slide is navy. Four numbered lines settle one at a time in white with gold numerals: "Sanction the open call and the AI consortium", "Sponsor the listening tour", "Pick one first use case lane and adopt the four levels", "Keep the agent work going in the infrastructure". Under each, a small green nameplate lands: "We would run", "We would run", "Stefan would draft the levels with the CISO", "The Azure staff keep going". A grey tag at the foot reads "None of this needs a budget line yet". The slide ends on the four lines and their nameplates.
 
-**You say:** We will end with the decisions, and we kept them to three. First, sanction the open call and the AI consortium, so the City's practitioners come to one table with leadership's blessing. Second, sponsor the listening tour: a few weeks of conversations with department leaders, staff and the community that we would run and write up in their words. Third, pick one first use case lane and adopt the four levels and the bright lines now, so the first agent that arrives inside an authorized tool has a place to be classified. Stefan would draft the levels with the CISO. None of this needs a budget line yet. All of it puts the City in a position to ask for one with evidence.
+**You say:** We will end with the decisions, and we kept them to four. First, sanction the open call and the AI consortium, so the City's practitioners come to one table with leadership's blessing. Second, sponsor the listening tour: a few weeks of conversations with department leaders, staff and the community that we would run and write up in their words. Third, pick one first use case lane and adopt the four levels now, so the first agent inside an authorized tool has a place to be classified; Stefan would draft the levels with the CISO. Fourth, keep the agent work going in the infrastructure the City built, with its partners, and let the Azure staff keep going on it. None of this needs a budget line yet.
 
 ### 20. Let's talk
 <!-- beat: close; the floor goes to the room with the first question, and the backup deck is named -->
@@ -313,11 +328,11 @@ Speaker: Chris and Stefan
 
 **On screen:** Let's talk.
 - We would like to hear what you would most want a City AI strategy to do first.
-- We would also like to hear what you would need from us to make these three decisions.
+- We would also like to hear what you would need from us to make these four decisions.
 
 **They see:** The close is navy, with the City of Austin wordmark in white. The title and the two story lines settle in the middle in white, and a small line at the foot reads "The backup slides". Nothing moves after that.
 
-**You say:** That is what we brought back. The world moved fast and mostly moved badly, and the organizations that got value did the foundations first: their own people, honest listening, small reversible wins and controls the system enforces. The City is behind on operationalizing AI and ahead on the thing that matters most, which is staff who have already done this work and are waiting to be asked. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these three decisions. Stefan's deck on the security side is in the backup slides, and we are glad to go as deep as you like.
+**You say:** That is what we brought back. The world moved fast and mostly moved badly, and the organizations that got value did the foundations first: their own people, honest listening, small reversible wins and controls the system enforces. The City is behind on operationalizing AI and ahead on the thing that matters most, which is staff who have already done this work and are waiting to be asked. We would like to hear what you would most want a City AI strategy to do first, and what you would need from us to make these four decisions. Stefan's deck on the security side is in the backup slides, and we are glad to go as deep as you like.
 
 ---
 
