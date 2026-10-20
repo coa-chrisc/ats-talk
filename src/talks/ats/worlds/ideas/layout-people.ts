@@ -5,8 +5,8 @@
  * box (with its blank tag) on the left pan and three green people on the
  * right, each named over what it holds. The beam turns about its pivot and
  * the pans ride its ends, staying level. In the middle, the large indigo
- * figure on two lines over its caption, the zone as tall as the room under
- * the story band. At the right, a plaque with its name and caption. Words
+ * figure on two lines over its caption, the zone nearly as tall as the room
+ * under the story band. At the right, a plaque with its name and caption. Words
  * are read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
@@ -59,27 +59,30 @@ const nameOver = (plate: Box): Point => ({ x: plate.x + plate.w / 2, y: plate.y 
 
 /**
  * The middle zone: 84 px right of the right plate (its right edge at 760)
- * to 84 px short of the plaque, 576 wide. The figure is set at 144 px on
- * two lines, one word each (Geist bold sets the longer in about 545 px);
- * its caption at the 32 px text size on two lines 20 px under it. The
- * zone's 352 px of words are centred in the room under the story band.
+ * to 84 px short of the plaque, 500 wide. The figure is set at 128 px on
+ * two 130 px lines, one word each (Geist bold sets the longer in about
+ * 485 px); its caption at the 32 px text size 16 px under it, on three
+ * lines (about 990 px of words at 32 px in Geist). The zone's 411 px of
+ * words are centred in the 420 px of room under the story band.
  */
-const MID = { x0: 844, x1: 1420 } as const;
-export const FIGURE_LINE = 140;
-const CAPTION_GAP = 20;
-const ZONE_H = 2 * FIGURE_LINE + CAPTION_GAP + 2 * TEXT_LINE;
+const MID = { x0: 844, x1: 1344 } as const;
+export const FIGURE_LINE = 130;
+const CAPTION_GAP = 16;
+const CAPTION_LINES = 3;
+const ZONE_H = 2 * FIGURE_LINE + CAPTION_GAP + CAPTION_LINES * TEXT_LINE;
 const FIGURE_TOP = TOP + Math.round((SAFE.bottom - TOP - ZONE_H) / 2);
 
 /* The plaque */
 
 /**
- * At the stage's right, 320 wide and 220 tall, its middle level with the
- * middle zone's; its words inset 24 px, the name at 48 px over the
- * caption's two lines.
+ * At the stage's right, 396 wide and 240 tall, its middle level with the
+ * middle zone's; its words inset 24 px in a 348 px column, the name at
+ * 48 px (about 275 px in Geist bold) over the caption's three lines (its
+ * longest line about 320 px at 26 px with the notes' tracking).
  */
 const ZONE_MID = FIGURE_TOP + ZONE_H / 2;
-const PLAQUE = box(SAFE.right - 320, Math.round(ZONE_MID - 110), 320, 220);
-const PLAQUE_WORDS_H = 56 + 2 * LABEL_LINE;
+const PLAQUE = box(SAFE.right - 396, Math.round(ZONE_MID - 120), 396, 240);
+const PLAQUE_WORDS_H = 56 + 3 * LABEL_LINE;
 
 export const PEOPLE = {
   ...layerOf("people"),
@@ -107,7 +110,7 @@ export const PEOPLE = {
     key: "people.six",
     text: SIX,
     at: box(MID.x0, FIGURE_TOP, MID.x1 - MID.x0, 2 * FIGURE_LINE),
-    caption: { key: "people.six.caption", text: OUTPERFORM, at: box(MID.x0, FIGURE_TOP + 2 * FIGURE_LINE + CAPTION_GAP, MID.x1 - MID.x0, 2 * TEXT_LINE) },
+    caption: { key: "people.six.caption", text: OUTPERFORM, at: box(MID.x0, FIGURE_TOP + 2 * FIGURE_LINE + CAPTION_GAP, MID.x1 - MID.x0, CAPTION_LINES * TEXT_LINE) },
   },
   plaque: {
     key: "people.plaque",

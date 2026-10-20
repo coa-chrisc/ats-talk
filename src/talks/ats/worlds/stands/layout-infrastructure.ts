@@ -13,9 +13,9 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
-import { LABEL_LINE, TEXT_LINE, contentTop, layerOf, wordsWidth } from "./layout";
+import { LABEL_LINE, SAFE, TEXT_LINE, contentTop, layerOf, wordsWidth } from "./layout";
 
-const [SANDBOX, CANNOT_REACH, MODELS, MODELS_CAPTION, PATHWAY, PATHWAY_CAPTION, ROUTE, ROUTE_CAPTION, EVERY_WEEK, MICROSOFT, QUISITIVE, AMAZON, JOINING] = shown("infrastructure", "play");
+const [SANDBOX, CANNOT_REACH, RUNNING, RUNNING_CAPTION, PERMISSION, PERMISSION_CAPTION, ROUTE, ROUTE_CAPTION, EVERY_WEEK, MICROSOFT, QUISITIVE, AMAZON, JOINING] = shown("infrastructure", "play");
 
 const TOP = contentTop("infrastructure");
 
@@ -35,12 +35,12 @@ const TILE_H = FENCE.h - 2 * TILE.top;
 export const TILE_WORDS = { inset: 12, name: 34, caption: 70, pitch: 30 } as const;
 
 /** A caption broken on two rows where it would run past its tile at the label size, after the word the layout names. */
-const CAPTION_BREAKS: Record<string, string[]> = { [MODELS_CAPTION]: ["and"], [ROUTE_CAPTION]: [] };
+const CAPTION_BREAKS: Record<string, string[]> = { [RUNNING_CAPTION]: ["and"], [PERMISSION_CAPTION]: ["with the"], [ROUTE_CAPTION]: ["CISO and"] };
 const rowsOf = (text: string) => breakAfter(text, ...(CAPTION_BREAKS[text] ?? []));
 
 const tiles = [
-  { text: MODELS, caption: MODELS_CAPTION },
-  { text: PATHWAY, caption: PATHWAY_CAPTION },
+  { text: RUNNING, caption: RUNNING_CAPTION },
+  { text: PERMISSION, caption: PERMISSION_CAPTION },
   { text: ROUTE, caption: ROUTE_CAPTION },
 ].map((entry, i) => {
   const at = box(FENCE.x + TILE.pad + i * (TILE_W + TILE.gap), FENCE.y + TILE.top, TILE_W, TILE_H);
@@ -54,8 +54,8 @@ const tiles = [
 
 /* The calendar, under the fence */
 
-/** 52 weeks to a row, two rows of years and 12 weeks of a third: over two years. Each week 14 px square, 18 apart; the rows 20 apart. */
-export const WEEK = { cols: 52, weeks: 116, w: 14, pitch: 18, rowPitch: 20 } as const;
+/** 52 weeks to a row, two rows of years and 12 weeks of a third: over two years. Each week 10 px square, 13 apart; the rows 14 apart: the strip is 673 px wide, leaving the plates their room beside it. */
+export const WEEK = { cols: 52, weeks: 116, w: 10, pitch: 13, rowPitch: 14 } as const;
 /** The strip 36 px under the fence's foot (its posts stand 10 below it). */
 const CAL = { x: 96, y: FENCE.y + FENCE.h + 36 } as const;
 const weeks: Box[] = Array.from({ length: WEEK.weeks }, (_, n) => box(CAL.x + (n % WEEK.cols) * WEEK.pitch, CAL.y + Math.floor(n / WEEK.cols) * WEEK.rowPitch, WEEK.w, WEEK.w));
@@ -67,12 +67,13 @@ const EVERY_AT: Point = { x: CAL.x, y: CAL.y + CAL_H + 28 };
 
 /* The nameplates, beside the strip */
 
-/** Plates 52 px tall, as wide as the name at the text size and 24 to spare; the two 16 apart and 48 right of the strip, the dashed one 64 further on. */
-const PLATE = { h: 52, w: 196, gap: 16 } as const;
-const PLATE_Y = CAL.y - 2;
-const MICROSOFT_AT = box(CAL.x + CAL_W + 48, PLATE_Y, PLATE.w, PLATE.h);
-const QUISITIVE_AT = box(MICROSOFT_AT.x + PLATE.w + PLATE.gap, PLATE_Y, PLATE.w, PLATE.h);
-const AMAZON_AT = box(QUISITIVE_AT.x + PLATE.w + 64, PLATE_Y, 160, PLATE.h);
+/** Plates 52 px tall, each as wide as its name at the text size and 40 to spare; the two 12 apart and 48 right of the strip; the dashed one ending at the drawing's right edge, 48 or more past the second. */
+const PLATE = { h: 52, pad: 40, gap: 12 } as const;
+const plateW = (text: string) => wordsWidth(text, 32) + PLATE.pad;
+const PLATE_Y = CAL.y - 6;
+const MICROSOFT_AT = box(CAL.x + CAL_W + 48, PLATE_Y, plateW(MICROSOFT), PLATE.h);
+const QUISITIVE_AT = box(MICROSOFT_AT.x + MICROSOFT_AT.w + PLATE.gap, PLATE_Y, plateW(QUISITIVE), PLATE.h);
+const AMAZON_AT = box(SAFE.right - 16 - plateW(AMAZON), PLATE_Y, plateW(AMAZON), PLATE.h);
 /** The dashed plate's caption centred under it, on the strip's name's row. */
 const JOINING_AT: Point = { x: AMAZON_AT.x + AMAZON_AT.w / 2, y: EVERY_AT.y };
 

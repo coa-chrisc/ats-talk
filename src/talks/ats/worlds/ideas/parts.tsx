@@ -59,7 +59,7 @@ export function Words({ id, at, text, anchor = "middle", strong = false, size = 
 type NoteProps = {
   id: string;
   at: Box;
-  /** The 26 px label, the 32 px text, the 48 px name or the 144 px figure, which wraps a word to a line. */
+  /** The 26 px label, the 32 px text, the 48 px name or the 128 px figure, which wraps a word to a line. */
   size?: "label" | "text" | "name" | "big";
   align?: "start" | "center";
   strong?: boolean;

@@ -1,9 +1,9 @@
-/** Slide 4a's picture: the two bars on their floor, named and captioned; the person at the desk with the towering stack of pages, named; the funnel, named at its mouth, with the person and the mark at its outlet and their words; and the figure under it with its caption. */
+/** Slide 4a's picture: the two bars on their floor, named and captioned; the person at the desk with the towering stack of pages, named; the funnel, named at its mouth, with the person and the mark at its outlet and their words; and apart from it at the right the figure with its caption. */
 "use client";
 
 import { HumanMark, Part, Person } from "@/components/deck/kit";
 import { FIGURE, REVIEW } from "./layout-review";
-import { Column, Desk, Figure, Funnel, Layer, StoryOf, Stroke, Words } from "./parts";
+import { Column, Desk, Figure, Funnel, Layer, Note, StoryOf, Stroke, Words } from "./parts";
 
 const R = REVIEW;
 const N = R.funnel;
@@ -22,14 +22,11 @@ export function ReviewMarks() {
       {R.stack.pages.map((page) => (
         <path key={page.key} className="en-page" data-build={page.key} d={`M${page.x0} ${page.y}H${page.x1}`} />
       ))}
-      <Words id={R.stack.name.key} at={R.stack.name.at} text={R.stack.name.text} strong />
       <Funnel id={N.key} x0={N.x0} x1={N.x1} top={N.top} outlet={N.outlet} outletY={N.outletY} spout={N.spout} />
       <Words id={N.name.key} at={N.name.at} text={N.name.text} strong />
       <Person id={R.standing.key} at={R.standing.at} />
       <HumanMark id={R.mark.key} at={R.mark.at} />
-      <Words id={R.people.key} at={R.people.at} text={R.people.text} strong />
       <Figure id={R.figure.key} at={R.figure.at} runs={R.figure.runs} size={FIGURE.size} small={FIGURE.small} />
-      <Words id={R.figure.caption.key} at={R.figure.caption.at} text={R.figure.caption.text} />
     </Part>
   );
 }
@@ -38,6 +35,15 @@ export function ReviewHtml() {
   return (
     <Layer id={R.html}>
       <StoryOf picture="review" />
+      <Note id={R.stack.name.key} at={R.stack.name.at} align="center" strong>
+        {R.stack.name.text}
+      </Note>
+      <Note id={R.people.key} at={R.people.at} align="center" strong>
+        {R.people.text}
+      </Note>
+      <Note id={R.figure.caption.key} at={R.figure.caption.at}>
+        {R.figure.caption.text}
+      </Note>
     </Layer>
   );
 }

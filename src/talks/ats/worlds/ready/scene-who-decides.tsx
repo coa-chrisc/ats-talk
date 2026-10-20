@@ -1,9 +1,11 @@
-/** Slide 25's picture, in two zones: the stack of three tiers with the orange mark on the middle one and an arrow down its left side and up its right, each named; and the three question cards on the right. */
+/** Slide 25's picture, in two zones: the stack of three tiers with the orange mark on the middle one and an arrow down its left side and up its right, each named; and the heading and three question cards on the right. */
 "use client";
 
 import { HumanMark, Part, type Point } from "@/components/deck/kit";
 import { WHO_DECIDES } from "./layout-who-decides";
+import { LABEL_LINE } from "./layout";
 import { Layer, StoryOf, Words } from "./parts";
+import { Lines } from "./parts-applied";
 
 const W = WHO_DECIDES;
 
@@ -32,14 +34,15 @@ export function WhoDecidesMarks() {
       {W.tiers.map((tier) => (
         <g key={tier.name.key}>
           <Words id={tier.name.key} at={tier.name.at} text={tier.name.text} anchor="start" size="text" strong />
-          <Words id={tier.caption.key} at={tier.caption.at} text={tier.caption.text} anchor="start" />
+          <Lines id={tier.caption.key} at={tier.caption.at} lines={tier.caption.lines} pitch={LABEL_LINE} size="label" />
         </g>
       ))}
       <HumanMark id={W.mark.key} at={W.mark.at} />
       <Arrow id={W.down.key} from={W.down.from} to={W.down.to} />
-      <Words id={W.down.label.key} at={W.down.label.at} text={W.down.label.text} anchor="end" strong />
+      <Lines id={W.down.label.key} at={W.down.label.at} lines={W.down.label.lines} pitch={LABEL_LINE} size="label" anchor="end" strong />
       <Arrow id={W.up.key} from={W.up.from} to={W.up.to} />
-      <Words id={W.up.label.key} at={W.up.label.at} text={W.up.label.text} anchor="start" strong />
+      <Lines id={W.up.label.key} at={W.up.label.at} lines={W.up.label.lines} pitch={LABEL_LINE} size="label" strong />
+      <Words id={W.heading.key} at={W.heading.at} text={W.heading.text} anchor="start" size="text" strong />
       {W.cards.map((card) => (
         <g key={card.key} data-build={card.key}>
           <rect className="rd-question__ground" x={card.at.x} y={card.at.y} width={card.at.w} height={card.at.h} rx={10} />

@@ -15,7 +15,7 @@ import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
 import { TAG, contentTop, layerOf, round, tagWidth, wordsWidth } from "./layout";
 
-const [AWARD, TEXAS, GOVEX, HIGHLIGHTS, BLOOMBERG, WROTE, CDC, FEATURED, INVITED, ...REST] = shown("noticed", "play");
+const [SURVEY, SEVENTH, AWARD, WON, BLOOMBERG, FEATURED, ALLIANCE, SELECTED, INVITED, ...REST] = shown("noticed", "play");
 const HOSTS = REST.slice(0, 4);
 const [ONLY] = REST.slice(4);
 
@@ -50,10 +50,10 @@ export const HOST = { h: 38, pad: 16, gap: 16, size: 26 } as const;
 const hostW = (text: string) => wordsWidth(text, HOST.size) + 2 * HOST.pad;
 
 const words = [
-  { text: AWARD, caption: TEXAS },
-  { text: GOVEX, caption: HIGHLIGHTS },
-  { text: BLOOMBERG, caption: WROTE },
-  { text: CDC, caption: FEATURED },
+  { text: SURVEY, caption: SEVENTH },
+  { text: AWARD, caption: WON },
+  { text: BLOOMBERG, caption: FEATURED },
+  { text: ALLIANCE, caption: SELECTED },
   { text: INVITED, caption: undefined },
 ];
 

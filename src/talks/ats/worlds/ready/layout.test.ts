@@ -7,14 +7,14 @@
 import { describe, expect, it } from "vitest";
 import { markup } from "./harness";
 import { STAGE, STORY, box, storyRows, type Box } from "@/components/deck/kit";
-import { FLOOR, SAFE, STORIES, TAG, bandFoot, contentTop, wordsBox, wordsWidth } from "./layout";
+import { FLOOR, SAFE, STORIES, TAG, bandFoot, contentTop, labelsOf, wordsBox, wordsWidth } from "./layout";
 import { CITY_STANDS, PACK_NAME, RUNNER } from "./track-geometry";
 import { BLOCK_MIDDLE, CLOSE, OPENING } from "./layout-close";
 import { APPLIED, APPLIED_BOXES, PANEL, TICK, TILE, linesBoxes, numeralBox } from "./layout-applied";
-import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, KEY_SIZE, MARKER_R, TRACK_TOP, runnerBox } from "./layout-could-be";
+import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, KEY_SIZE, MARKER_R, RUNS, TRACK_TOP, runnerBox } from "./layout-could-be";
 import { LEVELS, LEVELS_BOXES, LEVELS_MEASURES, LEVEL_AGENT_R } from "./layout-levels";
-import { CARD_PLACES, HELPER_R, RESIDENTS, RESIDENTS_BOXES, RESIDENTS_MEASURES } from "./layout-residents";
-import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits } from "./layout-who-decides";
+import { CARD_PLACES, HELPER_R, QUESTION_MEASURED, RESIDENTS, RESIDENTS_BOXES, RESIDENTS_MEASURES } from "./layout-residents";
+import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits, linesBoxes as decidesLines, measuredBox } from "./layout-who-decides";
 
 const bottom = (b: Box) => b.y + b.h;
 const right = (b: Box) => b.x + b.w;
@@ -112,17 +112,21 @@ describe("slide 25, who decides", () => {
       expect(tier.at.w).toBe(W.tiers[i].at.w);
     });
     for (const tier of W.tiers) {
-      expect(inside(wordsBox(tier.name.at, tier.name.text, 32, "start"), tier.at), tier.name.text).toBe(true);
-      expect(inside(wordsBox(tier.caption.at, tier.caption.text, 26, "start"), tier.at), tier.caption.text).toBe(true);
+      expect(inside(measuredBox(tier.name.at, tier.name.text, 32), tier.at), tier.name.text).toBe(true);
+      for (const line of decidesLines(tier.caption.at, tier.caption.lines, 26)) {
+        expect(inside(line, tier.at), tier.caption.lines.join(" ")).toBe(true);
+        expect(apart(line, measuredBox(tier.name.at, tier.name.text, 32))).toBe(true);
+      }
     }
+    expect(W.tiers[1].caption.lines).toHaveLength(2);
   });
 
   it("puts the orange mark inside the middle tier, clear of its words", () => {
     const tier = W.tiers[1];
     const mark = box(W.mark.at.x - 24, W.mark.at.y - 24, 48, 48);
     expect(inside(mark, tier.at)).toBe(true);
-    expect(apart(mark, wordsBox(tier.name.at, tier.name.text, 32, "start"))).toBe(true);
-    expect(apart(mark, wordsBox(tier.caption.at, tier.caption.text, 26, "start"))).toBe(true);
+    expect(apart(mark, measuredBox(tier.name.at, tier.name.text, 32))).toBe(true);
+    for (const line of decidesLines(tier.caption.at, tier.caption.lines, 26)) expect(apart(mark, line)).toBe(true);
   });
 
   it("runs one arrow down the stack's left side and one up its right, each the stack's height, their labels outside them", () => {
@@ -134,15 +138,19 @@ describe("slide 25, who decides", () => {
     expect(W.up.from).toEqual({ x: W.up.to.x, y: foot });
     expect(W.up.to.y).toBe(top);
     expect(W.up.from.x).toBeGreaterThan(right(W.tiers[0].at));
-    expect(right(wordsBox(W.down.label.at, W.down.label.text, 26, "end"))).toBeLessThan(W.down.from.x);
-    expect(wordsBox(W.up.label.at, W.up.label.text, 26, "start").x).toBeGreaterThan(W.up.from.x);
+    for (const line of decidesLines(W.down.label.at, W.down.label.lines, 26, "end")) expect(right(line)).toBeLessThan(W.down.from.x - 14);
+    for (const line of decidesLines(W.up.label.at, W.up.label.lines, 26)) expect(line.x).toBeGreaterThan(W.up.from.x + 14);
   });
 
-  it("lands the three questions in their own zone to the right, one under another, each holding its words", () => {
-    const upLabel = wordsBox(W.up.label.at, W.up.label.text, 26, "start");
+  it("sets the heading over the three questions in their own zone to the right, the cards one under another, each holding its words", () => {
+    const upLabel = decidesLines(W.up.label.at, W.up.label.lines, 26);
+    const heading = measuredBox(W.heading.at, W.heading.text, 32);
+    expect(heading.x).toBe(W.cards[0].at.x);
+    expect(right(heading)).toBeLessThanOrEqual(SAFE.right);
+    expect(bottom(heading)).toBeLessThan(W.cards[0].at.y);
     W.cards.slice(1).forEach((card, i) => expect(card.at.y).toBeGreaterThan(bottom(W.cards[i].at)));
     for (const card of W.cards) {
-      expect(card.at.x).toBeGreaterThan(right(upLabel) + 40);
+      for (const line of upLabel) expect(card.at.x).toBeGreaterThan(right(line) + 30);
       expect(cardFits(card), card.text).toBe(true);
     }
   });
@@ -208,16 +216,17 @@ describe("slide 26, residents", () => {
     expect(bottom(served)).toBeLessThan(fence.y);
   });
 
-  it("sets the test with no box: its heading level with the desk's top, two 32 px lines under it, well apart, clear of the resident", () => {
+  it("sets the test with no box: its heading level with the desk's top, its question under it on three 32 px lines, clear of the resident and inside the field", () => {
     const heading = wordsBox(R.list.heading.at, R.list.heading.text, 32, "start");
     expect(heading.y).toBe(desk.y);
-    expect(R.list.rows).toHaveLength(2);
-    expect(R.list.rows[1].at.y - R.list.rows[0].at.y).toBeGreaterThanOrEqual(64);
-    for (const row of R.list.rows) {
-      expect(row.at.y).toBeGreaterThan(bottom(heading));
-      expect(row.centre.x - row.r).toBe(heading.x);
-      expect(heading.x).toBeGreaterThan(right(R.resident.at) + 80);
-    }
+    const q = R.list.question;
+    expect(q.lines).toHaveLength(3);
+    expect(q.lines.join(" ")).toBe(labelsOf("residents").at(-1));
+    expect(q.at.x).toBe(heading.x);
+    expect(q.at.y - 45 / 2).toBeGreaterThan(bottom(heading));
+    expect(heading.x).toBeGreaterThan(right(R.resident.at) + 80);
+    expect(q.at.x + QUESTION_MEASURED).toBeLessThanOrEqual(SAFE.right);
+    expect(q.at.y + 2 * 45 + 45 / 2).toBeLessThanOrEqual(FLOOR);
     expect(markup).not.toContain('data-build="residents.list"');
   });
 });
@@ -285,7 +294,7 @@ describe("slide 27, where the City could be", () => {
     const entries = C.markers.map((marker) => marker.entry.at);
     C.markers.forEach((marker, i) => expect(marker.entry.at.w).toBe(KEY_MEASURED[i]));
     // Each entry's measured room is near its longer line at the key's size by the 0.56 estimate, which runs wide, scaled to it.
-    C.markers.forEach((marker) => expect(marker.entry.at.w).toBeGreaterThanOrEqual(0.85 * Math.max(wordsWidth(marker.entry.name.text, KEY_SIZE), wordsWidth(marker.entry.caption.text, KEY_SIZE))));
+    C.markers.forEach((marker) => expect(marker.entry.at.w).toBeGreaterThanOrEqual(0.78 * Math.max(wordsWidth(marker.entry.name.text, KEY_SIZE), wordsWidth(marker.entry.caption.text, KEY_SIZE))));
     expect(KEY_SIZE).toBeGreaterThanOrEqual(22);
     for (const entry of entries) {
       expect(entry.y).toBeGreaterThan(bottom(T.outer));
@@ -296,7 +305,7 @@ describe("slide 27, where the City could be", () => {
     entries.slice(1).forEach((entry, i) => expect(right(entry) + 30).toBeLessThanOrEqual(entries[i].x));
   });
 
-  it("joins each marker to its entry by a leader with one bend at most that starts at the marker, ends over its entry, and crosses no other leader, word or runner", () => {
+  it("joins each marker to its entry by a square leader that starts at the marker, ends over its entry, and crosses no other leader, word or runner", () => {
     type P = { x: number; y: number };
     const segments = (points: readonly P[]) => points.slice(1).map((p, i) => [points[i], p] as const);
     const hits = (a: readonly [P, P], b: Box) => {
@@ -323,10 +332,18 @@ describe("slide 27, where the City could be", () => {
       const foot = points.at(-1)!;
       expect(foot.x).toBeGreaterThan(marker.entry.at.x);
       expect(foot.x).toBeLessThan(right(marker.entry.at));
-      // One bend at most: three points.
-      expect(points.length).toBeLessThanOrEqual(3);
-      // Inside the infield, a leader runs straight down from its marker, or (the first, over the City's runner) out to the outer lane.
-      if (i > 0) expect(points[1]).toEqual({ x: marker.at.x, y: bottom(T.inner) });
+      if (i === 0) {
+        // The first, over the City's runner: out to the outer lane, then straight down.
+        expect(points).toHaveLength(3);
+        expect(points[1].x).toBe(foot.x);
+      } else {
+        // Down from its marker into the infield, left along it, and down to its entry: every run square.
+        expect(points).toHaveLength(4);
+        expect(points[1]).toEqual({ x: marker.at.x, y: RUNS.first - (i - 1) * RUNS.step });
+        expect(points[2]).toEqual({ x: foot.x, y: points[1].y });
+        expect(points[1].y).toBeGreaterThan(T.inner.y);
+        expect(points[1].y).toBeLessThan(bottom(T.inner) - 8);
+      }
       expect(foot.y).toBeGreaterThan(bottom(T.outer));
       expect(foot.y).toBeLessThan(marker.entry.at.y);
       for (const segment of segments(points)) for (const block of blocks) expect(hits(segment, block), `${i} ${JSON.stringify(block)}`).toBe(false);

@@ -69,33 +69,40 @@ export { MARKER_R };
  * The key row under the track: names on a row 34 under the oval's foot,
  * captions a label line under them, so the captions end 2 over the floor.
  * The row is set from the right edge leftward, in landing order, as the
- * markers run leftward round the lap. The five pairs at the label's 26 px
- * run to about 1700 px of words, more than the 1728 px field once they are
- * apart, so the key is set at its own 24 px (ready.css, over the 22 px
- * floor): each entry's room is its longer line as Geist sets it at 24 px
- * with the label's 0.01em tracking (measured from the font, the names in
- * semibold, the captions in medium), about 1570 px in all, with 38 between
- * them so the last begins 6 inside the left edge.
+ * markers run leftward round the lap, so each entry sits in the same order
+ * as its marker. The five pairs at the label's 26 px run to about 1770 px
+ * of words, more than the 1728 px field, and at 24 px they would stand
+ * only 22 apart; the 84 px under the track hold no third line, so the key
+ * is set at 22 px (ready.css, the floor for words): each entry's room is
+ * its longer line as Geist sets it at 22 px with the label's 0.01em
+ * tracking (measured from the font, the names in semibold, the captions in
+ * medium), about 1500 px in all, with 54 between them so the last begins 9
+ * inside the left edge.
  */
-export const KEY_SIZE = 24;
-const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 38 } as const;
-export const KEY_MEASURED = [453, 166, 389, 218, 344] as const;
+export const KEY_SIZE = 22;
+const KEY = { name: OUTER.y + OUTER.h + 34, caption: OUTER.y + OUTER.h + 34 + LABEL_LINE, gap: 54 } as const;
+export const KEY_MEASURED = [332, 265, 235, 316, 355] as const;
 const entryX = KEY_MEASURED.reduce<number[]>((xs, w, i) => [...xs, (i === 0 ? OUTER.x + OUTER.w : xs[i - 1] - KEY.gap) - w], []);
 /** Where a leader ends: 20 in from its entry's right end, the end nearer the markers, 4 over the name's line; the first entry's at x 1800 (see below). */
 const footOf = (i: number): Point => ({ x: i === 0 ? FIRST_DROP_X : entryX[i] + KEY_MEASURED[i] - 20, y: KEY.name - LABEL_LINE / 2 - 4 });
 
 /**
  * The leaders: a thin rule from each marker to its entry, so a reader pairs
- * them by position, with one bend at most. Each drops straight down from its
- * marker through the infield to the near straight's inner edge, and from
- * there runs straight to its entry. The first marker is on the bend over the
- * City's runner, so its leader runs out from it to x 1800, in the outer lane
- * right of the runner (whose drawing ends about 1776), and drops straight
- * down from there past the outer edge to its entry, which spans x 1800.
+ * them by position, every run square to the track. Each drops straight down
+ * from its marker into the infield, runs left along the infield's foot to
+ * over its entry, and drops straight down across the near straight to it.
+ * Their runs along the infield are 12 apart, the leader of the marker
+ * further round the lap (further left) the higher, so no two cross: from 798
+ * for the second marker's, 9 over the infield's edge where it turns, up to
+ * 762 for the fifth's, clear under the dashed runner's name. The first
+ * marker is on the bend over the City's runner, so its leader runs out from
+ * it to x 1800, in the outer lane right of the runner (whose drawing ends
+ * about 1776), and drops straight down from there past the outer edge to its
+ * entry, which spans x 1800.
  */
 const FIRST_DROP_X = 1800;
 const FIRST_TURN = { x: FIRST_DROP_X, y: 720 } as const;
-const BEND_Y = INNER.y + INNER.h;
+export const RUNS = { first: 798, step: 12 } as const;
 const leaderOf = (at: Point, i: number): Point[] => {
   const foot = footOf(i);
   if (i === 0) {
@@ -104,7 +111,8 @@ const leaderOf = (at: Point, i: number): Point[] => {
     const d = Math.hypot(dx, dy);
     return [{ x: round(at.x + (dx / d) * MARKER_R), y: round(at.y + (dy / d) * MARKER_R) }, FIRST_TURN, foot];
   }
-  return [{ x: at.x, y: at.y + MARKER_R }, { x: at.x, y: BEND_Y }, foot];
+  const run = RUNS.first - (i - 1) * RUNS.step;
+  return [{ x: at.x, y: at.y + MARKER_R }, { x: at.x, y: run }, { x: foot.x, y: run }, foot];
 };
 
 /**

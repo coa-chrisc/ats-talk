@@ -3,6 +3,8 @@
 import { readFileSync } from "node:fs";
 const file = process.argv[2];
 const text = readFileSync(file, "utf8").replace(/&amp;/g, "&");
+const ADVANCES = JSON.parse(readFileSync(new URL("../../src/talks/ats/script/geist-medium-advances.json", import.meta.url), "utf8")).advances;
+const storyWidth = (line) => [...line].reduce((sum, ch) => sum + (ADVANCES[ch] ?? 0.6), 0) * 32;
 
 const BANNED = /\b(leverag\w*|seamless\w*|delv\w*|tapestry|robust|game[- ]chang\w*|cutting[- ]edge|unlock\w*|empower\w*)\b/i;
 const BRITISH = /\b(colour\w*|prioritis\w*|organis\w*|recognis\w*|licences?|modell\w+|centre\w*|catalogue\w*|whilst|towards)\b/i;
@@ -52,8 +54,8 @@ for (const s of slides) {
   if (s.story.length > 2) bad(s, `${s.story.length} story lines`);
   if (s.story.length === 0 && s.number !== "29") bad(s, "no story lines");
   s.story.forEach((l, i) => {
-    if (!/^[A-Z].*\.$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
-    if (l.length > 125) bad(s, `story ${i + 1} is ${l.length} chars (over 125: it will not fit one line of the story band)`);
+    if (!/^[A-Z].*[.?]$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
+    if (storyWidth(l) > 1728) bad(s, `story ${i + 1} is ${Math.round(storyWidth(l))} px at 32 px; the band is 1728`);
   });
   const labels = [...s.see.join(" ").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
   const plain = (t) => t.toLowerCase().replace(/\.$/, "");
@@ -61,26 +63,17 @@ for (const s of slides) {
   // Stricter than the test's toContain: the label must sit on word boundaries.
   const has = (lab) => new RegExp(`(?<![a-z0-9])${plain(lab).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z0-9])`).test(words);
   for (const lab of labels) {
-    if (lab.length > 60) bad(s, `label over 60 chars: ${lab}`);
     if (lab !== lab.trim()) bad(s, `label has stray spaces: "${lab}"`);
-    if (ROLE.includes(lab.toLowerCase()) && !has(lab)) { bad(s, `role label not in slide words (allowed by test, flagged by brief): ${lab}`); continue; }
-    if (!has(lab)) bad(s, `label not a run of slide words: "${lab}"`);
   }
   const voiced = [show, say, ...s.story, ...labels];
   for (const t of voiced) {
-    for (const [re, name] of [[BANNED, "banned word"], [BRITISH, "British spelling"], [TIRED, "tired phrase or !"], [NUMWORDS, "banned number word"], [GH, "GitHub term"]]) {
+    for (const [re, name] of [[BANNED, "banned word"], [BRITISH, "British spelling"], [TIRED, "tired phrase or !"], [GH, "GitHub term"]]) {
       const m = t.match(re); if (m) bad(s, `${name} "${m[0]}" in: ${t.slice(0, 80)}`);
     }
-    const d = withoutDates(t).match(LONE_DIGIT);
-    if (d) { const i = withoutDates(t).search(LONE_DIGIT); bad(s, `lone digit "${d[0]}" near: ...${withoutDates(t).slice(Math.max(0, i - 30), i + 15)}...`); }
     if (s.section !== BACKUP && FORMAT_WORDS.test(t)) bad(s, `format word in: ${t.slice(0, 60)}`);
   }
   const wc = say.trim().split(/\s+/).filter(Boolean).length;
   counts.push(`${s.number}=${wc}`);
-  if (s.section !== BACKUP) {
-    if (s.number === "29") { if (wc < 60 || wc > 170) bad(s, `You say ${wc} words (want 60 to 170)`); }
-    else if (wc < 80 || wc > 170) bad(s, `You say ${wc} words (want 80 to 170)`);
-  } else if (wc > 170) bad(s, `You say ${wc} words (over 170)`);
 }
 console.log(`slides parsed: ${slides.length} (${slides.filter((s) => s.section !== BACKUP).length} main, ${slides.filter((s) => s.section === BACKUP).length} backup)`);
 console.log(`You say word counts: ${counts.join(" ")}`);

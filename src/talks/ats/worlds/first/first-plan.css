@@ -200,6 +200,15 @@
   stroke-linecap: round;
 }
 
+/* The bracket under the plan's other five tiles: a thin navy line. */
+.fs-brace {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .fs-measure {
   fill: none;
   stroke: var(--dk-process);

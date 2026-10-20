@@ -6,14 +6,15 @@
  * named once above the row's left end, a tag over the row's middle (grey,
  * and in the same place green with other words), and under the desks the
  * slab that slides in. The row and the slab are drawn where they end,
- * lifted; they start `LIFT` px lower. The figure and its caption sit at the
- * foot under the row, ending at the right edge. Words are read from the
- * script, by position.
+ * lifted; they start `LIFT` px lower. The figure sits at the foot under the
+ * slab, at the row's left edge, its caption under it on two lines. Words
+ * are read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
-import { LABEL_LINE, PERSON, SAFE, TAG, contentTop, groupOf, labelBox, labelsOf, round, tagWidth, wordsWidth } from "./layout-plan";
+import { breakAfter } from "../../script/find";
+import { LABEL_LINE, PERSON, SAFE, TAG, contentTop, groupOf, labelBox, labelsOf, round, tagWidth } from "./layout-plan";
 
-const [AWARE, EVERYONE, PROFICIENT, LEADS, EXPERT, SMALL_TEAM, DEVELOPERS, USER, SLAB_WORDS, ENGINEER, SLOWER, NO_METHOD] = labelsOf("level-up");
+const [AWARE, EVERYONE, PROFICIENT, LEADS, EXPERT, PROGRAM_TEAM, DEVELOPERS, USER, SLAB_WORDS, BUILDS, SLOWER, NO_METHOD] = labelsOf("level-up");
 
 /** 556: under the two-line title's two story rows. */
 const TOP = contentTop("level-up");
@@ -51,7 +52,7 @@ export const LIFT = 26;
 /** The row's name, on the field's first line. */
 const NAME_Y = TOP + LABEL_LINE / 2;
 /** The tag, centred over the row, 12 px under the name's line. */
-const TAG_W = Math.max(tagWidth(USER), tagWidth(ENGINEER));
+const TAG_W = Math.max(tagWidth(USER), tagWidth(BUILDS));
 const TAG_BOX = box(Math.round(RIGHT + ROW_W / 2 - TAG_W / 2), TOP + LABEL_LINE + 12, TAG_W, TAG.h);
 /** Four desks across the row, 171 apart. A person sits behind each desk, the desk's top across their middle, a laptop open beside them. */
 const DESK = { count: 4, pitch: ROW_W / 4, person: TAG_BOX.y + TAG.h + 22, top: 50, h: 12, foot: 108, w: 148, laptop: { dx: 86, w: 54, h: 34 } } as const;
@@ -61,9 +62,16 @@ const DESK_FOOT = DESK.person + DESK.foot;
 const SLAB = box(RIGHT, DESK_FOOT + 4, ROW_W, 52);
 const SLAB_FROM = -120;
 
-/** The figure's line at the foot: the figure ends 24 px short of its caption, which ends at the right edge. */
-const FIGURE = { y: SAFE.bottom - 30, size: 44, line: 52 } as const;
-const captionX = SAFE.right - wordsWidth(NO_METHOD);
+/**
+ * The figure under the slab, at the row's left edge: its 52 px line 12 px
+ * under the lifted slab's foot (it comes up only after the lift). Its
+ * caption under it, on two lines broken after its comma (one line would
+ * run about 770 px, past the row's 684), on a 32 px pitch from 14 px under
+ * the figure's line, the second line's foot 4 px over the safe line.
+ */
+const FIGURE = { y: SLAB.y + SLAB.h + 12 + 26, size: 44, line: 52 } as const;
+const CAPTION_LINES = breakAfter(NO_METHOD, "method,");
+const CAPTION_Y = FIGURE.y + FIGURE.line / 2 + 14 + LABEL_LINE / 2;
 
 export const LEVEL_UP = {
   ...groupOf("level-up"),
@@ -71,7 +79,7 @@ export const LEVEL_UP = {
   tiers: [
     [AWARE, EVERYONE],
     [PROFICIENT, LEADS],
-    [EXPERT, SMALL_TEAM],
+    [EXPERT, PROGRAM_TEAM],
   ].map(([name, caption], i) => {
     const points = tierPoints(i);
     const mid = tierTop(i) + PYRAMID.tier / 2;
@@ -86,7 +94,7 @@ export const LEVEL_UP = {
     };
   }),
   label: { key: "level-up.developers", text: DEVELOPERS, at: { x: RIGHT, y: NAME_Y } as Point },
-  tag: { grey: { key: "level-up.tag.user", text: USER }, green: { key: "level-up.tag.engineer", text: ENGINEER }, at: TAG_BOX },
+  tag: { grey: { key: "level-up.tag.user", text: USER }, green: { key: "level-up.tag.engineer", text: BUILDS }, at: TAG_BOX },
   row: {
     key: "level-up.row",
     lift: LIFT,
@@ -103,8 +111,12 @@ export const LEVEL_UP = {
     }),
   },
   slab: { key: "level-up.slab", at: SLAB, from: SLAB_FROM, label: { key: "level-up.slab.label", text: SLAB_WORDS, at: { x: SLAB.x + SLAB.w / 2, y: SLAB.y + SLAB.h / 2 } as Point } },
-  figure: { key: "level-up.figure", text: SLOWER, at: { x: captionX - 24, y: FIGURE.y } as Point, size: FIGURE.size, line: FIGURE.line },
-  caption: { key: "level-up.figure.caption", text: NO_METHOD, at: { x: captionX, y: FIGURE.y } as Point },
+  figure: { key: "level-up.figure", text: SLOWER, at: { x: RIGHT, y: FIGURE.y } as Point, size: FIGURE.size, line: FIGURE.line },
+  caption: {
+    key: "level-up.figure.caption",
+    text: NO_METHOD,
+    lines: CAPTION_LINES.map((text, i) => ({ text, at: { x: RIGHT, y: CAPTION_Y + i * LABEL_LINE } as Point })),
+  },
 };
 
 const lowered = (b: Box): Box => ({ ...b, y: b.y + LIFT });
@@ -115,7 +127,7 @@ export const tierBox = (tier: (typeof LEVEL_UP.tiers)[number]): Box => {
   return box(Math.min(...xs), Math.min(...ys), Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
 };
 
-export const figureBox = () => labelBox(LEVEL_UP.figure.at, SLOWER, "end", FIGURE.size, FIGURE.line);
+export const figureBox = () => labelBox(LEVEL_UP.figure.at, SLOWER, "start", FIGURE.size, FIGURE.line);
 
 /** Everything 22 draws under its story band, for the layout test: the row and slab both lifted and before they lift. */
 export const LEVEL_UP_BOXES: Box[] = [
@@ -126,5 +138,5 @@ export const LEVEL_UP_BOXES: Box[] = [
   SLAB,
   lowered(SLAB),
   figureBox(),
-  labelBox(LEVEL_UP.caption.at, NO_METHOD, "start"),
+  ...LEVEL_UP.caption.lines.map((line) => labelBox(line.at, line.text, "start")),
 ];

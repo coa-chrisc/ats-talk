@@ -7,8 +7,8 @@
  * under it. The card comes out of the helper, rises over the desk, crosses
  * over the fence and waits; the member of staff takes the orange mark, and
  * only then does the card come down to the resident and touch them, while
- * the helper stays at the desk. The checklist comes up at the right, its heading
- * then its two lines, and each line takes a deep-green tick in turn.
+ * the helper stays at the desk. At the right the test comes up, its heading
+ * then its question, and line B comes in with the question.
  */
 import { EASE, draw, fill, mark, rise, show, to } from "@/components/deck/kit";
 import { picture, story } from "../steps";
@@ -19,9 +19,6 @@ const R = RESIDENTS;
 
 /** The card's legs: up clear of the mark and the fence, across, and (after the mark) down to the resident. */
 const CARD = { up: 0.5, across: 0.8, down: 0.5 } as const;
-/** The ticks land one after another. */
-export const TICKS = 0.3;
-
 export const residents = picture("residents", {
   play: play(
     into("residents"),
@@ -60,26 +57,9 @@ export const residents = picture("residents", {
     // The member of staff decides, and then it comes down to the resident.
     { hold: 0.1, moves: [mark(R.mark.key, { at: 0 })] },
     { hold: 0.1, moves: [to(R.card.key, { y: R.card.served }, undefined, { at: 0, duration: CARD.down, ease: EASE.page })] },
-    // The checklist at the right: its heading, its lines, and a tick on each in turn.
-    {
-      hold: 0.2,
-      moves: [
-        rise(R.list.heading.key, { at: 0 }),
-        rise(
-          R.list.rows.map((row) => row.key),
-          { at: 0.2, stagger: 0.15 },
-        ),
-      ],
-    },
+    // At the right, the heading over the test, then its question, line B with it.
+    { hold: 0.1, moves: [rise(R.list.heading.key, { at: 0 })] },
+    { hold: 0.2, moves: [rise(R.list.question.key, { at: 0, duration: 0.7 })] },
     { with: true, hold: 0.3, moves: [story("residents", 1)] },
-    {
-      hold: 0.1,
-      moves: [
-        show(
-          R.list.rows.map((row) => row.tick),
-          { at: 0, stagger: TICKS },
-        ),
-      ],
-    },
   ),
 });

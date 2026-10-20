@@ -169,12 +169,19 @@ describe("22, level up the staff the City has", () => {
     expect(LIFT).toBeLessThan(40);
   });
 
-  it("sets the figure large at the foot, its caption after it, clear of the lowered slab and of the pyramid", () => {
+  it("sets the figure large under the lifted slab at the row's left edge, its caption under it on two lines, clear of the pyramid", () => {
     const figure = figureBox();
-    const caption = labelBox(L.caption.at, L.caption.text, "start");
+    const lines = L.caption.lines.map((line) => labelBox(line.at, line.text, "start"));
+    expect(L.caption.lines.map((line) => line.text).join(" ")).toBe(L.caption.text);
     expect(L.figure.size).toBeGreaterThanOrEqual(40);
-    expect(apart(figure, caption, 16)).toBe(true);
-    expect(figure.y).toBeGreaterThan(bottom(L.slab.at) + LIFT + 24);
+    expect(figure.x).toBe(L.slab.at.x);
+    expect(figure.y).toBeGreaterThanOrEqual(bottom(L.slab.at) + 12);
+    for (const line of lines) {
+      expect(line.x).toBe(figure.x);
+      expect(line.x + line.w, line.y.toString()).toBeLessThanOrEqual(L.slab.at.x + L.slab.at.w);
+    }
+    expect(lines[0].y).toBeGreaterThanOrEqual(bottom(figure) + 12);
+    expect(lines[1].y).toBeGreaterThanOrEqual(lines[0].y + LABEL_LINE);
     for (const tier of tiers) expect(apart(figure, tier, 24)).toBe(true);
   });
 });
@@ -188,6 +195,19 @@ describe("23, measure outcomes", () => {
     expect(labelBox(O.plan.at, O.plan.text, "start").y + LABEL_LINE).toBeLessThanOrEqual(O.tiles[0].at.y);
     expect(O.name.lines).toHaveLength(2);
     for (const line of O.name.lines) expect(inside(labelBox(line.at, line.text), O.tiles[0].at), line.text).toBe(true);
+  });
+
+  it("hangs one bracket under the other five tiles, its caption centred under it, clear of the measure", () => {
+    const tiles = O.tiles.slice(1);
+    const foot = Math.max(...tiles.map((tile) => bottom(tile.at)));
+    const [x0, y0] = O.others.d.match(/[\d.]+/g)!.map(Number);
+    expect(x0).toBe(tiles[0].at.x);
+    expect(y0).toBeGreaterThan(foot);
+    const caption = labelBox(O.others.caption.at, O.others.caption.text);
+    expect(O.others.caption.at.x).toBeCloseTo((tiles[0].at.x + tiles.at(-1)!.at.x + tiles.at(-1)!.at.w) / 2, 6);
+    expect(caption.y).toBeGreaterThan(foot + 20);
+    const M = O.measure;
+    for (const other of [box(M.to.x - M.end.r, M.to.y - M.end.r, 2 * M.end.r, 2 * M.end.r), labelBox(M.endLabel.at, M.endLabel.text, "start"), O.tally.at]) expect(apart(caption, other, 8)).toBe(true);
   });
 
   it("attaches each dot inside its own tile's foot, most to the first, clear of the first tile's name", () => {

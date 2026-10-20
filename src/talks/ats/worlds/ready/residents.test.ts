@@ -3,17 +3,16 @@
  * with the AI helper beside them, and a resident; the fence between them; the card crosses the
  * fence while the helper stays at the desk; the orange mark lands on the
  * member of staff; the card reaches the resident only after it; the
- * checklist takes its ticks in turn.
+ * test's heading, then its question, with line B.
  */
 import { describe, expect, it } from "vitest";
 import { storyKeys } from "@/components/deck/kit";
 import { RESIDENTS } from "./layout-residents";
-import { TICKS } from "./steps-residents";
 import { at, endOf, markup, movesOf, playOf, showsAfter, startOf, world } from "./harness";
 
 const click = "residents.play";
 const R = RESIDENTS;
-const [A] = storyKeys("story.residents", 2);
+const [A, B] = storyKeys("story.residents", 2);
 /** The card's own legs: up clear of the fence and down to the resident (its y), and across (its x); not its rise into view. */
 const legs = (prop: "x" | "y") => movesOf(click, R.card.key, prop).filter((play) => [R.card.lift, R.card.served, R.card.across].includes(play.on[prop] as number));
 
@@ -43,14 +42,13 @@ describe("26, residents", () => {
     expect(at(click)[R.card.key]).toMatchObject({ x: R.card.across, y: R.card.served });
   });
 
-  it("brings the test up once the card is served, heading first, and ticks its lines in turn", () => {
+  it("brings the test up once the card is served, heading first, then its question with line B, and ends on it", () => {
     const [, served] = legs("y");
     expect(startOf(click, R.list.heading.key)).toBeGreaterThanOrEqual(served.at + served.duration);
-    for (const row of R.list.rows) expect(startOf(click, row.key)).toBeGreaterThan(startOf(click, R.list.heading.key));
-    const ticks = R.list.rows.map((row) => startOf(click, row.tick));
-    expect(ticks[0]).toBeGreaterThanOrEqual(Math.max(...R.list.rows.map((row) => endOf(click, row.key))));
-    expect(ticks[1] - ticks[0]).toBeCloseTo(TICKS, 5);
-    for (const row of R.list.rows) expect(showsAfter(click, row.tick), row.tick).toBe(true);
+    expect(startOf(click, R.list.question.key)).toBeGreaterThan(startOf(click, R.list.heading.key));
+    expect(startOf(click, B)).toBeGreaterThanOrEqual(startOf(click, R.list.question.key));
+    for (const key of [R.list.heading.key, R.list.question.key, R.mark.key, R.card.key]) expect(showsAfter(click, key), key).toBe(true);
+    expect(markup).not.toMatch(/data-build="residents\.list\.\d/);
   });
 
   it("brings the first story line in as the resident walks up, before the fence draws", () => {

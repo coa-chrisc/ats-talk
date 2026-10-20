@@ -95,7 +95,7 @@ describe("one slide at a time", () => {
     expect(lines("ladder")[0].endsWith("one.")).toBe(true);
     expect(lines("enforce")[0].endsWith("two.")).toBe(true);
     expect(lines("people")[0].endsWith("three.")).toBe(true);
-    expect(lines("earn")[0].endsWith("small,")).toBe(true);
+    expect(lines("earn")[0].endsWith("cheap.")).toBe(true);
     for (const id of ["ladder", "enforce", "people", "earn"]) expect(lines(id), id).toHaveLength(2);
   });
 });

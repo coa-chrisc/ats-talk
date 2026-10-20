@@ -54,11 +54,11 @@ const NAMES_Y = TABLE.c.y + TABLE.ring + CHAIR_9.w / 2 + 4 + TEXT_LINE / 2;
 
 /**
  * The tag at the right of the bottom row: a label with a pointed left end,
- * 520 wide for its 32 px semibold words (about 420) past the point and the
+ * 600 wide for its 32 px semibold words (about 490) past the point and the
  * hole, its right end 40 in from the band's edge, level with the table's
  * middle; its caption centred under it.
  */
-const TAG = box(SAFE.right - 40 - 520, TABLE.c.y - 36, 520, 72);
+const TAG = box(SAFE.right - 40 - 600, TABLE.c.y - 36, 600, 72);
 export const TAG_9 = { point: 22, hole: 6, pad: 48 } as const;
 
 export const NOT_PROPOSING = {

@@ -4,9 +4,9 @@
  * on the floor and climbs onto the first step; the passed tick lands beside
  * it with its caption, with the first line; the box climbs over the first
  * gate onto the second step, and a second tick lands; the third step stays
- * empty. The checklist comes up row by row beside the stair, each row
- * taking its tick in turn, with the second line; the foot line comes up
- * last.
+ * empty. The checklist's heading rises beside the stair, then the rows
+ * come up one by one under it, each taking its tick in turn, with the
+ * second line.
  */
 import { EASE, draw, rise, show } from "@/components/deck/kit";
 import { picture, story } from "../steps";
@@ -55,7 +55,9 @@ export const earn = picture("earn", {
     },
     // The second tick lands.
     { hold: 0.1, moves: [show(E.ticks[1].key, { at: 0 })] },
-    // The checklist beside the stair, row by row, each row taking its tick, with the second line.
+    // The checklist's heading beside the stair.
+    { hold: 0.1, moves: [rise(E.heading.key, { at: 0 })] },
+    // The rows under it, one by one, each taking its tick, with the second line.
     {
       hold: 0.35,
       moves: [
@@ -70,7 +72,5 @@ export const earn = picture("earn", {
       ],
     },
     { with: true, hold: 0.2, moves: [story("earn", 1)] },
-    // The foot line.
-    { hold: 0.25, moves: [rise(E.foot.key, { at: 0 })] },
   ),
 });

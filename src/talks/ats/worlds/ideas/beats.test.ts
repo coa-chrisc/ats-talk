@@ -190,10 +190,11 @@ describe("slide 10, the stair of gates and the checklist", () => {
     expect(moving).toHaveLength(5);
   });
 
-  it("draws the checklist after the second tick, row by row, each row's tick in turn after the rows, with line B", () => {
+  it("draws the checklist after the second tick, its heading first, then row by row, each row's tick in turn after the rows, with line B", () => {
+    expect(startOf(id, G.heading.key)).toBeGreaterThan(endOf(id, tick1));
     const rows = G.list.map((row) => startOf(id, row.key));
     for (let i = 1; i < rows.length; i++) expect(rows[i]).toBeGreaterThan(rows[i - 1]);
-    expect(rows[0]).toBeGreaterThan(endOf(id, tick1));
+    expect(rows[0]).toBeGreaterThan(startOf(id, G.heading.key));
     const ticks = G.list.map((row) => startOf(id, row.tick.key));
     for (let i = 1; i < ticks.length; i++) expect(ticks[i]).toBeGreaterThan(ticks[i - 1]);
     G.list.forEach((row, i) => expect(ticks[i], row.key).toBeGreaterThan(rows[i]));
@@ -201,14 +202,13 @@ describe("slide 10, the stair of gates and the checklist", () => {
     expect(startOf(id, b)).toBeLessThan(endOf(id, G.list.at(-1)!.tick.key));
   });
 
-  it("ends on the foot line, last", () => {
-    expect(startOf(id, G.foot.key)).toBeGreaterThan(endOf(id, G.list.at(-1)!.tick.key));
-    expect(endOf(id, G.foot.key)).toBe(longest(id));
+  it("ends on the checklist's last tick or line B, nothing after", () => {
+    expect(Math.max(endOf(id, G.list.at(-1)!.tick.key), endOf(id, b))).toBe(longest(id));
   });
 
-  it("ends on the stair with the box on its second step, two ticks, the third step empty, the checklist ticked and the foot line", () => {
+  it("ends on the stair with the box on its second step, two ticks, the third step empty, and the checklist ticked under its heading", () => {
     for (const step of G.steps) expect(end[step.key].autoAlpha, step.key).toBe(1);
     expect(end[P.key]).toMatchObject({ autoAlpha: 1, "--x": P.second.x, "--y": P.second.y });
-    for (const key of [tick0, tick1, G.evidence.key, G.foot.key, ...G.list.flatMap((row) => [row.key, row.tick.key])]) expect(end[key].autoAlpha, key).toBe(1);
+    for (const key of [tick0, tick1, G.evidence.key, G.heading.key, ...G.list.flatMap((row) => [row.key, row.tick.key])]) expect(end[key].autoAlpha, key).toBe(1);
   });
 });

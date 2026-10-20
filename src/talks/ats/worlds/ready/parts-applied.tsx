@@ -36,11 +36,27 @@ export function Note({ id, at, children }: { id: string; at: Box; children: Reac
 }
 
 /** Words set on lines, one text each, every line's middle `pitch` under the last. */
-export function Lines({ id, at, lines, pitch, size, strong = false }: { id?: string; at: Point; lines: readonly string[]; pitch: number; size: "label" | "text"; strong?: boolean }) {
+export function Lines({
+  id,
+  at,
+  lines,
+  pitch,
+  size,
+  strong = false,
+  anchor = "start",
+}: {
+  id?: string;
+  at: Point;
+  lines: readonly string[];
+  pitch: number;
+  size: "label" | "text";
+  strong?: boolean;
+  anchor?: "start" | "end";
+}) {
   return (
     <g data-build={id}>
       {lines.map((line, i) => (
-        <Words key={i} at={{ x: at.x, y: at.y + i * pitch }} text={line} anchor="start" size={size} strong={strong} />
+        <Words key={i} at={{ x: at.x, y: at.y + i * pitch }} text={line} anchor={anchor} size={size} strong={strong} />
       ))}
     </g>
   );

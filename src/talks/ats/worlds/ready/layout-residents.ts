@@ -11,12 +11,14 @@
  * the floor, named under them. The card comes out of the helper, rises over
  * everything, crosses over the fence and comes down so its leading end
  * touches the resident at chest height. At the right, the test is a heading
- * level with the desk's top and two ticked lines under it, with no box.
+ * level with the desk's top and its one question under it on three lines,
+ * with no box.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
+import { breakAfter } from "../../script/find";
 import { TEXT_LINE, groupOf, labelsOf, personAt, wordsBox, wordsWidth } from "./layout";
 
-const [STAFF, HELPER, RESIDENT, FENCE, CARD_WORDS, TEST, ...CHECKS] = labelsOf("residents");
+const [STAFF, HELPER, RESIDENT, FENCE, CARD_WORDS, TEST, QUESTION] = labelsOf("residents");
 
 /** The floor everyone stands on; the names sit on one line 32 under it. */
 const FLOOR_Y = 900;
@@ -48,8 +50,16 @@ const MARK_R = 24;
 const cardW = wordsWidth(CARD_WORDS) + 2 * CARD.pad;
 const cardStart = box(HELPER_AT.x - HELPER_R, HELPER_AT.y - CARD.h / 2, cardW, CARD.h);
 const cardEnd = { x: residentAt.x + CARD.into - cardW, y: CARD.served - CARD.h / 2 };
-/** The test: the heading's top level with the desk's top, at x 1434; the lines 72 apart under it, each with a 16 px tick and its words 30 right of the tick. */
-const TEST_AT = { x: 1434, first: 818, pitch: 72, tick: 16, words: 1480 } as const;
+/**
+ * The test: the heading's top level with the desk's top, at x 1434; its
+ * question under it, 64 below the heading's middle, on 45 px lines broken
+ * where its phrases end, so its longest line (about 368 px at 32 px, from
+ * the font) ends inside the field's right edge at 1824.
+ */
+const TEST_AT = { x: 1434, under: 64 } as const;
+const QUESTION_LINES = breakAfter(QUESTION, "the", "better,");
+/** The question's widest line as Geist sets it at 32 px medium, for the layout test. */
+export const QUESTION_MEASURED = 368;
 
 const pickets = Array.from({ length: PICKETS.count }, (_, i) => {
   const x = PICKETS.x + (i * (PICKETS.w - PICKETS.picket)) / (PICKETS.count - 1);
@@ -91,17 +101,7 @@ export const RESIDENTS = {
   mark: { key: "residents.mark", at: { x: staffAt.x + staffAt.w / 2, y: staffAt.y - MARK_R - 8 } as Point },
   list: {
     heading: { key: "residents.list.heading", text: TEST, at: { x: TEST_AT.x, y: DESK.top + TEXT_LINE / 2 } as Point },
-    rows: CHECKS.map((text, i) => {
-      const y = TEST_AT.first + i * TEST_AT.pitch;
-      return {
-        key: `residents.list.${i}`,
-        tick: `residents.list.${i}.tick`,
-        centre: { x: TEST_AT.x + TEST_AT.tick, y } as Point,
-        r: TEST_AT.tick,
-        text,
-        at: { x: TEST_AT.words, y } as Point,
-      };
-    }),
+    question: { key: "residents.list.question", lines: QUESTION_LINES, at: { x: TEST_AT.x, y: DESK.top + TEXT_LINE / 2 + TEST_AT.under } as Point },
   },
 };
 
@@ -131,5 +131,5 @@ export const RESIDENTS_BOXES: Box[] = [
   ...Object.values(CARD_PLACES),
   box(RESIDENTS.mark.at.x - MARK_R, RESIDENTS.mark.at.y - MARK_R, 2 * MARK_R, 2 * MARK_R),
   wordsBox(RESIDENTS.list.heading.at, TEST, 32, "start"),
-  ...RESIDENTS.list.rows.flatMap((row) => [box(row.centre.x - row.r, row.centre.y - row.r, 2 * row.r, 2 * row.r), wordsBox(row.at, row.text, 32, "start")]),
+  ...RESIDENTS.list.question.lines.map((line, i) => box(TEST_AT.x, RESIDENTS.list.question.at.y + i * TEXT_LINE - TEXT_LINE / 2, QUESTION_MEASURED, TEXT_LINE)),
 ];

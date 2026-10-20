@@ -1,41 +1,33 @@
 /**
- * Slide 10's places, in two zones over one line at the foot. Left: a floor
- * and on it a stair of four steps climbing left to right, each a riser box
- * with its name inside it and a small gate standing at the right end of its
- * tread; a patch of floor left of the stair where the green project box
- * starts. On the first two treads, the box's place at the tread's left and
- * the passed tick between it and the gate, the first tick's caption over
- * it. Right: a checklist of six rows, each a box, its words and a faint
- * rule under it, the box taking the passed tick. Under the stair, the foot
- * line at the text size. Words are read from the script, by position.
+ * Slide 10's places, in two zones. Left: a floor and on it a stair of four
+ * steps climbing left to right, each a riser box with its name inside it
+ * and a small gate standing at the right end of its tread; a patch of floor
+ * left of the stair where the green project box starts. On the first two
+ * treads, the box's place at the tread's left and the passed tick between
+ * it and the gate, the first tick's caption over it. Right: a heading at
+ * the label size, and under it a checklist of six rows, each a box, its
+ * words and a faint rule under it, the box taking the passed tick. Words
+ * are read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
-import { LABEL_LINE, SAFE, TEXT_LINE, contentTop, layerOf, note } from "./layout";
+import { LABEL_LINE, SAFE, contentTop, layerOf } from "./layout";
 
-const [EXPLORE, VALIDATE, DEPLOY, SCALE, EVIDENCE, ...REST] = shown("earn", "play");
-/** The six tests, then the foot line. */
-const TESTS = REST.slice(0, 6);
-const FOOT_WORDS = REST[6];
+const [EXPLORE, VALIDATE, DEPLOY, SCALE, RESULTS, HEADING, ...TESTS] = shown("earn", "play");
 
 export const TOP = contentTop("earn");
 
-/* The foot line */
-
-/** At the text size, its 45 px line ending on the safe line, left at the stage's edge. */
-const FOOT_LINE = note("earn.foot", FOOT_WORDS, SAFE.left, SAFE.bottom - TEXT_LINE, 720, 1, TEXT_LINE);
-
 /* The stair */
 
-/** The floor: 55 px over the foot line's top, so the two never read as one. */
-const FLOOR = 876;
+/** The floor: on the safe line. */
+const FLOOR = SAFE.bottom;
 /**
- * Four steps from x 200 on a pitch of 264, the last ending at 1256, 84 px
+ * Four steps from x 200 on a pitch of 248, the last ending at 1190, 80 px
  * short of the checklist. The first riser is 72 tall, room for its name
- * inside it; each after rises 64 more, so the top tread is at 612 and its
- * gate's top at 572, 16 px under where drawing may start.
+ * inside it; each after rises 64 more, so the top tread is at 712 and its
+ * gate's top at 672, 116 px under where drawing may start.
  */
-const STAIR = { x: 200, pitch: 264, w: 262, first: 72, rise: 64 } as const;
+const STAIR = { x: 200, pitch: 248, w: 246, first: 72, rise: 64 } as const;
 /** A gate: two posts 40 tall, 72 apart, two bars between them, centred 52 px in from its tread's right end. */
 export const GATE = { h: 40, span: 72, inset: 52 } as const;
 /** A step's name: inside its riser, its middle 30 px under the tread. */
@@ -62,10 +54,15 @@ const BOX = box(SAFE.left + 16, FLOOR - 52, 64, 52);
 const ON_TREAD = 28;
 /** Where the box stands on step `i`, as a move from where it starts. */
 const placeOn = (i: number): Point => ({ x: STEPS[i].at.x + ON_TREAD - BOX.x, y: STEPS[i].tread - FLOOR });
-/** The tick: 18 px across its middle, 44 px right of the box's place, 30 px over the tread; the caption's middle 42 px over the tick's. */
+/**
+ * The tick: 18 px across its middle, 44 px right of the box's place, 30 px
+ * over the tread. Its caption (about 230 px at 26 px semibold in Geist)
+ * reaches past the first step's right end, so its middle sits 58 px over
+ * the tick's, its foot 8 px over the second step's tread.
+ */
 const TICK_R = 18;
 const tickOn = (i: number): Point => ({ x: STEPS[i].at.x + ON_TREAD + BOX.w + 44, y: STEPS[i].tread - 30 });
-const CAPTION_UP = 42;
+const CAPTION_UP = 58;
 /**
  * On its way from the first step to the second the box rises until its
  * foot is 16 px over the caption's top, so it passes over the caption and
@@ -76,12 +73,16 @@ const HOP = { y: tickOn(0).y - CAPTION_UP - LABEL_LINE / 2 - 16 - FLOOR } as con
 /* The checklist */
 
 /**
- * From x 1340 to the band's right edge, six rows on a pitch of 58 from
- * 620, so the list stands beside the stair's middle and ends over the
- * safe line. A row is a 40 px box, its words at 32 px 64 px right of the
- * box's left, and a faint rule 30 px under the words' middle.
+ * From x 1270 to the band's right edge: the heading's middle 40 px under
+ * where drawing may start (its 26 px semibold line is about 400 px long in
+ * Geist), then six rows on a pitch of 54 from 56 px under the heading's
+ * middle, so the list ends with its last rule 24 px over the safe line. A
+ * row is a 40 px box, its words at 32 px 60 px right of the box's left
+ * (the longest row is about 475 px in Geist, ending at 1805), and a faint
+ * rule 30 px under the words' middle.
  */
-const LIST = { x: 1340, top: 620, pitch: 58, box: 40, words: 64, rule: 30 } as const;
+const HEADING_AT: Point = { x: 1270, y: TOP + 40 };
+const LIST = { x: 1270, top: HEADING_AT.y + 56, pitch: 54, box: 40, words: 60, rule: 30 } as const;
 
 export const EARN = {
   ...layerOf("earn"),
@@ -96,7 +97,8 @@ export const EARN = {
     second: placeOn(1),
   },
   ticks: [0, 1].map((i) => ({ key: `earn.tick.${i}`, at: tickOn(i), r: TICK_R })),
-  evidence: { key: "earn.evidence", text: EVIDENCE, at: { x: tickOn(0).x, y: tickOn(0).y - CAPTION_UP } as Point },
+  evidence: { key: "earn.evidence", text: RESULTS, at: { x: tickOn(0).x, y: tickOn(0).y - CAPTION_UP } as Point },
+  heading: { key: "earn.heading", text: HEADING, at: HEADING_AT },
   list: TESTS.map((text, i) => {
     const y = LIST.top + i * LIST.pitch;
     const check: Box = box(LIST.x, y - LIST.box / 2, LIST.box, LIST.box);
@@ -109,7 +111,6 @@ export const EARN = {
       rule: { y: y + LIST.rule, x0: LIST.x, x1: SAFE.right },
     };
   }),
-  foot: FOOT_LINE,
 };
 
 export const LIST_BOX = LIST.box;

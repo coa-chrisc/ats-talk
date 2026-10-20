@@ -23,8 +23,15 @@ describe("23, measure outcomes", () => {
     for (const key of [O.plan.key, O.lit.key, O.name.key, ...O.tiles.map((tile) => tile.key)]) expect(showsAtEnd(click, key), key).toBe(true);
   });
 
-  it("raises the project dots from below once the first tile is named, and leaves them attached", () => {
-    const named = endOf(click, O.name.key);
+  it("draws the bracket under the other five once the first is named, its caption with it, before the dots", () => {
+    expect(startOf(click, O.others.key)).toBeGreaterThanOrEqual(endOf(click, O.name.key));
+    expect(startOf(click, O.others.caption.key)).toBeGreaterThan(startOf(click, O.others.key));
+    for (const key of [O.others.key, O.others.caption.key]) expect(showsAtEnd(click, key), key).toBe(true);
+    expect(end[O.others.key]["--d"]).toBe(1);
+  });
+
+  it("raises the project dots from below once the other five are captioned, and leaves them attached", () => {
+    const named = endOf(click, O.others.caption.key);
     for (const dot of O.dots) {
       expect(startOf(click, dot.key), dot.key).toBeGreaterThanOrEqual(named);
       const [rise] = playOf(click, dot.key, "y");
@@ -67,6 +74,6 @@ describe("23, measure outcomes", () => {
   });
 
   it("shows the script's labels in the order it gives them", () => {
-    expect([O.plan.text, O.name.text, O.tally.label.text, M.startLabel.text, M.endLabel.text, O.plate.text]).toEqual(labelsOf("outcomes"));
+    expect([O.plan.text, O.name.text, O.others.caption.text, O.tally.label.text, M.startLabel.text, M.endLabel.text, O.plate.text]).toEqual(labelsOf("outcomes"));
   });
 });

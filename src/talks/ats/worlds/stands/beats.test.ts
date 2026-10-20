@@ -89,18 +89,21 @@ describe("slide 11a, the control", () => {
   const G = C.gauge;
   const [swing] = playOf(id, G.needle.key).filter((play) => "--r" in play.on);
 
-  it("lands the post with its tick and name first, then the four cities one after another", () => {
+  it("lands the post with its tick and name first, then the closed gate, then the worn paths one after another with their name", () => {
     expect(startOf(id, C.post.tick.key)).toBeGreaterThan(startOf(id, C.post.key));
-    const cities = C.cities.map((city) => startOf(id, city.key));
-    expect(cities[0]).toBeGreaterThan(startOf(id, C.post.name.key));
-    for (let i = 1; i < cities.length; i++) expect(cities[i]).toBeGreaterThan(cities[i - 1]);
+    expect(startOf(id, C.gate.key)).toBeGreaterThan(startOf(id, C.post.name.key));
+    const paths = C.paths.map((path) => startOf(id, path.key));
+    expect(paths[0]).toBeGreaterThanOrEqual(endOf(id, C.gate.key) - 0.3);
+    for (let i = 1; i < paths.length; i++) expect(paths[i]).toBeGreaterThan(paths[i - 1]);
+    expect(startOf(id, C.shadow.key)).toBeGreaterThan(paths[0]);
+    expect(startOf(id, C.shadow.caption.key)).toBeGreaterThan(startOf(id, C.shadow.key));
   });
 
-  it("swings the needle from the low end to the high end once the gauge is up, the swept band drawing with it, the figure as it settles, story line A after", () => {
+  it("swings the needle from the low end to the high end once the paths are worn, the swept band drawing with it, the figure as it settles, story line A after", () => {
     expect(swing.on["--r"]).toBe(G.needle.turn);
     expect(before(id)[G.needle.key]["--r"]).toBe(0);
     expect(swing.at).toBeGreaterThan(startOf(id, G.key));
-    expect(swing.at).toBeGreaterThan(Math.max(...C.cities.map((city) => startOf(id, city.key))));
+    expect(startOf(id, G.key)).toBeGreaterThan(Math.max(...C.paths.map((path) => startOf(id, path.key))));
     expect(swing.duration).toBeGreaterThanOrEqual(1);
     const [band] = playOf(id, G.reached.key);
     expect(band.at).toBe(swing.at);
@@ -123,12 +126,13 @@ describe("slide 11a, the control", () => {
     expect(at(id)[C.climber.key]).toMatchObject({ "--x": C.climber.run, "--y": C.climber.rise, autoAlpha: 1 });
   });
 
-  it("lands the indigo figure once the climb is done, with story line B, and drops the tag at the foot last", () => {
-    expect(startOf(id, C.big.key)).toBeGreaterThan(endOf(id, C.climber.key) - 0.05);
+  it("settles the eye over the stair once the climb is under way, named, with story line B, and lands the indigo figure last", () => {
+    expect(startOf(id, C.eye.key)).toBeGreaterThan(startOf(id, C.climber.key));
+    expect(startOf(id, C.eye.name.key)).toBeGreaterThan(startOf(id, C.eye.key));
+    expect(storyAt("control", 1)).toBeGreaterThan(startOf(id, C.eye.key));
+    expect(startOf(id, C.big.key)).toBeGreaterThan(storyAt("control", 1));
     expect(startOf(id, C.big.caption.key) - startOf(id, C.big.key)).toBeLessThanOrEqual(0.2);
-    expect(storyAt("control", 1)).toBeGreaterThan(startOf(id, C.big.key));
-    expect(startOf(id, C.budget.key)).toBeGreaterThan(storyAt("control", 1));
-    expect(Math.max(...playsAt(id).map((play) => play.at))).toBe(startOf(id, C.budget.key));
+    expect(Math.max(...playsAt(id).map((play) => play.at))).toBe(startOf(id, C.big.caption.key));
   });
 });
 

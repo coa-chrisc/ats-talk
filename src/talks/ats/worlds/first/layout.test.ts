@@ -94,7 +94,7 @@ describe("the first world's layout", () => {
 
 describe("slide 16", () => {
   it("sets the three outlines in one row across the band, apart, in the script's order", () => {
-    expect(N.outlines.map((outline) => outline.text)).toEqual(["An agent platform", "A new organization", "Deploy agents"]);
+    expect(N.outlines.map((outline) => outline.text)).toEqual(["An agent platform", "A new organization", "Roll out agents citywide"]);
     for (let i = 1; i < N.outlines.length; i++) expect(N.outlines[i].at.x).toBeGreaterThan(N.outlines[i - 1].at.x + N.outlines[i - 1].at.w + 40);
     for (const outline of N.outlines) expect(outline.at.y).toBe(N.outlines[0].at.y);
   });
@@ -362,7 +362,7 @@ describe("slide 20", () => {
   it("draws a large square chart, its four quarters named in the order they label themselves", () => {
     expect(S.chart.at.w).toBe(S.chart.at.h);
     expect(S.chart.at.w).toBeGreaterThanOrEqual(456);
-    expect(S.quarters.map((quarter) => quarter.text)).toEqual(["Scale", "Prepare", "Experiment", "Defer"]);
+    expect(S.quarters.map((quarter) => quarter.text)).toEqual(["Start here", "Prepare", "Experiment", "Defer"]);
     const [scale, prepare, experiment, defer] = S.quarters.map((quarter) => quarter.at);
     expect(scale.x).toBeGreaterThan(prepare.x);
     expect(scale.y).toBeLessThan(experiment.y);
@@ -401,7 +401,7 @@ describe("slide 20", () => {
   });
 
   it("sets the six tests beside the chart, in the script's order, at 32 px, apart, each with its tick in its box", () => {
-    expect(S.list.map((row) => row.text)).toEqual(["Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk"]);
+    expect(S.list.map((row) => row.text)).toEqual(["Frequent decisions", "Measurable impact", "Friction in today's process", "Ready data", "Rules that can be written down", "Contained risk"]);
     expect(S.list[0].check.x).toBeGreaterThan(text(S.chart.readiness.at, S.chart.readiness.text, "start").x + 120);
     for (let i = 1; i < S.list.length; i++) expect(S.list[i].check.y).toBeGreaterThan(bottom(text(S.list[i - 1].words, S.list[i - 1].text, "start")) - 8);
     for (const row of S.list) {

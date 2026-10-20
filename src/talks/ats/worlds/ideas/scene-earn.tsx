@@ -1,10 +1,10 @@
-/** Slide 10's picture: the floor and the stair of four steps, each named, a gate on each tread; the green project box that climbs it; the two passed ticks and the first one's caption; the checklist of six rows, each taking its tick; and the foot line. */
+/** Slide 10's picture: the floor and the stair of four steps, each named, a gate on each tread; the green project box that climbs it; the two passed ticks and the first one's caption; the checklist of six rows, each taking its tick, under its heading. */
 "use client";
 
 import { Part, PassTick } from "@/components/deck/kit";
 import { EARN, GATE, LIST_BOX } from "./layout-earn";
 import { Floor, GateStep, ListRow, ProjectBox } from "./parts-draw";
-import { Layer, Note, StoryOf, Words } from "./parts";
+import { Layer, StoryOf, Words } from "./parts";
 
 const E = EARN;
 
@@ -20,6 +20,7 @@ export function EarnMarks() {
       ))}
       <Words id={E.evidence.key} at={E.evidence.at} text={E.evidence.text} strong />
       <ProjectBox id={E.project.key} at={E.project.at} />
+      <Words id={E.heading.key} at={E.heading.at} text={E.heading.text} anchor="start" strong />
       {E.list.map((row) => (
         <ListRow key={row.key} id={row.key} check={row.check} rule={row.rule}>
           <Words at={row.words} text={row.text} anchor="start" size="text" />
@@ -36,9 +37,6 @@ export function EarnHtml() {
   return (
     <Layer id={E.html}>
       <StoryOf picture="earn" />
-      <Note id={E.foot.key} at={E.foot.at} size="text" strong>
-        {E.foot.text}
-      </Note>
     </Layer>
   );
 }

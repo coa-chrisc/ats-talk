@@ -1,8 +1,8 @@
 /**
  * Slide 25, in the order its They see gives: the stack top to bottom, each
  * tier named; the orange mark on the middle tier; the arrow down the left,
- * then the arrow up the right, each named; the three question cards in
- * turn; line A after the arrows, line B with the last card.
+ * then the arrow up the right, each named; the heading, then the three
+ * question cards in turn; line A with the stack, line B with the mark.
  */
 import { describe, expect, it } from "vitest";
 import { storyKeys } from "@/components/deck/kit";
@@ -29,22 +29,25 @@ describe("25, who decides", () => {
     expect(markup).toMatch(new RegExp(`class="dk-human" data-build="${W.mark.key.replace(/\./g, "\\.")}"`));
   });
 
-  it("draws authority down the left before evidence up the right, each named as its head lands", () => {
+  it("draws the arrow down the left before the arrow up the right, each named as its head lands", () => {
     expect(start(W.down.key)).toBeGreaterThanOrEqual(endOf(click, W.mark.key));
     expect(start(W.up.key)).toBeGreaterThanOrEqual(endOf(click, W.down.key));
     expect(start(W.down.label.key)).toBeLessThan(endOf(click, W.down.key));
     expect(start(W.up.label.key)).toBeLessThan(endOf(click, W.up.key));
   });
 
-  it("brings line A after the arrows and before the questions", () => {
-    expect(start(A)).toBeGreaterThan(start(W.up.key));
-    expect(start(A)).toBeLessThan(start(W.cards[0].key));
+  it("brings line A in with the stack and line B with the orange mark, both before the arrows", () => {
+    expect(start(A)).toBeGreaterThan(start(W.tiers[0].key));
+    expect(start(A)).toBeLessThan(start(W.mark.key));
+    expect(start(B)).toBeGreaterThanOrEqual(start(W.mark.key));
+    expect(start(B)).toBeLessThan(start(W.down.key));
   });
 
-  it("lands the three questions in turn, line B with the last, and ends on the stack, its arrows and the cards", () => {
+  it("brings the heading up after the arrows, then lands the three questions under it in turn, and ends on the stack, its arrows, the heading and the cards", () => {
+    expect(start(W.heading.key)).toBeGreaterThanOrEqual(endOf(click, W.up.key));
     const starts = W.cards.map((card) => start(card.key));
+    expect(starts[0]).toBeGreaterThanOrEqual(endOf(click, W.heading.key));
     starts.slice(1).forEach((t, i) => expect(t).toBeGreaterThan(starts[i]));
-    expect(start(B)).toBeGreaterThanOrEqual(starts[2]);
-    for (const key of [W.mark.key, W.down.key, W.up.key, ...W.cards.map((card) => card.key), ...W.tiers.map((tier) => tier.key)]) expect(showsAfter(click, key), key).toBe(true);
+    for (const key of [W.mark.key, W.down.key, W.up.key, W.heading.key, ...W.cards.map((card) => card.key), ...W.tiers.map((tier) => tier.key)]) expect(showsAfter(click, key), key).toBe(true);
   });
 });

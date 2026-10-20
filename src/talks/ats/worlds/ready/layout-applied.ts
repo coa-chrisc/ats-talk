@@ -30,8 +30,8 @@ export const TILE = { line: 48, h: 88, rx: 0, inset: 24 } as const;
 /** The passed tick: radius 20, centred 40 in from the panel's top right corner, so it sits on the corner and inside the drawing's top. */
 export const TICK = { r: 20, in: 40 } as const;
 
-/** Where each tile's words break, by the word a line ends on: set in Geist SemiBold at 26 px, a tile's lines measure at most about 250 px. The first tile's words fit on one line (about 200 px) and stay on one. */
-const TILE_BREAKS: readonly (readonly string[])[] = [[], ["sandbox and"], ["and"], ["and"]];
+/** Where each tile's words break, by the word a line ends on, at the end of a phrase: set in Geist SemiBold at 26 px, a tile's lines measure at most about 260 px, inside its 348 px of room. */
+const TILE_BREAKS: readonly (readonly string[])[] = [["first"], ["sandbox's"], ["and"], ["and"]];
 
 const TOP = contentTop("applied");
 const panelX = (i: number) => SAFE.left + i * (PANEL.w + PANEL.gap);
