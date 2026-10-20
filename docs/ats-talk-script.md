@@ -96,7 +96,7 @@ Speaker: Chris
 Speaker: Stefan
 
 **On screen:** We came back with four lessons for the City.
-- Use the least autonomy that gets the job done. Build the rules into the system, out of the AI's reach.
+- Use the least autonomy that gets the job done. Build the rules into the system, where the AI cannot break them.
 - Train your own people before you buy a platform. Start where a mistake costs little, then take on harder work.
 
 **They see:** Four tall panels draw across the slide, numbered "One", "Two", "Three" and "Four" in large green numerals at their tops, and each takes its name in turn: "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start where a mistake costs little". Under the panels a route draws as a line with three stops that light left to right: "Enterprise now", "The City now", "What we would do first". The slide ends on the four named panels over the lit route.
@@ -125,7 +125,7 @@ Speaker: Stefan
 
 **On screen:** A chatbot answers a question. An agent is given a goal and does the work.
 - It plans its own steps, uses tools, acts inside other systems, checks the result and adjusts.
-- That is where the value comes from, and the risk: nobody is doing each step by hand anymore.
+- That is both the value and the risk: no person is doing each step anymore, and no person is watching each one.
 
 **They see:** A timeline draws left to right from "2023" to "2026" with three figures on it: a speech bubble labeled "Chatbot" with the caption "Answers a question", a page with a person beside it labeled "Copilot" with "Drafts while a person decides", and a figure with a tool belt labeled "Agent" with "Does the work". Under the agent a loop draws as five small stops joined in a ring, each lighting in turn: "Goal", "Plans", "Tools", "Acts", "Adjusts". A short bar closes the loop, labeled "Stops at a boundary". The slide ends on the timeline and the lit loop.
 
@@ -176,12 +176,12 @@ Speaker: Stefan
 Speaker: Stefan
 
 **On screen:** Lesson one. Use the least autonomy that gets the job done.
-- Keep the whole range on hand: automation, copilot, workflow, agent. Each step up is more to govern.
+- Four rungs: plain automation, a copilot, a workflow, an agent. Keep all four; each rung up is more to govern.
 - Some jobs need no AI at all. A plain tool, built fast with AI's help, is often the right answer.
 
-**They see:** Four steps rise left to right like a stair, each a block: "Automation" with the caption "Fixed rules", "Copilot" with "A person approves every step", "Workflow" with "The steps are set", and "Agent" with "Chooses its own steps". A small green figure climbs onto the first step and stops; a deep-green tick appears over it with the label "Gets the job done". A grey arrow along the top of the stair reads "More to govern". Below the stair a small tool outline fills solid, labeled "Plain tool", with the caption "No AI at all". The slide ends on the stair, the figure on the first step, the grey arrow and the plain tool.
+**They see:** Four steps rise left to right like a stair, each a block: "Automation" with the caption "Fixed rules", "Copilot" with "A person approves every step", "Workflow" with "The steps are set", and "Agent" with "Chooses its own steps". A small green figure climbs onto the first step and stops; a deep-green tick appears over it with the label "Stop here if it gets the job done". A grey arrow along the top of the stair reads "Each rung up is more to govern". Below the stair a small tool outline fills solid, labeled "Plain tool", with the caption "No AI at all". The slide ends on the stair, the figure on the first step, the grey arrow and the plain tool.
 
-**You say:** Lesson one is the one we would want every manager in the City to carry around. There is a range of ways to automate work, and it climbs like a stair. Automation runs on fixed rules. A copilot drafts and a person approves every step. In a workflow the steps are set in advance, with a model helping inside them. An agent chooses its own steps. Each step up adds value sometimes and adds things to govern always. So the course says: climb one step at a time, stop as soon as the job gets done, and ask why not less. The point for leadership is that the City needs the whole range on hand, so each job can land on the lowest step that works. And some jobs need no AI at all. A plain tool, built fast with AI's help, is often the right answer.
+**You say:** Lesson one is the one we would want every manager in the City to carry around. There are four rungs, and they climb like a stair. Plain automation runs on fixed rules. A copilot drafts and a person approves every step. In a workflow the steps are set in advance, with a model helping inside them. An agent chooses its own steps. Each rung up adds value sometimes and adds things to govern always. So the course says: climb one rung at a time, stop as soon as the job gets done, and ask why not less. The point for leadership is that the City needs all four rungs available, so each job can land on the lowest one that works. And some jobs need no AI at all. A plain tool, built fast with AI's help, is often the right answer.
 
 ### 8. Lesson two: build the rules into the system
 <!-- beat: lesson two; the enforcement ladder from strongest to weakest, and the dial that fits controls to exposure -->
@@ -200,24 +200,24 @@ Speaker: Stefan
 Speaker: Chris
 
 **On screen:** Lesson three. Train your own people before you buy a platform.
-- BCG: six percent of companies lead on AI, and what sets them apart is talent, not technology.
+- BCG found that six percent of companies lead on AI, and what sets them apart is talent, not technology.
 - BNY runs 130 digital employees today. It trained its workforce before it gave any of them autonomy.
 
-**They see:** A balance draws on the left with a post, a beam and two pans. The left pan holds an indigo box with a vendor tag, labeled "Technology"; the right pan holds three green people, labeled "Talent". The beam tips toward Talent. In the middle a large indigo figure lands: "Six percent", with the caption "Lead on AI and outperform peers by 9.3 points". At the right a plaque settles, labeled "BNY", with "Trained its workforce first". The slide ends on the tipped balance, the figure and the plaque.
+**They see:** A balance draws on the left with a post, a beam and two pans. The left pan holds an indigo box with a vendor tag, labeled "Technology"; the right pan holds three green people, labeled "Talent". The beam tips toward Talent. In the middle a large indigo figure lands: "Six percent", with the caption "Of companies lead on AI and outperform their peers by 9.3 points". At the right a plaque settles, labeled "BNY", with "Trained its workforce first". The slide ends on the tipped balance, the figure and the plaque.
 
-**You say:** Lesson three answers the question every department asks us, which is whether to wait for a vendor. BCG read 4,800 earnings calls and found that six percent of companies lead on AI and outperform peers by 9.3 points. What sets them apart is talent: fluency across the whole workforce plus a small expert team, with technology mostly the same as everyone else's. BNY runs more than 130 digital employees today, each with a human manager, and the lesson the course drew is that the bank trained its workforce first and granted autonomy afterward. The City's knowledge of its own services lives in City staff. That is the asset the boost spending puts to work, and no vendor can supply it.
+**You say:** Lesson three answers the question every department asks us, which is whether to wait for a vendor. BCG read 4,800 earnings calls and found that six percent of companies lead on AI and outperform their peers by 9.3 points. What sets them apart is talent: fluency across the whole workforce plus a small expert team, with technology mostly the same as everyone else's. BNY runs more than 130 digital employees today, each with a human manager, and the lesson the course drew is that the bank trained its workforce first and granted autonomy afterward. The City's knowledge of its own services lives in City staff. That is the asset the boost spending puts to work, and no vendor can supply it.
 
 ### 10. Lesson four: start where a mistake costs little
 <!-- beat: lesson four; gates, the six tests, and the handoff to measuring the City against all four -->
 Speaker: Stefan
 
 **On screen:** Lesson four. Start where a mistake costs little. Once that works, take on something harder.
-- Pick work where a mistake has little impact and costs little to fix.
-- When you have command of that use case, take on a more complex one. Results decide when, not hope.
+- Pick work where a mistake has little impact and costs little to fix. Six tests help pick the first use cases.
+- When you have command of that use case, take on a more complex one. The course calls each move up a gate.
 
-**They see:** A stair of four gates rises left to right, each a step with a small gate drawn on it: "Explore", "Validate", "Deploy", "Scale". A small green project box climbs onto the first step, and a deep-green tick lands beside it with the caption "Results". The box climbs to the second step and a second tick lands; the third step stays empty. Beside the stair a checklist draws with six lines, each taking a deep-green tick in turn: "Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk". A short line at the foot reads "Where the City stands against the four". The slide ends on the stair with the box on its second step, the checklist and the foot line.
+**They see:** A stair of four gates rises left to right, each a step with a small gate drawn on it: "Explore", "Validate", "Deploy", "Scale". A small green project box climbs onto the first step, and a deep-green tick lands beside it with the caption "Results". The box climbs to the second step and a second tick lands; the third step stays empty. Beside the stair a checklist draws under the heading "Six tests for the first use cases", with six lines each taking a deep-green tick in turn: "Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk". The slide ends on the stair with the box on its second step and the ticked checklist.
 
-**You say:** Lesson four is the course's answer to pilot purgatory, where everything is a proof of concept and nothing ships. Start where a mistake has little impact and costs little to fix. When you have command of that use case, take on a more complex one, and let the results decide when, not hope or a vendor's calendar. The course formalizes that as four gates, explore, validate, deploy and scale, and a project passes each one on results. The course also gives six tests for choosing the first projects: frequent decisions, measurable impact, friction in the current process, ready data, rules that can be written down, and contained risk. Most first picks score well on all six, and most of them are work where AI only assists. Those are the four lessons. The rest of the talk is where the City stands against the four, and it is a better picture than you might think.
+**You say:** Lesson four is the course's answer to pilot purgatory, where everything is a proof of concept and nothing ships. Start where a mistake has little impact and costs little to fix. When you have command of that use case, take on a more complex one, and let the results decide when, not hope or a vendor's calendar. The course calls each move a gate, four of them, explore, validate, deploy and scale, and a project passes each one on results. It also gives six tests for the first use cases: frequent decisions, measurable impact, friction in the current process, ready data, rules that can be written down, and contained risk. Most first picks score well on all six, and most of them are work where AI only assists. Those are the four lessons. The rest of the talk is where the City stands against the four, and it is a better picture than you might think.
 
 ---
 
@@ -239,13 +239,13 @@ Speaker: Chris
 <!-- beat: the honest word about the policy; the authorized tools list is the mainstream first rung and the pressure is now on it; the next rung is tiers with a budget, not a longer ban -->
 Speaker: Chris
 
-**On screen:** Authorized tools was the right first move. The next is tiers by data sensitivity, with a budget.
-- Seattle and Houston made the same rule. Gartner finds 69 percent see staff use other tools anyway.
+**On screen:** Authorized tools was the right first move. Next come tiers by data sensitivity, and a budget.
+- Other cities made the same rule. Gartner finds 69 percent of organizations see staff using other tools anyway.
 - Boston moved to tiers by data sensitivity. Pennsylvania went from 175 staff to 3,000 in a year.
 
-**They see:** The fence post from slide 11 stands at the left with its tick, labeled "Authorized tools", and four small city nameplates settle beside it: "Seattle", "Minnesota", "San Francisco", "Houston". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled "69 percent", with the caption "See staff use other tools anyway". On the right a stair of three steps rises, labeled "Tiers by data sensitivity", with the caption "Boston"; a green figure climbs from the first step to the second. Beside the stair an indigo figure lands: "175 staff to 3,000 in a year", with the caption "Pennsylvania". A plain tag at the foot reads "A budget". The slide ends on the post and nameplates, the gauge, the stair with its climber, the figure and the tag.
+**They see:** The fence post from slide 11 stands at the left with its tick, labeled "Authorized tools", and four small city nameplates settle beside it: "Seattle", "Minnesota", "San Francisco", "Houston". A grey pressure gauge draws under them with its needle swinging toward the high end, labeled "69 percent", with the caption "Of organizations see staff using other tools anyway". On the right a stair of three steps rises, labeled "Tiers by data sensitivity", with the caption "Boston"; a green figure climbs from the first step to the second. Beside the stair an indigo figure lands: "175 staff to 3,000 in a year", with the caption "Pennsylvania". A plain tag at the foot reads "A budget to pay for the tools". The slide ends on the post and nameplates, the gauge, the stair with its climber, the figure and the tag.
 
-**You say:** A word about the policy, because the room has heard about it. From the end of October staff may use the Copilot that comes with Microsoft 365 and nothing else. That was the right first move, and the mainstream one. Seattle made the same rule in May; Minnesota, San Francisco and Houston run the same way. But it has a shelf life. Gartner finds 69 percent of organizations see staff use other tools anyway, and Microsoft finds 28 percent of staff say no approved option exists for what they need. The cities ahead of us added tiers by data sensitivity, with a sanctioned enterprise tool for data that is not ready to connect, and a budget to pay for it. Pennsylvania went from 175 staff to 3,000 on one sanctioned tool in a year.
+**You say:** A word about the policy, because the room has heard about it. From the end of October staff may use the Copilot that comes with Microsoft 365 and nothing else. That was the right first move, and the mainstream one. Seattle made the same rule in May; Minnesota, San Francisco and Houston run the same way. But it has a shelf life. Gartner finds 69 percent of organizations see staff using other tools anyway, and Microsoft finds 28 percent of staff say no approved option exists for what they need. The cities ahead of us added tiers by data sensitivity, with a sanctioned enterprise tool for data that is not ready to connect, and a budget to pay for the tools. Pennsylvania went from 175 staff to 3,000 on one sanctioned tool in a year.
 
 Note: confirm the City policy's effective date and exact scope in the CISO's words; the city examples are Seattle (May 2026), Minnesota, San Francisco and Houston's 2025 to 2028 contract, Boston's policy v2.1 (March 2026) and Pennsylvania's rollout (StateScoop, April 2026). Sources are in the research notes.
 
@@ -257,9 +257,9 @@ Speaker: Chris
 - Public Health, Energy, Fire, Development Services, Police and the Library are all building with it.
 - A practitioner group of 20 people spans nine departments. Each Ask About AI drew 70 to 100 staff.
 
-**They see:** A grid of plain department boxes draws, labeled once "Departments". Lanterns light inside six boxes in turn, each with its name and a short caption: "Austin Public Health" with "20 applications and a sanctioned sandbox"; "Austin Energy" with "Wildfire detection with Fire, in service"; "Development Services" with "Permit pre-checks and a legacy system read by agents"; "Police" with "AI-assisted non-emergency reporting"; "Library" with "AI literacy and governance"; "Budget Office" with "Community in the Loop". A few smaller lanterns light in other boxes with no names. A ring of nine green dots forms around the grid, labeled "Practitioner group", with the caption "20 people in nine departments". A tag drops under the grid: "70 to 100 staff at each Ask About AI". A grey tag sits apart at the right: "Not yet at one table". The slide ends on the lit grid, the ring, the tag and the grey tag.
+**They see:** A grid of plain department boxes draws, labeled once "Departments". Lanterns light inside six boxes in turn, each with its name and a short caption: "Austin Public Health" with "20 applications and a sanctioned sandbox"; "Austin Energy" with "Wildfire detection with Fire, in service"; "Development Services" with "Permit pre-checks and a legacy system read by agents"; "Police" with "AI-assisted non-emergency reporting"; "Library" with "AI literacy and governance"; "Budget Office" with "Community in the Loop". A few smaller lanterns light in other boxes with no names. A ring of nine green dots forms around the grid, labeled "Practitioner group", with the caption "20 people in nine departments". A tag drops under the grid: "70 to 100 staff at each Ask About AI". A grey tag sits apart at the right: "They have never all been in one room". The slide ends on the lit grid, the ring, the tag and the grey tag.
 
-**You say:** Now the first correction, and it is about people. The course's 90-day playbook starts with an inventory of everything built, bought and employee-made, before anyone sets policy. Off paper, the City has more AI work under way than anyone has counted. Austin Public Health has 20 applications and a sanctioned sandbox. Austin Energy runs AI wildfire detection with Fire, in service since 2024. Development Services has permit pre-checks and a legacy system read by agents. Police has AI-assisted non-emergency reporting. The Library teaches AI literacy and governance. The Budget Office ran Community in the Loop with residents. Some of this is in service and some is prototype. A practitioner group reaches 20 people in nine departments, and 70 to 100 staff at each Ask About AI, every time. It is not yet at one table.
+**You say:** Now the first correction, and it is about people. The course's 90-day playbook starts with an inventory of everything built, bought and employee-made, before anyone sets policy. Off paper, the City has more AI work under way than anyone has counted. Austin Public Health has 20 applications and a sanctioned sandbox. Austin Energy runs AI wildfire detection with Fire, in service since 2024. Development Services has permit pre-checks and a legacy system read by agents. Police has AI-assisted non-emergency reporting. The Library teaches AI literacy and governance. The Budget Office ran Community in the Loop with residents. Some of this is in service and some is prototype. A practitioner group reaches 20 people in nine departments, and 70 to 100 staff at each Ask About AI, every time. They have never all been in one room.
 
 Note: each example is from the October 2026 research (Bloomberg Cities, APPA, Development Services updates, GovTech Fall 2025, TSLAC, the City's Community in the Loop page); the portfolio is a mix of operational uses, pilots and prototypes, and the slide says so. Confirm the practitioner group and Ask About AI numbers.
 
@@ -392,7 +392,7 @@ Speaker: Chris
 Speaker: Stefan
 
 **On screen:** Step four. Sort what we heard by value and readiness, and start where both are high.
-- The six tests from lesson four do the scoring.
+- Each idea is scored with the six tests from lesson four and placed on a chart of value against readiness.
 - Most first picks will be work where AI only assists, and a mistake is small and easy to reverse.
 
 **They see:** Idea cards fly in from the left as dots and land on a square chart with two axes, "Value" up the side and "Readiness" along the bottom. The four quadrants name themselves: top right "Scale", top left "Prepare", bottom right "Experiment", bottom left "Defer". The top right fills with a green wash. Beside the chart the six-line checklist from slide 10 returns with its ticks: "Frequent decisions", "Measurable impact", "Friction", "Ready data", "Rules that can be written", "Contained risk". The slide ends on the chart with its lit corner and the ticked list.
@@ -416,12 +416,12 @@ Speaker: Chris
 Speaker: Chris
 
 **On screen:** Level up the staff the City already has, in three tiers, starting with the developers.
-- Everyone AI-aware. Leads AI-proficient. A small expert team. Right now the gaps are at every tier.
-- Developers go from AI user to AI engineer with training and a way of working, not just a license.
+- Three tiers: everyone aware of what AI can do, leads able to judge and design with it, a small expert team.
+- Developers come first. They go from AI user to AI engineer with training and a way of working, not just a license.
 
-**They see:** Three tiers draw as a pyramid. The wide base is labeled "AI-aware", with the caption "Everyone"; the middle "AI-proficient", with "Functional leads and process owners"; the top "AI-expert", with "A small expert team". Each tier lights green in turn. Beside the pyramid a row of developer desks draws, labeled "Developers". A grey tag over the row reads "AI user", and as a slab labeled "Training and a way of working" slides under the desks, the tag turns green and reads "AI engineer". A small indigo figure sits at the foot: "19 percent slower", with the caption "Tools and no method". The slide ends on the lit pyramid, the lifted row and the figure.
+**They see:** Three tiers draw as a pyramid. The wide base is labeled "AI-aware", with the caption "Everyone"; the middle "AI-proficient", with "Functional leads and process owners"; the top "AI-expert", with "A small expert team". Each tier lights green in turn. Beside the pyramid a row of developer desks draws, labeled "Developers". A grey tag over the row reads "AI user", and as a slab labeled "Training and a way of working" slides under the desks, the tag turns green and reads "AI engineer". A small indigo figure sits at the foot: "19 percent slower", with the caption "Developers given tools but no method". The slide ends on the lit pyramid, the lifted row and the figure.
 
-**You say:** Lane two begins with people, which is lesson three again. The course describes three tiers of fluency. Everyone AI-aware: what it can and cannot do, and what the authorized tools rule asks of you. Functional leads and process owners AI-proficient: able to judge a vendor claim, design a workflow and define a success measure. And a small AI-expert team that builds and governs, which is the program team. Right now the gaps are at every tier, and the developers come first. The course frames their change as going from AI user to AI engineer, and it cites a study in which developers given tools and no method were 19 percent slower while believing they were faster. Training and a way of working are what make the tools pay.
+**You say:** Lane two begins with people, which is lesson three again. The course describes three tiers of fluency. Everyone AI-aware: what it can and cannot do, and what the authorized tools rule asks of you. Functional leads and process owners AI-proficient: able to judge a vendor claim, design a workflow and define a success measure. And a small AI-expert team that builds and governs, which is the program team. Right now the gaps are at every tier, and developers come first. The course frames their change as going from AI user to AI engineer, and it cites a study in which developers given tools but no method were 19 percent slower while believing they were faster. Training and a way of working are what make the tools pay.
 
 ### 23. Measure outcomes
 <!-- beat: direction; every project tied to the Citywide Strategic Plan, with a baseline before a target; handoff to what to have ready -->
@@ -444,12 +444,12 @@ Speaker: Stefan
 Speaker: Stefan
 
 **On screen:** Agents will show up inside tools we already own. We should have a playbook ready for that day.
-- Sort each one into four levels, from no-go to acting alone within strict limits, and give it a human owner.
+- Sort each one into four levels by how much it may do on its own, and give each one a named human owner.
 - At the City's scale that is a list and a set of owners, not a platform.
 
-**They see:** Four bands draw across the slide, each in its own hue: grey "No-go", with the caption "Never without a person"; sky "Assist only", with "Read-only tools"; gold "Execute with approval", with "A named approver signs off"; and pink "Bounded autonomy", with "Strict limits and a tested off switch". A short list draws beneath with three rows, each a small agent icon, a level, and a nameplate reading "Owner". A grey tag at the foot reads "A list and a set of owners". The slide ends on the four bands and the short list.
+**They see:** Four bands draw across the slide, each in its own hue: grey "No-go", with the caption "It never acts without a person"; sky "Assist only", with "It can look things up but change nothing"; gold "Act with approval", with "It can act once a named person approves"; and pink "Act alone within limits", with "Strict limits and a tested off switch". A short list draws beneath with three rows, each a small agent icon, a level, and a nameplate reading "Owner". A grey tag at the foot reads "A list and a set of owners". The slide ends on the four bands and the short list.
 
-**You say:** Agents will not wait for the City's strategy. Vendors keep adding agent features to products the City already owns, so some will show up inside authorized tools whether or not we are ready. For that day the course gives a playbook we would keep on the shelf. Sort each agent into one of four levels. No-go, never without a person, for anything that transacts, decides regulated matters or cannot be undone. Assist only, with read-only tools. Execute with approval, where a named approver signs off before anything takes effect. And bounded autonomy, meaning it may act on its own inside strict limits and a tested off switch. Give every agent a named human owner, which the course found is more often nobody than you would think. At the City's scale that is a list and a set of owners.
+**You say:** Agents will not wait for the City's strategy. Vendors keep adding agent features to products the City already owns, so some will show up inside authorized tools whether or not we are ready. For that day the course gives a playbook we would keep on the shelf. Sort each agent into one of four levels by how much it may do on its own. No-go: it never acts without a person, and that covers anything that moves money, decides a regulated matter or cannot be undone. Assist only: it can look things up but change nothing. Act with approval: it can act once a named person approves. Act alone within limits: strict limits and a tested off switch. Give every agent a named human owner, which the course found is more often nobody than you would think. At the City's scale that is a list and a set of owners.
 
 ### 25. Who decides what
 <!-- beat: roles; leadership sets the bright lines, the DCIO decides authority, the CISO owns the controls; three questions for any proposal -->
@@ -457,7 +457,7 @@ Speaker: Stefan
 
 **On screen:** Leadership sets the bright lines. The DCIO decides authority. The CISO owns the controls.
 - Three questions for any AI proposal: what can it touch, what enforces its limits, who would know.
-- The decisions on this side of the table are about authority.
+- The decisions for this room are about authority, not technology.
 
 **They see:** Three tiers draw as a short stack. The top tier is labeled "Leadership", with the caption "Sets the bright lines". The middle is labeled "DCIO", with "Decides authority", and it gets the orange mark of a person deciding. The bottom is labeled "CISO", with "Owns the controls". Arrows run down the left side labeled "Authority flows down" and up the right side labeled "Evidence flows up". To the right, three cards land in turn: "What can it touch", "What enforces its limits" and "Who would know". The slide ends on the stack, its arrows and the three cards.
 
@@ -473,7 +473,7 @@ Speaker: Chris
 
 **They see:** A City staff member sits behind a wide counter, labeled "City staff", with a small green AI helper right beside them, labeled "AI". A resident stands across the counter, labeled "Resident". A low picket fence draws on the floor between the counter and the resident, labeled "Never judges a resident". A card labeled "In their own language" travels from the helper over the fence and lands in the resident's hands; the staff member gets the orange mark of a person deciding. At the right, under the heading "The test", two lines take deep-green ticks: "Serving them better", "Over the long term". The slide ends on the counter scene, the fence, the orange mark and the ticked test.
 
-**You say:** One line runs under all of this, and it is where the community's voice from the listening step comes back. AI at the City is used for residents, never on them. It helps City staff serve more people, and serve them in their own language. It never judges a resident, decides a benefit or replaces a person's decision about one. That is the no-go level from two slides ago, and it is where leadership's bright line belongs. The test for any project is whether residents would see it as the City serving them better over the long term. If they would not, the City should not build it, however feasible it is, and the listening step is how we would know.
+**You say:** One line runs under all of this, and it is where the community's voice from the listening step comes back. AI at the City is used for residents, never on them. It helps City staff serve more people, and serve them in their own language. It never judges a resident, decides a benefit or replaces a person's decision about one. That is the no-go level from two slides ago, the one that never acts without a person, and it is where leadership's bright line belongs. The test for any project is whether residents would see it as the City serving them better over the long term. If they would not, the City should not build it, however feasible it is, and the listening step is how we would know.
 
 ### 27. Where the City could be
 <!-- beat: the third track; the five decisions drawn as the distance they close, each already half done -->
@@ -492,8 +492,8 @@ Speaker: Chris and Stefan
 Speaker: Stefan
 
 **On screen:** The plan you just heard is the four lessons, applied to the City.
-- Least autonomy: plain tools first. Rules built into the system: the sandbox and the four levels.
-- Your own people: the consortium and program team. Start small, then harder: the gates and the two lanes.
+- Lesson one gave us plain tools first. Lesson two gave us the sandbox and the four levels.
+- Lesson three gave us the consortium and the program team. Lesson four gave us the gates and the two lanes.
 
 **They see:** The four panels from slide 2a return across the top, numbered "One", "Two", "Three" and "Four", with their names: "The least autonomy that gets the job done", "Build the rules into the system", "Train your own people first", "Start where a mistake costs little". Under each, a green line draws down to a tile that lands in turn: "Plain tools first", "The sandbox and the four levels", "The consortium and the program team", "The gates and the two lanes". A deep-green tick lands on each panel. The slide ends on the four panels, their four tiles and the four ticks.
 

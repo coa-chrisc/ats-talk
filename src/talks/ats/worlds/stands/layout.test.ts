@@ -7,7 +7,7 @@
 import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, wordsWidth } from "./layout";
-import { BIG, CITY, CLIMBER, CONTROL, GAUGE, GAUGE_FIGURE, NEEDLE_TURN } from "./layout-control";
+import { BIG, CAPTION_PITCH, CITY, CLIMBER, CONTROL, GAUGE, GAUGE_FIGURE, NEEDLE_TURN } from "./layout-control";
 import { DOT_R, EXISTS, namedRows } from "./layout-exists";
 import { FITS, ROW, TICK_R } from "./layout-fits";
 import { FLEET, GATE } from "./layout-fleet";
@@ -22,6 +22,8 @@ const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "mi
 const runnerBox = (at: Point, h: number) => box(at.x - h * 0.4, at.y - h, h * 0.8, h);
 const T = TRACK;
 const C = CONTROL;
+/** The gauge's caption rows, each about its own middle. */
+const captionRows = C.gauge.caption.rows.map((text, i) => ({ text, at: { x: C.gauge.caption.at.x, y: C.gauge.caption.at.y + i * CAPTION_PITCH } as Point }));
 /** A large figure's box at `size`, its numerals' cap over its baseline, at 0.56 of the size a letter, as wordsWidth sets words (Geist Bold measures 0.49 for this one). */
 const big = (at: Point, words: string, size: number, anchor: "start" | "end") => box(anchor === "start" ? at.x : at.x - Math.ceil(words.length * size * 0.56), at.y - Math.ceil(size * 0.72), Math.ceil(words.length * size * 0.56), Math.ceil(size * 0.72) + 8);
 /** A large figure on rows about their middles, ending at its point, at the same letter width. */
@@ -50,7 +52,7 @@ const DRAWN: Record<string, Box[]> = {
     ...C.cities.map((city) => city.at),
     box(GAUGE.cx - GAUGE.r - GAUGE.band, GAUGE.cy - GAUGE.r - GAUGE.band / 2, 2 * (GAUGE.r + GAUGE.band), GAUGE.r + GAUGE.band / 2 + GAUGE.hub),
     big(C.gauge.figure.at, C.gauge.figure.text, GAUGE_FIGURE, "start"),
-    label(C.gauge.caption.at, C.gauge.caption.text, "start"),
+    ...captionRows.map((row) => label(row.at, row.text, "start")),
     ...C.stair.steps.map((step) => step.at),
     text(C.stair.name.at, C.stair.name.text, "start"),
     label(C.stair.caption.at, C.stair.caption.text, "start"),
@@ -230,13 +232,17 @@ describe("slide 11a, the control", () => {
     expect(right(C.cities[3].at)).toBeLessThan(960);
   });
 
-  it("hangs the gauge under the cities and the post, its figure and caption to its right; its needle turns 0.69 of the half circle", () => {
+  it("hangs the gauge under the cities and the post, its figure and two-row caption to its right, short of the middle line; its needle turns 0.69 of the half circle", () => {
     expect(gauge.y).toBeGreaterThan(Math.max(bottom(post), ...C.cities.map((city) => bottom(city.at))) + 16);
     const fig = big(C.gauge.figure.at, C.gauge.figure.text, GAUGE_FIGURE, "start");
     expect(fig.x).toBeGreaterThan(right(gauge) + 16);
-    expect(label(C.gauge.caption.at, C.gauge.caption.text, "start").y).toBeGreaterThan(bottom(fig) - 8);
+    expect(C.gauge.caption.rows).toHaveLength(2);
+    expect(C.gauge.caption.rows.join(" ")).toBe(C.gauge.caption.text);
+    const [first, second] = captionRows.map((row) => label(row.at, row.text, "start"));
+    expect(first.y).toBeGreaterThan(bottom(fig) - 8);
+    expect(second.y).toBeGreaterThanOrEqual(bottom(first));
     expect(NEEDLE_TURN).toBeCloseTo(0.69 * 180, 1);
-    expect(right(label(C.gauge.caption.at, C.gauge.caption.text, "start"))).toBeLessThan(960);
+    for (const row of [first, second]) expect(right(row)).toBeLessThan(960);
   });
 
   it("climbs the stair left to right at the right half, named over it, the climber standing on the first step and going to the second", () => {

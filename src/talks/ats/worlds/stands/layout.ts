@@ -36,7 +36,7 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  */
 const BREAKS: Record<string, string[]> = {
   track: [],
-  /** 1489 and 1694 px. */
+  /** 1630 and 1655 px: a break at "move." leaves 1795 px on the second line, so the break falls one word on. */
   control: ["move."],
   /** 1512 and 914 px. */
   exists: ["work"],

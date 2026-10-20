@@ -78,7 +78,7 @@ const DRAWN: Record<string, Box[]> = {
     ...G.list.map((row) => row.check),
     // A row's words are checked against the band's edge in their own test, where the rough measure is corrected; its rule runs to the edge.
     ...G.list.map((row) => box(row.rule.x0, row.rule.y - 1, row.rule.x1 - row.rule.x0, 2)),
-    G.foot.at,
+    label(G.heading.at, G.heading.text, "start"),
   ],
 };
 
@@ -335,10 +335,13 @@ describe("slide 10, the stair of gates and the checklist", () => {
     for (let i = 1; i < G.list.length; i++) expect(G.list[i].check.y).toBeGreaterThan(G.list[i - 1].rule.y);
   });
 
-  it("puts the foot line under the stair, on one line, clear of the floor", () => {
-    expect(G.foot.at.y).toBeGreaterThan(G.floor.y + 40);
-    expect(G.foot.at.h).toBe(TEXT_LINE);
-    expect(linesIn(G.foot.text, 32, G.foot.at.w)).toBe(1);
-    for (const row of G.list) expect(overlaps(G.foot.at, text(row.words, row.text, "start")), row.key).toBe(false);
+  it("sets the heading over the checklist, on the list's left edge, on one line inside the band, clear of the first row", () => {
+    const heading = label(G.heading.at, G.heading.text, "start");
+    expect(heading.x).toBe(G.list[0].check.x);
+    // The rough measure runs wide at 26 px: Geist sets the heading in about 400 px.
+    expect(heading.x + heading.w * 0.9).toBeLessThanOrEqual(SAFE.right);
+    expect(bottom(heading)).toBeLessThan(G.list[0].check.y);
+    for (const row of G.list) expect(overlaps(heading, text(row.words, row.text, "start")), row.key).toBe(false);
+    expect(heading.y).toBeGreaterThanOrEqual(contentTop("earn"));
   });
 });

@@ -2,7 +2,7 @@
 "use client";
 
 import { Part, PassTick } from "@/components/deck/kit";
-import { BIG, CLIMBER, CONTROL, GAUGE } from "./layout-control";
+import { BIG, CAPTION_PITCH, CLIMBER, CONTROL, GAUGE } from "./layout-control";
 import { Big, Layer, Rows, StoryOf, Stroke, Tagged, Words } from "./parts";
 import { ClimbStep, Climber, FencePost, Gauge, Host } from "./parts-figures";
 
@@ -21,7 +21,7 @@ export function ControlMarks() {
       ))}
       <Gauge id={G.key} track={G.track} reached={{ id: G.reached.key, d: G.reached.d }} needle={{ id: G.needle.key }} cx={G.cx} cy={G.cy} length={GAUGE.needle} hub={GAUGE.hub} />
       <Big id={G.figure.key} at={G.figure.at} text={G.figure.text} className="sn-gauge-figure" />
-      <Words id={G.caption.key} at={G.caption.at} text={G.caption.text} anchor="start" soft />
+      <Rows id={G.caption.key} at={G.caption.at} rows={G.caption.rows} pitch={CAPTION_PITCH} soft />
       <Stroke id={S.floor.key} from={{ x: S.floor.x0, y: S.floor.y }} to={{ x: S.floor.x1, y: S.floor.y }} className="sn-floor" />
       {S.steps.map((step) => (
         <ClimbStep key={step.key} id={step.key} at={step.at} />

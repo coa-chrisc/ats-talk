@@ -30,7 +30,7 @@ export const WHERE_ENTERPRISE_IS: Picture[] = [
     see: ["A timeline draws left to right from \"2023\" to \"2026\" with three figures on it: a speech bubble labeled \"Chatbot\" with the caption \"Answers a question\", a page with a person beside it labeled \"Copilot\" with \"Drafts while a person decides\", and a figure with a tool belt labeled \"Agent\" with \"Does the work\". Under the agent a loop draws as five small stops joined in a ring, each lighting in turn: \"Goal\", \"Plans\", \"Tools\", \"Acts\", \"Adjusts\". A short bar closes the loop, labeled \"Stops at a boundary\". The slide ends on the timeline and the lit loop."],
     story: [
       "It plans its own steps, uses tools, acts inside other systems, checks the result and adjusts.",
-      "That is where the value comes from, and the risk: nobody is doing each step by hand anymore.",
+      "That is both the value and the risk: no person is doing each step anymore, and no person is watching each one.",
     ],
     steps: [
       { id: "play", show: ["2023", "2026", "Chatbot", "Answers a question", "Copilot", "Drafts while a person decides", "Agent", "Does the work", "Goal", "Plans", "Tools", "Acts", "Adjusts", "Stops at a boundary"] },

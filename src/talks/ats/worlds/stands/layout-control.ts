@@ -2,8 +2,8 @@
  * Slide 11a's places, in two halves. Left: slide 11's fence post with its
  * tick on its cap, named to its right, and four small city nameplates in a
  * row under its name; under them a grey gauge, a half circle whose needle
- * swings from the low end toward the high end, its figure and caption to
- * its right. Right: a stair of three steps on a floor, named over it with
+ * swings from the low end toward the high end, its figure and two-row
+ * caption to its right. Right: a stair of three steps on a floor, named over it with
  * its caption, a green figure standing on the first step (it climbs to the
  * second); beside the stair, the indigo figure on two rows with its caption
  * under it; and a plain tag at the foot, at the right. Words are read from
@@ -52,10 +52,13 @@ const arcPoint = (share: number): Point => {
 const low = arcPoint(0);
 const high = arcPoint(1);
 const reached = arcPoint(SHARE);
-/** Its figure at 48 px and its caption under it, 48 px right of the gauge, the figure's middle level with the gauge's upper half. */
+/** Its figure at 48 px and its caption on two rows under it, 40 px right of the gauge, the figure's baseline 70 px over the gauge's base; the caption's rows 32 apart (a label line), the second ending over the drawing's foot. */
 export const GAUGE_FIGURE = 48;
-const FIGURE_AT: Point = { x: GAUGE.cx + GAUGE.r + GAUGE.band + 40, y: GAUGE.cy - 56 };
-const ANYWAY_AT: Point = { x: FIGURE_AT.x, y: FIGURE_AT.y + 46 };
+export const CAPTION_PITCH = 32;
+const FIGURE_AT: Point = { x: GAUGE.cx + GAUGE.r + GAUGE.band + 40, y: GAUGE.cy - 70 };
+const ANYWAY_AT: Point = { x: FIGURE_AT.x, y: FIGURE_AT.y + 40 };
+/** The caption broken after its fourth word: whole, it would run past the stage's middle line. */
+const ANYWAY_ROWS = breakAfter(ANYWAY, "staff");
 
 /* Right: the stair, its climber, the figure and the tag */
 
@@ -98,7 +101,7 @@ export const CONTROL = {
     reached: { key: "control.gauge.reached", d: `M${low.x} ${low.y}A${GAUGE.r} ${GAUGE.r} 0 0 1 ${reached.x} ${reached.y}` },
     needle: { key: "control.gauge.needle", turn: NEEDLE_TURN },
     figure: { key: "control.gauge.figure", text: PERCENT, at: FIGURE_AT },
-    caption: { key: "control.gauge.caption", text: ANYWAY, at: ANYWAY_AT },
+    caption: { key: "control.gauge.caption", text: ANYWAY, rows: ANYWAY_ROWS, at: ANYWAY_AT },
   },
   stair: {
     floor: { key: "control.floor", x0: STAIR.x - 16, x1: steps[2].x + steps[2].w + 2, y: STAIR.floor },

@@ -19,16 +19,16 @@ export type BandHue = "grey" | "review" | "lead" | "fix";
 const TOP = contentTop("levels");
 /** Each band: 64 tall, a 32 px name on it with about 10 px over and under; 10 between bands, so they read as four and as one stack. */
 const BAND = { h: 64, gap: 10 } as const;
-/** The name's left edge, 32 in from the band's; the captions' column, clear of the longest name (about 360 px at 32 px semibold) by 40. */
+/** The name's left edge, 32 in from the band's; the captions' column, clear of the longest name (about 350 px at 32 px semibold, 412 by the wide estimate) by 44. */
 const NAME_X = SAFE.left + 32;
-const CAPTION_X = 540;
-/** Where an agent lands in its band: right of the longest caption (about 380 px from 540) with room to spare, in the band's open right half. */
-const AGENT_X = 1200;
+const CAPTION_X = 584;
+/** Where an agent lands in its band: right of the longest caption (about 520 px from 584) with room to spare, in the band's open right third. */
+const AGENT_X = 1240;
 /** An agent's ring at this radius fits a 44 px list row with room over and under. */
 export const LEVEL_AGENT_R = 16;
 /** The list: three rows 50 apart, the first 40 under the bands' foot, so the last row's agent ends 2 px over the floor. */
 const LIST = { gap: 40, pitch: 50 } as const;
-/** In a row: the level's name 36 right of the agent's middle, and the nameplate after the longest name (about 300 px at 26 px semibold). */
+/** In a row: the level's name 36 right of the agent's middle, and the nameplate after the longest name (about 290 px at 26 px semibold). */
 const ROW = { name: AGENT_X + 36, plate: AGENT_X + 380 } as const;
 /** The nameplate: a small person's head and shoulders, then the word, 34 tall. */
 export const PLATE = { h: 34, pad: 14, icon: 22 } as const;

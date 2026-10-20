@@ -18,7 +18,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
-import { LABEL_LINE, SAFE, TAG, TEXT_LINE, contentTop, layerOf, round, tagWidth, wordsWidth } from "./layout";
+import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, contentTop, layerOf, round, tagWidth, wordsWidth } from "./layout";
 
 const [DEPARTMENTS, ...REST] = shown("exists", "play");
 const NAMED = [0, 1, 2, 3, 4, 5].map((i) => ({ text: REST[2 * i], caption: REST[2 * i + 1] }));
@@ -149,9 +149,9 @@ const named = LIT.named.map(([col, row], i) => {
 const GROUP_AT: Point = { x: RING.x + 16, y: RING.y + RING.h + 28 };
 const GROUP_CAPTION_AT: Point = { x: GROUP_AT.x + wordsWidth(GROUP, 32) + 16, y: GROUP_AT.y };
 
-/** The tag under the ring's name, centred on the grid; the grey tag apart at the lower right, ending at the drawing's right edge. */
+/** The tag under the ring's name, centred on the grid; the grey tag apart at the lower right, ending at the drawing's right edge, its foot on the drawing's lowest line, under the last name's caption. */
 const STAFF_AT = box(round(GRID_BOX.x + GRID_BOX.w / 2 - tagWidth(STAFF) / 2), GROUP_AT.y + TEXT_LINE / 2 + 10, tagWidth(STAFF), TAG.h);
-const APART_AT = box(SAFE.right - 16 - tagWidth(NOT_AT_TABLE), STAFF_AT.y + 20, tagWidth(NOT_AT_TABLE), TAG.h);
+const APART_AT = box(SAFE.right - 16 - tagWidth(NOT_AT_TABLE), DRAW_FOOT - TAG.h, tagWidth(NOT_AT_TABLE), TAG.h);
 
 export const EXISTS = {
   ...layerOf("exists"),
