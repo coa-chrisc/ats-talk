@@ -121,11 +121,11 @@ const everything = [...voiced, ...SCRIPT.flatMap((picture) => [picture.name, ...
 const OFF_SCRIPT: string[] = [];
 
 /**
- * Story lines allowed past 100 characters: none, as draft 2 of the ATS script writes them. A
+ * Story lines allowed past 100 characters, each measured under 1700 px at 32 px in Geist. A
  * line wider than the band (1728 px, about 105 characters at 32 px) would be
  * broken onto two rows by its world (`breakAfter`).
  */
-const LONG_STORY: [string, number][] = [];
+const LONG_STORY: [string, number][] = [["lessons", 0], ["infrastructure", 0], ["fits", 0], ["lanes", 1], ["levels", 0]];
 
 /** GitHub's own terms the script may name in a speaker's note: nowhere, as draft 2 of the ATS script writes it. */
 const GITHUB_TERMS_SAID: string[] = [];

@@ -24,16 +24,16 @@ export const THE_FOUR_LESSONS: Picture[] = [
     number: "8",
     part: 3,
     world: "ideas",
-    name: "Lesson two: make the system enforce the rules",
-    show: "Lesson two. Make the system enforce the rules, not the model.",
-    say: "Lesson two is where the course was firmest. A rule typed into a prompt can be talked around; the course cites adaptive attacks that beat tested defenses most of the time. A permission, a network limit or a sandbox holds whether or not the model cooperates, because the system blocks it. From strongest to weakest, the controls run: the system blocks it, approval before it takes effect, a rule typed into a prompt, and a person checks afterward. That last one only counts when the person has the time, the information and the authority to stop what they are looking at. The second half of the lesson is proportion. Where AI only assists, use light controls, approved tools and data and a quick review, so the work keeps moving. Heavy controls, with named approvers, belong where a mistake is costly or hard to undo.",
-    see: ["Four blocks descend left to right like a stair going down: \"The system blocks it\", \"Approval before it takes effect\", \"A rule typed into a prompt\", and \"A person checks afterward\". A green arrow at the left reads \"Strongest\". Below the stair a dial draws with three settings: \"AI only assists\" with the caption \"Light controls\", \"Approval\" with \"Named approvers\", and \"Costly or hard to undo\" with \"Heavy controls\". The needle rests on the first setting. The slide ends on the descending stair and the dial."],
+    name: "Lesson two: build the rules into the system",
+    show: "Lesson two. Build the rules into the system, where the AI cannot break them.",
+    say: "Lesson two is where the course was firmest. If you tell an AI a rule, in its instructions, it can be talked out of it; the course cites attacks that got past tested defenses most of the time. If the system blocks the action, with a permission it does not have or a network it cannot reach, the rule holds whether the AI cooperates or not. From strongest to weakest, the controls run: the system blocks it, a person approves first, the AI is told the rule, and a person checks afterward. That last one only counts when the person has the time, the information and the authority to stop what they are looking at. The second half of the lesson is proportion. Where AI only assists, use light controls, approved tools and data and a quick review, so the work keeps moving. In the middle, a person approves, with named approvers. Heavy controls belong where a mistake is costly or hard to undo.",
+    see: ["Four blocks descend left to right like a stair going down: \"The system blocks it\", \"A person approves first\", \"The AI is told the rule\", and \"A person checks afterward\". A green arrow at the left reads \"Strongest\". Below the stair a dial draws with three settings: \"AI only assists\" with the caption \"Light controls\", \"A person approves\" with \"Named approvers\", and \"Costly or hard to undo\" with \"Heavy controls\". The needle rests on the first setting. The slide ends on the descending stair and the dial."],
     story: [
-      "A rule typed into a prompt is a request. A permission, a network limit or a sandbox is a control.",
+      "If you tell an AI a rule, it can be talked out of it. If the system blocks the action, it cannot.",
       "Match the controls to the risk: light where AI only assists, heavy where a mistake is hard to undo.",
     ],
     steps: [
-      { id: "play", show: ["The system blocks it", "Approval before it takes effect", "A rule typed into a prompt", "A person checks afterward", "Strongest", "AI only assists", "Light controls", "Approval", "Named approvers", "Costly or hard to undo", "Heavy controls"] },
+      { id: "play", show: ["The system blocks it", "A person approves first", "The AI is told the rule", "A person checks afterward", "Strongest", "AI only assists", "Light controls", "A person approves", "Named approvers", "Costly or hard to undo", "Heavy controls"] },
     ],
   },
   {
@@ -43,7 +43,7 @@ export const THE_FOUR_LESSONS: Picture[] = [
     world: "ideas",
     name: "Lesson three: train your own people first",
     show: "Lesson three. Train your own people before you buy a platform.",
-    say: "Lesson three answers the question every department asks us, which is whether to wait for a vendor. BCG read 4,800 earnings calls and found that six percent of companies lead on AI and outperform peers by 9.3 points. What sets them apart is talent: fluency across the whole workforce plus a small expert team, with technology mostly the same as everyone else's. BNY runs more than 130 digital employees today, each with a human manager, and the lesson the course drew is that the bank trained its workforce first and granted autonomy afterward. The City's knowledge of its own services lives in City staff. That is the asset the boost spending needs, and nobody can sell it to us.",
+    say: "Lesson three answers the question every department asks us, which is whether to wait for a vendor. BCG read 4,800 earnings calls and found that six percent of companies lead on AI and outperform peers by 9.3 points. What sets them apart is talent: fluency across the whole workforce plus a small expert team, with technology mostly the same as everyone else's. BNY runs more than 130 digital employees today, each with a human manager, and the lesson the course drew is that the bank trained its workforce first and granted autonomy afterward. The City's knowledge of its own services lives in City staff. That is the asset the boost spending puts to work, and no vendor can supply it.",
     see: ["A balance draws on the left with a post, a beam and two pans. The left pan holds an indigo box with a vendor tag, labeled \"Technology\"; the right pan holds three green people, labeled \"Talent\". The beam tips toward Talent. In the middle a large indigo figure lands: \"Six percent\", with the caption \"Lead on AI and outperform peers by 9.3 points\". At the right a plaque settles, labeled \"BNY\", with \"Trained its workforce first\". The slide ends on the tipped balance, the figure and the plaque."],
     story: [
       "BCG: six percent of companies lead on AI, and what sets them apart is talent, not technology.",
