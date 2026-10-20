@@ -304,7 +304,7 @@ Speaker: Chris
 <!-- beat: step two; a small team drawn from the consortium, led by people already doing the work, with the Azure staff kept on the infrastructure -->
 Speaker: Chris
 
-**On screen:** Step two is a small AI program team drawn from the consortium, led by staff already doing the work.
+**On screen:** Step two is a small AI program team drawn from the consortium, led by staff doing the work.
 - Its work is strategy, architecture and consulting. It advises and teaches rather than builds.
 - The Azure staff stay on the infrastructure they built, and the team is organized around them.
 

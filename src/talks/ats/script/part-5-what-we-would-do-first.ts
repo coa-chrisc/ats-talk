@@ -42,7 +42,7 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     part: 5,
     world: "first",
     name: "An AI program team from staff we have",
-    show: "Step two is a small AI program team drawn from the consortium, led by staff already doing the work.",
+    show: "Step two is a small AI program team drawn from the consortium, led by staff doing the work.",
     say: "Step two gives the consortium a working core. A small AI program team, drawn from it, with one of them as lead and all of them already doing this work, takes on strategy, architecture and consulting with departments. It advises, shows what works and teaches department staff to do it; it does not build for them, because a central team that builds everything becomes the bottleneck. The people who know Azure and Azure AI stay on the infrastructure they built, and the team is organized around them rather than over them. That is the course's third idea in practice. The organizations that got value trained their own people and put them in charge of the work.",
     see: ["The round table from slide 17 sits at the left with people around it. Four of them light brighter and step out to a box drawn in the middle, labeled \"AI program team\"; one of the four takes a small nameplate, \"Lead\". Three tiles land under the box: \"Strategy\", \"Architecture\", \"Consulting\". A line draws from the box to a department outline at the right, labeled \"Departments\", with the caption \"Advises and teaches\". Below the team box the fenced yard from slide 13 is drawn small, with two green people inside it and the caption \"The Azure staff stay on the infrastructure\". The slide ends on the table, the team box with its tiles and lead, the line to the department, and the small yard."],
     story: [
