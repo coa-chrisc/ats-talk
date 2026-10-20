@@ -15,7 +15,7 @@ const ROLE = ["a person approves", "passed"];
 const withoutDates = (t) => t.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}\b/g, "");
 
 // The backup slides are the last part, Part 5: no You say floor, and the only part that may name the format.
-const BACKUP = "Part 5";
+const BACKUP = "Part 7";
 const slides = [];
 let section = null, field = "";
 for (const line of text.split("\n")) {
@@ -50,7 +50,7 @@ for (const s of slides) {
   const show = s.show ?? "", say = s.say ?? "";
   if (!/^[A-Z]/.test(show)) bad(s, "On screen does not start with a capital");
   if (s.story.length > 2) bad(s, `${s.story.length} story lines`);
-  if (s.story.length === 0 && s.number !== "20") bad(s, "no story lines");
+  if (s.story.length === 0 && s.number !== "29") bad(s, "no story lines");
   s.story.forEach((l, i) => {
     if (!/^[A-Z].*\.$/.test(l) || l !== l.trim()) bad(s, `story ${i + 1} is not a sentence: ${l}`);
     if (l.length > 100) bad(s, `story ${i + 1} is ${l.length} chars`);
@@ -78,7 +78,7 @@ for (const s of slides) {
   const wc = say.trim().split(/\s+/).filter(Boolean).length;
   counts.push(`${s.number}=${wc}`);
   if (s.section !== BACKUP) {
-    if (s.number === "20") { if (wc < 60 || wc > 130) bad(s, `You say ${wc} words (want 60 to 130)`); }
+    if (s.number === "29") { if (wc < 60 || wc > 130) bad(s, `You say ${wc} words (want 60 to 130)`); }
     else if (wc < 105 || wc > 130) bad(s, `You say ${wc} words (want 105 to 130)`);
   } else if (wc > 130) bad(s, `You say ${wc} words (over 130)`);
 }

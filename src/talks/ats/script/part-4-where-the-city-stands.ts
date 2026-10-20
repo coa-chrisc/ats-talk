@@ -1,0 +1,90 @@
+import type { Picture } from "./types";
+
+/** Part 4. Where the City stands: slides 11 to 15, drawn in the world `stands`. */
+export const WHERE_THE_CITY_STANDS: Picture[] = [
+  {
+    id: "track",
+    number: "11",
+    part: 4,
+    world: "stands",
+    name: "Where the City looks like it is",
+    show: "Measured by strategy, team and budget, the City is at the start line.",
+    say: "Measured the way a consultant would measure it, the City is at the start line. There is no AI strategy, no AI team and no AI budget line, while the enterprise pack we just described spends 17 percent of IT budgets. One thing is already in place, and it matters more than it looks. Staff can use only authorized tools, the AI tools the Chief Information Security Officer approved, and the system enforces that rather than a memo asking for it. On the course's ladder of controls that is the strongest kind, and most of the organizations in the cancellation statistics did not have it. Hold this picture. We are going to redraw it twice.",
+    see: ["A running track draws as a long oval seen from above, filling the drawing width. A pack of small indigo runners labeled \"Enterprise\" is far along the back straight. A single green runner, twice their size, stands on a white start line at the lower left, labeled \"The City\" beneath the track. A grey tag sits in the infield: \"No AI strategy, no AI team and no AI budget line\". A fence post plants in the ground outside the track beside the start line, a deep-green tick on its cap, labeled \"Authorized tools\". The slide ends on the track, the pack, the City at the line and the ticked post."],
+    story: [
+      "The City has no AI strategy, no AI team and no AI budget line.",
+      "It has one real control already: staff may use only the AI tools the CISO has authorized.",
+    ],
+    steps: [
+      { id: "play", show: ["Enterprise", "The City", "No AI strategy, no AI team and no AI budget line", "Authorized tools"] },
+    ],
+  },
+  {
+    id: "exists",
+    number: "12",
+    part: 4,
+    world: "stands",
+    name: "What already exists",
+    show: "The City has more AI practice than it has counted, in pockets across departments.",
+    say: "The first correction is people. The course's 90-day playbook starts with an inventory of everything built, bought and employee-made, before anyone sets policy, and the City has more than it has counted. Austin Public Health has 20 applications and a sanctioned sandbox, approved by the security office. Austin Energy has years of AI work of its own. Several other departments have smaller pockets, some of them employee-made and on nobody's list. A practitioner group already reaches 20 people in nine departments, and 70 to 100 staff came to each Ask About AI session before those paused for the move into One ATS. These people have been at this for years. They are not yet at one table.",
+    see: ["A grid of plain department boxes draws, labeled once \"Departments\". A lantern lights inside one box, labeled \"Austin Public Health\", with the caption \"20 applications and a sanctioned sandbox\"; a second lights, labeled \"Austin Energy\", with \"Years of AI work\"; then several smaller lanterns light in other boxes with no names. A ring of nine green dots forms around the grid, labeled \"Practitioner group\", with the caption \"20 people in nine departments\". A tag drops under the grid: \"70 to 100 staff came to each Ask About AI\". A grey tag sits apart at the right: \"Not yet at one table\". The slide ends on the lit grid, the ring, the tag and the grey tag."],
+    story: [
+      "Austin Public Health and Austin Energy have been building with AI for years, and they are not alone.",
+      "A practitioner group of 20 spans nine departments, and 70 to 100 staff came to each Ask About AI.",
+    ],
+    steps: [
+      { id: "play", show: ["Departments", "Austin Public Health", "20 applications and a sanctioned sandbox", "Austin Energy", "Years of AI work", "Practitioner group", "20 people in nine departments", "70 to 100 staff came to each Ask About AI", "Not yet at one table"] },
+    ],
+  },
+  {
+    id: "infrastructure",
+    number: "13",
+    part: 4,
+    world: "stands",
+    name: "Infrastructure ready for AI",
+    show: "The City already has infrastructure ready for AI, built with the security office and its partners over years.",
+    say: "The second correction is infrastructure. Austin Public Health built an Azure sandbox with the Information Security Office, Microsoft and Quisitive. It inherits the City's tenant controls, sign-in and central logging, and it cannot reach other City systems; data gets in only when someone places it. Inside it, models are already deployed through Azure OpenAI and Azure AI Foundry, so a team does not start by asking for a model. There is a CISO-approved pilot pathway, and the production route is prepared: landing zone designed, demand request filed, waiting on a decision. The partners have been in the room every week for over two years, and Amazon is now joining the conversation.",
+    see: ["A fenced yard draws across the left two thirds, labeled \"Azure sandbox\", with the caption \"Cannot reach other City systems\". Inside it three tiles land in a row: \"Deployed models\" with the caption \"Azure OpenAI and Azure AI Foundry\", \"Pilot pathway\" with \"CISO-approved\", and \"Production route\" with \"Landing zone designed, demand request filed\". Under the fence a calendar strip fills week by week, labeled \"Every week for over two years\", with two nameplates beside it, \"Microsoft\" and \"Quisitive\", and a third in a dashed outline a little apart, \"Amazon\", with the caption \"Joining the conversation\". The slide ends on the yard with its three tiles, the full calendar and the three nameplates."],
+    story: [
+      "An Azure sandbox with deployed models, a CISO-approved pilot pathway, and a production route.",
+      "Weekly sessions with Microsoft and Quisitive for over two years; Amazon is joining the conversation.",
+    ],
+    steps: [
+      { id: "play", show: ["Azure sandbox", "Cannot reach other City systems", "Deployed models", "Azure OpenAI and Azure AI Foundry", "Pilot pathway", "CISO-approved", "Production route", "Landing zone designed, demand request filed", "Every week for over two years", "Microsoft", "Quisitive", "Amazon", "Joining the conversation"] },
+    ],
+  },
+  {
+    id: "fits",
+    number: "14",
+    part: 4,
+    world: "stands",
+    name: "The four ideas already fit it",
+    show: "The course's controls map onto what the sandbox already does.",
+    say: "This is the slide I most wanted to show you. The course spends a full day on controls for agents, and when I came home and laid its list against the sandbox, the two matched. The course asks for identity for every actor; the sandbox has single sign-on and roles. It asks for rules the system enforces; the sandbox has allow lists and private networking, and nothing talks to anything it was not allowed to. It asks for approval before effect; a person approves each build. It asks for repeatable and logged; everything is infrastructure as code in Azure DevOps. The foundations are in place. What the City lacks is the organization around them, and that is cheaper to fix.",
+    see: ["Two columns draw. The left column is headed \"The course asks for\" and lists four lines: \"Identity for every actor\", \"Rules the system enforces\", \"Approval before effect\", \"Repeatable and logged\". The right column is headed \"The sandbox has\" and lists four lines that land in turn opposite their partners: \"Single sign-on and roles\", \"Allow lists and private networking\", \"A person approves each build\", \"Infrastructure as code\". A deep-green tick lands between each matched pair. A grey tag at the foot reads \"The organization around them\". The slide ends on the two columns, the four ticks and the tag."],
+    story: [
+      "Sign-on and roles, allow lists and private networking, a person approving each build, all as code.",
+      "The foundations the course asks for are in place. The City lacks the organization around them.",
+    ],
+    steps: [
+      { id: "play", show: ["The course asks for", "Identity for every actor", "Rules the system enforces", "Approval before effect", "Repeatable and logged", "The sandbox has", "Single sign-on and roles", "Allow lists and private networking", "A person approves each build", "Infrastructure as code", "The organization around them"] },
+    ],
+  },
+  {
+    id: "fleet",
+    number: "15",
+    part: 4,
+    world: "stands",
+    name: "Where the City stands",
+    show: "Counted properly, the City is a third of the way around, with a working fleet and a method it can teach.",
+    say: "Here is the track redrawn. Since late 2025 Austin Public Health has built its applications with a fleet of the kind we defined earlier: lead agents plan, builders work in parallel, two reviewers check every change, and a person approves. That fleet has produced 20 applications from 145 reusable modules, and the process is written down well enough to teach another team. On the course's gates the sandbox has passed explore, validate and deploy. Scale is the one gate it has not earned; it is not ready yet, and should not try until the organization exists. Counted properly, the City is a third of the way around, past three markers: people, infrastructure, a working fleet. The next part is how to close the rest.",
+    see: ["The track from slide 11 returns with the same pack. The green City runner now stands a third of the way around the first bend, and behind it along the lane sit three small green markers it has passed: \"People\", \"Infrastructure\", \"A working fleet\". In the infield a short stair of four gates lights three steps green, \"Explore\", \"Validate\", \"Deploy\", with the fourth grey, \"Scale\", and a grey tag above it, \"Not ready yet\". A tag under the track reads \"20 applications from 145 reusable modules\". The slide ends on the track with the runner moved, the three markers, the gate stair and the tag."],
+    story: [
+      "Austin Public Health builds with a fleet of agents today: 20 applications from 145 reusable modules.",
+      "Explore, validate and deploy are passed. Scale is the gate the City is not ready for yet.",
+    ],
+    steps: [
+      { id: "play", show: ["People", "Infrastructure", "A working fleet", "Explore", "Validate", "Deploy", "Scale", "Not ready yet", "20 applications from 145 reusable modules"] },
+    ],
+  },
+];

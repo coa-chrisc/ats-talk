@@ -62,16 +62,23 @@ const quotedIn = (see: readonly string[]) => [...new Set([...see.join(" ").match
  */
 const PLAN: [string, string[]][] = [
   ["title", ["play"]],
-  ["world-moved", ["play"]],
-  ["position", ["play"]],
-  ["exists", ["play"]],
-  ["fleet", ["play"]],
+  ["four-ideas", ["play"]],
+  ["spending", ["play"]],
+  ["agents", ["play"]],
+  ["fleet-defined", ["play"]],
+  ["stumbled", ["play"]],
   ["ladder", ["play"]],
-  ["talent", ["play"]],
   ["enforce", ["play"]],
-  ["incidents", ["play"]],
-  ["not-proposing", ["play"]],
   ["people", ["play"]],
+  ["earn", ["play"]],
+  ["track", ["play"]],
+  ["exists", ["play"]],
+  ["infrastructure", ["play"]],
+  ["fits", ["play"]],
+  ["fleet", ["play"]],
+  ["not-proposing", ["play"]],
+  ["consortium", ["play"]],
+  ["program-team", ["play"]],
   ["listen", ["play"]],
   ["sort", ["play"]],
   ["lanes", ["play"]],
@@ -80,18 +87,19 @@ const PLAN: [string, string[]][] = [
   ["levels", ["play"]],
   ["who-decides", ["play"]],
   ["residents", ["play"]],
-  ["decisions", ["play"]],
-  ["lets-talk", ["play"]]
-,
+  ["could-be", ["play"]],
+  ["applied", ["play"]],
+  ["lets-talk", ["play"]],
 ];
 
-/** Which world draws each slide: its part's own, but Part 3, which turns at slide 13 from the method to the plan. */
+/** Which world draws each slide: its part's own, but each part is one world. */
 const WORLD_OF_SLIDES: [WorldId, string[]][] = [
-["stand", ["1", "2", "3", "4", "4a"]],
-  ["taught", ["5", "6", "7", "8"]],
-  ["method", ["9", "10", "11", "12"]],
-  ["plan", ["13", "14", "15"]],
-  ["ready", ["16", "17", "18", "19", "20"]],
+  ["brought", ["1", "2"]],
+  ["enterprise", ["3", "4", "5", "6"]],
+  ["ideas", ["7", "8", "9", "10"]],
+  ["stands", ["11", "12", "13", "14", "15"]],
+  ["first", ["16", "17", "18", "19", "20", "21", "22", "23"]],
+  ["ready", ["24", "25", "26", "27", "28", "29"]],
 ];
 
 /** The slides given two clicks: none, as draft 2 of the ATS script writes the script. */
@@ -127,7 +135,7 @@ const LONE_DIGIT = /(?<![\d,.])[2-9](?![\d,.])/;
 
 describe("the talk's script", () => {
   it("is the script, word for word: every picture's heading, On screen, story lines, You say and They see", () => {
-    expect(SOURCE.pictures).toHaveLength(21);
+    expect(SOURCE.pictures).toHaveLength(29);
     expect(SCRIPT.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see }))).toEqual(
       SOURCE.pictures.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see })),
     );
@@ -171,10 +179,10 @@ describe("the talk's script", () => {
     for (const world of WORLDS) expect(new Set(SCRIPT.filter((picture) => picture.world === world).map((picture) => picture.part)).size, world).toBe(1);
   });
 
-  it("gives every picture one click, and two only where the script says so: 21 in all", () => {
+  it("gives every picture one click, and two only where the script says so: 29 in all", () => {
     expect(SOURCE.pictures.filter((picture) => picture.twoClicks).map((picture) => picture.number)).toEqual(TWO_CLICKS);
     for (const picture of SCRIPT) expect(picture.steps.length, picture.id).toBe(TWO_CLICKS.includes(picture.number) ? 2 : 1);
-    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(21);
+    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(29);
   });
 
   it("leaves no string empty", () => {
