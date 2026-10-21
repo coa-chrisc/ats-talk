@@ -1,11 +1,11 @@
-/** Slide 15's picture: the grid of departments, named, its lanterns lit and three staff standing in it, their name and caption beside it; the fenced yard, named, holding three agents, a member of staff and the orange mark, the fleet's name and caption inside it; the rule, headed, its three closed gates each named under it; the portfolio at the foot. */
+/** Slide 15's picture: the grid of departments, named, its windows lit and three staff standing in it, their name and caption beside it; the fenced yard, named, holding three agents, a member of staff and the orange mark, the fleet's name and caption inside it; the rule, headed, its three closed gates each named under it; the portfolio at the foot. */
 "use client";
 
 import { HumanMark, Part, Person } from "@/components/deck/kit";
 import { FLEET, PITCH } from "./layout-fleet";
 import { Layer, Rows, StoryOf, Stroke, Words } from "./parts";
-import { Fence, Lantern } from "./parts-figures";
-import { Agent, ClosedGate } from "./parts-map";
+import { Fence } from "./parts-figures";
+import { Agent, ClosedGate, LitWindow } from "./parts-map";
 
 const F = FLEET;
 
@@ -18,8 +18,8 @@ export function FleetMarks() {
         ))}
       </g>
       <Words id={F.name.key} at={F.name.at} text={F.name.text} anchor="start" strong />
-      {F.lanterns.map((lit) => (
-        <Lantern key={lit.key} id={lit.key} cell={lit.cell} at={lit.at} scale={lit.scale} />
+      {F.windows.map((lit) => (
+        <LitWindow key={lit.key} id={lit.key} cell={lit.cell} at={lit.at} rx={F.map.rx} />
       ))}
       <g className="sn-staff">
         {F.staff.map((person) => (

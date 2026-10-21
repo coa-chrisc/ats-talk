@@ -154,19 +154,19 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses the orange only through the kit's HumanMark, once, on slide 15's fleet, and no pass green", () => {
+  it("uses the orange only through the kit's HumanMark, once each on slide 11a's review and slide 15's fleet, and no pass green", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
-    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file)).toEqual(["scene-fleet.tsx"]);
+    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-control.tsx", "scene-fleet.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual([]);
-    expect(markup.match(/class="dk-human"/g) ?? []).toHaveLength(1);
+    expect(markup.match(/class="dk-human"/g) ?? []).toHaveLength(2);
     expect(markup.match(/class="dk-pass-tick"/g) ?? []).toHaveLength(0);
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, indigo and grey", () => {
     for (const [file, source] of sources) expect(strayTokens(source), file).toEqual([]);
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-(lead|review|fix|dept-|share-)|data-hue="(lead|review|fix|dept|share)/);
-    for (const [file, source] of sources.filter(([name]) => name !== "stands.css")) expect(source, file).not.toMatch(/--dk-|#[0-9a-f]{3,6}\b/i);
+    for (const [file, source] of sources.filter(([name]) => !name.endsWith(".css"))) expect(source, file).not.toMatch(/--dk-|#[0-9a-f]{3,6}\b/i);
   });
 
   it("gives slide 14 no colour but its ticks: its words, rules and tag are ink and grey", () => {
@@ -178,7 +178,7 @@ describe("the house rules", () => {
   });
 
   it("fills nothing that draws on but as it draws, so a figure not yet drawn hides nothing behind it", () => {
-    const css = sources.find(([file]) => file === "stands.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
+    const css = sources.filter(([file]) => file.endsWith(".css")).map(([, source]) => source).join("\n").replace(/\/\*[\s\S]*?\*\//g, "");
     const rules = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, selectors]) => /\.dk-(?:person|draw)\b/.test(selectors));
     expect(rules.length).toBeGreaterThan(0);
     for (const [, selectors, body] of rules) {

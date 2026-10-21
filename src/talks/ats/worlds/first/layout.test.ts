@@ -7,7 +7,7 @@ import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
 import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
 import { LABEL_LINE, TEXT_LINE, centreOf, contentTop, wordsWidth } from "./layout";
-import { AISLE, CONSORTIUM, LANTERN, SEAT_10, WALKER } from "./layout-consortium";
+import { AISLE, CONSORTIUM, SEAT_10, WALKER } from "./layout-consortium";
 import { LISTEN, SITTER } from "./layout-listen";
 import { CHAIR_9, NOT_PROPOSING } from "./layout-not-proposing";
 import { MEMBER, POSTS, PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
@@ -42,7 +42,7 @@ const DRAWN: Record<string, Box[]> = {
   ],
   consortium: [
     ...P.boxes.map((b) => b.at),
-    ...P.boxes.map((b) => box(b.lantern.at.x - LANTERN.w / 2, b.lantern.at.y - LANTERN.h / 2 - LANTERN.cap - 2 * LANTERN.ring, LANTERN.w, LANTERN.h + LANTERN.cap + 2 * LANTERN.ring)),
+    ...P.boxes.map((b) => b.window.at),
     ...P.table.seats.map((seat) => chairBox(seat.at, SEAT_10, seat.leading ? SEAT_10.grow : 1)),
     label(P.caption.at, P.caption.text),
     P.card.at,
@@ -159,13 +159,13 @@ describe("slide 17", () => {
     for (const b of P.boxes) expect(b.at.x + b.at.w <= AISLE.x0 || b.at.x >= AISLE.x1, b.key).toBe(true);
   });
 
-  it("hangs each lantern inside its box, a person beside it, apart", () => {
+  it("sets each window inside its box, a person beside it, apart", () => {
     for (const b of P.boxes) {
-      const lantern = box(b.lantern.at.x - LANTERN.w / 2, b.lantern.at.y - LANTERN.h / 2 - LANTERN.cap - 2 * LANTERN.ring, LANTERN.w, LANTERN.h + LANTERN.cap + 2 * LANTERN.ring);
-      expect(inside(lantern, b.at), b.key).toBe(true);
+      const window = b.window.at;
+      expect(inside(window, b.at), b.key).toBe(true);
       if (b.walker) {
         expect(inside(b.walker.home, b.at), b.key).toBe(true);
-        expect(overlaps(b.walker.home, lantern), b.key).toBe(false);
+        expect(overlaps(b.walker.home, window), b.key).toBe(false);
       }
     }
   });

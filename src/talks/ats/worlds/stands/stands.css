@@ -32,7 +32,7 @@
   fill: var(--dk-soft);
 }
 
-/* A tag: grey for a problem, white in a navy edge for a fact. */
+/* A tag: grey, for a problem. */
 .sn-tag {
   stroke-width: 2;
   stroke-linejoin: round;
@@ -41,11 +41,6 @@
 .sn-tag.sn-tag--grey {
   fill: var(--dk-raised);
   stroke: var(--dk-soft);
-}
-
-.sn-tag.sn-tag--plain {
-  fill: var(--dk-night);
-  stroke: var(--dk-paper);
 }
 
 .sn-tag__hole {
@@ -57,10 +52,6 @@
   stroke: var(--dk-soft);
 }
 
-.sn-tag__hole.sn-tag__hole--plain {
-  stroke: var(--dk-paper);
-}
-
 .sn-post {
   fill: var(--dk-paper);
   stroke: var(--dk-paper);
@@ -68,38 +59,49 @@
   stroke-linejoin: round;
 }
 
-/* Slides 11, 12 and 15: a department's box, and the lantern lit in it. */
+/* Slides 11, 12 and 15: a department's box, and the window lit in it: the
+   box washed green and the window's square filled green as it lights (--k).
+   A list's bullet on slide 12 is the window's square. */
 .sn-box {
   fill: var(--dk-night);
   stroke: var(--dk-rule);
   stroke-width: 2.5;
 }
 
-.sn-lantern__wash {
+.sn-window__wash {
   fill: var(--dk-process);
   fill-opacity: calc(var(--k, 0) * var(--dk-wash) * 2);
 }
 
-.sn-lantern__lamp {
-  transform: scale(var(--k, 0));
-}
-
-.sn-lantern__glass {
+.sn-window__light {
   fill: var(--dk-process);
-  fill-opacity: var(--dk-tint-active);
+  fill-opacity: var(--k, 0);
   stroke: var(--dk-process);
   stroke-width: 2.5;
+  stroke-opacity: var(--k, 0);
 }
 
-.sn-lantern__cap {
+.sn-bullet {
   fill: var(--dk-process);
 }
 
-.sn-lantern__line {
+/* Slide 12: the empty table, in the grey dashes of what is not yet in place. */
+.sn-table {
+  position: absolute;
+}
+
+.sn-table svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sn-table circle,
+.sn-table rect {
   fill: none;
-  stroke: var(--dk-process);
+  stroke: var(--dk-soft);
   stroke-width: 2.5;
-  stroke-linecap: round;
+  stroke-dasharray: 7 6;
 }
 
 .sn-leader {
@@ -107,19 +109,6 @@
   stroke: var(--dk-paper);
   stroke-width: 2;
   stroke-linecap: round;
-}
-
-.sn-ring {
-  fill: none;
-  stroke: var(--dk-process);
-  stroke-width: 2.5;
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--d, 0));
-  stroke-opacity: calc(min(1, var(--d, 0) * 100) * 0.5);
-}
-
-.sn-dot {
-  fill: var(--dk-process);
 }
 
 /* Slide 13: the yard inside its fence. */
@@ -443,7 +432,10 @@
   stroke-linecap: round;
 }
 
-/* Slide 15: the rule before expanding, and the closed gates on it: green posts, navy bars across. */
+/* Slides 11a and 15: the gate, green posts and navy bars across; slide 15's
+   rule before expanding, the closed gates on it. An opening gate is a
+   boom barrier: both bars swing up together about the left post until
+   they stand upright over it as one boom (--k). */
 .sn-gate-rule {
   fill: none;
   stroke: var(--dk-paper);
@@ -464,3 +456,10 @@
   stroke-width: 4;
   stroke-linecap: round;
 }
+
+.sn-closed-gate__arm {
+  transform: rotate(calc(var(--k, 0) * -90deg));
+  transform-origin: 0 50%;
+  transform-box: fill-box;
+}
+

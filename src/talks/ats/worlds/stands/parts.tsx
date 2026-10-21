@@ -79,10 +79,10 @@ const tagPath = ({ x, y, w, h }: Box) => {
 
 /**
  * A tag: a label with a pointed end and a hole, its words in navy. `grey`
- * is a problem or a blocker (raised grey, slate edge); `plain` is a fact
- * (white, navy edge). It drops in about its hole (`--s`, `--y`).
+ * is a problem or a blocker (raised grey, slate edge). It drops in about its
+ * hole (`--s`, `--y`).
  */
-export function Tagged({ id, at, text, tone }: { id: string; at: Box; text: string; tone: "grey" | "plain" }) {
+export function Tagged({ id, at, text, tone }: { id: string; at: Box; text: string; tone: "grey" }) {
   const hole = holeOf(at);
   return (
     <g data-build={id} className="dk-move" style={{ transformOrigin: `${hole.x}px ${hole.y}px` }}>

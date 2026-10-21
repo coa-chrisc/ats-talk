@@ -74,13 +74,13 @@ describe("slide 17", () => {
   const id = stepOf("consortium");
   const end = at(id);
   const walkers = P.boxes.flatMap((box) => (box.walker ? [box] : []));
-  const lanternLit = (key: string) => playOf(id, key).find((play) => play.on["--k"] === 1)!;
+  const windowLit = (key: string) => playOf(id, key).find((play) => play.on["--k"] === 1)!;
   const slide = playOf(id, P.card.key).find((play) => "x" in play.on)!;
 
-  it("opens on the grid with five lanterns lit, a person beside each, before the card comes", () => {
+  it("opens on the grid with five windows lit, a person beside each, before the card comes", () => {
     for (const n of P.early) {
       const box = P.boxes[n];
-      expect(lanternLit(box.lantern.key).at, box.key).toBeLessThan(slide.at);
+      expect(windowLit(box.window.key).at, box.key).toBeLessThan(slide.at);
       expect(startOf(id, box.walker!.key), box.key).toBeLessThan(slide.at);
     }
   });
@@ -91,18 +91,18 @@ describe("slide 17", () => {
     for (const n of P.called) {
       const box = P.boxes[n];
       const due = slide.at + P.passes[box.column] * slide.duration;
-      expect(lanternLit(box.lantern.key).at - due, box.key).toBeGreaterThanOrEqual(0);
-      expect(lanternLit(box.lantern.key).at - due, box.key).toBeLessThan(0.25);
-      expect(startOf(id, box.walker!.key), box.key).toBeCloseTo(lanternLit(box.lantern.key).at, 6);
+      expect(windowLit(box.window.key).at - due, box.key).toBeGreaterThanOrEqual(0);
+      expect(windowLit(box.window.key).at - due, box.key).toBeLessThan(0.25);
+      expect(startOf(id, box.walker!.key), box.key).toBeCloseTo(windowLit(box.window.key).at, 6);
     }
     expect(end[P.card.key].autoAlpha).toBe(0);
   });
 
   it("never lights the two dark boxes", () => {
-    for (const box of P.boxes.filter((b) => !b.lit)) expect(playOf(id, box.lantern.key).some((play) => play.on["--k"] === 1), box.key).toBe(false);
+    for (const box of P.boxes.filter((b) => !b.lit)) expect(playOf(id, box.window.key).some((play) => play.on["--k"] === 1), box.key).toBe(false);
   });
 
-  it("walks every person from its box to its seat, across and down on different curves, once the table is drawn, each lantern going dark", () => {
+  it("walks every person from its box to its seat, across and down on different curves, once the table is drawn, each window going dark", () => {
     const tableDrawn = startOf(id, P.table.key);
     for (const box of walkers) {
       const w = box.walker!;
@@ -114,7 +114,7 @@ describe("slide 17", () => {
       expect(across.ease).not.toBe(down.ease);
       expect([across.ease, down.ease]).toEqual([EASE.draw, EASE.out]);
       expect(end[w.key], box.key).toMatchObject({ autoAlpha: 1, x: 0, y: 0 });
-      expect(end[box.lantern.key]["--k"], box.key).toBe(0);
+      expect(end[box.window.key]["--k"], box.key).toBe(0);
     }
   });
 

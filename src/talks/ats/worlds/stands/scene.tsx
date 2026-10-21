@@ -19,6 +19,7 @@ import { InfrastructureHtml, InfrastructureMarks } from "./scene-infrastructure"
 import { NoticedHtml, NoticedMarks } from "./scene-noticed";
 import { TrackHtml, TrackMarks } from "./scene-track";
 import "./stands.css";
+import "./stands-control.css";
 
 export function Scene() {
   return (

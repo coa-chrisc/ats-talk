@@ -1,7 +1,7 @@
 /**
  * Slide 15's click: the title, then both story lines together, and after
  * the reading pause the picture. The grid of departments comes up with its
- * lanterns lighting, named; three staff draw on in it, their name and
+ * windows lighting, named; three staff draw on in it, their name and
  * caption with them; the yard's fence draws, named; inside it three agents
  * land, a member of staff draws on and the orange mark lands, the fleet's
  * name and caption with it. Then the rule draws rightward under its
@@ -29,7 +29,7 @@ export const fleet = (): StepDef[] =>
           // The map, lit, and its name.
           rise(F.grid.key, { at: 0, duration: 0.6 }),
           rise(F.name.key, { at: 0.2, duration: 0.6 }),
-          ...F.lanterns.flatMap((lit, i) => fill(lit.key, { at: 0.2 + i * 0.06, duration: 0.45, ease: EASE.out })),
+          ...F.windows.flatMap((lit, i) => fill(lit.key, { at: 0.2 + i * 0.06, duration: 0.45, ease: EASE.out, to: lit.lit })),
           // Three staff in it, named.
           ...F.staff.flatMap((person, i) => draw(person.key, { at: 1.1 + i * 0.1, duration: 0.6 })),
           rise(F.staffWords.name.key, { at: 1.2, duration: 0.6 }),

@@ -1,6 +1,6 @@
 /**
  * Slide 17's picture: twelve department boxes, two columns each side of an
- * aisle, a lantern in each; the green person in each lit box, drawn at the
+ * aisle, a window in each; the green person in each lit box, drawn at the
  * seat it walks to and moved back into its box until it walks; the round
  * table in the aisle with its ten chairs, the three that grow among them;
  * and the card that slides across the middle row.
@@ -8,8 +8,8 @@
 "use client";
 
 import { Part, Person } from "@/components/deck/kit";
-import { LANTERN, CONSORTIUM, SEAT_10 } from "./layout-consortium";
-import { Chair, Lantern, Table } from "./parts-room";
+import { BOX_RX, CONSORTIUM, SEAT_10 } from "./layout-consortium";
+import { Chair, Table, Window } from "./parts-room";
 import { Layer, StoryOf, Words } from "./parts";
 
 const P = CONSORTIUM;
@@ -22,8 +22,8 @@ export function ConsortiumMarks() {
     <Part id={P.marks}>
       {P.boxes.map((b) => (
         <g key={b.key}>
-          <rect className="fs-dept" data-build={b.key} x={b.at.x} y={b.at.y} width={b.at.w} height={b.at.h} rx={10} />
-          <Lantern id={b.lantern.key} at={b.lantern.at} size={LANTERN} />
+          <rect className="fs-dept" data-build={b.key} x={b.at.x} y={b.at.y} width={b.at.w} height={b.at.h} rx={BOX_RX} />
+          <Window id={b.window.key} cell={b.at} at={b.window.at} rx={BOX_RX} />
         </g>
       ))}
       {T.seats.map((seat) => (

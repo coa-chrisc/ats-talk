@@ -1,0 +1,65 @@
+/* Slide 11a's own marks, under stands.css: the routes, the card, slide
+   11's screen, the record and the magnifier in navy, the structure and the
+   words; the honesty caption is a caption, slate. The staff, the reviewer
+   and the gate's posts are green through stands.css; the orange only
+   through the kit's HumanMark. */
+
+.sn-route {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sn-card__page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.sn-card__line {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* The screen and the record are white inside as they draw, so a card
+   passing behind the screen is hidden once it stands. */
+.sn-screen__frame.dk-draw,
+.sn-ledger.dk-draw {
+  fill: var(--dk-night);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.sn-screen__stand.dk-draw,
+.sn-screen__line.dk-draw,
+.sn-ledger__line.dk-draw {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sn-screen__panel.dk-draw {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.sn-lens__glass {
+  fill: var(--dk-night);
+  fill-opacity: 0.4;
+  stroke: var(--dk-paper);
+  stroke-width: 3.5;
+}
+
+.sn-lens__handle {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 5;
+  stroke-linecap: round;
+}

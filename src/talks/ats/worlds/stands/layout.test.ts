@@ -7,7 +7,8 @@
 import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, tagWords, wordsWidth } from "./layout";
-import { DOT_R, EXISTS, namedRows } from "./layout-exists";
+import { controlGlyphs, controlRows } from "./layout-control";
+import { EXISTS, existsRows } from "./layout-exists";
 import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
 import { HOST, NOTICED } from "./layout-noticed";
 import { FLEET, PITCH } from "./layout-fleet";
@@ -53,15 +54,12 @@ const DRAWN: Record<string, Box[]> = {
     ...gateLabels,
     label(F.portfolio.at, F.portfolio.text, "start"),
   ],
+  control: [...controlRows().map((row) => row.box), ...controlGlyphs().map((glyph) => glyph.box)],
   exists: [
-    E.ring.at,
-    ...E.ring.dots.map((dot) => ringBox(dot.at, DOT_R)),
-    label(E.name.at, E.name.text, "start"),
-    ...E.named.flatMap((lit) => namedRows(lit).map((row) => box(lit.name.at.x, row.y - row.line / 2, row.width, row.line))),
-    text(E.ring.name.at, E.ring.name.text, "start"),
-    label(E.ring.caption.at, E.ring.caption.text, "start"),
-    E.staff.at,
-    E.apart.at,
+    E.map.outline,
+    ...existsRows().map((row) => row.box),
+    ...E.staff.map((person) => person.at),
+    ringBox(E.table.c, E.table.reach),
   ],
   noticed: [
     box(N.rail.x0, N.rail.y - 2, N.rail.x1 - N.rail.x0, 4),
@@ -103,7 +101,7 @@ describe("the stands world's layout", () => {
   });
 
   it("sizes every tag for its words, at the label size", () => {
-    for (const tag of [E.staff, E.apart, N.only]) {
+    for (const tag of [N.only]) {
       expect(tag.at.h, tag.text).toBe(TAG.h);
       expect(tag.at.w, tag.text).toBe(tagWidth(tag.text));
       // Measured in Geist at 26 px the longest letter runs average 0.48 of the size: the tag's 0.52 holds them with room.
@@ -214,12 +212,12 @@ describe("slide 13, the yard", () => {
 });
 
 describe("the department map on slides 11 and 15", () => {
-  it("draws the grid at the map's proportions on both, as slide 12 does", () => {
+  it("draws the grid at the map's proportions on both, slide 15 at the map's full size (slide 12 scales it to fit: layout-exists.test.ts)", () => {
     for (const map of [T.map, F.map]) {
       expect(map.outline.w / map.outline.h).toBeCloseTo(gridSize(1).w / gridSize(1).h, 2);
       expect(map.cells).toHaveLength(GRID.cols * GRID.rows);
     }
-    expect([F.map.outline.w, F.map.outline.h]).toEqual([EXISTS.grid.at.w, EXISTS.grid.at.h]);
+    expect([F.map.outline.w, F.map.outline.h]).toEqual([gridSize(1).w, gridSize(1).h]);
   });
 });
 
@@ -266,7 +264,7 @@ describe("slide 15, the map lit and occupied", () => {
   });
 
   it("stands each member of staff inside an unlit box of the grid", () => {
-    const lit = F.lanterns.map((lantern) => lantern.cell);
+    const lit = F.windows.map((window) => window.cell);
     for (const person of F.staff) {
       const cell = F.map.cells.find((c) => inside(person.at, c.at));
       expect(cell, person.key).toBeDefined();

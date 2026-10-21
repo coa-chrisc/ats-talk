@@ -1,7 +1,7 @@
 /**
  * Slide 15's places: the department map lit and occupied, and the checks
  * before expanding. Over the top, the grid of departments at the map's
- * proportions (department-map.ts), named over it, its nine lanterns lit as
+ * proportions (department-map.ts), named over it, its nine windows lit as
  * slide 12 lights them and three staff standing in the middle row's unlit
  * boxes; the staff's name and caption beside it; at the right, the
  * sandbox's small fenced yard, named over it, holding three agents, a
@@ -14,7 +14,7 @@
  */
 import { box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
-import { AGENT, LANTERN, LIT, STAFF, fencePosts, gatePaths, gridAt } from "../department-map";
+import { AGENT, LIT, STAFF, WINDOW, fencePosts, gatePaths, gridAt, windowAt } from "../department-map";
 import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, layerOf } from "./layout";
 
 const [CAPABILITIES, STAFF_NAME, STAFF_CAPTION, SANDBOX, SANDBOX_CAPTION, FLEET_NAME, FLEET_CAPTION, BEFORE, ...REST] = shown("fleet", "play");
@@ -34,12 +34,12 @@ const MAP = gridAt({ x: 96, y: TOP + 36 }, 1);
 const MAP_FOOT = MAP.outline.y + MAP.outline.h;
 const MAP_RIGHT = MAP.outline.x + MAP.outline.w;
 
-/** The nine lanterns slide 12 lights, the six named at the grid's scale and the three others smaller. */
-const lanterns = [...LIT.named.map((cell) => ({ cell, scale: MAP.scale })), ...LIT.unnamed.map((cell) => ({ cell, scale: MAP.scale * LANTERN.small }))].map(({ cell, scale }, i) => ({
-  key: `fleet.lantern.${i}`,
+/** The nine windows slide 12 lights, the six named full and the three others smaller and faint. */
+const windows = [...LIT.named.map((cell) => ({ cell, small: false })), ...LIT.unnamed.map((cell) => ({ cell, small: true }))].map(({ cell, small }, i) => ({
+  key: `fleet.window.${i}`,
   cell: MAP.cell(cell[0], cell[1]),
-  at: MAP.centre(cell[0], cell[1]),
-  scale,
+  at: windowAt(MAP.centre(cell[0], cell[1]), MAP.cell(0, 0).h, small ? WINDOW.small : 1),
+  lit: small ? WINDOW.faint : 1,
 }));
 
 /** A member of staff standing in a box: 3 px inside its top and foot, three quarters as wide as tall. */
@@ -93,7 +93,7 @@ export const FLEET = {
   map: MAP,
   grid: { key: "fleet.grid", at: MAP.outline },
   name: { key: "fleet.name", text: CAPABILITIES, at: { x: MAP.outline.x, y: HEAD_Y } as Point },
-  lanterns,
+  windows,
   staff,
   staffWords: {
     name: { key: "fleet.staff.name", text: STAFF_NAME, at: STAFF_WORDS },

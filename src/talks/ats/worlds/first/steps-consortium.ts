@@ -1,5 +1,5 @@
 /**
- * Slide 17's click: the department boxes come up, five lanterns already
+ * Slide 17's click: the department boxes come up, five windows already
  * lit, a person beside each; the card slides across the middle row, and
  * each box it passes lights, a person appearing in it, with the first line;
  * the table draws in the aisle with its chairs, and the people step out of
@@ -41,8 +41,8 @@ export const consortium = picture("consortium", {
       hold: UNDER_TITLE,
       moves: [
         show(keys(P.boxes), { at: 0, stagger: 0.03 }),
-        show(P.boxes.map((b) => b.lantern.key), { at: 0, stagger: 0.03 }),
-        ...early.flatMap((b, i) => [...fill(b.lantern.key, { at: 0.5 + i * 0.12 }), ...appear(b, 0.6 + i * 0.12)]),
+        show(P.boxes.map((b) => b.window.key), { at: 0, stagger: 0.03 }),
+        ...early.flatMap((b, i) => [...fill(b.window.key, { at: 0.5 + i * 0.12 }), ...appear(b, 0.6 + i * 0.12)]),
       ],
     },
     // The card slides across, and each box it passes lights, a person in it.
@@ -53,7 +53,7 @@ export const consortium = picture("consortium", {
         to(P.card.key, { x: P.card.travel }, { x: 0 }, { at: SLIDE.at, duration: SLIDE.duration, ease: "none" }),
         ...called.flatMap((b) => {
           const at = SLIDE.at + P.passes[b.column] * SLIDE.duration + rowOf(b) * ROW_LAG;
-          return [...fill(b.lantern.key, { at, duration: 0.5 }), ...appear(b, at)];
+          return [...fill(b.window.key, { at, duration: 0.5 }), ...appear(b, at)];
         }),
         hide(P.card.key, { at: SLIDE.at + SLIDE.duration }),
       ],
@@ -71,11 +71,11 @@ export const consortium = picture("consortium", {
           return [
             ...to(b.walker!.key, { x: 0 }, undefined, { at, duration: WALK.duration, ease: EASE.draw }),
             ...to(b.walker!.key, { y: 0 }, undefined, { at, duration: WALK.duration, ease: EASE.out }),
-            ...to(b.lantern.key, { "--k": 0 }, undefined, { at: at + 0.2, duration: 0.5, ease: EASE.soft }),
+            ...to(b.window.key, { "--k": 0 }, undefined, { at: at + 0.2, duration: 0.5, ease: EASE.soft }),
           ];
         }),
         dim(keys(P.boxes), { at: WALK.at + 0.6, stagger: 0 }),
-        dim(P.boxes.map((b) => b.lantern.key), { at: WALK.at + 0.6, stagger: 0 }),
+        dim(P.boxes.map((b) => b.window.key), { at: WALK.at + 0.6, stagger: 0 }),
       ],
     },
     // The three chairs of the departments that led grow, their caption under them.

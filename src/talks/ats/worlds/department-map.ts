@@ -1,8 +1,10 @@
 /**
  * The department map: the drawings the talk returns to across worlds, as
- * numbers only. The grid of departments (slides 11, 12 and 15), the policy
- * line round it (11), the three dashed plates of what is still to establish
- * (11 and 27), the sandbox's fence (13, 15 and 27) and the closed gate (15).
+ * numbers only. The grid of departments (slides 11, 12 and 15), the lit
+ * window in a box (12, 15 and 17), the policy line round it (11), the three
+ * dashed plates of what is still to establish (11 and 27), the sandbox's
+ * fence (13, 15 and 27), the gate, closed (11a and 15) or open (11a), and
+ * the round table (12, empty, and 17).
  * A world carries nothing to the next, so each draws these in its own
  * classes from the same proportions here, and an audience that has learned
  * a shape meets it again unchanged. Script-free: no word is set here.
@@ -40,8 +42,19 @@ export const STAFF = [
   [5, 1],
 ] as const;
 
-/** A lantern at scale 1 (a named box's); an unnamed box's is drawn at 0.72 of it. */
-export const LANTERN = { w: 30, h: 44, small: 0.72 } as const;
+/**
+ * A lit window (slides 12, 15 and 17): a square 0.42 of its box's height,
+ * its corners rounded at 0.15 of its side, that fills green as it lights
+ * while the whole box takes a soft green wash. An unnamed box's window is
+ * 0.72 of a named one's and lights half as strongly.
+ */
+export const WINDOW = { size: 0.42, rx: 0.15, small: 0.72, faint: 0.5 } as const;
+
+/** A window's square about `centre`, in a box `h` tall, times `scale`. */
+export const windowAt = (centre: Point, h: number, scale = 1): Box => {
+  const side = round(h * WINDOW.size * scale);
+  return box(round(centre.x - side / 2), round(centre.y - side / 2), side, side);
+};
 
 /** The line round the grid (slide 11's policy, slide 12's ring): this far out at the sides and foot, and at the top room for the grid's name. */
 export const RING_PAD = { side: 36, top: 64, foot: 36 } as const;
@@ -91,10 +104,10 @@ export const FENCE = { postPitch: 72, overhang: 10, rx: 6 } as const;
 /** Where a fence's posts stand along a rail from `x` over `w`, one at each end. */
 export const fencePosts = (x: number, w: number, pitch: number = FENCE.postPitch) => Array.from({ length: Math.floor(w / pitch) + 1 }, (_, i) => Math.min(round(x + i * pitch), round(x + w)));
 
-/** The closed gate (slide 10's hurdle): two posts 72 apart, 40 tall, and two bars across them 12 and 28 px under the posts' tops. */
+/** The gate (slide 10's hurdle): two posts 72 apart, 40 tall, and two bars across them 12 and 28 px under the posts' tops. Opened, it works as a boom barrier: both bars swing up together about the left post until they stand upright over it, one boom, and the right post stands alone. */
 export const GATE = { h: 40, span: 72, bars: [12, 28] } as const;
 
-/** A closed gate standing on a line at `foot` (its middle), every measure times `scale`: its posts' and bars' path. */
+/** A gate standing on a line at `foot` (its middle), every measure times `scale`: its posts' and bars' path, each bar on its own path (to swing up about the left post), and its box closed. */
 export const gatePaths = (foot: Point, scale = 1) => {
   const half = round((GATE.span * scale) / 2);
   const top = round(foot.y - GATE.h * scale);
@@ -102,6 +115,28 @@ export const gatePaths = (foot: Point, scale = 1) => {
   return {
     posts: `M${x0} ${foot.y}V${top}M${x1} ${foot.y}V${top}`,
     bars: GATE.bars.map((bar) => `M${x0} ${round(top + bar * scale)}H${x1}`).join(""),
+    arms: GATE.bars.map((bar) => `M${x0} ${round(top + bar * scale)}H${x1}`),
     at: box(x0, top, round(x1 - x0), round(foot.y - top)),
   };
 };
+
+/* The table */
+
+/**
+ * The consortium's round table seen from above (slide 17): its top 124
+ * across the radius, ten chairs 56 square, rounded 12, on a ring of 164 round
+ * it, the first 18 degrees above the right and the rest going round
+ * clockwise (the stage's y grows downward).
+ */
+export const TABLE = { r: 124, ring: 164, seats: 10, phase: -18, seat: { w: 56, h: 56, rx: 12 } } as const;
+
+/** How far the table reaches from its middle, times `scale`: to a chair's outer corners, as each chair faces the table. */
+export const tableReach = (scale = 1) => round(Math.hypot(TABLE.ring + TABLE.seat.h / 2, TABLE.seat.w / 2) * scale);
+
+/** The chairs round a table at `c`, times `scale`: each one's middle and the angle it stands at. */
+export const tableSeats = (c: Point, scale = 1) =>
+  Array.from({ length: TABLE.seats }, (_, i) => {
+    const deg = (360 / TABLE.seats) * i + TABLE.phase;
+    const a = (deg * Math.PI) / 180;
+    return { at: { x: round(c.x + TABLE.ring * scale * Math.cos(a)), y: round(c.y + TABLE.ring * scale * Math.sin(a)) } as Point, deg };
+  });

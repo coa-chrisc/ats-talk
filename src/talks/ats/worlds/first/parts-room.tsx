@@ -1,7 +1,7 @@
 /**
  * The first world's drawn pieces: a dashed outline with its name and the
  * cross over it; a round table seen from above and a chair at it; a
- * calendar page; a tag with a pointed end; a lantern; a seated person's
+ * calendar page; a tag with a pointed end; a lit window; a seated person's
  * head seen from above; a speech bubble; and the notebook page. SVG for the plane's
  * marks (the outline is HTML, as a dashed edge cannot stroke-draw), moved
  * with the house moves only (first.css paints them). Every word is passed
@@ -11,6 +11,7 @@
 
 import type { ReactNode } from "react";
 import type { Box, Point } from "@/components/deck/kit";
+import { WINDOW } from "../department-map";
 
 /** The dashed edge reaches this far outside its box, so the stroke is never clipped. */
 const PAD = 4;
@@ -101,19 +102,16 @@ export function IndigoTag({ id, at, point, hole, text, words }: { id: string; at
 }
 
 /**
- * A lantern hanging in a department's box: a ring, a cap and a rounded
- * body. Unlit it is a navy outline; it lights by filling green from the
- * bottom (`--k`), the light held inside its outline.
+ * A window in a department's box, the department map's (department-map.ts),
+ * as on slides 12 and 15: unlit, a square ruled in grey; as it lights
+ * (`--k`) the square fills green and the whole box takes a soft green wash.
  */
-export function Lantern({ id, at, size }: { id: string; at: Point; size: { w: number; h: number; rx: number; cap: number; ring: number } }) {
-  const { w, h, rx, cap, ring } = size;
-  const top = at.y - h / 2;
+export function Window({ id, cell, at, rx }: { id: string; cell: Box; at: Box; rx: number }) {
   return (
-    <g data-build={id} className="fs-lantern">
-      <circle className="fs-lantern__ring" cx={at.x} cy={top - cap - ring + 2} r={ring} />
-      <rect className="fs-lantern__cap" x={at.x - w / 2 + 5} y={top - cap} width={w - 10} height={cap} rx={2} />
-      <rect className="fs-lantern__light" x={at.x - w / 2} y={top} width={w} height={h} rx={rx} />
-      <rect className="fs-lantern__body" x={at.x - w / 2} y={top} width={w} height={h} rx={rx} />
+    <g data-build={id} className="fs-window">
+      <rect className="fs-window__wash" x={cell.x} y={cell.y} width={cell.w} height={cell.h} rx={rx} />
+      <rect className="fs-window__frame" x={at.x} y={at.y} width={at.w} height={at.h} rx={at.w * WINDOW.rx} />
+      <rect className="fs-window__light" x={at.x} y={at.y} width={at.w} height={at.h} rx={at.w * WINDOW.rx} />
     </g>
   );
 }

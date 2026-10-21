@@ -157,23 +157,26 @@
   stroke-width: 2.5;
 }
 
-/* A lantern: a navy outline that lights green from the bottom (--k). */
-.fs-lantern__ring,
-.fs-lantern__body {
-  fill: none;
-  stroke: var(--dk-paper);
+/* A window (department-map.ts, as on slides 12 and 15): a square ruled in
+   grey until it lights (--k); then it fills green and its box takes a soft
+   green wash. */
+.fs-window__wash {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--k, 0) * var(--dk-wash) * 2);
+}
+
+.fs-window__frame {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
   stroke-width: 2.5;
 }
 
-.fs-lantern__cap {
-  fill: var(--dk-paper);
-}
-
-.fs-lantern__light {
+.fs-window__light {
   fill: var(--dk-process);
-  transform: scaleY(var(--k, 0));
-  transform-origin: 50% 100%;
-  transform-box: fill-box;
+  fill-opacity: var(--k, 0);
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
+  stroke-opacity: var(--k, 0);
 }
 
 /* A person walking to the table: the kit's Person, in green. */

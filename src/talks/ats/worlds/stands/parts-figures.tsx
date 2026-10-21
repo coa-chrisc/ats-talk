@@ -1,11 +1,10 @@
 /**
  * The stands world's drawings for what the kit has no part for: slide 11's
  * fence post; slide 11a's gauge, a step of its stair and its climber;
- * slide 12's lantern; slide 12a's plaque and the cord it hangs
- * by; slide 13's fence, a tile inside it and a nameplate; slide 15's step of
- * the stair with its gate. Script-free: every word is passed in. SVG for
- * the plane's marks, moved with the house moves only (stands.css paints
- * them).
+ * slide 12a's plaque and the cord it hangs by; slide 13's fence, a tile
+ * inside it and a nameplate; slide 15's step of the stair with its gate.
+ * Script-free: every word is passed in. SVG for the plane's marks, moved
+ * with the house moves only (stands.css paints them).
  */
 "use client";
 
@@ -97,32 +96,6 @@ export function Climber({ id, at, w, h }: { id: string; at: Point; w: number; h:
     <g className="sn-climber dk-move" data-build={id}>
       <circle cx={at.x} cy={at.y - h + r} r={r} />
       <path d={`M${at.x - w / 2} ${at.y}V${top + w / 2}A${w / 2} ${w / 2} 0 0 1 ${at.x + w / 2} ${top + w / 2}V${at.y}Z`} />
-    </g>
-  );
-}
-
-/* Slide 12 */
-
-/**
- * A lantern lit inside a department's box: the box washes with the
- * process's green and a lantern stands in it, its handle, cap and glass in
- * green, its glass filled. All of it arrives with `--k` (0 dark, 1 lit),
- * so a lit box is one move.
- */
-export function Lantern({ id, cell, at, scale }: { id: string; cell: Box; at: Point; scale: number }) {
-  const w = 30 * scale;
-  const h = 44 * scale;
-  const x = at.x - w / 2;
-  const y = at.y - h / 2;
-  return (
-    <g className="sn-lantern" data-build={id}>
-      <rect className="sn-lantern__wash" x={cell.x} y={cell.y} width={cell.w} height={cell.h} rx={8} />
-      <g className="sn-lantern__lamp" style={{ transformOrigin: `${at.x}px ${at.y}px` }}>
-        <path className="sn-lantern__line" d={`M${x + w * 0.3} ${y + h * 0.14}A${w * 0.2} ${w * 0.2} 0 0 1 ${x + w * 0.7} ${y + h * 0.14}`} />
-        <rect className="sn-lantern__cap" x={x + w * 0.12} y={y + h * 0.14} width={w * 0.76} height={h * 0.1} rx={2} />
-        <rect className="sn-lantern__glass" x={x + w * 0.18} y={y + h * 0.26} width={w * 0.64} height={h * 0.56} rx={w * 0.14} />
-        <rect className="sn-lantern__cap" x={x + w * 0.12} y={y + h * 0.84} width={w * 0.76} height={h * 0.1} rx={2} />
-      </g>
     </g>
   );
 }

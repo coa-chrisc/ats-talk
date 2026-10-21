@@ -44,32 +44,39 @@ describe("every click", () => {
 describe("slide 12, what exists", () => {
   const id = stepOf("exists");
   const E = EXISTS;
+  const G = E.group;
 
-  it("brings the grid up and names it once, before any lantern lights", () => {
+  it("brings the grid up and names it once, before any window lights", () => {
     expect(startOf(id, E.name.key)).toBeGreaterThan(startOf(id, E.grid.key));
     expect(Math.min(...[...E.named, ...E.unnamed].map((lit) => startOf(id, lit.key)))).toBeGreaterThan(startOf(id, E.name.key));
   });
 
-  it("lights the six named boxes in turn, each leader drawing as its lantern lights, then its name and caption, story line A with the first", () => {
+  it("lights the six named windows in turn, each one's entry in the list coming up with it, and leaves each lit full", () => {
     const lit = E.named.map((entry) => startOf(id, entry.key));
-    for (let i = 1; i < lit.length; i++) expect(lit[i] - lit[i - 1], E.named[i].name.text).toBeGreaterThanOrEqual(0.5);
+    for (let i = 1; i < lit.length; i++) expect(lit[i] - lit[i - 1], E.named[i].entry.key).toBeGreaterThanOrEqual(0.5);
     for (const [i, entry] of E.named.entries()) {
-      expect(startOf(id, entry.leader.key)).toBeGreaterThan(lit[i]);
-      expect(startOf(id, entry.leader.key)).toBeLessThan(endOf(id, entry.key));
-      expect(startOf(id, entry.name.key)).toBeGreaterThan(startOf(id, entry.leader.key));
-      expect(startOf(id, entry.caption.key)).toBeGreaterThan(startOf(id, entry.name.key));
+      expect(startOf(id, entry.entry.key) - lit[i], entry.entry.key).toBeGreaterThanOrEqual(0);
+      expect(startOf(id, entry.entry.key) - lit[i], entry.entry.key).toBeLessThan(0.2);
+      expect(at(id)[entry.key]["--k"], entry.key).toBe(1);
+      expect(at(id)[entry.entry.key].autoAlpha, entry.entry.key).toBe(1);
     }
   });
 
-  it("then the smaller lanterns, then the ring of nine dots as it draws, with story line B, then the tag and the grey tag apart", () => {
+  it("then lights the three unnamed windows in turn, fainter; then draws the cluster with its words; then wipes the empty table on, its caption with it", () => {
     const small = E.unnamed.map((lit) => startOf(id, lit.key));
-    expect(small[0]).toBeGreaterThan(startOf(id, E.named[5].caption.key));
+    expect(small[0]).toBeGreaterThan(startOf(id, E.named[5].entry.key));
     for (let i = 1; i < small.length; i++) expect(small[i]).toBeGreaterThan(small[i - 1]);
-    const ring = playOf(id, E.ring.key)[0];
-    expect(ring.at).toBeGreaterThan(Math.max(...small));
-    for (const dot of E.ring.dots) expect(startOf(id, dot.key)).toBeLessThan(ring.at + ring.duration);
-    expect(startOf(id, E.staff.key)).toBeGreaterThan(startOf(id, E.ring.name.key));
-    expect(startOf(id, E.apart.key) - endOf(id, E.staff.key)).toBeGreaterThanOrEqual(1);
+    for (const lit of E.unnamed) expect(at(id)[lit.key]["--k"], lit.key).toBe(lit.lit);
+    const cluster = Math.min(...E.staff.map((person) => startOf(id, person.key)));
+    expect(cluster).toBeGreaterThan(Math.max(...small));
+    for (const key of [G.name.key, G.caption.key, G.training.key]) {
+      expect(startOf(id, key), key).toBeGreaterThanOrEqual(cluster);
+      expect(startOf(id, key) - cluster, key).toBeLessThan(0.6);
+    }
+    const table = startOf(id, E.table.key);
+    expect(table).toBeGreaterThan(Math.max(...E.staff.map((person) => endOf(id, person.key))) - 0.2);
+    expect(startOf(id, E.tableCaption.key) - table).toBeLessThan(0.3);
+    expect(at(id)[E.table.key]).toMatchObject({ "--wt": 0, "--wr": 0, "--wb": 0, "--wl": 0 });
   });
 });
 
