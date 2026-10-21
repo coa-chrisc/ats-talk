@@ -35,7 +35,7 @@ const TILE_H = FENCE.h - 2 * TILE.top;
 export const TILE_WORDS = { inset: 12, name: 34, caption: 70, pitch: 30 } as const;
 
 /** A caption broken on two rows where it would run past its tile at the label size, after the word the layout names. */
-const CAPTION_BREAKS: Record<string, string[]> = { [RUNNING_CAPTION]: ["and"], [PERMISSION_CAPTION]: ["with the"], [ROUTE_CAPTION]: ["CISO and"] };
+const CAPTION_BREAKS: Record<string, string[]> = { [RUNNING_CAPTION]: ["and"], [PERMISSION_CAPTION]: ["with the"], [ROUTE_CAPTION]: ["CISO,"] };
 const rowsOf = (text: string) => breakAfter(text, ...(CAPTION_BREAKS[text] ?? []));
 
 const tiles = [

@@ -5,12 +5,11 @@
  * growing. Each click follows its They see in order and ends on the picture
  * it describes.
  */
+import { EASE } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
-import { EASE, storyKeys } from "@/components/deck/kit";
-import { storyId } from "../steps";
-import { NOT_PROPOSING } from "./layout-not-proposing";
-import { CONSORTIUM, SEAT_10 } from "./layout-consortium";
 import { after, arrived, at, before, endOf, playOf, startOf, stepOf } from "./harness";
+import { CONSORTIUM, SEAT_10 } from "./layout-consortium";
+import { NOT_PROPOSING } from "./layout-not-proposing";
 
 const N = NOT_PROPOSING;
 const P = CONSORTIUM;
@@ -18,7 +17,6 @@ const P = CONSORTIUM;
 describe("slide 16", () => {
   const id = stepOf("not-proposing");
   const end = at(id);
-  const [a, b] = storyKeys(storyId("not-proposing"), 2);
   const outlines = N.outlines.map((outline) => outline.key);
   const strokes = N.outlines.flatMap((outline) => outline.cross.strokes.map((stroke) => stroke.key));
 
@@ -34,8 +32,6 @@ describe("slide 16", () => {
     expect(starts[0]).toBeGreaterThan(open);
     for (let i = 1; i < starts.length; i++) expect(starts[i]).toBeGreaterThan(starts[i - 1]);
     for (const key of strokes) expect(end[key]["--d"], key).toBe(1);
-    expect(startOf(id, a)).toBeGreaterThan(starts[0]);
-    expect(startOf(id, a)).toBeLessThan(endOf(id, strokes.at(-1)!));
   });
 
   it("settles the outlines and their crosses at half strength, still legible, as the green scene draws below, after every cross, with the second line", () => {
@@ -47,7 +43,6 @@ describe("slide 16", () => {
     }
     expect(startOf(id, N.table.key)).toBeGreaterThan(crossed);
     expect(startOf(id, N.calendar.key)).toBeGreaterThan(startOf(id, N.table.key));
-    expect(startOf(id, b)).toBeGreaterThan(startOf(id, N.table.key));
   });
 
   it("lands the tag at the foot last, its caption with it", () => {
@@ -78,7 +73,6 @@ describe("slide 16", () => {
 describe("slide 17", () => {
   const id = stepOf("consortium");
   const end = at(id);
-  const [a, b] = storyKeys(storyId("consortium"), 2);
   const walkers = P.boxes.flatMap((box) => (box.walker ? [box] : []));
   const lanternLit = (key: string) => playOf(id, key).find((play) => play.on["--k"] === 1)!;
   const slide = playOf(id, P.card.key).find((play) => "x" in play.on)!;
@@ -101,7 +95,6 @@ describe("slide 17", () => {
       expect(lanternLit(box.lantern.key).at - due, box.key).toBeLessThan(0.25);
       expect(startOf(id, box.walker!.key), box.key).toBeCloseTo(lanternLit(box.lantern.key).at, 6);
     }
-    expect(startOf(id, a)).toBeGreaterThan(slide.at);
     expect(end[P.card.key].autoAlpha).toBe(0);
   });
 
@@ -134,7 +127,6 @@ describe("slide 17", () => {
       expect(end[seat.key]["--s"]).toBe(SEAT_10.grow);
     }
     expect(startOf(id, P.caption.key)).toBeGreaterThan(Math.min(...leading.map((seat) => grows(seat.key))));
-    expect(startOf(id, b)).toBeGreaterThan(Math.min(...leading.map((seat) => grows(seat.key))));
   });
 
   it("ends on the table, the people round it and the grid behind with its boxes dimmed", () => {

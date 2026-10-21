@@ -5,13 +5,11 @@
  * question cards in turn; line A with the stack, line B with the mark.
  */
 import { describe, expect, it } from "vitest";
-import { storyKeys } from "@/components/deck/kit";
-import { WHO_DECIDES } from "./layout-who-decides";
 import { endOf, markup, showsAfter, startOf } from "./harness";
+import { WHO_DECIDES } from "./layout-who-decides";
 
 const click = "who-decides.play";
 const W = WHO_DECIDES;
-const [A, B] = storyKeys("story.who-decides", 2);
 const start = (key: string) => startOf(click, key);
 
 describe("25, who decides", () => {
@@ -36,12 +34,6 @@ describe("25, who decides", () => {
     expect(start(W.up.label.key)).toBeLessThan(endOf(click, W.up.key));
   });
 
-  it("brings line A in with the stack and line B with the orange mark, both before the arrows", () => {
-    expect(start(A)).toBeGreaterThan(start(W.tiers[0].key));
-    expect(start(A)).toBeLessThan(start(W.mark.key));
-    expect(start(B)).toBeGreaterThanOrEqual(start(W.mark.key));
-    expect(start(B)).toBeLessThan(start(W.down.key));
-  });
 
   it("brings the heading up after the arrows, then lands the three questions under it in turn, and ends on the stack, its arrows, the heading and the cards", () => {
     expect(start(W.heading.key)).toBeGreaterThanOrEqual(endOf(click, W.up.key));

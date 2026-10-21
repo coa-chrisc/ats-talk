@@ -64,7 +64,7 @@ export const BELT = { places: 8, pitch: 200, first: LOWER.x + 28, box: { w: 64, 
 /** How far left of the first place a box starts, faded, before it steps in. */
 export const ENTER = 40;
 /** How many boxes the belt carries in all: it steps once for each. Set by the click's timing (steps-lanes.ts) and checked there. */
-export const PARCELS = 15;
+export const PARCELS = 8;
 
 const parcelAt = box(BELT.first, LOWER.y + (LOWER.h - BELT.box.h) / 2, BELT.box.w, BELT.box.h);
 

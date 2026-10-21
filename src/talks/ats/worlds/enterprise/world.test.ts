@@ -1,19 +1,20 @@
+import { MAX_BUILD_SECONDS } from "../sequence";
 /**
  * The enterprise world as a whole: its four slides in order, one at a time,
  * every word from the script, the house rules, and the story lines. Each
  * slide's own picture is tested in beats.test.ts; what they share is in
  * harness.ts, where things go in layout.test.ts.
  */
+import { HOME } from "@/components/deck/engine/camera";
+import { storyKeys, storyRows } from "@/components/deck/kit";
+import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOME } from "@/components/deck/engine/camera";
-import { CHAIN, storyKeys, storyRows } from "@/components/deck/kit";
-import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
+import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { COUNTS, PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
 import { SPENDING } from "./layout-spending";
 import { ARRIVE, partsOf } from "./moves";
-import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { enterprise } from "./world";
 
 const dir = import.meta.dirname;
@@ -51,7 +52,7 @@ describe("the enterprise world", () => {
   });
 
   it.each(ids)("finishes %s inside 12 s, the first counting the world's arrival fade", (id) => {
-    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(CHAIN.longest);
+    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(MAX_BUILD_SECONDS);
   });
 
   it("brings the first title up once the world's arrival fade is under way", () => {
@@ -153,7 +154,7 @@ describe("the house rules", () => {
     expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file)).toEqual(["scene-fleet.tsx", "scene-review.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file)).toEqual([]);
     expect(markup.match(/class="dk-human"/g)).toHaveLength(2);
-    for (const [file, source] of sources.filter(([name]) => name.startsWith("steps-"))) expect(/\bpass\(/.test(source), file).toBe(file === "steps-fleet.ts");
+    for (const [file, source] of sources.filter(([name]) => name.startsWith("steps-"))) expect(/\bpass\(/.test(source), file).toBe(false);
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, indigo and grey", () => {
@@ -198,7 +199,7 @@ describe("the story lines", () => {
       const id = stepOf(picture.id);
       expect(playOf(id, a), a).toHaveLength(1);
       expect(playOf(id, b), b).toHaveLength(1);
-      expect(startOf(id, b), picture.id).toBeGreaterThan(startOf(id, a));
+      expect(startOf(id, b), picture.id).toBe(startOf(id, a));
       expect(at(id)[a].yPercent, a).toBe(0);
       expect(at(id)[b].yPercent, b).toBe(0);
     }

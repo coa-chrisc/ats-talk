@@ -27,18 +27,20 @@ export const SAFE = { left: 96, right: 1824, bottom: FRAME_FOOT - ROOM } as cons
 export const TITLE = { x: 96, y: 152 } as const;
 export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
-/**
- * Where each title breaks, on two lines each. At 72 px bold a line holds
- * 1728 px, the band's width (measured in Geist bold with the title's
- * tracking): slides 7, 8 and 9 break after the lesson's number, their first
- * sentence (402 and 1585 px, 408 and 1553 px, 460 and 1694 px); slide 10
- * after its second sentence (1501 and 1488 px).
- */
+/** Phrase boundaries for the revised titles, checked in the rendered deck at 1920 x 1080. */
 const BREAKS: Record<string, string[]> = {
-  ladder: ["one."],
-  enforce: ["two."],
-  people: ["three."],
-  earn: ["cheap."],
+  "ladder": [
+    "one."
+  ],
+  "enforce": [
+    "two."
+  ],
+  "people": [
+    "three."
+  ],
+  "earn": [
+    "four."
+  ]
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

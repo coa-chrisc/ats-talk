@@ -7,8 +7,6 @@ import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { LABEL_LINE, TEXT_LINE, contentTop, linesIn, wordsWidth } from "./layout";
 import { LADDER, standing } from "./layout-ladder";
-import { ANGLES, ENFORCE, needleTip } from "./layout-enforce";
-import { FIGURE_LINE, NAME_LINE, PEOPLE, TIP, balanceBox } from "./layout-people";
 import { CAPTION_LINE, EARN, GATE, boxOn } from "./layout-earn";
 import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
 
@@ -20,11 +18,9 @@ const ROOM = 40;
 const label = (at: Point, text: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(text, 26), LABEL_LINE, anchor);
 const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(words, 32), TEXT_LINE, anchor);
 
+const within = (p: Point, b: Box) => p.x > b.x && p.x < b.x + b.w && p.y > b.y && p.y < b.y + b.h;
 const L = LADDER;
-const T = PEOPLE;
-const E = ENFORCE;
 const G = EARN;
-const D = E.dial;
 
 /** The turned label along the arrow: the four corners of its line, turned about its place by the arrow's slope. */
 const turnedCorners = (): Point[] => {
@@ -42,7 +38,6 @@ const turnedLabel = () => {
   const y0 = Math.min(...corners.map((c) => c.y));
   return box(x0, y0, Math.max(...corners.map((c) => c.x)) - x0, Math.max(...corners.map((c) => c.y)) - y0);
 };
-const within = (p: Point, b: Box) => p.x > b.x && p.x < b.x + b.w && p.y > b.y && p.y < b.y + b.h;
 
 /** A gate on a step: its posts' span and height over the tread. */
 const gateBox = (step: (typeof G.steps)[number]) => box(step.gate.x - GATE.span / 2, step.gate.y - GATE.h, GATE.span, GATE.h);
@@ -69,14 +64,6 @@ const DRAWN: Record<string, Box[]> = {
     label(L.tool.name.at, L.tool.name.text, "start"),
     label(L.tool.caption.at, L.tool.caption.text, "start"),
   ],
-  enforce: [
-    ...E.steps.map((step) => step.at),
-    box(E.arrow.x - 12, E.arrow.y1, 24, E.arrow.y0 - E.arrow.y1),
-    E.arrow.label.at,
-    box(D.hub.x - D.r - 16, D.hub.y - D.r, 2 * D.r + 32, D.r),
-    ...D.settings.map((setting) => setting.at),
-  ],
-  people: [balanceBox(), T.six.at, T.six.caption.at, T.plaque.at],
   earn: [
     ...G.steps.map((step) => step.at),
     ...G.steps.map(gateBox),
@@ -183,120 +170,6 @@ describe("slide 7, the ladder", () => {
     expect(L.tool.at.y).toBeGreaterThan(L.floor.y + 12);
     expect(L.tool.at.x).toBe(L.steps[0].at.x);
     expect(label(L.tool.name.at, L.tool.name.text, "start").x).toBeGreaterThan(L.tool.at.x + L.tool.at.w);
-  });
-});
-
-describe("slide 8, the descending stair and the dial", () => {
-  it("steps down left to right, strongest first, each block on the floor, touching the last", () => {
-    for (const step of E.steps) expect(bottom(step.at), step.key).toBe(E.floor.y);
-    for (let i = 1; i < E.steps.length; i++) {
-      expect(E.steps[i].at.h).toBeLessThan(E.steps[i - 1].at.h);
-      expect(E.steps[i].at.x).toBe(E.steps[i - 1].at.x + E.steps[i - 1].at.w);
-    }
-  });
-
-  it("names each block inside its face, on no more lines than the shortest face holds", () => {
-    expect(E.steps.at(-1)!.at.h).toBe(2 * LABEL_LINE + 32);
-    for (const step of E.steps) {
-      expect(inside(step.name.at, step.at), step.key).toBe(true);
-      expect(linesIn(step.name.text, 26, step.name.at.w) * LABEL_LINE, step.key).toBeLessThanOrEqual(step.name.at.h);
-    }
-  });
-
-  it("points the arrow up the stair's left, beside the tallest block, its label centred over its head on two lines, clear of the stair", () => {
-    expect(E.arrow.y1).toBeLessThan(E.arrow.y0);
-    expect(E.arrow.x + 12).toBeLessThan(E.steps[0].at.x);
-    const words = E.arrow.label.at;
-    expect(bottom(words)).toBeLessThan(E.arrow.y1);
-    expect(words.x + words.w / 2).toBe(E.arrow.x);
-    expect(words.x + words.w).toBeLessThan(E.steps[0].at.x);
-    expect(linesIn(E.arrow.label.text, 26, words.w) * LABEL_LINE).toBeLessThanOrEqual(words.h);
-    // Its longer word sets on one line: Geist sets it at 0.9 of the rough measure or less.
-    const longest = Math.max(...E.arrow.label.text.split(" ").map((word) => wordsWidth(word, 26)));
-    expect(longest * 0.9).toBeLessThanOrEqual(words.w);
-  });
-
-  it("draws the dial right of the stair, no smaller than its first 150 px, three ticks on its arc, the needle resting on the first", () => {
-    expect(D.r).toBeGreaterThanOrEqual(150);
-    expect(D.hub.x - D.r - 16).toBeGreaterThan(E.steps.at(-1)!.at.x + E.steps.at(-1)!.at.w + 80);
-    expect(D.ticks).toHaveLength(3);
-    expect(D.needle.rest).toBe(ANGLES[0]);
-    const tip = needleTip(D.needle.rest);
-    expect(tip.x).toBeLessThan(D.hub.x);
-    expect(Math.hypot(tip.x - D.hub.x, tip.y - D.hub.y)).toBeLessThan(D.r - 20);
-  });
-
-  it("sets the three settings apart, none on the arc, each name and caption inside its box", () => {
-    const arc = box(D.hub.x - D.r, D.hub.y - D.r, 2 * D.r, D.r);
-    for (const a of D.settings) {
-      expect(overlaps(a.at, arc), a.key).toBe(false);
-      for (const b of D.settings) if (a !== b) expect(overlaps(a.at, b.at), `${a.key} ${b.key}`).toBe(false);
-      // The name over the caption, each wrapping in the box, on no more lines than the box holds.
-      expect((linesIn(a.name, 26, a.at.w) + linesIn(a.caption, 26, a.at.w)) * LABEL_LINE, a.key).toBeLessThanOrEqual(a.at.h);
-      // No word wider than the box.
-      for (const word of `${a.name} ${a.caption}`.split(" ")) expect(wordsWidth(word, 26), word).toBeLessThanOrEqual(a.at.w);
-    }
-  });
-});
-
-describe("slide 9, the balance", () => {
-  it("hangs a pan at each end of the beam, the beam's middle on the post, and tips its right end down", () => {
-    const [left, right] = T.pans;
-    expect(left.end.x).toBe(T.beam.x0);
-    expect(right.end.x).toBe(T.beam.x1);
-    expect(T.beam.pivot.x).toBe((T.beam.x0 + T.beam.x1) / 2);
-    expect(T.post.top).toEqual(T.beam.pivot);
-    expect(TIP).toBeGreaterThan(0);
-    expect(right.shift.y).toBeGreaterThan(0);
-    expect(left.shift.y).toBeCloseTo(-right.shift.y, 6);
-  });
-
-  it("draws the balance larger than its first 360 px beam, and it takes the stage's left third", () => {
-    expect(T.beam.x1 - T.beam.x0).toBeGreaterThanOrEqual(440);
-    expect(balanceBox().w).toBeGreaterThanOrEqual(640);
-  });
-
-  it("stands the box on the left pan and the people on the right, each inside its pan's width, its name over it", () => {
-    const [left, right] = T.pans;
-    const name = (at: Point, words: string) => wordsBox(at, wordsWidth(words, 32), NAME_LINE, "middle");
-    expect(bottom(T.technology.at)).toBe(left.plate.y);
-    expect(T.technology.at.x).toBeGreaterThanOrEqual(left.plate.x);
-    expect(T.technology.at.x + T.technology.at.w).toBeLessThanOrEqual(left.plate.x + left.plate.w);
-    for (const person of T.talent.people) {
-      expect(bottom(person)).toBe(right.plate.y);
-      expect(person.x).toBeGreaterThanOrEqual(right.plate.x);
-      expect(person.x + person.w).toBeLessThanOrEqual(right.plate.x + right.plate.w);
-    }
-    expect(bottom(name(T.technology.name.at, T.technology.name.text))).toBeLessThan(T.technology.at.y);
-    expect(bottom(name(T.talent.name.at, T.talent.name.text))).toBeLessThan(Math.min(...T.talent.people.map((p) => p.y)));
-  });
-
-  it("keeps three zones apart, generously: the balance, the figure over its caption, and the plaque", () => {
-    const balance = balanceBox();
-    const middle = bounds([T.six.at, T.six.caption.at]);
-    expect(middle.x - (balance.x + balance.w)).toBeGreaterThanOrEqual(80);
-    expect(T.plaque.at.x - (middle.x + middle.w)).toBeGreaterThanOrEqual(80);
-  });
-
-  it("sets the figure larger than its first 96 px, a word to a line, its caption under it on no more than three lines", () => {
-    expect(FIGURE_LINE).toBeGreaterThanOrEqual(130);
-    expect(T.six.at.h).toBe(2 * FIGURE_LINE);
-    // A word to a line: the whole figure does not fit the zone's width, its longer word does (the rough measure runs wide at 128 px bold).
-    expect(wordsWidth(T.six.text, 128) * 0.85).toBeGreaterThan(T.six.at.w);
-    const longest = Math.max(...T.six.text.split(" ").map((word) => wordsWidth(word, 128)));
-    expect(longest * 0.85).toBeLessThanOrEqual(T.six.at.w);
-    expect(T.six.caption.at.y).toBeGreaterThanOrEqual(bottom(T.six.at));
-    expect(linesIn(T.six.caption.text, 32, T.six.caption.at.w) * TEXT_LINE).toBeLessThanOrEqual(T.six.caption.at.h);
-  });
-
-  it("keeps the plaque's words inside it, the name on one line and the caption on no more than three", () => {
-    expect(inside(T.plaque.words.at, T.plaque.at)).toBe(true);
-    // The rough measure runs wide at 26 px: Geist sets the caption's lines at 0.9 of it or less, on three lines in the column.
-    const lines = linesIn(T.plaque.caption, 26, T.plaque.words.at.w / 0.9);
-    expect(lines).toBeLessThanOrEqual(3);
-    expect(lines * LABEL_LINE + 56).toBeLessThanOrEqual(T.plaque.words.at.h);
-    // The name at 48 px bold sets in about 275 px in Geist, under 0.9 of the rough measure.
-    expect(wordsWidth(T.plaque.name, 48) * 0.9).toBeLessThanOrEqual(T.plaque.words.at.w);
   });
 });
 

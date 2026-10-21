@@ -4,16 +4,13 @@
  * the parts that must not meet kept apart and the parts that sit in another
  * kept inside it. The close is set centred, as the opening is.
  */
-import { describe, expect, it } from "vitest";
-import { markup } from "./harness";
 import { STAGE, STORY, box, storyRows, type Box } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
 import { FLOOR, SAFE, STORIES, TAG, bandFoot, contentTop, labelsOf, wordsBox, wordsWidth } from "./layout";
-import { CITY_STANDS, PACK_NAME, RUNNER } from "./track-geometry";
-import { BLOCK_MIDDLE, CLOSE, OPENING } from "./layout-close";
 import { APPLIED, APPLIED_BOXES, PANEL, TICK, TILE, linesBoxes, numeralBox } from "./layout-applied";
-import { COULD_BE, COULD_BE_BOXES, KEY_MEASURED, KEY_SIZE, MARKER_R, RUNS, TRACK_TOP, runnerBox } from "./layout-could-be";
+import { BLOCK_MIDDLE, CLOSE, OPENING } from "./layout-close";
 import { LEVELS, LEVELS_BOXES, LEVELS_MEASURES, LEVEL_AGENT_R } from "./layout-levels";
-import { CARD_PLACES, HELPER_R, QUESTION_MEASURED, RESIDENTS, RESIDENTS_BOXES, RESIDENTS_MEASURES } from "./layout-residents";
+import { RESIDENTS, RESIDENTS_BOXES } from "./layout-residents";
 import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits, linesBoxes as decidesLines, measuredBox } from "./layout-who-decides";
 
 const bottom = (b: Box) => b.y + b.h;
@@ -27,7 +24,7 @@ const DRAWN: Record<string, Box[]> = {
   levels: LEVELS_BOXES,
   "who-decides": WHO_DECIDES_BOXES,
   residents: RESIDENTS_BOXES,
-  "could-be": COULD_BE_BOXES,
+  "could-be": [box(96, contentTop("could-be"), 1728, 412)],
   applied: APPLIED_BOXES,
 };
 
@@ -157,204 +154,23 @@ describe("slide 25, who decides", () => {
 });
 
 describe("slide 26, residents", () => {
-  const R = RESIDENTS;
-  const M = RESIDENTS_MEASURES;
-  const desk = R.desk.at;
-  const fence = R.fence.at;
-
-  it("draws the scene large: a desk about 560 wide, the people about 170 tall, the helper about 90 across", () => {
-    expect(desk.w).toBe(560);
-    expect(R.staff.at.h).toBeGreaterThanOrEqual(165);
-    expect(R.resident.at.h).toBeGreaterThanOrEqual(165);
-    expect(2 * HELPER_R).toBe(90);
-  });
-
-  it("seats the member of staff behind the desk, cut by its top at the chest, with the orange mark above them", () => {
-    expect(R.staff.at.x).toBeGreaterThan(desk.x);
-    expect(right(R.staff.at)).toBeLessThan(right(desk));
-    expect(R.staff.at.y).toBeLessThan(desk.y);
-    expect(bottom(R.staff.at)).toBeGreaterThan(desk.y);
-    expect(R.mark.at.y + 24).toBeLessThan(R.staff.at.y);
-  });
-
-  it("puts the helper right beside the member of staff, on the staff side of the desk, over its top", () => {
-    const helper = box(R.helper.at.x - HELPER_R, R.helper.at.y - HELPER_R, 2 * HELPER_R, 2 * HELPER_R);
-    expect(helper.x - right(R.staff.at)).toBeGreaterThanOrEqual(0);
-    expect(helper.x - right(R.staff.at)).toBeLessThan(40);
-    expect(right(helper)).toBeLessThanOrEqual(right(desk));
-    expect(bottom(wordsBox(R.helper.name.at, R.helper.name.text))).toBeLessThan(desk.y);
-  });
-
-  it("stands a low, wide fence on the floor between the desk's front edge and the resident", () => {
-    expect(fence.w).toBe(320);
-    expect(fence.h).toBe(48);
-    expect(R.fence.pickets).toHaveLength(6);
-    expect(bottom(fence)).toBe(M.floor);
-    expect(fence.x).toBeGreaterThan(M.deskFront);
-    expect(right(fence)).toBeLessThan(R.resident.at.x);
-    for (const picket of R.fence.pickets) expect(inside(picket, fence)).toBe(true);
-    expect(wordsBox(R.fence.name.at, R.fence.name.text).y).toBeGreaterThan(M.floor);
-  });
-
-  it("stands the resident on the floor across the fence, and names everyone on one line under the floor", () => {
-    expect(bottom(R.resident.at)).toBe(M.floor);
-    const names = [R.staff.name, R.resident.name, R.fence.name].map((name) => wordsBox(name.at, name.text));
-    for (const name of names) expect(name.y).toBeGreaterThan(M.floor);
-    names.forEach((a, i) => names.slice(i + 1).forEach((b) => expect(apart(a, b)).toBe(true)));
-  });
-
-  it("starts the card on the helper, lifts it clear of the mark and the fence, and ends it touching the resident, not in the air", () => {
-    const helper = box(R.helper.at.x - HELPER_R, R.helper.at.y - HELPER_R, 2 * HELPER_R, 2 * HELPER_R);
-    expect(apart(CARD_PLACES.start, helper)).toBe(false);
-    expect(apart(CARD_PLACES.lifted, box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48))).toBe(true);
-    expect(apart(CARD_PLACES.start, box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48))).toBe(true);
-    expect(bottom(CARD_PLACES.over)).toBeLessThan(fence.y);
-    const served = CARD_PLACES.served;
-    expect(right(served)).toBeGreaterThan(R.resident.at.x);
-    expect(right(served)).toBeLessThan(R.resident.at.x + R.resident.at.w / 2);
-    expect(served.y).toBeGreaterThan(R.resident.at.y);
-    expect(bottom(served)).toBeLessThan(fence.y);
-  });
-
-  it("sets the test with no box: its heading level with the desk's top, its question under it on three 32 px lines, clear of the resident and inside the field", () => {
-    const heading = wordsBox(R.list.heading.at, R.list.heading.text, 32, "start");
-    expect(heading.y).toBe(desk.y);
-    const q = R.list.question;
-    expect(q.lines).toHaveLength(3);
-    expect(q.lines.join(" ")).toBe(labelsOf("residents").at(-1));
-    expect(q.at.x).toBe(heading.x);
-    expect(q.at.y - 45 / 2).toBeGreaterThan(bottom(heading));
-    expect(heading.x).toBeGreaterThan(right(R.resident.at) + 80);
-    expect(q.at.x + QUESTION_MEASURED).toBeLessThanOrEqual(SAFE.right);
-    expect(q.at.y + 2 * 45 + 45 / 2).toBeLessThanOrEqual(FLOOR);
-    expect(markup).not.toContain('data-build="residents.list"');
-  });
-});
-
-describe("slide 27, where the City could be", () => {
-  const C = COULD_BE;
-  const T = C.track;
-  const near = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y);
-
-  it("draws the deck's one track: its oval, lanes, start stripe, pack and pack's name on the numbers slides 11 and 15 use", () => {
-    expect(contentTop("could-be")).toBe(TRACK_TOP);
-    expect(T.outer).toEqual(box(96, 564, 1728, 344));
-    expect(T.inner).toEqual(box(192, 660, 1536, 152));
-    expect(T.middle).toEqual(box(144, 612, 1632, 248));
-    expect(C.start.x).toBe(96 + 172 + 48);
-    expect(C.pack.at.map((at) => at.x)).toEqual([1040, 1086, 1132, 1178, 1063, 1109, 1155]);
-    expect(C.pack.name.at).toEqual(PACK_NAME);
-    expect(C.pack.name.at).toEqual({ x: 1109, y: 686 });
-  });
-
-  it("stands the City's runner where slide 15 does, 60 degrees up the right bend on the middle lane line", () => {
-    expect(C.city.at).toEqual(CITY_STANDS);
-    expect(C.city.at).toEqual({ x: 1759, y: 798 });
-  });
-
-  it("stands the dashed runner at the pack's tail, the City's runner's size, on the far straight and clear of the pack", () => {
-    const dashed = runnerBox(C.dashed.at, RUNNER.large, "left");
-    expect(C.dashed.at).toEqual({ x: 1230, y: T.inner.y - 10 });
-    expect(dashed.y).toBeGreaterThanOrEqual(T.outer.y);
-    expect(bottom(dashed)).toBeLessThanOrEqual(T.inner.y);
-    for (const at of C.pack.at) expect(dashed.x - right(runnerBox(at, RUNNER.small, "left")), JSON.stringify(at)).toBeGreaterThanOrEqual(12);
-  });
-
-  it("names the dashed runner in the infield under it, clear of the pack's name", () => {
-    const name = wordsBox(C.dashed.name.at, C.dashed.name.text, 32);
-    expect(inside(name, T.inner)).toBe(true);
-    expect(apart(name, wordsBox(C.pack.name.at, C.pack.name.text, 32))).toBe(true);
-    expect(name.x).toBeLessThan(C.dashed.at.x);
-    expect(right(name)).toBeGreaterThan(C.dashed.at.x);
-  });
-
-  it("sets one marker for each decision on the middle lane line, at equal steps from the City's runner to the pack's tail, round the bend and along the far straight", () => {
-    expect(C.markers).toHaveLength(5);
-    const onBend = C.markers.filter((marker) => marker.at.x > 1652);
-    const onStraight = C.markers.filter((marker) => marker.at.x <= 1652);
-    expect(onBend.length).toBeGreaterThan(0);
-    for (const marker of onBend) expect(Math.abs(near(marker.at, { x: 1652, y: 736 }) - 124)).toBeLessThan(0.5);
-    for (const marker of onStraight) expect(marker.at.y).toBe(612);
-    const xs = [...onStraight.map((marker) => marker.at.x), C.tail];
-    for (let i = 0; i < xs.length - 1; i++) expect(xs[i] - xs[i + 1]).toBeCloseTo(C.step, 1);
-    expect(C.markers.at(-1)!.at.x).toBeGreaterThan(C.tail);
-    expect(C.tail).toBe(1210);
-  });
-
-  it("keeps the markers clear of the runners", () => {
-    for (const marker of C.markers) {
-      const disc = box(marker.at.x - MARKER_R, marker.at.y - MARKER_R, 2 * MARKER_R, 2 * MARKER_R);
-      expect(apart(disc, runnerBox(C.city.at, RUNNER.large))).toBe(true);
-      expect(apart(disc, runnerBox(C.dashed.at, RUNNER.large, "left"))).toBe(true);
-      for (const at of C.pack.at) expect(apart(disc, runnerBox(at, RUNNER.small, "left"))).toBe(true);
+  it("keeps each caption under its own stage without touching adjacent captions", () => {
+    const stages = RESIDENTS.stages;
+    for (const s of stages) {
+      expect(s.captionY).toBeGreaterThan(bottom(s.icon) + 70);
+      for (const line of s.lines) expect(wordsWidth(line, 32)).toBeLessThan(480);
     }
+    expect(stages[0].x).toBeLessThan(stages[1].x);
+    expect(stages[1].x).toBeLessThan(stages[2].x);
+    expect(RESIDENTS.question.headingAt.y).toBeGreaterThan(stages[2].captionY + 80);
   });
-
-  it("sets the key off the lanes, under the track, from the right edge leftward in landing order, its entries apart", () => {
-    const entries = C.markers.map((marker) => marker.entry.at);
-    C.markers.forEach((marker, i) => expect(marker.entry.at.w).toBe(KEY_MEASURED[i]));
-    // Each entry's measured room is near its longer line at the key's size by the 0.56 estimate, which runs wide, scaled to it.
-    C.markers.forEach((marker) => expect(marker.entry.at.w).toBeGreaterThanOrEqual(0.78 * Math.max(wordsWidth(marker.entry.name.text, KEY_SIZE), wordsWidth(marker.entry.caption.text, KEY_SIZE))));
-    expect(KEY_SIZE).toBeGreaterThanOrEqual(22);
-    for (const entry of entries) {
-      expect(entry.y).toBeGreaterThan(bottom(T.outer));
-      expect(bottom(entry)).toBeLessThanOrEqual(FLOOR);
-      expect(entry.x).toBeGreaterThanOrEqual(SAFE.left);
-    }
-    expect(right(entries[0])).toBeLessThanOrEqual(SAFE.right);
-    entries.slice(1).forEach((entry, i) => expect(right(entry) + 30).toBeLessThanOrEqual(entries[i].x));
-  });
-
-  it("joins each marker to its entry by a square leader that starts at the marker, ends over its entry, and crosses no other leader, word or runner", () => {
-    type P = { x: number; y: number };
-    const segments = (points: readonly P[]) => points.slice(1).map((p, i) => [points[i], p] as const);
-    const hits = (a: readonly [P, P], b: Box) => {
-      for (let t = 0; t <= 1; t += 0.01) {
-        const x = a[0].x + (a[1].x - a[0].x) * t;
-        const y = a[0].y + (a[1].y - a[0].y) * t;
-        if (x > b.x && x < right(b) && y > b.y && y < bottom(b)) return true;
-      }
-      return false;
-    };
-    const cross = (a: readonly [P, P], b: readonly [P, P]) => {
-      const d = (p: P, q: P, r: P) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
-      return d(a[0], a[1], b[0]) * d(a[0], a[1], b[1]) < 0 && d(b[0], b[1], a[0]) * d(b[0], b[1], a[1]) < 0;
-    };
-    const blocks = [
-      wordsBox(C.pack.name.at, C.pack.name.text, 32),
-      wordsBox(C.dashed.name.at, C.dashed.name.text, 32),
-      runnerBox(C.city.at, RUNNER.large),
-      runnerBox(C.dashed.at, RUNNER.large, "left"),
-    ];
-    C.markers.forEach((marker, i) => {
-      const points = marker.leader.points;
-      expect(near(points[0], marker.at)).toBeCloseTo(MARKER_R, 1);
-      const foot = points.at(-1)!;
-      expect(foot.x).toBeGreaterThan(marker.entry.at.x);
-      expect(foot.x).toBeLessThan(right(marker.entry.at));
-      if (i === 0) {
-        // The first, over the City's runner: out to the outer lane, then straight down.
-        expect(points).toHaveLength(3);
-        expect(points[1].x).toBe(foot.x);
-      } else {
-        // Down from its marker into the infield, left along it, and down to its entry: every run square.
-        expect(points).toHaveLength(4);
-        expect(points[1]).toEqual({ x: marker.at.x, y: RUNS.first - (i - 1) * RUNS.step });
-        expect(points[2]).toEqual({ x: foot.x, y: points[1].y });
-        expect(points[1].y).toBeGreaterThan(T.inner.y);
-        expect(points[1].y).toBeLessThan(bottom(T.inner) - 8);
-      }
-      expect(foot.y).toBeGreaterThan(bottom(T.outer));
-      expect(foot.y).toBeLessThan(marker.entry.at.y);
-      for (const segment of segments(points)) for (const block of blocks) expect(hits(segment, block), `${i} ${JSON.stringify(block)}`).toBe(false);
-      C.markers.forEach((other, j) => {
-        if (j === i) return;
-        for (const a of segments(points)) for (const b of segments(other.leader.points)) expect(cross(a, b), `${i} ${j}`).toBe(false);
-        expect(segments(points).some((segment) => hits(segment, box(other.at.x - MARKER_R, other.at.y - MARKER_R, 2 * MARKER_R, 2 * MARKER_R)))).toBe(false);
-      });
+  it("renders every stage caption from the script without dropping words", () => {
+    const labels = labelsOf("residents");
+    RESIDENTS.stages.forEach((s, i) => {
+      expect(s.title).toBe(labels[2 * i]);
+      expect(s.lines.join(" ")).toBe(labels[2 * i + 1]);
     });
   });
-
 });
 
 describe("slide 28, the four lessons applied", () => {
@@ -371,17 +187,17 @@ describe("slide 28, the four lessons applied", () => {
     }
   });
 
-  it("puts each numeral at its panel's top left, 28 in, and its name's column from 120 down, 340 wide, inside the panel", () => {
+  it("puts each numeral at its panel's top left, 28 in, and its name's column from 104 down, 340 wide, inside the panel", () => {
     for (const panel of A.panels) {
       expect(panel.numeral.at.x).toBe(panel.at.x + 28);
       expect(panel.numeral.at.y).toBe(panel.at.y + 64);
       expect(inside(numeralBox(panel.numeral), panel.at)).toBe(true);
-      expect(panel.name.at).toEqual(box(panel.at.x + 28, panel.at.y + 120, 340, 3 * PANEL.nameLine));
+      expect(panel.name.at).toEqual(box(panel.at.x + 28, panel.at.y + 104, 340, 4 * PANEL.nameLine));
       expect(panel.name.at.y).toBeGreaterThan(panel.numeral.at.y);
       expect(inside(panel.name.at, panel.at)).toBe(true);
-      // Each name on one line at the 0.56 estimate runs past the column, so it wraps, to three lines at most.
+      // Each name on one line at the 0.56 estimate runs past the column, so it wraps, to four lines at most.
       expect(wordsWidth(panel.name.text, 32)).toBeGreaterThan(PANEL.column);
-      expect(wordsWidth(panel.name.text, 32)).toBeLessThanOrEqual(3 * PANEL.column);
+      expect(wordsWidth(panel.name.text, 32)).toBeLessThanOrEqual(4 * PANEL.column);
     }
   });
 

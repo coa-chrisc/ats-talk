@@ -1,54 +1,9 @@
-/**
- * Slide 9's click: the indigo box with its tag and the three green people
- * come up side by side, each named; the balance draws under them, its post,
- * its beam and the pans they stand on; the beam tips toward the people, the
- * pans riding its ends; the large indigo figure lands with its caption,
- * with the first line; the plaque settles at the right with its words,
- * with the second line.
- */
-import { DUR, EASE, draw, rise, show } from "@/components/deck/kit";
+/** Staff practice produces requirements before the product comparison begins. */
+import { draw, show } from "@/components/deck/kit";
 import { picture, story } from "../steps";
-import { PEOPLE, TIP } from "./layout-people";
-import { into, play, travel, turn } from "./moves";
-
-const T = PEOPLE;
-const [left, right] = T.pans;
-
-/** The tip: slow enough to read as weight settling. */
-const TIPS = { duration: 1.3, ease: EASE.page } as const;
-
-export const people = picture("people", {
-  play: play(
-    into("people"),
-    // The box and the people come up side by side, each named.
-    {
-      hold: 0.05,
-      moves: [
-        show(T.technology.key, { at: 0 }),
-        rise(T.technology.name.key, { at: 0.1 }),
-        show(T.talent.key, { at: 0.35 }),
-        rise(T.talent.name.key, { at: 0.45 }),
-      ],
-    },
-    // The balance draws under them: the post, the beam, then the pans.
-    {
-      hold: 0.3,
-      moves: [draw(T.post.key, { at: 0, duration: 0.7 }), draw(T.beam.key, { at: 0.4, duration: 0.7 }), draw([left.plateKey, right.plateKey], { at: 0.8, duration: 0.5, stagger: 0.1 })],
-    },
-    // The beam tips toward the people, the pans riding its ends.
-    {
-      hold: 0.3,
-      moves: [
-        turn(T.beam.key, TIP, 0, { at: 0, ...TIPS }),
-        travel(left.key, left.shift, { x: 0, y: 0 }, { at: 0, ...TIPS }),
-        travel(right.key, right.shift, { x: 0, y: 0 }, { at: 0, ...TIPS }),
-      ],
-    },
-    // The large figure lands with its caption.
-    { hold: 0.2, moves: [rise(T.six.key, { at: 0, duration: DUR.slow }), rise(T.six.caption.key, { at: 0.2 })] },
-    { with: true, hold: 0.3, moves: [story("people", 0)] },
-    // The plaque settles at the right.
-    { hold: 0.9, moves: [rise(T.plaque.key, { at: 0 }), rise(T.plaque.words.key, { at: 0.15 })] },
-    { with: true, hold: 0.3, moves: [story("people", 1)] },
-  ),
-});
+import { into, play } from "./moves";
+export const people=picture("people",{play:play(
+ into("people"),
+ {moves:[story("people",0),story("people",1)]},
+ {moves:[show("people.stage.0",{at:0,duration:0.4}),draw("people.link.0",{at:0.45,duration:0.45}),show("people.stage.1",{at:0.9,duration:0.4}),draw("people.link.1",{at:1.4,duration:0.45}),show("people.stage.2",{at:1.85,duration:0.4}),draw(["people.requirement.0","people.requirement.1","people.requirement.2"],{at:2.25,duration:0.25,stagger:0.15}),draw("people.link.2",{at:2.9,duration:0.45}),show("people.stage.3",{at:3.35,duration:0.4}),draw("people.selection",{at:3.8,duration:0.65}),show("people.foundation",{at:4.6,duration:0.4}),show("people.example",{at:5.1,duration:0.4})]},
+)});

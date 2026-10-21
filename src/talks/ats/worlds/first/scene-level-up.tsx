@@ -1,53 +1,15 @@
-/** Slide 22's picture: the pyramid's three tiers, each with its lit fill, name and caption; the row of developers at their desks, named once; the tag over the row in its two states; the slab under the desks; and the figure under the slab with its caption under it on two lines. */
 "use client";
-
-import { Part, Person } from "@/components/deck/kit";
-import { LEVEL_UP } from "./layout-level-up";
+import { Part } from "@/components/deck/kit";
+import { shown } from "../../script/find";
+import { DrawingLabel as L, Ink, Sketch, drawingProcess, drawingPaper } from "../story-drawing";
+import { contentTop } from "./layout";
 import { Layer, StoryOf } from "./parts";
-import { Desk, Edged, Shape, TagShape, Label } from "./parts-plan";
-
-const L = LEVEL_UP;
-
-export function LevelUpMarks() {
-  return (
-    <Part id={L.marks}>
-      {L.tiers.map((tier) => (
-        <g key={tier.key}>
-          <Edged id={tier.key} points={tier.points} className="fs-tier" />
-          <Shape id={tier.lit} points={tier.points} className="fs-tier__lit" />
-          <Label id={tier.name.key} at={tier.name.at} text={tier.name.text} strong />
-          <Label id={tier.caption.key} at={tier.caption.at} text={tier.caption.text} anchor="start" />
-        </g>
-      ))}
-      <Label id={L.label.key} at={L.label.at} text={L.label.text} anchor="start" strong />
-      <TagShape id={L.tag.grey.key} at={L.tag.at} text={L.tag.grey.text} kind="grey" />
-      <TagShape id={L.tag.green.key} at={L.tag.at} text={L.tag.green.text} kind="green" />
-      <g data-build={L.slab.key}>
-        <rect className="fs-slab" x={L.slab.at.x} y={L.slab.at.y} width={L.slab.at.w} height={L.slab.at.h} rx={8} />
-        <Label at={L.slab.label.at} text={L.slab.label.text} tone="white" strong />
-      </g>
-      <g data-build={L.row.key}>
-        {L.row.desks.map((desk) => (
-          <g key={desk.key} data-build={desk.key}>
-            <Person id={`${desk.key}.person`} at={desk.person} />
-            <Desk top={desk.top} foot={desk.foot} laptop={desk.laptop} />
-          </g>
-        ))}
-      </g>
-      <Label id={L.figure.key} at={L.figure.at} text={L.figure.text} anchor="start" tone="indigo" strong size="figure" />
-      <g data-build={L.caption.key}>
-        {L.caption.lines.map((line) => (
-          <Label key={line.text} at={line.at} text={line.text} anchor="start" />
-        ))}
-      </g>
-    </Part>
-  );
-}
-
-export function LevelUpHtml() {
-  return (
-    <Layer id={L.html}>
-      <StoryOf picture="level-up" />
-    </Layer>
-  );
-}
+const w=shown("level-up","play");
+const t=contentTop("level-up");
+export function LevelUpMarks(){return <Part id="level-up.marks">
+{[0,1,2].map(i=><g key={i} data-build={`level-up.role.${i}`}><Sketch kind={['person','compass','tools'][i]} x={158} y={t+63+i*122} scale={0.8}/><L text={w[i*2]} x={235} y={t+39+i*122} anchor="start" strong width={620}/><L text={w[i*2+1]} x={235} y={t+77+i*122} anchor="start" width={620}/><Ink d={`M235 ${t+120+i*122}h590`}/></g>)}
+<g data-build="level-up.practice"><L text={w[6]} x={1385} y={t+23} width={800} strong/><Sketch kind="document" x={1390} y={t+214} scale={1.25}/></g>
+{['M1398 94Q1605 94 1650 178','M1650 202Q1650 325 1402 347','M1378 347Q1130 325 1130 202','M1130 178Q1130 94 1378 94'].map((d,i)=><Ink key={i} id={`level-up.arc.${i}`} d={d.replace(/(\d+) (\d+)/g,(_,x,y)=>`${x} ${Number(y)+t}`)}/>)}
+{[0,1,2,3].map(i=>{const points=[[1390,94],[1650,190],[1390,347],[1130,190]];const [x,y]=points[i];return <g key={i} data-build={`level-up.practice.${i}`}><circle cx={x} cy={t+y} r={8} fill={drawingProcess}/><rect x={x-(i%2?150:295)} y={t+y+(i===0?-58:i===2?14:22)} width={i%2?300:590} height={i%2?102:34} fill={drawingPaper}/><L text={w[7+i]} x={x} y={t+y+(i===0?-35:i===2?37:44)} width={i%2?300:590}/></g>;})}
+</Part>;}
+export function LevelUpHtml(){return <Layer id="level-up.html"><StoryOf picture="level-up"/></Layer>;}

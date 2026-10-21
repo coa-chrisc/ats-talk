@@ -4,15 +4,15 @@
  * the parts that must not meet kept apart, and the parts that hold others
  * holding them.
  */
-import { describe, expect, it } from "vitest";
 import { AGENT_R, STORY, box, type Box, type Point } from "@/components/deck/kit";
-import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, capOf, contentTop, figureWidth, linesIn, titleOf, wordsWidth } from "./layout";
+import { describe, expect, it } from "vitest";
+import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
+import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, contentTop, linesIn, titleOf, wordsWidth } from "./layout";
 import { AGENTS, CAPTION_Y, LOOP_RING } from "./layout-agents";
 import { BUILDER_R, FLEET, GATE } from "./layout-fleet";
-import { BARS, FIGURE as SHARE, FUNNEL, PEOPLE, REVIEW, STACK } from "./layout-review";
+import { REVIEW } from "./layout-review";
 import { BAR, COLUMN, SPENDING } from "./layout-spending";
-import { CARD, FIGURE as BIG, INNER, STUMBLED, figureBox as stumbledFigure } from "./layout-stumbled";
-import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
+import { FIGURE as BIG, CARD, INNER, STUMBLED, figureBox as stumbledFigure } from "./layout-stumbled";
 
 const label = (at: Point, text: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(text, 26), LABEL_LINE, anchor);
 const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(words, 32), TEXT_LINE, anchor);
@@ -22,14 +22,7 @@ const L = A.loop;
 const F = FLEET;
 const K = F.keys;
 const R = REVIEW;
-const reviewMark = () => box(R.mark.at.x - 24, R.mark.at.y - 24, 48, 48);
-const shareBox = () => box(R.figure.at.x, R.figure.at.y - capOf(SHARE.size), figureWidth(R.figure.runs, SHARE.size, SHARE.small), capOf(SHARE.size) + 8);
-const reviewZones = () => ({
-  left: bounds([...R.bars.flatMap((bar) => [bar.at, text(bar.name.at, bar.name.text), label(bar.caption.at, bar.caption.text, bar.caption.anchor)]), box(R.floor.x0, R.floor.y - 2, R.floor.x1 - R.floor.x0, 4)]),
-  middle: bounds([R.seated.at, box(R.desk.x0, R.desk.y, R.desk.x1 - R.desk.x0, R.desk.legs), ...R.stack.pages.map((page) => box(page.x0, page.y - 2, page.x1 - page.x0, 4)), R.stack.name.at]),
-  right: bounds([box(FUNNEL.x0, R.funnel.top, FUNNEL.x1 - FUNNEL.x0, R.funnel.outletY + FUNNEL.spout - R.funnel.top), label(R.funnel.name.at, R.funnel.name.text), R.standing.at, reviewMark(), R.people.at]),
-  apart: bounds([shareBox(), R.figure.caption.at]),
-});
+const reviewZones = () => R.cards.map(card => card.at);
 const T = STUMBLED;
 
 /** The person's mark: its ring, and its words to its right (the kit sets them 44 px from its middle). */
@@ -56,7 +49,7 @@ const DRAWN: Record<string, Box[]> = {
     ...L.stops.flatMap((stop) => [ringBox(stop.at, LOOP_RING.stop), label(stop.name.at, stop.name.text, stop.name.anchor)]),
     label(L.bar.name.at, L.bar.name.text, "end"),
   ],
-  review: Object.values(reviewZones()),
+  review: reviewZones(),
   "fleet-defined": [
     ...F.leads.at.map((at) => ringBox(at, AGENT_R)),
     box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs),
@@ -109,12 +102,57 @@ describe("the enterprise world's layout", () => {
    * A changed title fails here until it is measured again.
    */
   const MEASURED: Record<string, readonly [string, number][]> = {
-    spending: [["AI's share of company IT budgets has tripled.", 1485], ["Most of it goes to putting company data to work.", 1621]],
-    agents: [["A chatbot answers a question.", 1008], ["An agent is given a goal and does the work.", 1428]],
-    review: [["Human in the loop worked for chatbots. Agents", 1569], ["produce more than anyone can feasibly review.", 1568]],
-    "fleet-defined": [["A fleet is a team of agents, each with its own job,", 1617], ["and a person who approves the result.", 1268]],
-    stumbled: [["The best-known failures share one cause:", 1391], ["no one had limited what the AI could do.", 1315]],
-  };
+  "spending": [
+    [
+      "Companies are investing in AI",
+      987
+    ],
+    [
+      "and connecting it to their own data.",
+      1180
+    ]
+  ],
+  "agents": [
+    [
+      "A chatbot answers a question.",
+      1007
+    ],
+    [
+      "An agent works toward a goal.",
+      1007
+    ]
+  ],
+  "review": [
+    [
+      "Human oversight has to scale",
+      1013
+    ],
+    [
+      "with agent work.",
+      810
+    ]
+  ],
+  "fleet-defined": [
+    [
+      "A fleet is a team of agents",
+      876
+    ],
+    [
+      "with different jobs.",
+      629
+    ]
+  ],
+  "stumbled": [
+    [
+      "These failures show why",
+      821
+    ],
+    [
+      "AI needs effective controls.",
+      918
+    ]
+  ]
+};
 
   it("sets every title on two lines, each inside the band", () => {
     for (const [id, measured] of Object.entries(MEASURED)) {
@@ -253,66 +291,15 @@ describe("slide 4, the timeline and the loop", () => {
   });
 });
 
-describe("slide 4a, the review in four zones", () => {
-  it("keeps the zones left to right, apart, the figure on its own 56 px or more clear of the funnel and everything round it", () => {
-    const { left, middle, right: rightZone, apart } = reviewZones();
-    expect(middle.x).toBeGreaterThan(right(left) + 32);
-    expect(rightZone.x).toBeGreaterThan(right(middle) + 4);
-    expect(FUNNEL.x0).toBeGreaterThan(right(middle) + 24);
-    expect(apart.x).toBeGreaterThan(right(rightZone) + 56);
-    expect(right(apart)).toBeLessThanOrEqual(SAFE.right);
+describe("slide six review process", () => {
+  it("distinguishes review before completion from audit after completion", () => {
+    expect(R.labels.before).toBe("Review before proceeding");
+    expect(R.labels.after).toBe("Review after completion");
   });
-
-  it("stands the two bars on the floor, the second 12 times the first, each captioned over its top and named under the floor", () => {
-    const [may, september] = R.bars;
-    expect(bottom(may.at)).toBe(R.floor.y);
-    expect(bottom(september.at)).toBe(R.floor.y);
-    expect(september.at.h / may.at.h).toBe(BARS.ratio);
-    // The first caption starts at its bar's left edge and ends clear of the second bar; the second is centred on its own.
-    expect(may.caption.at.x).toBe(may.at.x);
-    expect(right(label(may.caption.at, may.caption.text, "start"))).toBeLessThan(september.at.x - 16);
-    expect(september.caption.at.x).toBe(september.at.x + september.at.w / 2);
-    for (const bar of R.bars) {
-      expect(bottom(label(bar.caption.at, bar.caption.text, bar.caption.anchor))).toBeLessThan(bar.at.y);
-      expect(text(bar.name.at, bar.name.text).y).toBeGreaterThan(R.floor.y);
-    }
-  });
-
-  it("stacks the pages on the desk beside the seated person, up to twice the person's height, named over the top", () => {
-    const pages = R.stack.pages;
-    expect(pages[0].y).toBeLessThan(R.desk.y);
-    for (let i = 1; i < pages.length; i++) expect(pages[i - 1].y - pages[i].y).toBe(STACK.pitch);
-    const height = R.desk.y - pages.at(-1)!.y;
-    expect(height).toBeGreaterThanOrEqual(2 * R.seated.at.h);
-    expect(STACK.x).toBeGreaterThan(right(R.seated.at) + 40);
-    expect(bottom(R.stack.name.at)).toBeLessThan(pages.at(-1)!.y);
-    expect(R.stack.name.at.x + R.stack.name.at.w / 2).toBe(STACK.x + STACK.w / 2);
-    expect(linesIn(R.stack.name.text, 26, R.stack.name.at.w)).toBeLessThanOrEqual(STACK.nameLines);
-  });
-
-  it("narrows the funnel from a wide mouth to a small outlet, the person under it with the mark beside them and their words under them", () => {
-    expect(FUNNEL.x1 - FUNNEL.x0).toBeGreaterThan(6 * FUNNEL.outlet);
-    expect(bottom(label(R.funnel.name.at, R.funnel.name.text))).toBeLessThan(R.funnel.top);
-    expect(R.standing.at.x + R.standing.at.w / 2).toBe(R.funnel.centre);
-    expect(R.standing.at.y).toBeGreaterThan(R.funnel.outletY + FUNNEL.spout);
-    expect(overlaps(reviewMark(), R.standing.at)).toBe(false);
-    const people = R.people.at;
-    expect(people.y).toBeGreaterThan(bottom(R.standing.at));
-    expect(people.x + people.w / 2).toBe(R.funnel.centre);
-    expect(overlaps(people, reviewMark())).toBe(false);
-    expect(linesIn(R.people.text, 26, people.w)).toBeLessThanOrEqual(PEOPLE.lines);
-  });
-
-  it("sets the figure on its own in the column at the right edge, level with the funnel, its caption wrapping under it in the column", () => {
-    const share = shareBox();
-    expect(share.x).toBe(SHARE.x);
-    expect(right(share)).toBeLessThanOrEqual(SAFE.right);
-    expect(share.y).toBeGreaterThan(R.funnel.top);
-    expect(R.figure.caption.at.x).toBe(share.x);
-    expect(right(R.figure.caption.at)).toBe(SAFE.right);
-    expect(R.figure.caption.at.y).toBeGreaterThan(R.figure.at.y);
-    expect(linesIn(R.figure.caption.text, 26, R.figure.caption.at.w)).toBeLessThanOrEqual(SHARE.captionLines);
-    expect(R.figure.caption.at.h).toBe(SHARE.captionLines * LABEL_LINE);
+  it("keeps all cards separate and the forecast above the story", () => {
+    for (const [i, card] of R.cards.entries()) for (const other of R.cards.slice(i + 1)) expect(overlaps(card.at, other.at)).toBe(false);
+    expect(bottom(R.forecast.at)).toBeLessThan(contentTop("review") - 100);
+    expect(right(R.forecast.at)).toBeLessThanOrEqual(SAFE.right);
   });
 });
 

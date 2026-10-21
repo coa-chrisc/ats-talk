@@ -1,13 +1,6 @@
-/**
- * Slide 13's click: the fence draws round the yard, its name and caption
- * coming up; the three tiles land inside it in turn, left to right, story
- * line A rising with the first; the calendar's empty weeks come up under the
- * fence, named, and fill week by week; the two nameplates settle beside it
- * and the dashed third wipes on apart, its caption under it, with story
- * line B.
- */
+/** Show the isolated environment and services, then a grouped calendar fill and partners. Text is a separate reading phase. */
 import type { StepDef } from "@/components/deck/engine";
-import { rise, show, wipe, draw } from "@/components/deck/kit";
+import { draw, rise, show, wipe } from "@/components/deck/kit";
 import { picture, story } from "../steps";
 import { INFRASTRUCTURE } from "./layout-infrastructure";
 import { into, land, play } from "./moves";
@@ -17,7 +10,7 @@ const I = INFRASTRUCTURE;
 /** The tiles land this far apart. */
 const TILE = 0.5;
 /** The weeks fill this far apart, so 116 of them take about two seconds: quick enough to read as time passing, slow enough to see it fill in order. */
-const WEEK = 0.017;
+const WEEK = 0;
 
 export const infrastructure = (): StepDef[] =>
   picture("infrastructure", {

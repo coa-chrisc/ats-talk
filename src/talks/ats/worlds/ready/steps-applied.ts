@@ -14,7 +14,7 @@ import { APPLIED } from "./layout-applied";
 const A = APPLIED;
 
 /** The panels draw one after another; each one's numeral and name come up as its edge nears closing. */
-const PANELS = { apart: 0.25, draw: 0.8, numeral: 0.45, name: 0.6 } as const;
+const PANELS = { apart: 0, draw: 0.5, numeral: 0, name: 0 } as const;
 /** A panel's tile: its line draws down, the tile lands where the line ends, the tick lands after it; the next panel starts `apart` after. */
 export const TILES = { line: 0.45, tile: 0.35, land: 0.5, tick: 0.85, apart: 1.25 } as const;
 

@@ -321,3 +321,24 @@
   stroke-width: 4;
   stroke-linecap: round;
 }
+
+/* Review: context above, one process below. Complete cards arrive together. */
+.en-review-card, .en-review-forecast { position: absolute; box-sizing: border-box; border: 2px solid var(--dk-process); border-radius: 10px; padding: 25px 28px; color: var(--dk-paper); background: color-mix(in srgb, var(--dk-process) 6%, var(--dk-night)); }
+.en-review-card strong { display: block; font-size: 32px; line-height: 1.2; }
+.en-review-card p { margin: 14px 0 0; font-size: 26px; line-height: 1.25; }
+.en-review-card--human { border-color: var(--dk-paper); background: var(--dk-night); }
+.en-review-forecast { border: 0; border-left: 4px solid var(--dk-catalog); border-radius: 0; background: var(--dk-raised); padding: 18px 24px; }
+.en-review-forecast div { font-size: 22px; color: var(--dk-catalog); }
+.en-review-forecast strong { display:block; font-size: 32px; margin-top: 9px; }
+.en-review-forecast p { font-size: 24px; line-height: 1.25; margin: 9px 0 0; }
+.en-review-route { font-family: inherit; font-size: 26px; line-height: 1.2; color: var(--dk-paper); }
+
+.en-review-link { stroke: var(--dk-process); }
+.en-review-human { position: absolute; left: 24px; top: 34px; }
+.en-review-card--human { padding-left: 110px; }
+
+.en-stream-check { fill: var(--dk-raised); stroke: var(--dk-process); stroke-width: 2; }
+.en-stream-tray { fill: none; stroke: var(--dk-rule); stroke-width: 2; }
+.en-stream-item rect { fill: var(--dk-night); stroke: var(--dk-process); stroke-width: 2; }
+.en-stream-item path { fill: none; stroke: var(--dk-process); stroke-width: 1.5; }
+.en-stream-item--exception rect, .en-stream-item--exception path { stroke: var(--dk-catalog); }

@@ -6,8 +6,8 @@
  * carries from one slide to the next. Each slide's moves are in its own
  * module (steps-title.ts, steps-course.ts, steps-lessons.ts).
  */
-import { DUR, EASE, RISE, chain, hide, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import type { MoveOpts } from "@/components/deck/engine/types";
+import { DUR, EASE, RISE, chain, hide, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import type { Beat } from "../steps";
 import { COUNTS, PICTURES, layerOf, titleKey } from "./layout";
 
@@ -15,7 +15,7 @@ import { COUNTS, PICTURES, layerOf, titleKey } from "./layout";
 export const ARRIVE = 0.35;
 
 /** A slide's beats as its one click's moves, timed by the kit's chain, the first starting `at` seconds in. */
-export const play = (beats: readonly ChainBeat[], at = 0): Beat => ({ moves: chain(beats, { at, counts: COUNTS }) });
+export const play = (beats: readonly ChainBeat[], at = 0): Beat => ({ counts: COUNTS, moves: chain(beats, { at, counts: COUNTS }) });
 
 /** A part lands: it settles down onto its place from a rise's height above it, as a tile set on a table. */
 export const land = (key: string, opts?: MoveOpts) => to(key, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -RISE }, { duration: DUR.base, ease: EASE.out, ...opts });

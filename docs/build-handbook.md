@@ -374,3 +374,11 @@ Ids shared with BCHC show which picture to copy: `safe`, `ai-builds`, `too-long`
 **Routes.** The deck is at `/` and its notes at `/notes/`, both with the deck id `"city"`. There is no remote route.
 
 **Frame.** `src/talks/city/frame.tsx` uses the `city-frame__*` classes and the Austin Public Health logos by URL (`withBase("/brand/aph-logo.v1.png")`, `aph-logo-white.v1.png`). The footer reads "Austin Public Health · AI Strategy". The layout numbers match BCHC's.
+
+## ATS reading and animation phases
+
+ATS applies its phase policy in `src/talks/ats/worlds/sequence.ts`, through `picture()` after each world has chained its local moves. Local visual timing and final states are retained, while the title and supporting text are separated from the diagram. `TEXT_FIRST` lists slides that explain the idea before demonstrating it; other content slides finish the diagram before showing the supporting text. The three reviewed pilots declare the same phases directly.
+
+Both supporting sentences arrive together in 0.35 seconds. Text-first slides wait exactly 0.6 seconds after the sentences finish appearing, then start the visual. Do not calculate this pause from word count. The earlier multi-second reading holds were removed after playback feedback. The community slide preserves its two presenter-controlled clicks: sentence A and stationary quotes first; themes followed by sentence B second. All builds remain within 24 seconds, and every forward press moves to the next slide and starts its animation, even if the previous build is still running.
+
+The original local placement of `story()` calls is not the final playback schedule: this ATS phase layer determines it. Test compiled schedules with rendered element counts, as `sequence.test.ts` does. Keep final-state, geometry, and causal-order checks when changing a visual; do not restore old tests that require a sentence to interrupt it.

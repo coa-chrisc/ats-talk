@@ -1,52 +1,17 @@
-/** Slide 23's picture: the plan's six tiles, named once; the first lit and named; the bracket under the other five with its caption; the project dots; the grey tally, named; and the measure line from its first point to the point it aims at, each named, with the nameplate under it. */
 "use client";
-
 import { Part } from "@/components/deck/kit";
-import { OUTCOMES } from "./layout-outcomes";
+import { shown } from "../../script/find";
+import { DrawingLabel as L, Ink, Sketch, drawingInk, drawingPaper, drawingProcess } from "../story-drawing";
+import { contentTop } from "./layout";
 import { Layer, StoryOf } from "./parts";
-import { Plate, Strip, Label } from "./parts-plan";
-
-const O = OUTCOMES;
-const M = O.measure;
-
-export function OutcomesMarks() {
-  return (
-    <Part id={O.marks}>
-      <Label id={O.plan.key} at={O.plan.at} text={O.plan.text} anchor="start" strong />
-      {O.tiles.map((tile) => (
-        <Strip key={tile.key} id={tile.key} at={tile.at} rx={10} className="fs-strip--tile" />
-      ))}
-      <rect className="fs-lit" data-build={O.lit.key} x={O.lit.at.x} y={O.lit.at.y} width={O.lit.at.w} height={O.lit.at.h} rx={10} />
-      <g data-build={O.name.key}>
-        {O.name.lines.map((line) => (
-          <Label key={line.text} at={line.at} text={line.text} strong />
-        ))}
-      </g>
-      <path className="fs-brace dk-draw" data-build={O.others.key} d={O.others.d} pathLength={1} />
-      <Label id={O.others.caption.key} at={O.others.caption.at} text={O.others.caption.text} />
-      {O.dots.map((dot) => (
-        <circle key={dot.key} className="fs-project" data-build={dot.key} cx={dot.at.x} cy={dot.at.y} r={O.dot.r} />
-      ))}
-      <g data-build={O.tally.key}>
-        {O.tally.strokes.map((stroke) => (
-          <path key={stroke.key} className="fs-tally dk-draw" data-build={stroke.key} d={stroke.d} pathLength={1} />
-        ))}
-      </g>
-      <Label id={O.tally.label.key} at={O.tally.label.at} text={O.tally.label.text} anchor="end" />
-      <path className="fs-measure dk-draw" data-build={M.key} d={`M${M.from.x} ${M.from.y}L${M.to.x} ${M.to.y}`} pathLength={1} />
-      <circle className="fs-point" data-build={M.start.key} cx={M.start.at.x} cy={M.start.at.y} r={M.start.r} />
-      <circle className="fs-target" data-build={M.end.key} cx={M.end.at.x} cy={M.end.at.y} r={M.end.r} />
-      <Label id={M.startLabel.key} at={M.startLabel.at} text={M.startLabel.text} anchor="end" strong />
-      <Label id={M.endLabel.key} at={M.endLabel.at} text={M.endLabel.text} anchor="start" strong />
-      <Plate id={O.plate.key} at={O.plate.at} text={O.plate.text} />
-    </Part>
-  );
-}
-
-export function OutcomesHtml() {
-  return (
-    <Layer id={O.html}>
-      <StoryOf picture="outcomes" />
-    </Layer>
-  );
-}
+const w=shown("outcomes","play");
+const t=contentTop("outcomes");
+export function OutcomesMarks(){return <Part id="outcomes.marks">
+<g data-build="outcomes.project"><Sketch kind="document" x={145} y={t+51}/><L text={w[0]} x={210} y={t+24} anchor="start" strong width={1580}/><L text={w[1]} x={210} y={t+65} anchor="start" width={1580}/></g>
+<g data-build="outcomes.measure"><L text={w[2]} x={96} y={t+130} anchor="start" strong width={380}/><L text={w[3]} x={96} y={t+168} anchor="start" width={470}/></g>
+<Ink id="outcomes.ruler" d={`M640 ${t+158}h1090M640 ${t+144}v28M1730 ${t+144}v28`}/>
+<g data-build="outcomes.baseline"><L text={w[4]} x={850} y={t+120} strong/><L text={w[5]} x={850} y={t+203} width={440}/><path d={`M850 ${t+145}v26`} stroke={drawingProcess} strokeWidth={4}/></g>
+<g data-build="outcomes.target"><L text={w[6]} x={1500} y={t+120} strong/><L text={w[7]} x={1500} y={t+203} width={480}/><circle cx={1500} cy={t+158} r={12} fill={drawingPaper} stroke={drawingInk} strokeWidth={3} strokeDasharray="4 4"/></g>
+{[0,1,2].map(i=><g key={i} data-build={`outcomes.check.${i}`}><Sketch kind={['person','magnify','compass'][i]} x={155+i*586} y={t+330} scale={0.75}/><L text={w[8+i*2]} x={215+i*586} y={t+302} anchor="start" strong width={435}/><L text={w[9+i*2]} x={215+i*586} y={t+340} anchor="start" width={435}/></g>)}
+</Part>;}
+export function OutcomesHtml(){return <Layer id="outcomes.html"><StoryOf picture="outcomes"/></Layer>;}

@@ -1,10 +1,10 @@
-/** Slide 10's picture: the floor and the stair of four steps, each named, a gate on each tread; the green project box that climbs it; the two passed ticks and the first one's caption; the checklist of six rows, each taking its tick, under its heading. */
+/** Slide 10's picture: the floor and the stair of four steps, each named, a gate on each tread; the green project box that climbs it; the two passed ticks and the first one's caption; the checklist of six rows, with neutral markers, under its heading. */
 "use client";
 
 import { Part, PassTick } from "@/components/deck/kit";
-import { EARN, GATE, LIST_BOX } from "./layout-earn";
-import { Floor, GateStep, ListRow, ProjectBox } from "./parts-draw";
+import { EARN, GATE } from "./layout-earn";
 import { Layer, StoryOf, Words } from "./parts";
+import { Floor, GateStep, ListRow, ProjectBox } from "./parts-draw";
 
 const E = EARN;
 
@@ -26,9 +26,7 @@ export function EarnMarks() {
           <Words at={row.words} text={row.text} anchor="start" size="text" />
         </ListRow>
       ))}
-      {E.list.map((row) => (
-        <PassTick key={row.tick.key} id={row.tick.key} at={row.tick.at} r={LIST_BOX / 2 - 2} />
-      ))}
+
     </Part>
   );
 }

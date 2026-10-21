@@ -9,8 +9,8 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     world: "brought",
     name: "Title",
     show: "Agentic AI at the City: what we learned at Carnegie Mellon, and what we would do first.",
-    say: "Thank you for the time. Stefan and I spent this fall in an executive course at Carnegie Mellon on leading agentic AI in large organizations. We came back with more than we can use, so we picked out what applies to the City and built this talk around it. We will start with what the course was and the four lessons we took from it. Then we will put the City next to those four lessons, and the picture is better than most people in this building expect. Then we will tell you what we would do first. Please interrupt whenever something catches your interest.",
-    see: ["The slide is navy, with the City of Austin wordmark in white at top left. The title settles in the middle in white with a short green rule under it, and the two story lines rise beneath. Nothing moves after that."],
+    say: "Thank you for the time. Stefan and I spent this fall in an executive course at Carnegie Mellon on leading agentic AI in large organizations. We covered a lot, so for this talk we chose the lessons most relevant to the City. We will explain the course and the four lessons we took from it, then look at how they apply to work already under way here. Finally, we will explain what we recommend doing first. Please interrupt whenever something catches your interest.",
+    see: ["The slide is navy, with the City of Austin wordmark in white at top left. The title settles in the middle in white with a short green rule under it, and both supporting lines appear together beneath it. Nothing moves after that."],
     story: [
       "Stefan Wray and Chris Collins, Austin Technology Services.",
       "For the Deputy CIOs and leadership, October 2026.",
@@ -25,15 +25,15 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     part: 1,
     world: "brought",
     name: "The course",
-    show: "We took Carnegie Mellon's course on AI agents, meaning AI that does work on its own.",
-    say: "First, what the course was. Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is written for executives who have to decide what AI agents may do inside their organizations, rather than for the engineers who build them. Our classmates were chief data officers and technology leaders from banks, hospitals and manufacturers. Four half-day modules covered the foundations, the data and architecture underneath, security, risk and trust, and strategy and transformation. What made it worth the time is that each module ended with a build of our own. We each specified an agent, gave it tools, set its limits, watched it work, and then watched it get attacked. You come out knowing what an agent is because you ran one, and knowing what goes wrong because you saw it happen.",
-    see: ["Four indigo tiles land in a row across the stage, each named in turn: \"Foundations\", \"Data and architecture\", \"Security, risk and trust\", \"Strategy and transformation\". Under the row a caption settles: \"Heinz College\". A green workbench outline draws beneath each tile in turn, and one caption sits under the four benches: \"A build of our own\". The slide ends on the four tiles, the caption and the four benches."],
+    show: "We took Carnegie Mellon's course on leading AI agents.",
+    say: "Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is designed for executives who decide what AI agents may do inside their organizations. An agent can use tools to carry out a task without a person directing every step. Our classmates were chief data officers and technology leaders from banks, hospitals, and manufacturers. Four half-day modules covered foundations, the data and system architecture agents need, security and trust, and strategy and transformation. In each module, we built and tested an agent ourselves. We specified its task, gave it tools, set its limits, and watched it work. We also tested how it responded to attacks. That practical work helped us understand both what agents can do and what can go wrong.",
+    see: ["The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. Four indigo tiles land in a row across the stage, each named in turn: \"Foundations\", \"Data and architecture\", \"Security, risk and trust\", \"Strategy and transformation\". Under the row a caption settles: \"Heinz College\". The four green workbench outlines draw together beneath the tiles, and one caption sits under the four benches: \"Build and test an agent\". The slide ends on the four tiles, the caption and the four benches."],
     story: [
-      "Four half-day modules at Heinz College this fall: foundations, data and architecture, security, and strategy.",
-      "Each module ended with a build of our own, so we learned what an agent is by running one.",
+      "Four half-day modules covered foundations, data and architecture, security, and strategy.",
+      "In each module, we built and tested an agent ourselves.",
     ],
     steps: [
-      { id: "play", show: ["Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation", "Heinz College", "A build of our own"] },
+      { id: "play", show: ["Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation", "Heinz College", "Build and test an agent"] },
     ],
   },
   {
@@ -43,14 +43,14 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     world: "brought",
     name: "Four lessons",
     show: "We came back with four lessons for the City.",
-    say: "Here are the four lessons we would ask you to remember. One: use the least autonomy that gets the job done, meaning the least freedom for the AI to act on its own. Most of what the City wants from AI needs far less autonomy than the word agent suggests, and some of it needs no AI at all. Two: put the rules where the AI cannot break them, in permissions and settings rather than in instructions. If you only tell an AI a rule, it can be talked out of it. If the system blocks the action, it cannot. Three: train your own staff first, before you buy an AI product. Every organization the course held up as a success did that. Four: start where a mistake costs little, and when you have command of that use case, take on a more complex one. We will spend a minute or two on each. Then we will use them at three stops: enterprise now, the City now, and what we would do first.",
-    see: ["Four tall panels draw across the slide, numbered \"One\", \"Two\", \"Three\" and \"Four\" in large green numerals at their tops, and each takes its name in turn: \"The least autonomy that gets the job done\", \"Put the rules where AI cannot break them\", \"Train your own staff first\", \"Start where a mistake is cheap\". Under the panels a route draws as a line with three stops that light left to right: \"Enterprise now\", \"The City now\", \"What we would do first\". The slide ends on the four named panels over the lit route."],
+    say: "Here are the four lessons we would ask you to remember. One: give AI only the independence the task requires. Most of what the City wants to do needs less autonomy than a fully independent agent, and some tasks need no AI at all. Two: design the system to enforce the agent's limits. Instructions tell an agent what it should do; permissions and system controls restrict what it can do. Three: train your own staff before buying an AI product. The successful organizations discussed in the course invested in their people first. Four: start with tasks where mistakes have little impact and are easy to fix. Once you can do that work reliably, take on more complex work. We will look at how companies are using AI, what the City is doing now, and what we recommend doing next.",
+    see: ["The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. Four tall panels draw across the slide, numbered \"One\", \"Two\", \"Three\" and \"Four\" in large green numerals at their tops, and each takes its name in turn: \"Only the independence the task needs\", \"Design the system to enforce limits\", \"Train your own staff first\", \"Start with tasks where mistakes are easy to fix\". Under the panels a route draws as a line with three stops that light left to right: \"Enterprise now\", \"The City now\", \"What we would do first\". The slide ends on the four named panels over the lit route."],
     story: [
-      "Give AI the least freedom to act on its own that gets the job done. Put the rules where AI cannot break them.",
-      "Train your own staff before you buy an AI product. Start where a mistake is cheap, then take on harder work.",
+      "Give AI only the independence it needs. Design the system to enforce its limits.",
+      "Train staff before buying tools. Start with tasks where mistakes have little impact and are easy to fix.",
     ],
     steps: [
-      { id: "play", show: ["One", "Two", "Three", "Four", "The least autonomy that gets the job done", "Put the rules where AI cannot break them", "Train your own staff first", "Start where a mistake is cheap", "Enterprise now", "The City now", "What we would do first"] },
+      { id: "play", show: ["One", "Two", "Three", "Four", "Only the independence the task needs", "Design the system to enforce limits", "Train your own staff first", "Start with tasks where mistakes are easy to fix", "Enterprise now", "The City now", "What we would do first"] },
     ],
   },
 ];

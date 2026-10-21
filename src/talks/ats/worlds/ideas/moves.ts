@@ -6,15 +6,15 @@
  * one slide to the next. Each slide's moves are in its own module
  * (steps-ladder.ts, steps-enforce.ts, steps-people.ts, steps-earn.ts).
  */
-import { chain, hide, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import type { MoveOpts } from "@/components/deck/engine/types";
+import { chain, hide, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import { COUNTS, PICTURES, layerOf, titleKey } from "./layout";
 
 /** The world's first title waits for the world's arrival fade to be under way. */
 export const ARRIVE = 0.35;
 
 /** A slide's beats as its one click's moves, timed by the kit's chain. */
-export const play = (...beats: ChainBeat[]) => ({ moves: chain(beats, { counts: COUNTS }) });
+export const play = (...beats: ChainBeat[]) => ({ counts: COUNTS, moves: chain(beats, { counts: COUNTS }) });
 
 /** The click's first beat: the slide before puts its whole picture away at once, and the title changes. */
 export const into = (pictureId: string): ChainBeat => {

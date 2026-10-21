@@ -21,12 +21,11 @@ export const TOP = contentTop("lessons");
 /**
  * A panel: 396 wide with 48 between, so the four span 96 to 1824 exactly;
  * 300 tall from the drawing's top. Inside it the numeral sits 28 px in from
- * its top left on a 72 px line, set at 56 px, and the name starts 120 px
- * down in a 340 px column at 32 px semibold on 42 px lines: two lines for
- * three of the names and three for the longest (about 640 px on one line,
- * measured in Geist SemiBold), its foot still 54 px over the panel's.
+ * its top left on a 72 px line, set at 56 px, and the name starts 104 px
+ * down in a 340 px column at 32 px semibold on up to four 42 px lines,
+ * leaving 28 px below the longest name.
  */
-export const PANEL = { w: 396, gap: 48, h: 300, inset: 28, numeral: 56, numeralLine: 72, nameDown: 120, nameW: 340, nameLine: 42 } as const;
+export const PANEL = { w: 396, gap: 48, h: 300, inset: 28, numeral: 56, numeralLine: 72, nameDown: 104, nameW: 340, nameLine: 42 } as const;
 const panelAt = (i: number): Box => box(SAFE.left + 16 + i * (PANEL.w + PANEL.gap), TOP, PANEL.w, PANEL.h);
 
 /**
@@ -51,7 +50,7 @@ export const LESSONS = {
       key: `lessons.panel.${i}`,
       at,
       numeral: { key: `lessons.panel.${i}.numeral`, text: NUMERALS[i], at: { x: at.x + PANEL.inset, y: at.y + PANEL.inset + PANEL.numeralLine / 2 } as Point },
-      name: { key: `lessons.panel.${i}.name`, text: name, at: box(at.x + PANEL.inset, at.y + PANEL.nameDown, PANEL.nameW, 3 * PANEL.nameLine) },
+      name: { key: `lessons.panel.${i}.name`, text: name, at: box(at.x + PANEL.inset, at.y + PANEL.nameDown, PANEL.nameW, 4 * PANEL.nameLine) },
     };
   }),
   route: {

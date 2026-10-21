@@ -1,19 +1,20 @@
+import { MAX_BUILD_SECONDS } from "../sequence";
 /**
  * The stands world as a whole: its six slides in order, one at a time,
  * every word from the script, the house rules, and the story lines. Each
  * slide's own picture is tested in beats.test.ts; what they share is in
  * harness.ts, where things go in layout.test.ts.
  */
+import { HOME } from "@/components/deck/engine/camera";
+import { storyKeys, storyRows } from "@/components/deck/kit";
+import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOME } from "@/components/deck/engine/camera";
-import { CHAIN, storyKeys, storyRows } from "@/components/deck/kit";
-import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { COUNTS } from "./counts";
+import { LEAVE, at, built, ids, lastStepOf, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
 import { ARRIVE, partsOf } from "./moves";
-import { LEAVE, at, built, lastStepOf, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { stands, standsEntry } from "./world";
 
 const dir = import.meta.dirname;
@@ -53,7 +54,7 @@ describe("the stands world", () => {
   });
 
   it.each(ids)("finishes %s inside 12 s, the first counting the world's arrival fade", (id) => {
-    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(CHAIN.longest);
+    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(MAX_BUILD_SECONDS);
   });
 
   it("brings the first title up once the world's arrival fade is under way", () => {
@@ -110,8 +111,8 @@ describe("one slide at a time", () => {
     }
   });
 
-  it("breaks the titles after the words the layout names, two lines each but slide 11's one", () => {
-    expect(TITLES.map((title) => title.lines.length)).toEqual([1, 2, 2, 2, 2, 2, 2, 2]);
+  it("breaks the titles after the words the layout names, two lines each", () => {
+    expect(TITLES.map((title) => title.lines.length)).toEqual([2, 2, 2, 2, 2, 2, 2, 2]);
   });
 });
 
@@ -157,9 +158,9 @@ describe("the house rules", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     expect(sources.filter(([, source]) => /<HumanMark\b/.test(source))).toEqual([]);
-    expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-control.tsx", "scene-fits.tsx", "scene-track.tsx"]);
+    expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual([]);
     expect(markup).not.toMatch(/class="dk-human"/);
-    expect(markup.match(/class="dk-pass-tick"/g)).toHaveLength(6);
+    expect(markup.match(/class="dk-pass-tick"/g) ?? []).toHaveLength(0);
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, indigo and grey", () => {
@@ -221,7 +222,7 @@ describe("the story lines", () => {
       const last = lastStepOf(picture.id);
       expect(playOf(first, a), a).toHaveLength(1);
       expect(playOf(last, b), b).toHaveLength(1);
-      if (first === last) expect(startOf(first, b), picture.id).toBeGreaterThan(startOf(first, a));
+      if (first === last) expect(startOf(first, b), picture.id).toBe(startOf(first, a));
       else expect(at(first)[b].yPercent, `${b} waits for the second click`).toBe(120);
       expect(at(last)[a].yPercent, a).toBe(0);
       expect(at(last)[b].yPercent, b).toBe(0);

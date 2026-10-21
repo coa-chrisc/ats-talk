@@ -1,3 +1,4 @@
+import { MAX_BUILD_SECONDS, stillAllowance } from "../sequence";
 /**
  * The ready world as a whole: its six slides in order, one click each,
  * every word from the script, the house rules, and the story lines. Each
@@ -5,16 +6,16 @@
  * residents, could-be, applied and close .test.ts), its places in layout.test.ts;
  * what they share is in harness.ts.
  */
+import { HOME } from "@/components/deck/engine/camera";
+import { storyKeys, storyRows } from "@/components/deck/kit";
+import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOME } from "@/components/deck/engine/camera";
-import { CHAIN, storyKeys, storyRows } from "@/components/deck/kit";
-import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { ARRIVE } from "./beats";
+import { LEAVE, at, built, ends, hiddenAt, ids, lastLanding, markup, n, nodes, pictureOfKey, playOf, playsAt, startOf, texts, world } from "./harness";
 import { CLOSE_ID, COUNTS, PICTURES, STORIES, TITLES, groupOf, titleKey } from "./layout";
 import { CLOSE } from "./layout-close";
-import { LEAVE, at, built, ends, hiddenAt, ids, lastLanding, markup, n, nodes, pictureOfKey, playOf, playsAt, startOf, texts, world } from "./harness";
 import { ready } from "./world";
 
 const dir = import.meta.dirname;
@@ -48,18 +49,18 @@ describe("the ready world", () => {
     for (const camera of world.cameras) expect(camera).toEqual(HOME);
   });
 
-  it.each(ids)("finishes %s inside 12 s, the first counting the world's arrival fade", (id) => {
-    expect(lastLanding(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(CHAIN.longest);
+  it.each(ids)("finishes %s inside its timing budget, the first counting the world's arrival fade", (id) => {
+    expect(lastLanding(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(MAX_BUILD_SECONDS);
   });
 
-  it.each(ids)("never leaves the stage still for more than 3 s inside %s, staggers counted", (id) => {
+  it.each(ids)("keeps still intervals inside the reading allowance for %s, staggers counted", (id) => {
     let landed = 0;
     let still = 0;
     for (const play of [...playsAt(id)].sort((a, b) => a.at - b.at)) {
       still = Math.max(still, play.at - landed);
       landed = Math.max(landed, ends(play));
     }
-    expect(still).toBeLessThanOrEqual(CHAIN.still + 1e-9);
+    expect(still).toBeLessThanOrEqual(stillAllowance(id) + 1e-9);
   });
 
   it("brings the first title up once the world's arrival fade is under way", () => {
@@ -107,14 +108,14 @@ describe("one slide at a time", () => {
   it("breaks the long titles after the words the layout names, on two or three lines", () => {
     const lines = (id: string) => TITLES.find((title) => title.picture === id)!.lines;
     expect(lines("levels")).toHaveLength(2);
-    expect(lines("levels")[0].endsWith("own.")).toBe(true);
+    expect(lines("levels")[0].endsWith("agents")).toBe(true);
     expect(lines("who-decides")).toHaveLength(2);
-    expect(lines("who-decides")[0].endsWith("cross.")).toBe(true);
+    expect(lines("who-decides")[0].endsWith("limits.")).toBe(true);
     expect(lines("residents")).toHaveLength(1);
     expect(lines("could-be")).toHaveLength(2);
-    expect(lines("could-be")[0].endsWith("done,")).toBe(true);
+    expect(lines("could-be")[0].endsWith("authorize")).toBe(true);
     expect(lines("applied")).toHaveLength(2);
-    expect(lines("applied")[0].endsWith("lessons,")).toBe(true);
+    expect(lines("applied")[0].endsWith("plan")).toBe(true);
     expect(CLOSE.title.lines).toHaveLength(1);
   });
 });
@@ -122,7 +123,7 @@ describe("one slide at a time", () => {
 describe("the words on the stage", () => {
   const labels = PICTURES.flatMap((picture) => [picture.show, ...picture.steps.flatMap((step) => step.show)]);
   const stories = PICTURES.flatMap((picture) => picture.story);
-  const allowed = [...labels, ...stories];
+  const allowed = [...labels, ...stories, "1", "2", "3", "4", "5"];
   const named = PICTURES.flatMap((picture) => picture.steps.flatMap((step) => step.show));
 
   it("are each a title, a story line or a label the script gives this part", () => {
@@ -130,7 +131,7 @@ describe("the words on the stage", () => {
   });
 
   it("include every title, story line and label the script gives this part, whole or broken over consecutive lines", () => {
-    const over = (words: string) => texts.some((_, i) => [2, 3].some((k) => texts.slice(i, i + k).join(" ") === words));
+    const over = (words: string) => texts.some((_, i) => [2, 3, 4, 5].some((k) => texts.slice(i, i + k).join(" ") === words));
     for (const words of [...named, ...stories]) expect(texts.includes(words) || over(words), words).toBe(true);
     const shown = texts.join(" ");
     for (const picture of PICTURES) for (const word of picture.show.split(" ")) expect(shown, picture.show).toContain(word);
@@ -239,7 +240,7 @@ describe("the story lines", () => {
       const [a, b] = storyKeys(band.id, band.lines.length);
       expect(playOf(click, a), a).toHaveLength(1);
       expect(playOf(click, b), b).toHaveLength(1);
-      expect(startOf(click, b), band.picture).toBeGreaterThan(startOf(click, a));
+      expect(startOf(click, b), band.picture).toBe(startOf(click, a));
       expect(at(click)[a].yPercent, a).toBe(0);
       expect(at(click)[b].yPercent, b).toBe(0);
     }

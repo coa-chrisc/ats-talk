@@ -33,21 +33,20 @@ export const SAFE = { top: 64, bottom: FLOOR, left: STORY.x, right: STORY.x + ST
 export const TITLE = { x: 96, y: 152 } as const;
 export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
-/**
- * Titles too long for one line at 72 px inside x 1824, by the word each line
- * ends on. Set in Geist bold at 72 px with the title's -0.025em tracking
- * (measured from the font's advance widths), the longest line here (slide
- * 24's first) is about 1650 px, inside the 1728 px field. Slides 24, 25, 27
- * and 28 take two lines; 26 fits on one (about 1160). Slides 24 and 25
- * break at their full stops, about 1650 and 1570, and 1590 and 1320; slide
- * 27 at its comma, about 1300 and 1560; slide 28 at its comma, about 1440
- * and 640.
- */
+/** Phrase boundaries for the revised titles, checked in the rendered deck at 1920 x 1080. */
 const BREAKS: Record<string, string[]> = {
-  levels: ["own."],
-  "who-decides": ["cross."],
-  "could-be": ["done,"],
-  applied: ["lessons,"],
+  "levels": [
+    "agents"
+  ],
+  "who-decides": [
+    "limits."
+  ],
+  "could-be": [
+    "authorize"
+  ],
+  "applied": [
+    "plan"
+  ]
 };
 
 /** The white slides' titles, at the field's top left; the close sets its own. */

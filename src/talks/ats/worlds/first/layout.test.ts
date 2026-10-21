@@ -3,15 +3,15 @@
  * band and inside the frame's safe area, and on each slide the parts that
  * must not meet kept apart.
  */
-import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
+import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
 import { LABEL_LINE, TEXT_LINE, centreOf, contentTop, wordsWidth } from "./layout";
+import { AISLE, CONSORTIUM, LANTERN, SEAT_10, WALKER } from "./layout-consortium";
 import { LISTEN, SITTER } from "./layout-listen";
 import { CHAIR_9, NOT_PROPOSING } from "./layout-not-proposing";
-import { AISLE, LANTERN, CONSORTIUM, SEAT_10, WALKER } from "./layout-consortium";
-import { DOT_R, LIST_BOX, SORT } from "./layout-sort";
 import { MEMBER, POSTS, PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
-import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
+import { DOT_R, LIST_BOX, SORT } from "./layout-sort";
 
 /** Clear of the frame's chrome: under the wordmark, over the footer and the slide number, inside the story band's width. */
 const SAFE = { top: 64, bottom: 1016, left: STORY.x - 16, right: STORY.x + STORY.w };
@@ -317,9 +317,9 @@ describe("slide 19", () => {
 
   it("asks three questions over the first table and one over each of the others, in the script's order", () => {
     expect(L.tables.map((table) => table.bubbles.map((bubble) => bubble.text))).toEqual([
-      ["What is slow or broken", "Where they could do more", "What they want done by 2027 and 2028"],
-      ["What worries them"],
-      ["How it wants the City to use AI"],
+      ["Where does work slow down?", "What can you not do today?", "What do you want done by 2028?"],
+      ["What worries you?"],
+      ["How should the City use AI?"],
     ]);
   });
 
@@ -401,7 +401,7 @@ describe("slide 20", () => {
   });
 
   it("sets the six tests beside the chart, in the script's order, at 32 px, apart, each with its tick in its box", () => {
-    expect(S.list.map((row) => row.text)).toEqual(["Frequent decisions", "Measurable impact", "Friction in today's process", "Ready data", "Rules that can be written down", "Contained risk"]);
+    expect(S.list.map((row) => row.text)).toEqual(["Frequent decisions", "Measurable impact", "Delays in the current process", "Suitable data available", "Rules that can be written down", "Limited consequences of error"]);
     expect(S.list[0].check.x).toBeGreaterThan(text(S.chart.readiness.at, S.chart.readiness.text, "start").x + 120);
     for (let i = 1; i < S.list.length; i++) expect(S.list[i].check.y).toBeGreaterThan(bottom(text(S.list[i - 1].words, S.list[i - 1].text, "start")) - 8);
     for (const row of S.list) {

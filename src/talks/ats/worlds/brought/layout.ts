@@ -28,18 +28,16 @@ export const DRAW_FOOT = SAFE.bottom - FOOT_ROOM;
 export const TITLE = { x: 96, y: 152 } as const;
 export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
-/**
- * Where each title breaks, by the word a line ends on, measured in Geist
- * Bold at the kit's tracking. Slide 1 is set at 108 px across the middle of
- * the stage and takes three lines of about 1590, 1630 and 1200 px, each
- * inside the band's 1728. Slide 2 is set at 72 px on two lines, broken at
- * its comma: about 1613 and 1284 px. Slide 2a's title runs about 1520 px,
- * so it is one line.
- */
+/** Phrase boundaries for the revised titles, checked in the rendered deck at 1920 x 1080. */
 const BREAKS: Record<string, string[]> = {
-  title: ["we", "and"],
-  course: ["agents,"],
-  lessons: [],
+  "title": [
+    "we",
+    "and"
+  ],
+  "course": [
+    "course"
+  ],
+  "lessons": []
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

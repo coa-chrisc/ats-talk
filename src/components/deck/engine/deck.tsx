@@ -98,9 +98,8 @@ export function Deck({ deck, remotePath }: { deck: DeckDef; remotePath?: string 
       const director = tools.current?.director;
       if (!director || !live.current) return;
       if (director.busy()) {
-        // A click during a build finishes that build and stops there.
+        // Cancel pending motion by placing its final state, then navigate on this same click.
         director.settle();
-        if (action.type === "next") return;
       }
       const from = at.current;
       const { position: next, via } = move(shape, from, action);

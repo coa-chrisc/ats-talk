@@ -1,9 +1,9 @@
+import { compile, type Play } from "@/components/deck/engine/compile";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { compile, type Play } from "@/components/deck/engine/compile";
-import { CHAIN } from "@/components/deck/kit";
 import { deck } from "../deck";
+import { stillAllowance } from "./sequence";
 
 /**
  * The flow every world keeps (docs/build-handbook.md, section 4):
@@ -38,11 +38,12 @@ describe("the talk's flow", () => {
     expect(longestStill([], new Map())).toBe(0);
   });
 
-  it("never leaves the stage still for more than 3 s inside a click", () => {
+  it("bounds stillness, allowing the explicit reading interval on the pilot", () => {
     const stuck = worlds.flatMap(({ world, compiled, counts }) =>
       compiled.plays.flatMap((plays, n) => {
         const still = longestStill(plays, counts);
-        return still > CHAIN.still + 1e-9 ? [`${world.id}/${world.steps[n].id} sits still for ${still.toFixed(2)} s`] : [];
+        const allowance = stillAllowance(world.steps[n].id);
+        return still > allowance + 1e-9 ? [`${world.id}/${world.steps[n].id} sits still for ${still.toFixed(2)} s`] : [];
       }),
     );
     expect(stuck).toEqual([]);

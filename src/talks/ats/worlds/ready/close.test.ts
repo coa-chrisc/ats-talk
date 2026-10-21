@@ -3,11 +3,11 @@
  * picture and its title go; the title settles, the rule grows under it,
  * line A, line B, and the small line at the foot last, nothing after it.
  */
-import { describe, expect, it } from "vitest";
 import { storyKeys } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
+import { endOf, lastLanding, startOf } from "./harness";
 import { CLOSE } from "./layout-close";
 import { SETTLE } from "./steps-close";
-import { endOf, lastLanding, startOf } from "./harness";
 import { ready } from "./world";
 
 const click = "lets-talk.play";
@@ -19,15 +19,15 @@ describe("29, the close", () => {
     expect(ready.steps.at(-1)!.ground).toBe("navy");
   });
 
-  it("settles the title once the last picture is gone, then grows the rule 0.75 s after it starts", () => {
+  it("settles the title once the last picture is gone, then grows the rule after the title has settled", () => {
     expect(start(CLOSE.title.key)).toBeCloseTo(SETTLE.title, 5);
-    expect(start(CLOSE.rule.key) - start(CLOSE.title.key)).toBeCloseTo(SETTLE.rule, 5);
+    expect(start(CLOSE.rule.key)).toBeGreaterThan(endOf(click, CLOSE.title.key));
   });
 
-  it("brings line A, then line B, then the foot, and ends on the foot", () => {
+  it("reveals both questions and the footer together", () => {
     expect(start(A)).toBeGreaterThan(start(CLOSE.rule.key));
-    expect(start(B)).toBeGreaterThan(start(A));
-    expect(start(CLOSE.foot.key)).toBeGreaterThanOrEqual(endOf(click, B));
+    expect(start(B)).toBe(start(A));
+    expect(start(CLOSE.foot.key)).toBe(start(B));
     expect(endOf(click, CLOSE.foot.key)).toBe(lastLanding(click));
   });
 });

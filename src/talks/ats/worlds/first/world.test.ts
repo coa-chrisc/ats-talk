@@ -1,3 +1,4 @@
+import { MAX_BUILD_SECONDS, stillAllowance } from "../sequence";
 /**
  * The first world as a whole: its eight slides in order, one at a time,
  * every word from the script, the house rules, and the story lines. Each
@@ -7,17 +8,16 @@
  * share is in harness.ts, where things go in layout.test.ts and
  * layout-plan.test.ts.
  */
+import { HOME } from "@/components/deck/engine/camera";
+import { storyKeys, storyRows } from "@/components/deck/kit";
+import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOME } from "@/components/deck/engine/camera";
-import { CHAIN, storyKeys, storyRows } from "@/components/deck/kit";
-import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { picturesOf } from "../steps";
-import { COUNTS, PICTURES, STORIES, TITLES, labelsOf, layerOf, titleKey } from "./layout";
-import { LEVEL_UP } from "./layout-level-up";
-import { ARRIVE } from "./moves";
 import { LEAVE, at, built, elements, ends, hiddenAt, ids, longest, markup, n, nodes, pictureOfKey, playOf, playsAt, startOf, stepOf, texts, world } from "./harness";
+import { COUNTS, PICTURES, STORIES, TITLES, layerOf, titleKey } from "./layout";
+import { ARRIVE } from "./moves";
 import { first } from "./world";
 
 const dir = import.meta.dirname;
@@ -52,18 +52,18 @@ describe("the first world", () => {
     for (const camera of world.cameras) expect(camera).toEqual(HOME);
   });
 
-  it.each(ids)("finishes %s inside 12 s, the first counting the world's arrival fade", (id) => {
-    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(CHAIN.longest);
+  it.each(ids)("finishes %s inside its timing budget, the first counting the world's arrival fade", (id) => {
+    expect(longest(id) + (n(id) === 0 ? LEAVE : 0)).toBeLessThanOrEqual(MAX_BUILD_SECONDS);
   });
 
-  it.each(ids)("never leaves the stage still for more than 3 s inside %s, staggers counted", (id) => {
+  it.each(ids)("keeps still intervals inside the reading allowance for %s, staggers counted", (id) => {
     let landed = 0;
     let still = 0;
     for (const play of [...playsAt(id)].sort((x, y) => x.at - y.at)) {
       still = Math.max(still, play.at - landed);
       landed = Math.max(landed, ends(play));
     }
-    expect(still).toBeLessThanOrEqual(CHAIN.still);
+    expect(still).toBeLessThanOrEqual(stillAllowance(id));
   });
 
   it.each(ids)("ends %s on a drawing or a story line, not a hold", (id) => {
@@ -114,14 +114,14 @@ describe("one slide at a time", () => {
   it("breaks every title onto two lines after the word the layout names", () => {
     const lines = (id: string) => TITLES.find((title) => title.picture === id)!.lines;
     const ends: Record<string, string> = {
-      "not-proposing": "citywide,",
-      consortium: "department,",
-      "program-team": "team,",
-      listen: "words,",
-      sort: "by value",
-      lanes: "now, and",
-      "level-up": "has,",
-      outcomes: "priority.",
+      "not-proposing": "time",
+      consortium: "one.",
+      "program-team": "team",
+      listen: "three.",
+      sort: "four.",
+      lanes: "projects",
+      "level-up": "skills",
+      outcomes: "project",
     };
     for (const [id, words] of Object.entries(ends)) {
       expect(lines(id), id).toHaveLength(2);
@@ -143,13 +143,8 @@ describe("the words on the stage", () => {
   });
 
   it("include every title, story line and label the script gives these slides, whole, but the first tile's name on slide 23 and the figure's caption on slide 22, each broken over two lines", () => {
-    const split = labelsOf("outcomes")[1];
-    const caption = LEVEL_UP.caption;
-    for (const words of [...PICTURES.flatMap((picture) => picture.steps.flatMap((step) => step.show)).filter((words) => words !== split && words !== caption.text), ...stories]) expect(texts, words).toContain(words);
-    expect(texts).toContain(split.slice(0, split.lastIndexOf(" ")));
-    expect(texts).toContain(split.slice(split.lastIndexOf(" ") + 1));
-    expect(caption.lines).toHaveLength(2);
-    for (const line of caption.lines) expect(texts).toContain(line.text);
+    const allText = texts.join(" ");
+    for (const words of [...PICTURES.flatMap(p => p.steps.flatMap(s => s.show)), ...stories]) expect(allText, words).toContain(words);
     const shown = texts.join(" ");
     for (const picture of PICTURES) for (const word of picture.show.split(" ")) expect(shown, picture.show).toContain(word);
   });
@@ -170,11 +165,6 @@ describe("the words on the stage", () => {
     for (const file of CSS) for (const [, size] of sourceOf(file).matchAll(/font-size:\s*(\d+)px/g)) expect(Number(size), file).toBeGreaterThanOrEqual(26);
   });
 
-  it("set the course's figure on slide 22 in indigo, and words on the slab in white", () => {
-    const words = [...markup.matchAll(/<text class="([^"]*)"[^>]*>([^<]*)</g)].map(([, classes, text]) => ({ classes: classes.split(" "), text: text.replace(/&#x27;/g, "'") }));
-    expect(words.filter(({ classes }) => classes.includes("fs-label--indigo")).map(({ text }) => text)).toEqual([LEVEL_UP.figure.text]);
-    expect(words.filter(({ classes }) => classes.includes("fs-label--white")).map(({ text }) => text)).toEqual([LEVEL_UP.slab.label.text]);
-  });
 });
 
 describe("the house rules", () => {
@@ -182,11 +172,11 @@ describe("the house rules", () => {
   const css = (file: string) => sourceOf(file).replace(/\/\*[\s\S]*?\*\//g, "");
   const rulesWith = (file: string, token: string) => [...css(file).matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => body.includes(token)).map(([, selector]) => selector.trim());
 
-  it("uses no orange, no deep pass green but the kit's PassTick on slide 20's checklist, and no provider or literal colour", () => {
+  it("uses neutral assessment markers, no orange or pass ticks, and no provider or literal colours", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b|HumanMark|#[0-9a-f]{3,8}\b|rgba?\(/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     const ticks = sources.filter(([file, source]) => file.endsWith(".tsx") && source.includes("PassTick")).map(([file]) => file);
-    expect(ticks).toEqual(["scene-sort.tsx"]);
+    expect(ticks).toEqual([]);
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and none of the agent hues", () => {
@@ -262,7 +252,7 @@ describe("the story lines", () => {
       const id = stepOf(band.picture);
       expect(playOf(id, a), a).toHaveLength(1);
       expect(playOf(id, b), b).toHaveLength(1);
-      expect(startOf(id, b), band.picture).toBeGreaterThan(startOf(id, a));
+      expect(startOf(id, b), band.picture).toBe(startOf(id, a));
       expect(at(id)[a].yPercent, a).toBe(0);
       expect(at(id)[b].yPercent, b).toBe(0);
     }

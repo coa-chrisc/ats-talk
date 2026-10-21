@@ -28,29 +28,32 @@ export const DRAW_FOOT = SAFE.bottom - FOOT_ROOM;
 export const TITLE = { x: 96, y: 152 } as const;
 export const titleKey = (pictureId: string) => `title.${pictureId}`;
 
-/**
- * Where each title breaks, by the words a line ends on. Titles are set in
- * Geist Bold at 72 px with -0.025 em tracking (kit.css) and must end by
- * x 1824, 1728 px from their left edge; the widths in the comments are
- * measured from the font's advances with that tracking. Slide 11's title
- * is one line of 1233 px and does not break.
- */
+/** Phrase boundaries for the revised titles, checked in the rendered deck at 1920 x 1080. */
 const BREAKS: Record<string, string[]> = {
-  track: [],
-  /** At the full stop: 1606 and 1481 px. */
-  control: ["IT."],
-  /** 1230 and 1236 px, the two halves level. */
-  exists: ["AI work"],
-  /** 1378 and 612 px. */
-  noticed: ["recognized"],
-  /** At the full stop: 1601 and 1556 px. */
-  community: ["AI."],
-  /** 1669 and 1638 px. */
-  infrastructure: ["infrastructure"],
-  /** 1533 and 849 px. */
-  fits: ["the ones"],
-  /** 1576 and 1697 px: the break at "pack," leaves 2369 px on the first line. */
-  fleet: ["the way"],
+  "track": [
+    "established"
+  ],
+  "control": [
+    "tools"
+  ],
+  "exists": [
+    "have"
+  ],
+  "noticed": [
+    "recognized"
+  ],
+  "community": [
+    "departments"
+  ],
+  "infrastructure": [
+    "infrastructure"
+  ],
+  "fits": [
+    "controls"
+  ],
+  "fleet": [
+    "infrastructure,"
+  ]
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

@@ -1,50 +1,19 @@
-/** Slide 11a's picture: the post with its tick and name, its closed gate on the ground line and the grey paths worn round it, named; the grey gauge with its needle, figure and caption; the stair with its name, caption and climber, the green eye over it with its name, and the indigo figure with its caption. */
 "use client";
-
-import { Part, PassTick } from "@/components/deck/kit";
-import { BIG, CAPTION_PITCH, CLIMBER, CONTROL, EYE, GAUGE } from "./layout-control";
-import { Big, Layer, Rows, StoryOf, Stroke, Words } from "./parts";
-import { ClimbStep, Climber, Eye, FencePost, Gate, Gauge, WornPath } from "./parts-figures";
-
-const C = CONTROL;
-const G = C.gauge;
-const S = C.stair;
-
-export function ControlMarks() {
-  return (
-    <Part id={C.marks}>
-      {C.paths.map((path) => (
-        <WornPath key={path.key} id={path.key} d={path.d} />
-      ))}
-      <Stroke id={C.ground.key} from={{ x: C.ground.x0, y: C.ground.y }} to={{ x: C.ground.x1, y: C.ground.y }} className="sn-floor" />
-      <FencePost id={C.post.key} x={C.post.x} w={C.post.w} top={C.post.top} foot={C.post.foot} />
-      <PassTick id={C.post.tick.key} at={C.post.tick.at} r={C.post.tick.r} />
-      <Words id={C.post.name.key} at={C.post.name.at} text={C.post.name.text} anchor="start" size="text" strong />
-      <Gate id={C.gate.key} at={C.gate.at} bars={C.gate.bars} latch={C.gate.latch} />
-      <Words id={C.shadow.key} at={C.shadow.at} text={C.shadow.text} anchor="start" size="text" strong />
-      <Words id={C.shadow.caption.key} at={C.shadow.caption.at} text={C.shadow.caption.text} anchor="start" soft />
-      <Gauge id={G.key} track={G.track} reached={{ id: G.reached.key, d: G.reached.d }} needle={{ id: G.needle.key }} cx={G.cx} cy={G.cy} length={GAUGE.needle} hub={GAUGE.hub} />
-      <Big id={G.figure.key} at={G.figure.at} text={G.figure.text} className="sn-gauge-figure" />
-      <Rows id={G.caption.key} at={G.caption.at} rows={G.caption.rows} pitch={CAPTION_PITCH} soft />
-      <Stroke id={S.floor.key} from={{ x: S.floor.x0, y: S.floor.y }} to={{ x: S.floor.x1, y: S.floor.y }} className="sn-floor" />
-      {S.steps.map((step) => (
-        <ClimbStep key={step.key} id={step.key} at={step.at} />
-      ))}
-      <Words id={S.name.key} at={S.name.at} text={S.name.text} anchor="start" size="text" strong />
-      <Words id={S.caption.key} at={S.caption.at} text={S.caption.text} anchor="start" soft />
-      <Climber id={C.climber.key} at={C.climber.at} w={CLIMBER.w} h={CLIMBER.h} />
-      <Eye id={C.eye.key} at={C.eye.at} w={EYE.w} h={EYE.h} iris={EYE.iris} pupil={EYE.pupil} />
-      <Words id={C.eye.name.key} at={C.eye.name.at} text={C.eye.name.text} anchor="start" size="text" strong />
-      <Rows id={C.big.key} at={C.big.at} rows={C.big.rows} pitch={BIG.pitch} anchor="end" size="text" extra="sn-big" />
-      <Rows id={C.big.caption.key} at={C.big.caption.at} rows={C.big.caption.rows} pitch={CAPTION_PITCH} anchor="end" soft />
-    </Part>
-  );
-}
-
-export function ControlHtml() {
-  return (
-    <Layer id={C.html}>
-      <StoryOf picture="control" />
-    </Layer>
-  );
-}
+import { Part } from "@/components/deck/kit";
+import { shown } from "../../script/find";
+import { DrawingLabel as L, Ink, Sketch } from "../story-drawing";
+import { contentTop } from "./layout";
+import { Layer, StoryOf } from "./parts";
+const w=shown("control","play");
+const t=contentTop("control");
+export function ControlMarks(){return <Part id="control.marks">
+<g data-build="control.need"><Sketch kind="person" x={205} y={t+165}/><L text={w[0]} x={205} y={t+264} strong/><L text={w[1]} x={205} y={t+304} width={320}/></g>
+<Ink id="control.fork" d={`M280 ${t+165}H410Q450 ${t+165} 470 ${t+100}T560 ${t+62}H695M410 ${t+165}Q450 ${t+165} 470 ${t+230}T560 ${t+280}H695`}/>
+<g data-build="control.approved"><Sketch kind="tools" x={770} y={t+62}/><L text={w[2]} x={960} y={t+28} width={520} strong/><L text={w[3]} x={960} y={t+124} width={520}/></g>
+<Ink id="control.use" d={`M1240 ${t+62}h125m-13-10l13 10-13 10`}/>
+<g data-build="control.visibility"><Sketch kind="eye" x={1570} y={t+62}/><L text={w[8]} x={1570} y={t+124} strong/><L text={w[9]} x={1570} y={t+162} width={400}/></g>
+<g data-build="control.request"><Sketch kind="document" x={770} y={t+280}/><L text={w[4]} x={960} y={t+247} width={520} strong/><L text={w[5]} x={960} y={t+342} width={520}/></g>
+<Ink id="control.review-path" d={`M1240 ${t+280}h125m-13-10l13 10-13 10`}/>
+<g data-build="control.review"><Sketch kind="magnify" x={1570} y={t+280}/><L text={w[6]} x={1570} y={t+342} width={460} strong/><L text={w[7]} x={1570} y={t+380} width={460}/></g>
+</Part>;}
+export function ControlHtml(){return <Layer id="control.html"><StoryOf picture="control"/></Layer>;}

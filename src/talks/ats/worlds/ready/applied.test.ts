@@ -5,11 +5,11 @@
  * corner; line A with the first tile, line B with the third; the slide ends
  * on the last tick.
  */
-import { describe, expect, it } from "vitest";
 import { storyKeys } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
+import { at, endOf, lastLanding, showsAfter, startOf } from "./harness";
 import { APPLIED } from "./layout-applied";
 import { TILES } from "./steps-applied";
-import { at, endOf, lastLanding, showsAfter, startOf } from "./harness";
 
 const click = "applied.play";
 const A = APPLIED;
@@ -17,15 +17,15 @@ const [LINE_A, LINE_B] = storyKeys("story.applied", 2);
 const start = (key: string) => startOf(click, key);
 
 describe("28, the four lessons applied", () => {
-  it("draws the panels left to right, each numbered and named before its edge has closed", () => {
+  it("reveals the familiar panels together, each numbered and named", () => {
     const starts = A.panels.map((panel) => start(panel.key));
     expect([...starts].sort((a, b) => a - b)).toEqual(starts);
-    expect(new Set(starts).size).toBe(4);
+    expect(new Set(starts).size).toBe(1);
     for (const panel of A.panels) {
       expect(at(click)[panel.key]["--d"]).toBe(1);
-      expect(start(panel.numeral.key)).toBeGreaterThan(start(panel.key));
+      expect(start(panel.numeral.key)).toBe(start(panel.key));
       expect(start(panel.numeral.key)).toBeLessThan(endOf(click, panel.key));
-      expect(start(panel.name.key)).toBeGreaterThan(start(panel.numeral.key));
+      expect(start(panel.name.key)).toBe(start(panel.numeral.key));
       expect(start(panel.name.key)).toBeLessThan(endOf(click, panel.key));
     }
   });
@@ -45,12 +45,12 @@ describe("28, the four lessons applied", () => {
     });
   });
 
-  it("brings line A with the first tile and line B with the third", () => {
-    expect(start(LINE_A)).toBeCloseTo(start(A.panels[0].tile.key), 5);
-    expect(start(LINE_B)).toBeCloseTo(start(A.panels[2].tile.key), 5);
+  it("reveals both supporting sentences after the last tick", () => {
+    expect(start(LINE_A)).toBeGreaterThan(endOf(click, A.panels[3].tick.key));
+    expect(start(LINE_B)).toBe(start(LINE_A));
   });
 
-  it("ends on the last tick", () => {
-    expect(endOf(click, A.panels[3].tick.key)).toBe(lastLanding(click));
+  it("ends on the supporting text after the last tick", () => {
+    expect(endOf(click, LINE_B)).toBe(lastLanding(click));
   });
 });

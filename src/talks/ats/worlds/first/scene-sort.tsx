@@ -7,8 +7,8 @@
  */
 "use client";
 
-import { Part, PassTick } from "@/components/deck/kit";
-import { DOT_R, LIST_BOX, SORT } from "./layout-sort";
+import { Part } from "@/components/deck/kit";
+import { DOT_R, SORT } from "./layout-sort";
 import { Layer, StoryOf, Words } from "./parts";
 
 const S = SORT;
@@ -37,9 +37,7 @@ export function SortMarks() {
           </text>
         </g>
       ))}
-      {S.list.map((row) => (
-        <PassTick key={row.tick.key} id={row.tick.key} at={row.tick.at} r={LIST_BOX / 2 - 2} />
-      ))}
+
     </Part>
   );
 }

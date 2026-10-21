@@ -41,14 +41,30 @@ export const titleKey = (pictureId: string) => `title.${pictureId}`;
  * is 1680 px or less.
  */
 const BREAKS: Record<string, string[]> = {
-  "not-proposing": ["citywide,"],
-  consortium: ["department,"],
-  "program-team": ["team,"],
-  listen: ["words,"],
-  sort: ["by value"],
-  lanes: ["now, and"],
-  "level-up": ["has,"],
-  outcomes: ["priority."],
+  "not-proposing": [
+    "time"
+  ],
+  "consortium": [
+    "one."
+  ],
+  "program-team": [
+    "team"
+  ],
+  "listen": [
+    "three."
+  ],
+  "sort": [
+    "four."
+  ],
+  "lanes": [
+    "projects"
+  ],
+  "level-up": [
+    "skills"
+  ],
+  "outcomes": [
+    "project"
+  ]
 };
 
 export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: titleKey(picture.id), lines: breakAfter(picture.show, ...(BREAKS[picture.id] ?? [])) }));

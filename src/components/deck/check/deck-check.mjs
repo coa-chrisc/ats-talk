@@ -3,7 +3,7 @@
  * is the same however the step was reached: stepped to with its build
  * playing, cut back to, and loaded cold at its address. It also proves that
  * every part a step names exists (the persistent layer's too), that a second
- * press during a build never skips a step and leaves nothing to land late,
+ * press during a build advances once and leaves nothing to land late,
  * that a jump to either end lands on the picture that was played to, that the site's page transition never runs, that the notes
  * screen drives the deck, that the on-screen back and forward buttons each move exactly one step (and never also
  * count as a click on the stage, or keep the keyboard's Space for themselves), and it times every build's frames.
@@ -34,8 +34,8 @@ const sizes = option("sizes", "1920x1080,1366x768,1280x720").split(",").map((siz
 /** Pixels that may differ between two pictures of one step, as a share of the frame, and how far a channel must move to count. */
 const TOLERANCE = 0.0005;
 const CHANNEL = 16;
-/** Longer than any build, in ms: how long to wait before deciding a build cut short left nothing behind it. A click plays a chain of up to 12 s (kit CHAIN.longest), so 12.5 s. */
-const LONGEST_BUILD = 12500;
+/** Longer than any build, in ms: how long to wait before deciding a build cut short left nothing behind it. A click plays a chain of up to 24 s for the ATS reading-first pilot, so 24.5 s. */
+const LONGEST_BUILD = 24500;
 
 async function loadPlaywright() {
   try {
@@ -166,24 +166,24 @@ async function checkSize(browser, name, [width, height]) {
   }
   console.log(`  back:   ${total - 1} steps cut back to, worst difference ${percent(worstBack)}`);
 
-  // A second press during a build finishes it and stops; a held key steps once.
+  // Every press advances once, even during a build; a held key steps once.
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowRight");
   const afterDouble = await page.evaluate(() => [window.__deck.number(), window.__deck.busy()]);
-  if (afterDouble[0] !== 2 || afterDouble[1]) fail(where, `two quick presses left the deck on ${afterDouble[0]}${afterDouble[1] ? ", still playing" : ""}, not settled on 2`);
+  if (afterDouble[0] !== 3) fail(where, `two quick presses left the deck on ${afterDouble[0]}, not 3`);
   // Nothing the cut-short build had scheduled may still land: wait out the longest build and look again.
   await page.waitForTimeout(LONGEST_BUILD);
-  const shareLate = await difference(page, forward[1], await shot(page));
-  if (shareLate > TOLERANCE) fail(where, `a build finished early changed afterwards: step 2 differs from the step played through by ${percent(shareLate)}`);
+  const shareLate = await difference(page, forward[2], await shot(page));
+  if (shareLate > TOLERANCE) fail(where, `a build finished early changed afterwards: step 3 differs from the step played through by ${percent(shareLate)}`);
   await page.keyboard.down("PageDown");
   await page.keyboard.down("PageDown");
   await page.keyboard.down("PageDown");
   await page.keyboard.up("PageDown");
   await settled(page);
-  if ((await number(page)) !== 3) fail(where, `a held key moved the deck to ${await number(page)}, not 3`);
-  else console.log("  keys:   a press during a build completes it and stops; a held key steps once");
+  if ((await number(page)) !== 4) fail(where, `a held key moved the deck to ${await number(page)}, not 4`);
+  else console.log("  keys:   a press during a build advances once; a held key steps once");
   const pressed = await shot(page);
-  const shareSettled = await difference(page, forward[2], pressed);
+  const shareSettled = await difference(page, forward[3], pressed);
   if (shareSettled > TOLERANCE) fail(where, `a build finished early differs from one played through by ${percent(shareSettled)}`);
 
   // Jumps: the far ends of the deck, reached in one move, are the pictures that were played to. This is where a
@@ -240,7 +240,7 @@ async function checkNotes(browser, name) {
   await notes.waitForSelector(".deck-notes__place:has-text('1 of')");
   await notes.click(".deck-notes__forward");
   await notes.waitForSelector(".deck-notes__place:has-text('2 of')");
-  // Let the build land first: a tap during a build finishes it and stops there.
+  // Let the build land before testing touch navigation.
   await settled(page);
   await notes.dblclick(".deck-notes__forward");
   await notes.waitForSelector(".deck-notes__place:has-text('3 of')");

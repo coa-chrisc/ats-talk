@@ -57,12 +57,12 @@ const placeOn = (i: number): Point => ({ x: STEPS[i].at.x + ON_TREAD - BOX.x, y:
 /**
  * The tick: 18 px across its middle, 44 px right of the box's place, 30 px
  * over the tread. Its caption (about 230 px at 26 px semibold in Geist)
- * reaches past the first step's right end, so its middle sits 58 px over
- * the tick's, its foot 8 px over the second step's tread.
+ * reaches past the first step's right end, so its middle sits 104 px over
+ * the tick's to clear the box on the second tread.
  */
 const TICK_R = 18;
 const tickOn = (i: number): Point => ({ x: STEPS[i].at.x + ON_TREAD + BOX.w + 44, y: STEPS[i].tread - 30 });
-const CAPTION_UP = 58;
+const CAPTION_UP = 104;
 /**
  * On its way from the first step to the second the box rises until its
  * foot is 16 px over the caption's top, so it passes over the caption and

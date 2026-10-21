@@ -15,7 +15,7 @@ import { COUNTS, PICTURES, layerOf, titleKey } from "./layout";
 export const ARRIVE = 0.35;
 
 /** A slide's beats as its one click's moves, timed by the kit's chain. */
-export const play = (...beats: ChainBeat[]) => ({ moves: chain(beats, { counts: COUNTS }) });
+export const play = (...beats: ChainBeat[]) => ({ counts: COUNTS, moves: chain(beats, { counts: COUNTS }) });
 
 /** The click's first beat: the slide before puts its whole picture away at once, and the title changes. */
 export const into = (pictureId: string): ChainBeat => {

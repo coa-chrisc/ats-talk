@@ -7,8 +7,7 @@
  * (steps-track.ts, steps-control.ts, steps-exists.ts, steps-noticed.ts,
  * steps-infrastructure.ts, steps-fits.ts, steps-fleet.ts).
  */
-import type { PartMove } from "@/components/deck/engine/types";
-import type { MoveOpts } from "@/components/deck/engine/types";
+import type { MoveOpts, PartMove } from "@/components/deck/engine/types";
 import { EASE, chain, hide, lines, retitle, to, type ChainBeat } from "@/components/deck/kit";
 import type { Beat } from "../steps";
 import { COUNTS } from "./counts";
@@ -18,7 +17,7 @@ import { PICTURES, layerOf, titleKey } from "./layout";
 export const ARRIVE = 0.35;
 
 /** A slide's beats as its one click's moves, timed by the kit's chain. */
-export const play = (beats: readonly ChainBeat[]): Beat => ({ moves: chain(beats, { counts: COUNTS }) });
+export const play = (beats: readonly ChainBeat[]): Beat => ({ counts: COUNTS, moves: chain(beats, { counts: COUNTS }) });
 
 /** The click's first beat: the slide before puts its whole picture away at once, and the title changes. The world's first slide has nothing before it: its title comes up as the world arrives. */
 export const into = (pictureId: string): ChainBeat => {

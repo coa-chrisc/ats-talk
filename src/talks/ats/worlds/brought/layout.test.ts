@@ -5,12 +5,12 @@
  * and apart; slide 2a's four panels on the geometry slide 28 shares, and
  * the route under them with its stops apart.
  */
-import { describe, expect, it } from "vitest";
 import { STAGE, STORY, box, type Box, type Point } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
+import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 import { CREDIT_LINE, DRAW_FOOT, LABEL_LINE, LEAD_LINE, OPENING, SAFE, TEXT_LINE, bandFoot, contentTop, titleOf, wordsWidth } from "./layout";
 import { BENCH, COURSE, TILE } from "./layout-course";
 import { LESSONS, PANEL, ROUTE, TOP } from "./layout-lessons";
-import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 
 const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(words, 32), TEXT_LINE, anchor);
 const F = LESSONS;
@@ -161,11 +161,11 @@ describe("slide 2a, the four panels and the route", () => {
     }
   });
 
-  it("sets each numeral 28 px into its panel's top left on its 72 px line, and its name in a 340 px column 120 px down", () => {
+  it("sets each numeral 28 px into its panel's top left on its 72 px line, and its name in a 340 px column 104 px down", () => {
     for (const panel of F.panels) {
       expect(panel.numeral.at).toEqual({ x: panel.at.x + 28, y: panel.at.y + 28 + 36 });
       expect(panel.name.at.x).toBe(panel.at.x + 28);
-      expect(panel.name.at.y).toBe(panel.at.y + 120);
+      expect(panel.name.at.y).toBe(panel.at.y + 104);
       expect(panel.name.at.w).toBe(340);
       expect(PANEL.numeral).toBe(56);
     }

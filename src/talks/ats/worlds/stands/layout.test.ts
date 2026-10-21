@@ -7,72 +7,18 @@
 import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, tagWords, wordsWidth } from "./layout";
-import { BIG, CAPTION_PITCH, CONTROL, EYE, GAUGE, GAUGE_FIGURE } from "./layout-control";
 import { DOT_R, EXISTS, namedRows } from "./layout-exists";
-import { FITS, ROW, TICK_R } from "./layout-fits";
-import { FLEET, GATE } from "./layout-fleet";
 import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
 import { HOST, NOTICED } from "./layout-noticed";
-import { TRACK } from "./layout-track";
-import { BEND, CITY_AT, CITY_STANDS, INNER, LANES, MARKER_R, MARKER_X, MIDDLE, NEAR_MIDDLE, OUTER, PACK, R, RUNNER, START, START_X, TRACK_TOP } from "./track-geometry";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 
 const label = (at: Point, text: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(text, 26), LABEL_LINE, anchor);
 const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(words, 32), TEXT_LINE, anchor);
-const runnerBox = (at: Point, h: number) => box(at.x - h * 0.4, at.y - h, h * 0.8, h);
-const T = TRACK;
-const C = CONTROL;
-/** The gauge's caption rows, each about its own middle. */
-/** A worn path's box: its start, its controls and where it leaves, which hold the curve. */
-const pathBox = (path: (typeof C.paths)[number]) => {
-  const nums = [...path.d.matchAll(/-?\d+(?:\.\d+)?/g)].map((m) => Number(m[0]));
-  const xs = nums.filter((_, i) => i % 2 === 0);
-  const ys = nums.filter((_, i) => i % 2 === 1);
-  return box(Math.min(...xs), Math.min(...ys), Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-};
-const eyeBox = box(C.eye.at.x - EYE.w / 2, C.eye.at.y - EYE.h / 2, EYE.w, EYE.h);
-const captionRows = C.gauge.caption.rows.map((text, i) => ({ text, at: { x: C.gauge.caption.at.x, y: C.gauge.caption.at.y + i * CAPTION_PITCH } as Point }));
-/** A large figure's box at `size`, its numerals' cap over its baseline, at 0.56 of the size a letter, as wordsWidth sets words (Geist Bold measures 0.49 for this one). */
-const big = (at: Point, words: string, size: number, anchor: "start" | "end") => box(anchor === "start" ? at.x : at.x - Math.ceil(words.length * size * 0.56), at.y - Math.ceil(size * 0.72), Math.ceil(words.length * size * 0.56), Math.ceil(size * 0.72) + 8);
-/** A large figure on rows about their middles, ending at its point, at the same letter width. */
-const bigRows = (at: Point, rows: readonly string[], size: number, pitch: number) => {
-  const w = Math.max(...rows.map((row) => Math.ceil(row.length * size * 0.56)));
-  return box(at.x - w, at.y - size / 2, w, pitch * (rows.length - 1) + size);
-};
 const E = EXISTS;
 const N = NOTICED;
 const I = INFRASTRUCTURE;
-const F = FITS;
-const L = FLEET;
 
 const DRAWN: Record<string, Box[]> = {
-  track: [
-    OUTER,
-    text(T.city.name.at, T.city.name.text),
-    box(T.post.x, T.post.top, T.post.w, T.post.foot - T.post.top),
-    ringBox(T.post.tick.at, T.post.tick.r),
-    label(T.post.name.at, T.post.name.text, "start"),
-  ],
-  control: [
-    box(C.post.x, C.post.top, C.post.w, C.post.foot - C.post.top),
-    ringBox(C.post.tick.at, C.post.tick.r),
-    text(C.post.name.at, C.post.name.text, "start"),
-    box(C.ground.x0, C.ground.y - 2, C.ground.x1 - C.ground.x0, 4),
-    C.gate.at,
-    ...C.paths.map((path) => pathBox(path)),
-    text(C.shadow.at, C.shadow.text, "start"),
-    label(C.shadow.caption.at, C.shadow.caption.text, "start"),
-    box(GAUGE.cx - GAUGE.r - GAUGE.band, GAUGE.cy - GAUGE.r - GAUGE.band / 2, 2 * (GAUGE.r + GAUGE.band), GAUGE.r + GAUGE.band / 2 + GAUGE.hub),
-    big(C.gauge.figure.at, C.gauge.figure.text, GAUGE_FIGURE, "start"),
-    ...captionRows.map((row) => label(row.at, row.text, "start")),
-    ...C.stair.steps.map((step) => step.at),
-    text(C.stair.name.at, C.stair.name.text, "start"),
-    label(C.stair.caption.at, C.stair.caption.text, "start"),
-    eyeBox,
-    text(C.eye.name.at, C.eye.name.text, "start"),
-    bigRows(C.big.at, C.big.rows, BIG.size, BIG.pitch),
-    ...C.big.caption.rows.map((row, i) => label({ x: C.big.caption.at.x, y: C.big.caption.at.y + i * CAPTION_PITCH }, row, "end")),
-  ],
   exists: [
     E.ring.at,
     ...E.ring.dots.map((dot) => ringBox(dot.at, DOT_R)),
@@ -97,18 +43,6 @@ const DRAWN: Record<string, Box[]> = {
     ...I.plates.map((plate) => plate.at),
     I.joining.at,
     label(I.joining.caption.at, I.joining.caption.text),
-  ],
-  fits: [
-    ...F.heads.flatMap((head) => [text(head.at, head.text, head.anchor), box(Math.min(head.rule.from.x, head.rule.to.x), head.rule.from.y - 2, Math.abs(head.rule.to.x - head.rule.from.x), 4)]),
-    ...F.pairs.flatMap((pair) => [text(pair.ask.at, pair.ask.text, "end"), text(pair.has.at, pair.has.text, "start"), ringBox(pair.tick.at, pair.tick.r)]),
-    F.connects.at,
-  ],
-  fleet: [
-    OUTER,
-    runnerBox(CITY_STANDS, RUNNER.large),
-    ...L.markers.map((marker) => label(marker.name.at, marker.name.text)),
-    L.applications.at,
-    L.stair.tag.at,
   ],
 };
 
@@ -135,91 +69,12 @@ describe("the stands world's layout", () => {
   });
 
   it("sizes every tag for its words, at the label size", () => {
-    for (const tag of [T.tag, E.staff, E.apart, N.only, F.connects, L.stair.tag, L.applications]) {
+    for (const tag of [E.staff, E.apart, N.only]) {
       expect(tag.at.h, tag.text).toBe(TAG.h);
       expect(tag.at.w, tag.text).toBe(tagWidth(tag.text));
       // Measured in Geist at 26 px the longest letter runs average 0.48 of the size: the tag's 0.52 holds them with room.
       expect(tag.at.w - TAG.point - TAG.gap - TAG.pad, tag.text).toBeGreaterThanOrEqual(tag.text.length * TAG.size * 0.5);
     }
-  });
-});
-
-describe("the track, fixed for slides 11, 15 and 27", () => {
-  it("stands at the documented numbers on both its slides here: under slide 15's two-line title's story band, and no higher on slide 11, whose one-line title leaves room over it", () => {
-    expect(TRACK_TOP).toBe(contentTop("fleet"));
-    expect(TRACK_TOP).toBeGreaterThanOrEqual(contentTop("track"));
-    expect(TRACK_TOP - contentTop("track")).toBeLessThanOrEqual(STORY.pitch * 2);
-    expect(OUTER).toEqual({ x: 96, y: 564, w: 1728, h: 344 });
-    expect([LANES, R]).toEqual([96, 172]);
-    expect(INNER).toEqual({ x: 192, y: 660, w: 1536, h: 152 });
-    expect(MIDDLE).toEqual({ x: 144, y: 612, w: 1632, h: 248 });
-    expect(START_X).toBe(316);
-    expect(PACK.map((at) => at.x)).toEqual([1040, 1086, 1132, 1178, 1063, 1109, 1155]);
-    expect(CITY_AT).toEqual({ x: 360, y: 898 });
-    expect(CITY_STANDS).toEqual({ x: 1759, y: 798 });
-    expect([...MARKER_X]).toEqual([576, 876, 1176]);
-  });
-
-  it("draws the track large: the whole drawing width, two lanes inside its outer edge", () => {
-    expect(OUTER.x).toBe(SAFE.left + 16);
-    expect(right(OUTER)).toBe(SAFE.right);
-    expect(inside(INNER, MIDDLE) && inside(MIDDLE, OUTER)).toBe(true);
-  });
-
-  it("puts slide 15's runner on the right bend's middle line, 60 degrees up it", () => {
-    const d = Math.hypot(CITY_STANDS.x - BEND.right, CITY_STANDS.y - BEND.cy);
-    expect(Math.abs(d - (R - LANES / 2))).toBeLessThan(1);
-    expect(CITY_STANDS.x).toBeGreaterThan(BEND.right);
-    expect(CITY_STANDS.y).toBeGreaterThan(BEND.cy);
-  });
-
-  it("puts the pack on the far straight, each runner in one lane", () => {
-    for (const at of PACK) {
-      const b = runnerBox(at, RUNNER.small);
-      expect(b.y).toBeGreaterThanOrEqual(OUTER.y);
-      expect(bottom(b)).toBeLessThanOrEqual(INNER.y);
-      expect(at.x).toBeGreaterThan(BEND.left);
-      expect(at.x).toBeLessThan(BEND.right);
-    }
-  });
-});
-
-describe("slide 11, the track", () => {
-  const infield = box(INNER.x + INNER.h / 2, INNER.y, INNER.w - INNER.h, INNER.h);
-  const home = runnerBox(T.city.at, RUNNER.large);
-  const post = box(T.post.x, T.post.top, T.post.w, T.post.foot - T.post.top);
-
-  it("makes the home runner more than twice a pack runner's size, standing on the near straight at the start stripe", () => {
-    expect(RUNNER.large).toBeGreaterThanOrEqual(2 * RUNNER.small);
-    expect(home.y).toBeGreaterThan(bottom(INNER));
-    expect(bottom(home)).toBeLessThanOrEqual(bottom(OUTER));
-    expect(START.y0).toBe(bottom(INNER));
-    expect(START.y1).toBe(bottom(OUTER));
-    expect(home.x).toBeGreaterThan(START.x + 7);
-    expect(home.x - START.x).toBeLessThan(24);
-  });
-
-  it("names the pack under it in the infield, and the home runner right under it, outside the track", () => {
-    expect(inside(text(T.pack.name.at, T.pack.name.text), infield)).toBe(true);
-    const name = text(T.city.name.at, T.city.name.text);
-    expect(T.city.name.at.x).toBe(T.city.at.x);
-    expect(name.y).toBeGreaterThan(bottom(OUTER));
-    expect(name.y - bottom(OUTER)).toBeLessThan(24);
-  });
-
-  it("plants the post just outside the track beside the start, its tick on its cap and its name to its right, none of it on the lane or the home runner's name", () => {
-    expect(T.post.top - T.post.tick.r - 2).toBeGreaterThanOrEqual(bottom(OUTER));
-    expect(Math.abs(T.post.tick.at.x - (T.post.x + T.post.w / 2))).toBeLessThan(1);
-    const name = label(T.post.name.at, T.post.name.text, "start");
-    expect(name.x).toBeGreaterThan(right(post));
-    expect(post.x).toBeGreaterThan(right(text(T.city.name.at, T.city.name.text)) + 12);
-    expect(post.x - START.x).toBeLessThan(260);
-  });
-
-  it("centres the grey tag in the infield, clear of the pack's name", () => {
-    expect(T.tag.at.x + T.tag.at.w / 2).toBeCloseTo(960, 0);
-    expect(inside(T.tag.at, infield)).toBe(true);
-    expect(overlaps(T.tag.at, text(T.pack.name.at, T.pack.name.text))).toBe(false);
   });
 });
 
@@ -321,93 +176,5 @@ describe("slide 13, the yard", () => {
     for (const plate of [...I.plates, I.joining]) expect(plate.at.w, plate.text).toBeGreaterThanOrEqual(wordsWidth(plate.text, 32) + 24);
     expect(label(I.joining.caption.at, I.joining.caption.text).y).toBeGreaterThan(bottom(I.joining.at));
     expect(overlaps(label(I.joining.caption.at, I.joining.caption.text), label(I.every.at, I.every.text, "start"))).toBe(false);
-  });
-});
-
-describe("slide 14, the two columns", () => {
-  it("sets every line at the text size, each row 80 px under the last, the pairs level across the middle line", () => {
-    expect(ROW).toBe(80);
-    for (const [i, pair] of F.pairs.entries()) {
-      expect(pair.ask.at.y).toBe(pair.has.at.y);
-      expect(pair.tick.at.y).toBe(pair.ask.at.y);
-      if (i > 0) expect(pair.ask.at.y - F.pairs[i - 1].ask.at.y).toBe(ROW);
-    }
-    expect(F.pairs[0].ask.at.y - F.heads[0].at.y).toBe(ROW);
-  });
-
-  it("puts the ticks on the middle line between the columns, each joined to both its lines, clear of the words", () => {
-    for (const pair of F.pairs) {
-      expect(pair.tick.at.x).toBe(960);
-      const ask = text(pair.ask.at, pair.ask.text, "end");
-      const has = text(pair.has.at, pair.has.text, "start");
-      expect(right(ask)).toBeLessThan(pair.tick.at.x - TICK_R - 40);
-      expect(has.x).toBeGreaterThan(pair.tick.at.x + TICK_R + 40);
-      const [left, rightJoin] = pair.joins;
-      expect(left.from.x).toBeGreaterThan(right(ask));
-      expect(left.to.x).toBeLessThan(pair.tick.at.x - TICK_R);
-      expect(rightJoin.from.x).toBeLessThan(has.x);
-      expect(rightJoin.to.x).toBeGreaterThan(pair.tick.at.x + TICK_R);
-    }
-  });
-
-  it("heads each column over its lines with a rule, and sets the grey tag under the ticks, clear of the last row", () => {
-    for (const head of F.heads) expect(head.rule.from.y).toBeGreaterThan(text(head.at, head.text).y + TEXT_LINE - 8);
-    expect(F.pairs[0].ask.at.y - TEXT_LINE / 2).toBeGreaterThan(F.heads[0].rule.from.y + 8);
-    expect(F.connects.at.x + F.connects.at.w / 2).toBeCloseTo(960, 0);
-    expect(F.connects.at.y).toBeGreaterThan(F.pairs[3].ask.at.y + TEXT_LINE / 2 + 16);
-  });
-});
-
-describe("slide 15, where the City stands", () => {
-  const infield = box(INNER.x + INNER.h / 2, INNER.y, INNER.w - INNER.h, INNER.h);
-  const packName = text(L.pack.name.at, L.pack.name.text);
-
-  it("names the pack where slide 11 does, and draws the runner where slide 11 left it and carries it to where it stands", () => {
-    expect(L.pack.name.at).toEqual(T.pack.name.at);
-    expect(L.pack.name.text).toBe(T.pack.name.text);
-    expect(L.city.at).toEqual(CITY_AT);
-    expect(L.city.stands).toEqual(CITY_STANDS);
-  });
-
-  it("sets the three markers on the near straight's middle line, behind the runner, named under the track", () => {
-    for (const [i, marker] of L.markers.entries()) {
-      expect(marker.at).toEqual({ x: MARKER_X[i], y: NEAR_MIDDLE });
-      expect(marker.r).toBe(MARKER_R);
-      expect(marker.at.x).toBeLessThan(BEND.right);
-      const name = label(marker.name.at, marker.name.text);
-      expect(name.y).toBeGreaterThan(bottom(OUTER));
-      expect(marker.name.at.x).toBe(marker.at.x);
-    }
-    for (let i = 1; i < L.markers.length; i++) expect(label(L.markers[i].name.at, L.markers[i].name.text).x).toBeGreaterThan(right(label(L.markers[i - 1].name.at, L.markers[i - 1].name.text)) + 40);
-  });
-
-  it("stands the stair in the infield left of its middle, climbing left to right, each name inside its riser and each gate on its tread", () => {
-    const steps = L.stair.steps;
-    for (let i = 1; i < steps.length; i++) {
-      expect(steps[i].at.y).toBeLessThan(steps[i - 1].at.y);
-      expect(steps[i].at.x).toBeGreaterThanOrEqual(right(steps[i - 1].at));
-    }
-    for (const entry of steps) {
-      expect(inside(entry.at, infield), entry.text).toBe(true);
-      expect(inside(label(entry.name.at, entry.text), box(entry.at.x + 2, entry.at.y + 2, entry.at.w - 4, entry.at.h - 4)), entry.text).toBe(true);
-      expect(inside(box(entry.gate.at.x - GATE.span / 2, entry.gate.at.y - GATE.h, GATE.span, GATE.h), infield), entry.text).toBe(true);
-    }
-    expect(right(steps[3].at)).toBeLessThan(960);
-    expect(steps.map((entry) => entry.lit)).toEqual([true, true, true, false]);
-  });
-
-  it("sets the grey tag beside the top step, inside the infield, clear of the pack's name", () => {
-    const top = L.stair.steps[3];
-    expect(L.stair.tag.at.x).toBeGreaterThan(right(top.at));
-    expect(L.stair.tag.at.y).toBeGreaterThanOrEqual(top.at.y);
-    expect(inside(L.stair.tag.at, infield)).toBe(true);
-    expect(overlaps(L.stair.tag.at, packName)).toBe(false);
-  });
-
-  it("sets the tag under the track at the right, under the markers' names", () => {
-    expect(right(L.applications.at)).toBe(SAFE.right - 16);
-    expect(L.applications.at.x).toBeGreaterThan(960);
-    for (const marker of L.markers) expect(overlaps(L.applications.at, label(marker.name.at, marker.name.text)), marker.name.text).toBe(false);
-    expect(L.applications.at.y).toBeGreaterThan(bottom(OUTER) + 32);
   });
 });

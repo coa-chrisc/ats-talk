@@ -2,12 +2,11 @@
  * Slide 12b, the deck's one two-click slide: where its column, quotes and
  * theme rows go, and how its two clicks play, beat by beat.
  */
-import { describe, expect, it } from "vitest";
 import type { Point } from "@/components/deck/kit";
+import { describe, expect, it } from "vitest";
+import { at, bottom, endOf, playOf, right, startOf, wordsBox } from "./harness";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TEXT_LINE, contentTop, wordsWidth } from "./layout";
 import { COLUMN, COMMUNITY, QUOTE, ROLL, ROLL_ON, THEME, WINDOW } from "./layout-community";
-import { QUOTE_AT } from "./steps-community";
-import { at, before, bottom, endOf, playOf, playsAt, right, startOf, wordsBox } from "./harness";
 
 const C = COMMUNITY;
 const roll = "community.roll";
@@ -87,61 +86,20 @@ describe("slide 12b's layout", () => {
   });
 });
 
-describe("slide 12b's first click, the roll", () => {
-  const [rise] = playOf(roll, C.column.key).filter((play) => "y" in play.on);
-
-  it("rolls the whole column up at one pace, linearly, over 6 s, and settles it in place", () => {
-    expect(rise.ease).toBe("none");
-    expect(rise.duration).toBe(ROLL.seconds);
-    expect(before(roll)[C.column.key].y).toBe(ROLL.from);
-    expect(at(roll)[C.column.key]).toMatchObject({ y: 0, autoAlpha: 1 });
-  });
-
-  it("slides each quote in from the right to its place, in the column's order, as its name rises into view, story line A with the first", () => {
-    for (const [i, quote] of C.quotes.entries()) {
-      const [slide] = playOf(roll, quote.key);
-      expect(slide.at).toBeCloseTo(QUOTE_AT[i], 6);
-      expect(slide.on).toEqual({ autoAlpha: 1, x: 0 });
-      expect(before(roll)[quote.key].x).toBeGreaterThan(0);
-      // Where the name is when its quote lands: risen into the window, 32 px clear of its foot.
-      const y = C.column.names[quote.owner].at.y + ROLL.from * (1 - (slide.at - rise.at) / rise.duration);
-      expect(y).toBeCloseTo(DRAW_FOOT - 32, 6);
-      if (i > 0) expect(slide.at).toBeGreaterThan(QUOTE_AT[i - 1] + 0.3);
+describe("stationary staff voices", () => {
+  it("reveals names and quotes without translating them", () => {
+    for (const key of [C.column.key, ...C.quotes.map(q => q.key)]) {
+      expect(playOf(roll, key).every(p => !("x" in p.on) && !("y" in p.on))).toBe(true);
+      expect(at(roll)[key].autoAlpha).toBe(1);
     }
-    expect(startOf(roll, "story.community.a")).toBeGreaterThan(QUOTE_AT[0]);
-    expect(startOf(roll, "story.community.a")).toBeLessThan(QUOTE_AT[1]);
+    expect(at(roll)["story.community.b"].yPercent).toBe(120);
   });
-
-  it("draws each leader once the column has settled, and ends with every name and quote in place, the themes still to come", () => {
-    for (const quote of C.quotes) expect(startOf(roll, quote.leader.key)).toBeGreaterThanOrEqual(rise.at + rise.duration);
-    const end = at(roll);
-    for (const quote of C.quotes) expect(end[quote.key].autoAlpha, quote.key).toBe(1);
-    for (const theme of C.themes) expect(end[theme.key].autoAlpha, theme.key).toBe(0);
-    expect(end["story.community.b"].yPercent).toBe(120);
-  });
-});
-
-describe("slide 12b's second click, the themes", () => {
-  it("rolls the column, the quotes and the leaders on up out of the window together, linearly, and moves nothing else of the first click", () => {
-    const [on] = playOf(themes, C.block.key);
-    expect(on).toMatchObject({ at: 0, ease: "none", on: { y: ROLL_ON.by } });
-    expect(on.duration).toBe(ROLL_ON.seconds);
-    expect(before(themes)[C.block.key].y).toBe(0);
-    const moved = new Set(playsAt(themes).map((play) => play.key));
-    expect([...moved].filter((key) => key !== C.block.key && !C.themes.some((theme) => key.startsWith(theme.key)) && key !== "story.community.b")).toEqual([]);
-  });
-
-  it("draws the three theme rows into the emptied band one after another, each rule then its words, story line B with the first", () => {
-    const rows = C.themes.map((theme) => startOf(themes, theme.rule.key));
-    expect(rows[0]).toBeGreaterThanOrEqual(ROLL_ON.seconds);
-    for (let i = 1; i < 3; i++) expect(rows[i] - rows[i - 1]).toBeGreaterThanOrEqual(0.6);
-    for (const theme of C.themes) {
-      expect(startOf(themes, theme.key)).toBeGreaterThan(startOf(themes, theme.rule.key));
-      expect(at(themes)[theme.rule.key]["--d"]).toBe(1);
-      expect(at(themes)[theme.key].autoAlpha).toBe(1);
+  it("fades quotes away on the second click before showing themes", () => {
+    expect(playOf(themes, C.block.key)[0].on).toEqual({ autoAlpha: 0 });
+    for (const t of C.themes) {
+      expect(startOf(themes, t.key)).toBeGreaterThan(endOf(themes, C.block.key));
+      expect(at(themes)[t.key].autoAlpha).toBe(1);
     }
-    expect(startOf(themes, "story.community.b")).toBeGreaterThan(rows[0]);
-    expect(startOf(themes, "story.community.b")).toBeLessThan(rows[1]);
-    expect(endOf(themes, C.themes[2].key)).toBeLessThan(12);
+    expect(startOf(themes, "story.community.b")).toBeGreaterThan(Math.max(...C.themes.map(t => endOf(themes, t.key))));
   });
 });

@@ -9,9 +9,10 @@ import type { MoveOpts } from "@/components/deck/engine/types";
 import { step, storyKeys, tell } from "@/components/deck/kit";
 import { PARTS, SCRIPT, type Picture, type WorldId } from "../script";
 import { pictureOf } from "../script/find";
+import { sequence } from "./sequence";
 
 /** What one click does: the whole chain of its picture's beats, written with `chain()` (docs/build-handbook.md, section 4). */
-export type Beat = { moves?: (Move | Move[])[] };
+export type Beat = { moves?: (Move | Move[])[]; counts?: Readonly<Record<string, number>> };
 
 /** A step's id in its world: its picture's id and its own. With the world's id it is the step's address. */
 export const stepId = (pictureId: string, id: string) => `${pictureId}.${id}`;
@@ -30,7 +31,7 @@ export function picture(pictureId: string, beats: Record<string, Beat>, opts: { 
   return steps.map(({ id }) => {
     const beat = beats[id];
     if (!beat) throw new Error(`"${pictureId}" is missing its step "${id}".`);
-    const made = step(stepId(pictureId, id), beat.moves ?? []);
+    const made = step(stepId(pictureId, id), sequence(pictureId, id, (beat.moves ?? []).flat(), beat.counts));
     return opts.ground ? { ...made, ground: opts.ground } : made;
   });
 }

@@ -10,7 +10,7 @@
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { LABEL_LINE, bandFoot, layerOf } from "./layout";
 
-export { LABEL_LINE, bandFoot, labelsOf, round, centreOf, titleKey } from "./layout";
+export { LABEL_LINE,bandFoot,centreOf,labelsOf,round,titleKey } from "./layout";
 
 /** The room a drawing keeps from the story band's last line above it and from the frame's foot below it, so neither reads as part of it. */
 export const ROOM = 40;

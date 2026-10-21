@@ -1,50 +1,18 @@
-/** Slide 8's picture: the four blocks stepping down on their floor, each named; the green arrow up their left with its label; and the dial, its three ticks, its three settings and its needle. */
 "use client";
-
 import { Part } from "@/components/deck/kit";
-import { ENFORCE } from "./layout-enforce";
-import { Arrow, Block, Dial, DialTick, Floor, Needle } from "./parts-draw";
-import { Layer, Note, StoryOf } from "./parts";
-
-const E = ENFORCE;
-const D = E.dial;
-
-export function EnforceMarks() {
-  return (
-    <Part id={E.marks}>
-      {E.steps.map((step) => (
-        <Block key={step.key} id={step.key} at={step.at} />
-      ))}
-      <Floor id={E.floor.key} y={E.floor.y} x0={E.floor.x0} x1={E.floor.x1} />
-      <Arrow id={E.arrow.key} from={{ x: E.arrow.x, y: E.arrow.y0 }} to={{ x: E.arrow.x, y: E.arrow.y1 }} tone="process" />
-      <Dial id={D.key} hub={D.hub} r={D.r} />
-      {D.ticks.map((tick) => (
-        <DialTick key={tick.key} id={tick.key} from={tick.from} to={tick.to} />
-      ))}
-      <Needle id={D.needle.key} hub={D.hub} length={D.needle.length} />
-    </Part>
-  );
-}
-
-/** The arrow's label, the blocks' names and the dial's settings are HTML, so each wraps inside its box. */
-export function EnforceHtml() {
-  return (
-    <Layer id={E.html}>
-      <StoryOf picture="enforce" />
-      <Note id={E.arrow.label.key} at={E.arrow.label.at} align="center" strong>
-        {E.arrow.label.text}
-      </Note>
-      {E.steps.map((step) => (
-        <Note key={step.name.key} id={step.name.key} at={step.name.at} strong>
-          {step.name.text}
-        </Note>
-      ))}
-      {D.settings.map((setting) => (
-        <Note key={setting.key} id={setting.key} at={setting.at} align="center">
-          <b>{setting.name}</b>
-          <span>{setting.caption}</span>
-        </Note>
-      ))}
-    </Layer>
-  );
-}
+import { shown } from "../../script/find";
+import { DrawingLabel as L, Ink, Sketch, drawingProcess } from "../story-drawing";
+import { contentTop } from "./layout";
+import { Layer, StoryOf } from "./parts";
+const w=shown("enforce","play");
+const t=contentTop("enforce");
+export function EnforceMarks(){return <Part id="enforce.marks">
+<g data-build="enforce.request"><Sketch kind="agent" x={180} y={t+83}/><L text={w[0]} x={300} y={t+175} strong/><L text={w[1]} x={300} y={t+211}/></g>
+<Ink id="enforce.approach" d={`M235 ${t+83}h440`}/>
+<g data-build="enforce.packet"><Sketch kind="document" x={300} y={t+83} scale={0.65}/></g>
+<g data-build="enforce.barrier"><path d={`M745 ${t+12}v140M767 ${t+12}v140M726 ${t+25}h60M726 ${t+138}h60`} fill="none" stroke={drawingProcess} strokeWidth={5}/><L text={w[2]} x={755} y={t+175} strong/><L text={w[3]} x={755} y={t+211}/></g>
+<g data-build="enforce.record"><Sketch kind="document" x={1290} y={t+83} scale={1.5}/><L text={w[4]} x={985} y={t+93} strong width={240}/><L text={w[5]} x={1290} y={t+211}/></g>
+<g data-build="enforce.approval"><Sketch kind="person" x={155} y={t+315}/><L text={w[6]} x={230} y={t+302} width={680} anchor="start" strong/><L text={w[7]} x={230} y={t+343} width={680} anchor="start"/></g>
+<g data-build="enforce.log"><Sketch kind="checklist" x={1060} y={t+315}/><L text={w[8]} x={1140} y={t+302} width={670} anchor="start" strong/><L text={w[9]} x={1140} y={t+343} width={670} anchor="start"/></g>
+</Part>;}
+export function EnforceHtml(){return <Layer id="enforce.html"><StoryOf picture="enforce"/></Layer>;}
