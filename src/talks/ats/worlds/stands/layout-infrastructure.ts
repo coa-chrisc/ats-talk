@@ -13,6 +13,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
+import { fencePosts } from "../department-map";
 import { LABEL_LINE, SAFE, TEXT_LINE, contentTop, layerOf, wordsWidth } from "./layout";
 
 const [SANDBOX, CANNOT_REACH, RUNNING, RUNNING_CAPTION, PERMISSION, PERMISSION_CAPTION, ROUTE, ROUTE_CAPTION, EVERY_WEEK, MICROSOFT, QUISITIVE, AMAZON, JOINING] = shown("infrastructure", "play");
@@ -23,9 +24,8 @@ const TOP = contentTop("infrastructure");
 
 /** The yard's name and caption on one row over its top left, the name at the text size. */
 const NAME_Y = TOP + 24;
-/** The yard: the left two thirds, from x 96 to 1248, 160 px tall under its name. Posts every 72 px along its rails. */
+/** The yard: the left two thirds, from x 96 to 1248, 160 px tall under its name. Posts along its rails at the department map's pitch. */
 const FENCE = box(96, TOP + 58, 1152, 160);
-const POST_PITCH = 72;
 
 /** Three tiles, 18 px inside the fence top and foot and 15 from its sides, 18 apart: 362 wide each, room for the longest name at the layout's safe measure. */
 const TILE = { pad: 15, gap: 18, top: 18 } as const;
@@ -84,7 +84,7 @@ export const INFRASTRUCTURE = {
   fence: {
     key: "infrastructure.fence",
     at: FENCE,
-    posts: Array.from({ length: Math.floor(FENCE.w / POST_PITCH) + 1 }, (_, i) => Math.min(FENCE.x + i * POST_PITCH, FENCE.x + FENCE.w)),
+    posts: fencePosts(FENCE.x, FENCE.w),
   },
   tiles,
   calendar: { key: "infrastructure.calendar", at: box(CAL.x, CAL.y, CAL_W, CAL_H), weeks: { key: "infrastructure.weeks", at: weeks } },

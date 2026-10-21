@@ -1,20 +1,37 @@
-/** A slide-specific visual narrative; shared sequencing keeps reading separate. */
-import { draw, show } from "@/components/deck/kit";
+/**
+ * Slide 27's click: the title, then both story lines together, and after
+ * the reading pause the picture. At the right, the heading of what is still
+ * to establish, and slide 11's three empty plates wipe on in turn; then the
+ * six requests land one after another in the script's order, each card
+ * with its miniature, name and caption; last, an empty dashed ring comes up
+ * on every card at once, and the picture holds still. Nothing fills a plate or a
+ * ring.
+ */
+import { show, wipe } from "@/components/deck/kit";
 import { picture, story } from "../steps";
-import { into, play } from "./beats";
-export const couldBe=picture("could-be",{play:play(into("could-be"),
- {moves:[story("could-be",0),story("could-be",1)]},
- {moves:[
- show("could-be.action.0",{at:0.0,duration:0.35}),
- draw("could-be.link.0",{at:0.4,duration:0.4}),
- show("could-be.action.1",{at:0.85,duration:0.35}),
- draw("could-be.link.1",{at:1.25,duration:0.4}),
- show("could-be.action.2",{at:1.7,duration:0.35}),
- draw("could-be.link.2",{at:2.1,duration:0.4}),
- show("could-be.action.3",{at:2.55,duration:0.35}),
- draw("could-be.link.3",{at:2.9499999999999997,duration:0.4}),
- show("could-be.action.4",{at:3.4,duration:0.35}),
- draw("could-be.link.4",{at:3.8,duration:0.4}),
- show("could-be.action.5",{at:4.25,duration:0.35}),
- draw("could-be.underline",{at:4.9,duration:0.7})
- ]})});
+import { into, land, play } from "./beats";
+import { COULD_BE } from "./layout-could-be";
+
+const C = COULD_BE;
+
+/** The plates wipe on this far apart, and the cards land this far apart. */
+const PLATE = 0.4;
+const CARD = 0.5;
+
+export const couldBe = picture("could-be", {
+  play: play(
+    into("could-be"),
+    { moves: [story("could-be", 0), story("could-be", 1)] },
+    {
+      moves: [
+        // What is still to establish: its heading and its three empty plates.
+        show(C.gaps.key, { at: 0, duration: 0.5 }),
+        ...C.plates.flatMap((plate, i) => wipe(plate.key, { at: i * PLATE, duration: 0.6 })),
+        // The six requests, in the script's order.
+        ...C.cards.flatMap((card, i) => land(card.key, 1.4 + i * CARD, 0.5)),
+        // The empty rings, together: what only the room can fill.
+        show(C.rings.key, { at: 4.4, duration: 0.5 }),
+      ],
+    },
+  ),
+});

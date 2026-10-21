@@ -13,6 +13,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
+import { GRID as MAP_GRID, LANTERN, LIT, RING_PAD } from "../department-map";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, contentTop, layerOf, round, tagWidth, wordsWidth } from "./layout";
 
 const [DEPARTMENTS, ...REST] = shown("exists", "play");
@@ -24,7 +25,7 @@ const RING_TOP = contentTop("exists") + 12;
 /** A column of names each side of the ring, 420 wide, 43 px from it: 2 * (420 + 43) + the ring's 802 fill the drawing's 1728. */
 export const NAMES = { w: 420, gap: 43 } as const;
 /** The grid 36 px inside the ring's left; its boxes 94 by 54, 12 apart across and 10 down, so the ring's foot leaves room for its name and both tags over the drawing's foot. */
-export const GRID = { x: 96 + NAMES.w + NAMES.gap + 36, y: RING_TOP + 64, cols: 7, rows: 3, box: { w: 94, h: 54 }, gap: 12, rowGap: 10, rx: 8 } as const;
+export const GRID = { x: 96 + NAMES.w + NAMES.gap + RING_PAD.side, y: RING_TOP + RING_PAD.top, ...MAP_GRID } as const;
 const PITCH = { x: GRID.box.w + GRID.gap, y: GRID.box.h + GRID.rowGap } as const;
 /** The grid's outline: every box inside it, 730 px wide. */
 export const GRID_BOX = box(GRID.x, GRID.y, GRID.cols * GRID.box.w + (GRID.cols - 1) * GRID.gap, GRID.rows * GRID.box.h + (GRID.rows - 1) * GRID.rowGap);
@@ -32,28 +33,11 @@ export const GRID_BOX = box(GRID.x, GRID.y, GRID.cols * GRID.box.w + (GRID.cols 
 export const cellAt = (col: number, row: number): Box => box(GRID.x + col * PITCH.x, GRID.y + row * PITCH.y, GRID.box.w, GRID.box.h);
 export const cellCentre = (col: number, row: number): Point => ({ x: GRID.x + col * PITCH.x + GRID.box.w / 2, y: GRID.y + row * PITCH.y + GRID.box.h / 2 });
 
-/** The lit boxes: the left names' in the grid's left column, the right names' in its right column, top to bottom, and three unnamed ones spread through the middle. */
-export const LIT = {
-  named: [
-    [0, 0],
-    [0, 1],
-    [0, 2],
-    [6, 0],
-    [6, 1],
-    [6, 2],
-  ],
-  unnamed: [
-    [2, 1],
-    [3, 0],
-    [4, 2],
-  ],
-} as const;
-
-/** A lantern's size at full scale (the named ones); an unnamed one is drawn at 0.72 of it. */
-export const LANTERN = { w: 30, h: 44, small: 0.72 } as const;
+/** The lit boxes and the lanterns' size are the department map's (department-map.ts): six named in the grid's outer columns, three unnamed among the rest. */
+export { LANTERN, LIT };
 
 /** The ring: the grid's outline grown by 36 at the sides and foot and by 64 at the top, its corners rounded; nine dots evenly round it. */
-const RING = box(GRID_BOX.x - 36, RING_TOP, GRID_BOX.w + 72, GRID_BOX.h + 64 + 36);
+const RING = box(GRID_BOX.x - RING_PAD.side, RING_TOP, GRID_BOX.w + 2 * RING_PAD.side, GRID_BOX.h + RING_PAD.top + RING_PAD.foot);
 const RING_R = 40;
 export const DOT_R = 10;
 /** Where round the ring the first dot sits, as a share of a ninth: set so no dot sits where a leader crosses the ring. */

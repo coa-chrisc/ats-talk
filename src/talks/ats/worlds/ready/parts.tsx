@@ -39,7 +39,6 @@ export function Words({
   size = "label",
   tone = "navy",
   strong = false,
-  small = false,
 }: {
   id?: string;
   at: Point;
@@ -48,12 +47,10 @@ export function Words({
   size?: "label" | "text";
   tone?: Tone;
   strong?: boolean;
-  /** Set at the key's own size (slide 27's key under the track, ready.css). */
-  small?: boolean;
 }) {
   const kit = size === "text" ? "dk-text" : "dk-label";
   return (
-    <text className={`${kit} rd-word rd-word--${tone}${strong ? " rd-word--strong" : ""}${small ? " rd-word--key" : ""}`} data-build={id} x={at.x} y={at.y} textAnchor={anchor} dominantBaseline="central">
+    <text className={`${kit} rd-word rd-word--${tone}${strong ? " rd-word--strong" : ""}`} data-build={id} x={at.x} y={at.y} textAnchor={anchor} dominantBaseline="central">
       {text}
     </text>
   );

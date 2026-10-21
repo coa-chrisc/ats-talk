@@ -167,12 +167,12 @@ describe("the house rules", () => {
     for (const [file, text] of sources.filter(([file]) => file.endsWith(".css"))) expect(text, file).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(/i);
   });
 
-  it("puts the level hues on slide 24's bands and agents only, and indigo on slide 27's pack only", () => {
+  it("puts the level hues on slide 24's bands and agents and slide 27's miniature of them only, and indigo nowhere", () => {
     for (const [file, text] of sources.filter(([file]) => file !== "layout-levels.ts")) expect(text, file).not.toMatch(/"(?:review|lead|fix)"/);
     const css = source("ready.css").replace(/\/\*[\s\S]*?\*\//g, "");
     expect(css).not.toMatch(/--dk-(?:review|lead|fix|dept-[abc])\b/);
     const indigo = [...css.matchAll(/([^{}]+)\{[^}]*--dk-catalog[^}]*\}/g)].map(([, selector]) => selector.trim());
-    expect(indigo).toEqual([".rd-runner--catalog .rd-runner__head", ".rd-runner--catalog .rd-runner__limb"]);
+    expect(indigo).toEqual([]);
   });
 
   it("moves nothing on a clock, a transition or chance, and repeats nothing", () => {

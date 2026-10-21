@@ -1,17 +1,61 @@
+/** Slide 15's picture: the grid of departments, named, its lanterns lit and three staff standing in it, their name and caption beside it; the fenced yard, named, holding three agents, a member of staff and the orange mark, the fleet's name and caption inside it; the rule, headed, its three closed gates each named under it; the portfolio at the foot. */
 "use client";
-import { Part } from "@/components/deck/kit";
-import { shown } from "../../script/find";
-import { DrawingLabel as L, Ink, Sketch, drawingProcess } from "../story-drawing";
-import { contentTop } from "./layout";
-import { Layer, StoryOf } from "./parts";
-const w=shown("fleet","play");
-const t=contentTop("fleet");
-export function FleetMarks(){return <Part id="fleet.marks">
-<g data-build="fleet.heading"><L text={w[0]} x={460} y={t+25} strong/><L text={w[7]} x={1360} y={t+25} strong/></g>
-{[0,1,2].map(i=><g key={i} data-build={`fleet.capability.${i}`}><Sketch kind={['team','server','agent'][i]} x={160} y={t+95+i*107} scale={0.8}/><L text={w[1+i*2]} x={225} y={t+77+i*107} anchor="start" strong width={610}/><L text={w[2+i*2]} x={225} y={t+112+i*107} anchor="start" width={610}/></g>)}
-<Ink id="fleet.join" d={`M850 ${t+80}Q900 ${t+80} 900 ${t+195}M850 ${t+195}H970M850 ${t+310}Q900 ${t+310} 900 ${t+195}`}/>
-<Ink id="fleet.runway" d={`M970 ${t+193}h810M970 ${t+210}h810`}/>
-{[0,1,2].map(i=><g key={i} data-build={`fleet.readiness.${i}`}><Sketch kind={['person','gate','magnify'][i]} x={1070+i*300} y={t+133} scale={0.75}/><path d={`M${1070+i*300} ${t+180}v45`} stroke={drawingProcess} strokeWidth={4}/><L text={w[8+i*2]} x={1070+i*300} y={t+245} width={290} strong/><L text={w[9+i*2]} x={1070+i*300} y={t+315} width={290}/></g>)}
-<g data-build="fleet.portfolio"><L text={w[14]} x={96} y={t+417} anchor="start" width={1728}/></g>
-</Part>;}
-export function FleetHtml(){return <Layer id="fleet.html"><StoryOf picture="fleet"/></Layer>;}
+
+import { HumanMark, Part, Person } from "@/components/deck/kit";
+import { FLEET, PITCH } from "./layout-fleet";
+import { Layer, Rows, StoryOf, Stroke, Words } from "./parts";
+import { Fence, Lantern } from "./parts-figures";
+import { Agent, ClosedGate } from "./parts-map";
+
+const F = FLEET;
+
+export function FleetMarks() {
+  return (
+    <Part id={F.marks}>
+      <g data-build={F.grid.key}>
+        {F.map.cells.map((cell) => (
+          <rect key={cell.n} className="sn-box" x={cell.at.x} y={cell.at.y} width={cell.at.w} height={cell.at.h} rx={F.map.rx} />
+        ))}
+      </g>
+      <Words id={F.name.key} at={F.name.at} text={F.name.text} anchor="start" strong />
+      {F.lanterns.map((lit) => (
+        <Lantern key={lit.key} id={lit.key} cell={lit.cell} at={lit.at} scale={lit.scale} />
+      ))}
+      <g className="sn-staff">
+        {F.staff.map((person) => (
+          <Person key={person.key} id={person.key} at={person.at} />
+        ))}
+      </g>
+      <Words id={F.staffWords.name.key} at={F.staffWords.name.at} text={F.staffWords.name.text} anchor="start" strong />
+      <Rows id={F.staffWords.caption.key} at={F.staffWords.caption.at} rows={F.staffWords.caption.rows} pitch={PITCH} soft />
+      <Fence id={F.yard.key} at={F.yard.at} posts={F.yard.posts} />
+      <Words id={F.yard.name.key} at={F.yard.name.at} text={F.yard.name.text} anchor="start" strong />
+      <Words id={F.yard.caption.key} at={F.yard.caption.at} text={F.yard.caption.text} anchor="start" soft />
+      {F.agents.map((agent) => (
+        <Agent key={agent.key} id={agent.key} at={agent.at} scale={F.agentScale} />
+      ))}
+      <g className="sn-staff">
+        <Person id={F.keeper.key} at={F.keeper.at} />
+      </g>
+      <HumanMark id={F.mark.key} at={F.mark.at} />
+      <Words id={F.fleetWords.name.key} at={F.fleetWords.name.at} text={F.fleetWords.name.text} anchor="start" strong />
+      <Rows id={F.fleetWords.caption.key} at={F.fleetWords.caption.at} rows={F.fleetWords.caption.rows} pitch={PITCH} soft />
+      <Words id={F.before.key} at={F.before.at} text={F.before.text} anchor="start" strong />
+      <Stroke id={F.rule.key} from={F.rule.from} to={F.rule.to} className="sn-gate-rule" />
+      {F.gates.flatMap((gate) => [
+        <ClosedGate key={gate.key} id={gate.key} foot={gate.foot} scale={F.gateScale} />,
+        <Words key={gate.name.key} id={gate.name.key} at={gate.name.at} text={gate.name.text} strong />,
+        <Rows key={gate.caption.key} id={gate.caption.key} at={gate.caption.at} rows={gate.caption.rows} pitch={PITCH} anchor="middle" soft />,
+      ])}
+      <Words id={F.portfolio.key} at={F.portfolio.at} text={F.portfolio.text} anchor="start" />
+    </Part>
+  );
+}
+
+export function FleetHtml() {
+  return (
+    <Layer id={F.html}>
+      <StoryOf picture="fleet" />
+    </Layer>
+  );
+}

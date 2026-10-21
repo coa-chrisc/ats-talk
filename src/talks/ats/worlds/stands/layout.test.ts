@@ -10,6 +10,9 @@ import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagW
 import { DOT_R, EXISTS, namedRows } from "./layout-exists";
 import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
 import { HOST, NOTICED } from "./layout-noticed";
+import { FLEET, PITCH } from "./layout-fleet";
+import { TRACK } from "./layout-track";
+import { AGENT, GRID, PLATE, gridSize } from "../department-map";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 
 const label = (at: Point, text: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(text, 26), LABEL_LINE, anchor);
@@ -17,8 +20,39 @@ const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "mi
 const E = EXISTS;
 const N = NOTICED;
 const I = INFRASTRUCTURE;
+const T = TRACK;
+const F = FLEET;
+/** Rows of a caption, the first at `at`, each measured as a tag's words are (0.52 of the size a letter; Geist measures 0.48 at 26 px). */
+const rowsBox = (at: Point, rows: readonly string[], anchor: "start" | "middle" = "start") => bounds(rows.map((row, i) => wordsBox({ x: at.x, y: at.y + i * PITCH }, tagWords(row, 26), LABEL_LINE, anchor)));
+const gateLabels = F.gates.map((gate) => bounds([wordsBox(gate.name.at, tagWords(gate.name.text, 26), LABEL_LINE, "middle"), rowsBox(gate.caption.at, gate.caption.rows, "middle")]));
+const staffWords = bounds([label(F.staffWords.name.at, F.staffWords.name.text, "start"), rowsBox(F.staffWords.caption.at, F.staffWords.caption.rows)]);
+const fleetWords = bounds([label(F.fleetWords.name.at, F.fleetWords.name.text, "start"), rowsBox(F.fleetWords.caption.at, F.fleetWords.caption.rows)]);
+const yardWords = bounds([label(F.yard.name.at, F.yard.name.text, "start"), wordsBox(F.yard.caption.at, tagWords(F.yard.caption.text, 26), LABEL_LINE, "start")]);
+const fence = (at: Box) => box(at.x, at.y - 10, at.w, at.h + 20);
 
 const DRAWN: Record<string, Box[]> = {
+  track: [
+    T.ring.at,
+    label(T.name.at, T.name.text, "start"),
+    label(T.place.at, T.place.text, "start"),
+    text(T.policy.name.at, T.policy.name.text, "start"),
+    label(T.policy.caption.at, T.policy.caption.text, "start"),
+    label(T.gaps.at, T.gaps.text, "start"),
+    ...T.plates.map((plate) => plate.at),
+  ],
+  fleet: [
+    label(F.name.at, F.name.text, "start"),
+    F.map.outline,
+    staffWords,
+    yardWords,
+    fence(F.yard.at),
+    fleetWords,
+    label(F.before.at, F.before.text, "start"),
+    box(F.rule.from.x, F.rule.from.y - 2, F.rule.to.x - F.rule.from.x, 4),
+    ...F.gates.map((gate) => gate.at),
+    ...gateLabels,
+    label(F.portfolio.at, F.portfolio.text, "start"),
+  ],
   exists: [
     E.ring.at,
     ...E.ring.dots.map((dot) => ringBox(dot.at, DOT_R)),
@@ -176,5 +210,93 @@ describe("slide 13, the yard", () => {
     for (const plate of [...I.plates, I.joining]) expect(plate.at.w, plate.text).toBeGreaterThanOrEqual(wordsWidth(plate.text, 32) + 24);
     expect(label(I.joining.caption.at, I.joining.caption.text).y).toBeGreaterThan(bottom(I.joining.at));
     expect(overlaps(label(I.joining.caption.at, I.joining.caption.text), label(I.every.at, I.every.text, "start"))).toBe(false);
+  });
+});
+
+describe("the department map on slides 11 and 15", () => {
+  it("draws the grid at the map's proportions on both, as slide 12 does", () => {
+    for (const map of [T.map, F.map]) {
+      expect(map.outline.w / map.outline.h).toBeCloseTo(gridSize(1).w / gridSize(1).h, 2);
+      expect(map.cells).toHaveLength(GRID.cols * GRID.rows);
+    }
+    expect([F.map.outline.w, F.map.outline.h]).toEqual([EXISTS.grid.at.w, EXISTS.grid.at.h]);
+  });
+});
+
+describe("slide 11, the map on paper", () => {
+  it("fills the field's height: the ring from the drawing's top to the policy's row, the plates the same height, the policy's row at the field's foot", () => {
+    expect(T.ring.at.y).toBe(T.plates[0].at.y);
+    expect(bottom(text(T.policy.name.at, T.policy.name.text, "start"))).toBeLessThanOrEqual(bottom(T.plates[2].at));
+    expect(bottom(T.plates[2].at)).toBeGreaterThan(DRAW_FOOT - 8);
+    expect(text(T.policy.name.at, T.policy.name.text, "start").y).toBeGreaterThan(bottom(T.ring.at) + 4);
+  });
+
+  it("holds the grid inside the ring, its name between them, and keeps the ring and its words clear of the plates", () => {
+    const grid = T.map.outline;
+    expect(inside(grid, box(T.ring.at.x + 24, T.ring.at.y + 24, T.ring.at.w - 48, T.ring.at.h - 48))).toBe(true);
+    expect(inside(label(T.name.at, T.name.text, "start"), T.ring.at)).toBe(true);
+    expect(bottom(label(T.name.at, T.name.text, "start"))).toBeLessThanOrEqual(grid.y - 4);
+    for (const b of [T.ring.at, label(T.policy.caption.at, T.policy.caption.text, "start"), label(T.place.at, T.place.text, "start")]) expect(right(b)).toBeLessThan(T.plates[0].at.x - 48);
+    expect(bottom(label(T.place.at, T.place.text, "start"))).toBeLessThanOrEqual(T.ring.at.y);
+    expect(bottom(label(T.gaps.at, T.gaps.text, "start"))).toBeLessThanOrEqual(T.plates[0].at.y - 4);
+  });
+
+  it("sets each plate's name and caption inside its dashes, the caption on two rows at most", () => {
+    const measure = PLATE.w - 2 * PLATE.inset;
+    for (const plate of T.plates) {
+      expect(plate.at.w).toBe(PLATE.w);
+      expect(tagWords(plate.name, 26), plate.name).toBeLessThanOrEqual(measure);
+      const rows = Math.ceil(tagWords(plate.caption, 26) / measure);
+      expect(rows, plate.caption).toBeLessThanOrEqual(2);
+      expect(30 * (1 + rows) + 4, plate.caption).toBeLessThanOrEqual(PLATE.h - 2 * 12);
+    }
+    for (let i = 1; i < T.plates.length; i++) expect(T.plates[i].at.y).toBe(bottom(T.plates[i - 1].at) + PLATE.gap);
+    expect(right(T.plates[0].at)).toBe(SAFE.right);
+  });
+});
+
+describe("slide 15, the map lit and occupied", () => {
+  it("keeps the map, the staff's words, the yard and its words apart, and the rule's band under them all", () => {
+    const top = [F.map.outline, staffWords, bounds([yardWords, fence(F.yard.at)])];
+    for (const a of top) for (const b of top) if (a !== b) expect(overlaps(a, b)).toBe(false);
+    for (const b of top) expect(bottom(b)).toBeLessThan(label(F.before.at, F.before.text, "start").y - 8);
+    expect(right(F.map.outline) + 24).toBeLessThanOrEqual(staffWords.x);
+    expect(right(staffWords) + 16).toBeLessThanOrEqual(F.yard.at.x);
+    expect(bottom(yardWords)).toBeLessThanOrEqual(F.yard.at.y - 10);
+  });
+
+  it("stands each member of staff inside an unlit box of the grid", () => {
+    const lit = F.lanterns.map((lantern) => lantern.cell);
+    for (const person of F.staff) {
+      const cell = F.map.cells.find((c) => inside(person.at, c.at));
+      expect(cell, person.key).toBeDefined();
+      expect(lit.some((b) => b.x === cell!.at.x && b.y === cell!.at.y), person.key).toBe(false);
+    }
+  });
+
+  it("holds the agents, the member of staff, the mark and the fleet's words inside the yard, in a row, apart", () => {
+    const yard = box(F.yard.at.x + 12, F.yard.at.y + 12, F.yard.at.w - 24, F.yard.at.h - 24);
+    const agents = F.agents.map((agent) => box(agent.at.x - (AGENT.w * F.agentScale) / 2, agent.at.y, AGENT.w * F.agentScale, AGENT.h * F.agentScale));
+    const row = [...agents, F.keeper.at, ringBox(F.mark.at, 24), fleetWords];
+    for (const b of row) expect(inside(b, yard)).toBe(true);
+    for (let i = 1; i < row.length; i++) expect(row[i].x).toBeGreaterThanOrEqual(right(row[i - 1]) + 6);
+  });
+
+  it("stands three closed gates on the rule after its heading, clear of the yard, each named under it, apart, the portfolio a clear row under them off the rule", () => {
+    const before = label(F.before.at, F.before.text, "start");
+    expect(bottom(before)).toBeLessThanOrEqual(F.rule.from.y - 4);
+    expect(F.rule.from.x).toBe(F.map.outline.x);
+    expect(F.rule.to.x).toBe(SAFE.right);
+    for (const gate of F.gates) {
+      expect(bottom(gate.at)).toBe(F.rule.from.y);
+      expect(gate.at.x).toBeGreaterThan(right(before) + 24);
+    }
+    for (const b of gateLabels) expect(b.y).toBeGreaterThan(F.rule.from.y + 4);
+    for (let i = 1; i < gateLabels.length; i++) expect(gateLabels[i].x).toBeGreaterThan(right(gateLabels[i - 1]) + 24);
+    for (const gate of F.gates) expect(gate.caption.rows.join(" ")).toBe(gate.caption.text);
+    const portfolio = label(F.portfolio.at, F.portfolio.text, "start");
+    for (const b of gateLabels) expect(portfolio.y, "a clear row under the gates' words").toBeGreaterThanOrEqual(bottom(b) + 16);
+    for (const gate of F.gates) expect(gate.at.y, `${gate.key} clear of the yard's posts`).toBeGreaterThanOrEqual(bottom(F.yard.at) + 10 + 12);
+    expect(bottom(portfolio)).toBeLessThanOrEqual(DRAW_FOOT);
   });
 });

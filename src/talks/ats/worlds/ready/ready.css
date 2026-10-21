@@ -2,9 +2,8 @@
    docs/aph-brand-reference.md: words and outlines in navy (paper) on the
    white ground, the process and the City's people at work in green, grey
    for what is not needed or kept apart, and the three further hues only for
-   the agent levels on slide 24. Indigo is the pack, enterprise, on slide
-   27's track. Orange is the kit's HumanMark and deep green its PassTick, never
-   named here. A part's state arrives as the kit's custom properties (--d,
+   the agent levels on slide 24 and its miniature on slide 27. Orange is the
+   kit's HumanMark and deep green its PassTick, never named here. A part's state arrives as the kit's custom properties (--d,
    --k). Selectors are doubled where they refine a kit class, so the order
    the sheets load in never decides a picture. */
 
@@ -38,12 +37,6 @@
 
 .rd-word--strong.rd-word--strong {
   font-weight: 600;
-}
-
-/* Slide 27's key under the track: five names and captions across the
-   field, at 22 px so the five keep apart (layout-could-be.ts). */
-.dk-label.rd-word--key {
-  font-size: 22px;
 }
 
 /* A person, stroked in navy. */
@@ -199,102 +192,109 @@
   stroke-width: 3;
 }
 
-/* Slide 27: the track as slides 11 and 15 draw it. Its lanes in the raised
-   grey and the line between them in white come in as its navy edges draw;
-   the start stripe white in a navy edge. The pack in indigo, enterprise;
-   the City's runner and its dashed outline in the process's green; the
-   markers green in a white ring, so they read on the grey lanes, their
-   leaders in the rule colour. */
-.rd-track__lanes {
-  fill: var(--dk-raised);
-  fill-rule: evenodd;
-  fill-opacity: var(--d, 0);
+/* Slide 27: slide 11's empty plates, their names in navy inside the grey
+   dashes; the request cards white in a rule-coloured edge; the miniatures
+   drawn as their slides draw them, small: the tables in the raised grey in
+   a navy edge and their chairs white, the speech bubble white, the four
+   bands in their levels' hues, the fenced yard in the green wash inside a
+   navy rail, the record and its key in the process's green, and the
+   ledger's row in grey, not yet entered. The empty rings grey and dashed,
+   nothing inside them. */
+.rd-gap__name {
+  font-family: var(--dk-face);
+  font-size: var(--dk-label);
+  font-weight: 600;
+  line-height: 30px;
+  color: var(--dk-paper);
 }
 
-.rd-track__edge {
+.rd-request__face {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 2;
+}
+
+.rd-mini__table {
+  fill: var(--dk-raised);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
+.rd-mini__chair,
+.rd-mini__bubble {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.rd-mini__back,
+.rd-mini__speech {
   fill: none;
   stroke: var(--dk-paper);
   stroke-width: 3;
+  stroke-linecap: round;
 }
 
-.rd-track__lane {
-  fill: none;
-  stroke: var(--dk-night);
-  stroke-width: 2;
-  stroke-opacity: var(--d, 0);
+.rd-mini-band[data-hue="grey"] {
+  --hue: var(--dk-soft);
 }
 
-.rd-start {
+.rd-mini-band__body {
+  fill: var(--hue);
+  fill-opacity: calc(var(--dk-tint-idle) * 3);
+}
+
+.rd-mini-band__cap {
+  fill: var(--hue);
+}
+
+.rd-mini__yard {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--dk-wash) * 2);
+}
+
+.rd-mini__rail,
+.rd-mini__post {
   fill: none;
   stroke: var(--dk-paper);
-  stroke-width: 14;
+  stroke-width: 3;
+  stroke-linecap: round;
 }
 
-.rd-start.rd-start--stripe {
-  stroke: var(--dk-night);
-  stroke-width: 8;
-}
-
-.rd-runner__head {
-  stroke: none;
-}
-
-.rd-runner__limb {
+.rd-mini__line {
   fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.rd-runner--catalog .rd-runner__head {
-  fill: var(--dk-catalog);
-}
-
-.rd-runner--catalog .rd-runner__limb {
-  stroke: var(--dk-catalog);
-}
-
-.rd-runner--process .rd-runner__head {
-  fill: var(--dk-process);
-}
-
-.rd-runner--process .rd-runner__limb {
-  stroke: var(--dk-process);
-}
-
-/* The runner not there yet: its outline only, dashed, nothing inside it:
-   its head a dashed ring, its limbs a dashed green edge round strokes in
-   the lane's grey. */
-.rd-runner--dashed .rd-runner__head {
+.rd-mini__head {
   fill: none;
-  stroke: var(--dk-process);
+  stroke: var(--dk-soft);
   stroke-width: 2.5;
-  stroke-dasharray: 5 4;
+  stroke-linecap: round;
 }
 
-.rd-runner__outline {
+.rd-mini__row {
+  fill: var(--dk-raised);
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+}
+
+.rd-mini__divider {
   fill: none;
-  stroke: var(--dk-process);
-  stroke-linecap: butt;
-  stroke-linejoin: round;
-  stroke-dasharray: 6 4;
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
 }
 
-.rd-runner--dashed.rd-runner--dashed .rd-runner__limb {
-  stroke: var(--dk-raised);
-}
-
-/* A leader from a marker to its entry in the key: a thin rule. */
-.rd-leader {
+.rd-pending__ring {
   fill: none;
-  stroke: var(--dk-rule);
+  stroke: var(--dk-soft);
   stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.rd-marker {
-  fill: var(--dk-process);
-  stroke: var(--dk-night);
-  stroke-width: 3;
+  stroke-dasharray: 6 5;
 }
 
 /* Slide 28, as slide 2 sets its panels: square, a navy edge drawn on, no

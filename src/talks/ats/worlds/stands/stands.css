@@ -61,64 +61,6 @@
   stroke: var(--dk-paper);
 }
 
-/* Slides 11 and 15: the track seen from above, its lanes in the raised grey, its edges in navy. */
-.sn-track__lanes {
-  fill: var(--dk-raised);
-  fill-rule: evenodd;
-  fill-opacity: var(--d, 0);
-}
-
-.sn-track__edge {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 3;
-}
-
-.sn-track__lane {
-  fill: none;
-  stroke: var(--dk-night);
-  stroke-width: 2;
-  stroke-opacity: var(--d, 0);
-}
-
-.sn-start {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 14;
-}
-
-/* The start stripe: white inside its navy edge, so it reads on the grey lanes. */
-.sn-start.sn-start--stripe {
-  stroke: var(--dk-night);
-  stroke-width: 8;
-}
-
-.sn-runner__head {
-  stroke: none;
-}
-
-.sn-runner__limb {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.sn-runner--catalog .sn-runner__head {
-  fill: var(--dk-catalog);
-}
-
-.sn-runner--catalog .sn-runner__limb {
-  stroke: var(--dk-catalog);
-}
-
-.sn-runner--process .sn-runner__head {
-  fill: var(--dk-process);
-}
-
-.sn-runner--process .sn-runner__limb {
-  stroke: var(--dk-process);
-}
-
 .sn-post {
   fill: var(--dk-paper);
   stroke: var(--dk-paper);
@@ -126,7 +68,7 @@
   stroke-linejoin: round;
 }
 
-/* Slide 12: a department's box, and the lantern lit in it. */
+/* Slides 11, 12 and 15: a department's box, and the lantern lit in it. */
 .sn-box {
   fill: var(--dk-night);
   stroke: var(--dk-rule);
@@ -248,25 +190,6 @@
   font-weight: 600;
   line-height: 1;
   color: var(--dk-paper);
-}
-
-/* Slide 15: the markers the runner has passed, green discs in a white ring on the lane's line. */
-.sn-marker {
-  fill: var(--dk-process);
-  stroke: var(--dk-night);
-  stroke-width: 3;
-}
-
-/* Slide 27's runner not there yet: its outline only, dashed. */
-.sn-runner--dashed .sn-runner__head {
-  fill: none;
-  stroke: var(--dk-process);
-  stroke-width: 2.5;
-  stroke-dasharray: 5 4;
-}
-
-.sn-runner--dashed .sn-runner__limb {
-  stroke-dasharray: 6 5;
 }
 
 /* Slide 12a: the rail, the cords and nails, the plaques in their indigo edges, the small nameplates. */
@@ -458,5 +381,86 @@
   fill: none;
   stroke: var(--dk-process);
   stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* Slide 11: the policy, a green line drawn once round the grid. */
+.sn-policy {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+/* Slide 11: a dashed plate's name over its caption, set inside the dashes, each one text. */
+.sn-plate-words {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--dk-face);
+  font-size: var(--dk-label);
+  line-height: 30px;
+  text-align: left;
+}
+
+.sn-plate-words__name {
+  font-weight: 600;
+  color: var(--dk-paper);
+}
+
+.sn-plate-words__caption {
+  font-weight: 400;
+  color: var(--dk-soft);
+  text-wrap: balance;
+}
+
+/* Slide 15: the City's staff in green, white inside, the white coming in as
+   the figure draws so an undrawn figure hides nothing. */
+.sn-staff .dk-person circle,
+.sn-staff .dk-person path {
+  fill: var(--dk-night);
+  fill-opacity: var(--d, 0);
+  stroke: var(--dk-process);
+  stroke-width: 3.5;
+}
+
+/* Slide 15: an agent, slide 14's white hexagon in navy with green eyes. */
+.sn-agent__body {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.sn-agent__eye {
+  fill: var(--dk-process);
+}
+
+.sn-agent__mouth {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* Slide 15: the rule before expanding, and the closed gates on it: green posts, navy bars across. */
+.sn-gate-rule {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sn-closed-gate__post {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.sn-closed-gate__bar {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
   stroke-linecap: round;
 }

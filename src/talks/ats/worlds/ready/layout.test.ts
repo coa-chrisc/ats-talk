@@ -9,6 +9,8 @@ import { describe, expect, it } from "vitest";
 import { FLOOR, SAFE, STORIES, TAG, bandFoot, contentTop, labelsOf, wordsBox, wordsWidth } from "./layout";
 import { APPLIED, APPLIED_BOXES, PANEL, TICK, TILE, linesBoxes, numeralBox } from "./layout-applied";
 import { BLOCK_MIDDLE, CLOSE, OPENING } from "./layout-close";
+import { PLATE } from "../department-map";
+import { CARD, COULD_BE, COULD_BE_BOXES, MINI } from "./layout-could-be";
 import { LEVELS, LEVELS_BOXES, LEVELS_MEASURES, LEVEL_AGENT_R } from "./layout-levels";
 import { RESIDENTS, RESIDENTS_BOXES } from "./layout-residents";
 import { WHO_DECIDES, WHO_DECIDES_BOXES, cardFits, linesBoxes as decidesLines, measuredBox } from "./layout-who-decides";
@@ -24,7 +26,7 @@ const DRAWN: Record<string, Box[]> = {
   levels: LEVELS_BOXES,
   "who-decides": WHO_DECIDES_BOXES,
   residents: RESIDENTS_BOXES,
-  "could-be": [box(96, contentTop("could-be"), 1728, 412)],
+  "could-be": COULD_BE_BOXES,
   applied: APPLIED_BOXES,
 };
 
@@ -228,6 +230,55 @@ describe("slide 28, the four lessons applied", () => {
       expect(apart(tick, numeralBox(panel.numeral))).toBe(true);
       expect(apart(tick, panel.name.at)).toBe(true);
     }
+  });
+});
+
+describe("slide 27, the requests and what is still to establish", () => {
+  const C = COULD_BE;
+  /** A card's words run no wider than its measure, 16 px in from each side, at the label type's average width. */
+  const MEASURE = CARD.w - 2 * CARD.pad;
+  const rowWidth = (row: string) => Math.ceil(row.length * 26 * 0.52);
+  const rowsBox = (words: { rows: readonly string[]; at: { x: number; y: number } }) =>
+    box(words.at.x, words.at.y - 16, Math.max(...words.rows.map(rowWidth)), (words.rows.length - 1) * CARD.pitch + 32);
+
+  it("sets six cards in two rows of three, in the script's order, none touching another", () => {
+    expect(C.cards.map((card) => card.kind)).toEqual(["table", "listening", "levels", "fence", "record", "ledger"]);
+    expect(C.cards.map((card) => card.name.text)).toEqual(labelsOf("could-be").slice(4).filter((_, i) => i % 2 === 0));
+    expect(new Set(C.cards.slice(0, 3).map((card) => card.at.y)).size).toBe(1);
+    expect(C.cards[3].at.y).toBeGreaterThan(bottom(C.cards[0].at));
+    C.cards.forEach((card, i) => C.cards.slice(i + 1).forEach((other) => expect(apart(card.at, other.at)).toBe(true)));
+  });
+
+  it("keeps each card's miniature, ring and words inside it and apart, the words ending 6 px over its foot", () => {
+    for (const card of C.cards) {
+      const ring = box(card.ring.x - CARD.ring, card.ring.y - CARD.ring, 2 * CARD.ring, 2 * CARD.ring);
+      const name = rowsBox(card.name);
+      const caption = rowsBox(card.caption);
+      expect(card.mini.w).toBe(MINI.w);
+      for (const part of [card.mini, ring, name, caption]) expect(inside(part, card.at), `${card.key} ${JSON.stringify(part)}`).toBe(true);
+      expect(apart(card.mini, ring), card.key).toBe(true);
+      expect(name.y, card.key).toBeGreaterThanOrEqual(bottom(card.mini));
+      expect(name.y, card.key).toBeGreaterThanOrEqual(bottom(ring));
+      expect(caption.y, card.key).toBeGreaterThanOrEqual(bottom(name));
+      expect(bottom(caption), card.key).toBeLessThanOrEqual(bottom(card.at) - 6);
+      expect(card.name.rows.length + card.caption.rows.length, card.key).toBeLessThanOrEqual(4);
+      for (const row of [...card.name.rows, ...card.caption.rows]) expect(rowWidth(row), row).toBeLessThanOrEqual(MEASURE);
+      expect(card.name.rows.join(" ")).toBe(card.name.text);
+      expect(card.caption.rows.join(" ")).toBe(card.caption.text);
+    }
+  });
+
+  it("stands slide 11's three plates at their size in a column at the right, under their heading, clear of the cards", () => {
+    expect(C.gaps.text).toBe(labelsOf("could-be")[0]);
+    expect(C.plates.map((plate) => plate.name)).toEqual(labelsOf("could-be").slice(1, 4));
+    for (const plate of C.plates) {
+      expect(plate.at.w).toBe(450);
+      expect(right(plate.at)).toBe(SAFE.right);
+      expect(wordsWidth(plate.name)).toBeLessThanOrEqual(plate.at.w - 2 * PLATE.inset);
+      for (const card of C.cards) expect(apart(plate.at, card.at)).toBe(true);
+    }
+    expect(bottom(wordsBox(C.gaps.at, C.gaps.text, 26, "start"))).toBeLessThanOrEqual(C.plates[0].at.y);
+    C.plates.slice(1).forEach((plate, i) => expect(plate.at.y).toBeGreaterThan(bottom(C.plates[i].at)));
   });
 });
 

@@ -136,7 +136,7 @@ describe("the words on the stage", () => {
   });
 
   it("are typed only in the script: the scenes, parts, moves and steps hold no string of their own, comments included", () => {
-    const files = sources.filter(([file]) => /^(scene.*\.tsx|parts.*\.tsx|moves\.ts|counts\.ts|track-geometry\.ts|steps-.*\.ts)$/.test(file));
+    const files = sources.filter(([file]) => /^(scene.*\.tsx|parts.*\.tsx|moves\.ts|counts\.ts|steps-.*\.ts)$/.test(file));
     expect(files.length).toBeGreaterThan(15);
     for (const [file, source] of files) {
       // A phrase anywhere, comments included; a single word as a string of its own (a kit part may share a one-word label's name).
@@ -154,12 +154,12 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses no orange, and the pass green only through the kit's PassTick, on slides 11, 11a and 14", () => {
+  it("uses the orange only through the kit's HumanMark, once, on slide 15's fleet, and no pass green", () => {
     for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
-    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source))).toEqual([]);
+    expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file)).toEqual(["scene-fleet.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual([]);
-    expect(markup).not.toMatch(/class="dk-human"/);
+    expect(markup.match(/class="dk-human"/g) ?? []).toHaveLength(1);
     expect(markup.match(/class="dk-pass-tick"/g) ?? []).toHaveLength(0);
   });
 
@@ -174,6 +174,16 @@ describe("the house rules", () => {
     for (const rule of [".sn-head-rule", ".sn-join"]) {
       const body = css.slice(css.indexOf(`${rule} {`), css.indexOf("}", css.indexOf(`${rule} {`)));
       expect(body, rule).not.toMatch(/--dk-(process|catalog)/);
+    }
+  });
+
+  it("fills nothing that draws on but as it draws, so a figure not yet drawn hides nothing behind it", () => {
+    const css = sources.find(([file]) => file === "stands.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
+    const rules = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, selectors]) => /\.dk-(?:person|draw)\b/.test(selectors));
+    expect(rules.length).toBeGreaterThan(0);
+    for (const [, selectors, body] of rules) {
+      const fill = body.match(/(?:^|;)\s*fill\s*:\s*([^;]+)/)?.[1].trim();
+      if (fill && fill !== "none") expect(body, selectors.trim()).toMatch(/fill-opacity\s*:[^;]*var\(--d\b/);
     }
   });
 
@@ -193,11 +203,9 @@ describe("the house rules", () => {
     for (const file of readdirSync(dir).filter((name) => /\.(tsx?|css)$/.test(name))) expect(readFileSync(join(dir, file), "utf8").split("\n").length, file).toBeLessThan(500);
   });
 
-  it("keeps the track's shared files free of the script, so another world can copy them", () => {
-    for (const file of ["track-geometry.ts", "parts-track.tsx"]) {
-      const source = sources.find(([name]) => name === file)![1];
-      expect(source, file).not.toMatch(/script\/|from "\.\/layout|from "\.\.\/steps"/);
-    }
+  it("keeps the department map's pieces free of the script, so another world can draw them from the same numbers", () => {
+    const source = sources.find(([name]) => name === "parts-map.tsx")![1];
+    expect(source).not.toMatch(/script\/|from "\.\/layout|from "\.\.\/steps"/);
   });
 });
 

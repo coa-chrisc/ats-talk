@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { startOf as peopleStart, endOf as peopleEnd, markup as peopleMarkup } from "./ideas/harness";
-import { startOf as fitsStart, endOf as fitsEnd, markup as fitsMarkup } from "./stands/harness";
+import { startOf as fitsStart, endOf as fitsEnd, markup as fitsMarkup, playsAt } from "./stands/harness";
 describe("illustrated pilot choreography",()=>{
  it("finishes each staff-learning stage before proceeding to the next",()=>{
   for(let i=0;i<3;i++){
@@ -29,11 +29,15 @@ it("stops the deletion request before showing the protected record",()=>{
  expect(peopleMarkup).not.toContain('data-build="enforce.panel.');
 });
 it("shows current policy before the missing program structure",()=>{
- expect(fitsStart("track.play","track.plan")).toBeGreaterThanOrEqual(fitsEnd("track.play","track.policy"));
- for(let i=1;i<3;i++) expect(fitsStart("track.play",`track.structure.${i}`)).toBeGreaterThanOrEqual(fitsEnd("track.play",`track.structure.${i-1}`));
+ expect(playsAt("track.play").filter(p=>p.key==="track.policy")).toHaveLength(1);
+ expect(fitsStart("track.play","track.gaps")).toBeGreaterThanOrEqual(fitsEnd("track.play","track.policy"));
+ expect(fitsStart("track.play","track.plate.0")).toBeGreaterThanOrEqual(fitsStart("track.play","track.gaps"));
+ for(let i=1;i<3;i++) expect(fitsStart("track.play",`track.plate.${i}`)).toBeGreaterThan(fitsStart("track.play",`track.plate.${i-1}`));
 });
 it("builds capabilities before prerequisites for expansion",()=>{
- expect(fitsStart("fleet.play","fleet.join")).toBeGreaterThanOrEqual(fitsEnd("fleet.play","fleet.capability.2"));
- expect(fitsStart("fleet.play","fleet.readiness.0")).toBeGreaterThanOrEqual(fitsEnd("fleet.play","fleet.runway"));
- expect(fitsStart("fleet.play","fleet.portfolio")).toBeGreaterThanOrEqual(fitsEnd("fleet.play","fleet.readiness.2"));
+ for(const key of ["fleet.staff.2","fleet.yard","fleet.agent.2","fleet.mark","fleet.rule","fleet.gate.2","fleet.portfolio"]) expect(playsAt("fleet.play").some(p=>p.key===key),key).toBe(true);
+ expect(fitsStart("fleet.play","fleet.rule")).toBeGreaterThanOrEqual(fitsStart("fleet.play","fleet.mark"));
+ expect(fitsStart("fleet.play","fleet.gate.0")).toBeGreaterThanOrEqual(fitsEnd("fleet.play","fleet.rule"));
+ for(let i=1;i<3;i++) expect(fitsStart("fleet.play",`fleet.gate.${i}`)).toBeGreaterThanOrEqual(fitsEnd("fleet.play",`fleet.gate.${i-1}`));
+ expect(fitsStart("fleet.play","fleet.portfolio")).toBeGreaterThanOrEqual(fitsEnd("fleet.play","fleet.gate.2.caption"));
 });
