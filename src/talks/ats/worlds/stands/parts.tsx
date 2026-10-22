@@ -56,14 +56,14 @@ export function Big({ id, at, text, className, anchor = "start" }: { id: string;
   );
 }
 
-/** Words broken on several rows, one `<text>`: each row a run on its own baseline, a space kept at each break so the runs read as the one phrase. */
+/** Words broken on several rows, one `<text>`: each row a run on its own baseline, a space kept at each break so the runs read as the one phrase; set at the end of a row, or, when the rows are right-aligned, at the start of the next, so it never pushes a row's aligned edge. */
 export function Rows({ id, at, rows, pitch, anchor = "start", size = "label", soft = false, extra = "" }: { id?: string; at: Point; rows: readonly string[]; pitch: number; anchor?: "start" | "middle" | "end"; size?: "label" | "text"; soft?: boolean; extra?: string }) {
   const className = `${size === "text" ? "dk-text" : "dk-label"} sn-word${soft ? " sn-word--soft" : ""}${extra ? ` ${extra}` : ""}`;
   return (
     <text className={className} data-build={id} textAnchor={anchor} dominantBaseline="central">
       {rows.map((row, i) => (
         <tspan key={i} x={at.x} y={at.y + i * pitch}>
-          {i < rows.length - 1 ? `${row} ` : row}
+          {anchor === "end" ? (i > 0 ? ` ${row}` : row) : i < rows.length - 1 ? `${row} ` : row}
         </tspan>
       ))}
     </text>

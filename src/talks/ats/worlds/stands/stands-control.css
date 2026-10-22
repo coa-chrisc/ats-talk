@@ -1,8 +1,11 @@
-/* Slide 11a's own marks, under stands.css: the routes, the card, slide
-   11's screen, the record and the magnifier in navy, the structure and the
-   words; the honesty caption is a caption, slate. The staff, the reviewer
-   and the gate's posts are green through stands.css; the orange only
-   through the kit's HumanMark. */
+/* Slide 11a's own marks, under stands.css: the routes, the shelf, the
+   cards, the tool screens, the record and the magnifier in navy, the
+   structure and the words; the honesty caption is a caption, slate. The
+   staff, the reviewer and the gate's posts are green through stands.css.
+   Two colours carry meaning here, the world's only use of them outside the
+   kit's own parts: the pass green on the socket that fits and the boundary
+   round its screen, a check passed; the orange on the socket the review
+   adds, a person's decision, as the kit's HumanMark beside the reviewer. */
 
 .sn-route {
   fill: none;
@@ -12,10 +15,18 @@
   stroke-linejoin: round;
 }
 
+.sn-shelf {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
 .sn-card__page {
   fill: var(--dk-night);
   stroke: var(--dk-paper);
   stroke-width: 2.5;
+  stroke-linejoin: round;
 }
 
 .sn-card__line {
@@ -25,9 +36,65 @@
   stroke-linecap: round;
 }
 
-/* The screen and the record are white inside as they draw, so a card
-   passing behind the screen is hidden once it stands. */
-.sn-screen__frame.dk-draw,
+.sn-tool__frame.dk-draw {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.sn-tool__panel.dk-draw {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+}
+
+.sn-tool__socket.dk-draw {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+/* A socket's fill is not there until it lights (--k). */
+.sn-socket--pass {
+  fill: var(--dk-pass);
+  fill-opacity: var(--k, 0);
+}
+
+.sn-socket__rim {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.sn-socket--human {
+  fill: var(--dk-human);
+  fill-opacity: var(--k, 0);
+  stroke: var(--dk-human);
+  stroke-opacity: var(--k, 0);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.sn-boundary {
+  position: absolute;
+}
+
+.sn-boundary svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sn-boundary path {
+  fill: none;
+  stroke: var(--dk-pass);
+  stroke-width: 3;
+  stroke-dasharray: 10 8;
+}
+
+/* The record is white inside as it draws. */
 .sn-ledger.dk-draw {
   fill: var(--dk-night);
   fill-opacity: var(--d, 0);
@@ -35,19 +102,11 @@
   stroke-width: 3;
 }
 
-.sn-screen__stand.dk-draw,
-.sn-screen__line.dk-draw,
 .sn-ledger__line.dk-draw {
   fill: none;
   stroke: var(--dk-paper);
   stroke-width: 3;
   stroke-linecap: round;
-}
-
-.sn-screen__panel.dk-draw {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 2;
 }
 
 .sn-lens__glass {

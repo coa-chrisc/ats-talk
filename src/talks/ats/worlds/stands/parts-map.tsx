@@ -49,16 +49,12 @@ export function Agent({ id, at, scale }: { id: string; at: Point; scale: number 
   );
 }
 
-/** A gate standing on a line at `foot`: its two posts in green, its bars across them in navy. It lands as one part (`land`); an opening gate is a boom barrier: both bars swing up together about the left post until they stand upright over it as one boom, the right post left standing alone (`open`). */
-export function ClosedGate({ id, foot, scale, opens = false }: { id: string; foot: Point; scale: number; opens?: boolean }) {
+/** A gate standing on a line at `foot`: its two posts in green, its bars across them in navy. It lands as one part (`land`). */
+export function ClosedGate({ id, foot, scale }: { id: string; foot: Point; scale: number }) {
   const gate = gatePaths(foot, scale);
   return (
     <g className="sn-closed-gate" data-build={id}>
-      {opens ? (
-        gate.arms.map((arm) => <path key={arm} className="sn-closed-gate__bar sn-closed-gate__arm" d={arm} />)
-      ) : (
-        <path className="sn-closed-gate__bar" d={gate.bars} />
-      )}
+      <path className="sn-closed-gate__bar" d={gate.bars} />
       <path className="sn-closed-gate__post" d={gate.posts} />
     </g>
   );

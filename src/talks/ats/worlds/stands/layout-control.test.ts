@@ -1,25 +1,28 @@
 /**
  * Where slide 11a puts things: the member of staff at the left with the
- * card, the route forking, the gate that opens, the screen and the record
- * on the upper branch, the closed gate, the reviewer and the mark on the
- * lower, the line back up joining before the screen, and the honesty
- * caption at the lower left. Every row of words clear of every other and of
- * every drawn thing, wherever a card or the magnifier stops.
+ * card, the route forking, the shelf on the upper branch with its screens
+ * and its room for one more, the boundary round the first screen and the
+ * record under it, the closed gate, the reviewer and the mark on the lower
+ * branch under the shelf, and the honesty caption at the lower left. Every
+ * row of words clear of every other and of every drawn thing, wherever a
+ * card or the magnifier rests.
  */
 import { describe, expect, it } from "vitest";
 import { box, type Box } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, wordsWidth } from "./layout";
-import { BRANCH_X, CARD, CONTROL, FORK, GAP, LINE, controlGlyphs, controlRows } from "./layout-control";
-import { bottom, bounds, overlaps, right } from "./harness";
+import { BRANCH_X, CARD, CONTROL, FORK, GAP, LINE, SHELF, cardBox, controlGlyphs, controlRows } from "./layout-control";
+import { bottom, bounds, inside, overlaps, right } from "./harness";
 
 const C = CONTROL;
 const rows = controlRows();
 const glyphs = controlGlyphs();
+const row = (key: string) => rows.find((entry) => entry.key === key)!.box;
 /** The block a row belongs to: a name, its caption and their rows set one under another; rows in a block touch, blocks keep apart. */
 const blockOf = (key: string) => key.replace(/\.\d+$/, "").replace(/\.(name|caption|words)$/, "");
 const grow = (b: Box, by: number): Box => box(b.x - by, b.y - by, b.w + 2 * by, b.h + 2 * by);
+const middle = (b: Box) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 });
 /** A route's band: its line and its stroke. */
-const along = (x0: number, x1: number, y: number): Box => box(x0, y - 3, x1 - x0, 6);
+const along = (x0: number, x1: number, y: number, half = 3): Box => box(x0, y - half, x1 - x0, 2 * half);
 /** A slanted run, as eight small boxes along it. */
 const slant = (key: string, toY: number) =>
   Array.from({ length: 8 }, (_, i) => {
@@ -30,54 +33,92 @@ const routes = [
   { key: C.routes.stem.key, box: along(right(C.staff.at), FORK.x, LINE.stem) },
   ...slant(C.routes.upper.key, LINE.upper),
   ...slant(C.routes.lower.key, LINE.lower),
-  { key: C.routes.upper.key, box: along(BRANCH_X, C.ledger.at.x, LINE.upper) },
+  { key: C.routes.upper.key, box: along(BRANCH_X, SHELF.from, LINE.upper) },
+  { key: C.shelf.key, box: along(SHELF.from, SHELF.to, LINE.upper, SHELF.width / 2) },
   { key: C.routes.lower.key, box: along(BRANCH_X, right(C.reviewer.at), LINE.lower) },
-  { key: C.routes.join.key, box: box(C.mark.at.x - 3, LINE.upper - 3, 30, C.mark.at.y - 28 - LINE.upper + 3) },
 ];
 
 describe("slide 11a, approved tools", () => {
+  const [upper, lower] = C.cards;
+  const [first, , , added] = C.tools;
+
   it("rides each card on its line, its foot just over it, and stops each short of what it reaches", () => {
-    const [upper, lower] = C.cards;
-    const at = (b: Box, by: { x: number; y: number }) => box(b.x + by.x, b.y + by.y, b.w, b.h);
-    expect(bottom(at(upper.at, upper.stops.gate))).toBe(LINE.upper - CARD.lift);
-    expect(bottom(at(lower.at, lower.stops.gate))).toBe(LINE.lower - CARD.lift);
-    // Each stop in plain sight: a clear gap, past the stroke, before the gate's post, the screen and the record.
+    expect(bottom(cardBox(upper, upper.stops.shelf))).toBe(LINE.upper - CARD.lift);
+    expect(bottom(cardBox(lower, lower.stops.gate))).toBe(LINE.lower - CARD.lift);
     expect(GAP).toBeGreaterThanOrEqual(20);
-    expect(right(at(upper.at, upper.stops.gate))).toBe(C.gates.open.paths.at.x - GAP);
-    expect(right(at(lower.at, lower.stops.gate))).toBe(C.gates.closed.paths.at.x - GAP);
-    expect(right(at(upper.at, upper.stops.screen))).toBe(C.screen.at.x - GAP);
-    expect(right(at(upper.at, upper.stops.ledger))).toBe(C.ledger.at.x - GAP);
-    // Behind the screen as it passes: the screen is taller than the card at the card's height.
-    expect(C.screen.at.y).toBeLessThan(at(upper.at, upper.stops.screen).y);
-    expect(bottom(C.screen.at)).toBeGreaterThan(bottom(at(upper.at, upper.stops.screen)));
+    expect(right(cardBox(upper, upper.stops.shelf))).toBe(first.at.x - GAP);
+    expect(right(cardBox(lower, lower.stops.gate))).toBe(C.gate.paths.at.x - GAP);
   });
 
-  it("stands both gates in one column, the open one on the upper line and the closed one on the lower", () => {
-    expect(C.gates.open.foot.x).toBe(C.gates.closed.foot.x);
-    expect(bottom(C.gates.open.paths.at)).toBe(LINE.upper);
-    expect(bottom(C.gates.closed.paths.at)).toBe(LINE.lower);
+  it("seats the first card inside the first screen, its round hole on the screen's round socket", () => {
+    const seat = cardBox(upper, upper.stops.seat);
+    expect(inside(seat, first.at)).toBe(true);
+    expect(middle(seat).x).toBe(middle(first.at).x);
+    expect(Math.abs(middle(seat).y - middle(first.at).y)).toBeLessThanOrEqual(1);
+    expect({ x: seat.x + CARD.w / 2, y: seat.y + CARD.hole }).toEqual(first.socket);
+    // The slide in is short: across the gap and into the screen's middle.
+    expect(upper.stops.tool.x - upper.stops.shelf.x).toBe(GAP + CARD.w / 2 + first.at.w / 2);
+    // At the riding height inside the screen too, before it snaps up.
+    expect(inside(cardBox(upper, upper.stops.tool), box(first.at.x, first.at.y, first.at.w, first.at.h + 1))).toBe(true);
   });
 
-  it("names the open gate over it and the closed gate under its branch, each centred on its gate, nothing named in the band between the branches", () => {
-    const row = (key: string) => rows.find((entry) => entry.key === key)!.box;
-    const open = row(C.gates.open.name.key);
-    expect(open.x + open.w / 2).toBeCloseTo(C.gates.open.foot.x, 0);
-    expect(bottom(open)).toBeLessThanOrEqual(C.gates.open.boomTop - 12);
-    for (const key of [C.gates.closed.name.key, C.gates.closed.caption.key]) {
+  it("stands the four screens on the shelf in one row, evenly, the added one at its end inside its span", () => {
+    for (const tool of C.tools) expect(bottom(tool.at), tool.key).toBe(LINE.upper);
+    const gaps = C.tools.slice(1).map((tool, i) => tool.at.x - right(C.tools[i].at));
+    expect(new Set(gaps).size).toBe(1);
+    expect(first.at.x).toBeGreaterThanOrEqual(SHELF.from);
+    expect(right(added.at)).toBeLessThanOrEqual(SHELF.to);
+    expect(C.slot.at).toEqual(added.at);
+    expect(SHELF.from).toBeGreaterThan(BRANCH_X);
+  });
+
+  it("names the shelf once, over its three screens, centred on them", () => {
+    const name = row(C.shelf.name.key);
+    expect(middle(name).x).toBeCloseTo((first.at.x + right(C.tools[2].at)) / 2, 0);
+    expect(bottom(name)).toBeLessThan(C.boundary.at.y);
+  });
+
+  it("draws the boundary round the first screen alone, open at the shelf", () => {
+    expect(inside(first.at, C.boundary.at)).toBe(true);
+    expect(bottom(C.boundary.at)).toBe(LINE.upper);
+    expect(overlaps(C.boundary.at, C.tools[1].at)).toBe(false);
+  });
+
+  it("hangs the record directly under the first screen, under the shelf, and above the second card where it stops", () => {
+    expect(middle(C.ledger.at).x).toBe(middle(first.at).x);
+    expect(C.ledger.at.y).toBeGreaterThan(LINE.upper + 6);
+    expect(bottom(C.ledger.at)).toBeLessThan(cardBox(lower, lower.stops.gate).y - 20);
+  });
+
+  it("sets the first screen's and the record's words just left of them, each block level with what it names", () => {
+    const fits = row(C.fits.key);
+    expect(right(fits)).toBe(C.boundary.at.x - 16);
+    expect(Math.abs(middle(fits).y - first.socket.y)).toBeLessThanOrEqual(4);
+    const use = [0, 1].map((k) => row(`${C.boundary.caption.key}.${k}`));
+    for (const b of use) expect(right(b)).toBe(C.boundary.at.x - 16);
+    expect(bottom(use[1])).toBeLessThanOrEqual(fits.y);
+    expect(use[0].y).toBeLessThan(C.boundary.at.y + 16);
+    const ledger = [row(C.ledger.name.key), row(`${C.ledger.caption.key}.0`), row(`${C.ledger.caption.key}.1`)];
+    for (const b of ledger) expect(right(b)).toBe(C.boundary.at.x - 16);
+    expect(ledger[0].y).toBe(C.ledger.at.y);
+    expect(bottom(ledger[2])).toBeLessThanOrEqual(bottom(C.ledger.at) + LABEL_LINE / 2);
+  });
+
+  it("names the closed gate under its branch, centred on it, and puts the reviewer under the added screen", () => {
+    for (const key of [C.gate.name.key, C.gate.caption.key]) {
       const b = row(key);
-      expect(b.x + b.w / 2, key).toBeCloseTo(C.gates.closed.foot.x, 0);
+      expect(middle(b).x, key).toBeCloseTo(C.gate.foot.x, 0);
       expect(b.y, key).toBeGreaterThan(LINE.lower + 12);
     }
-    const band = box(BRANCH_X, LINE.upper, right(C.reviewer.at) - BRANCH_X, LINE.lower - LINE.upper);
-    for (const entry of rows) expect(overlaps(entry.box, band), entry.key).toBe(false);
+    expect(bottom(C.gate.paths.at)).toBe(LINE.lower);
+    expect(Math.abs(middle(C.reviewer.at).x - middle(added.at).x)).toBeLessThanOrEqual(40);
   });
 
   it("brings the magnifier back to rest in the reviewer's hand, off the card and the gate", () => {
     const rest = box(C.lens.at.x - 20, C.lens.at.y - 20, 54, 54);
-    expect(overlaps(rest, C.gates.closed.paths.at)).toBe(false);
-    const [, lower] = C.cards;
-    expect(overlaps(rest, box(lower.at.x + lower.stops.gate.x, lower.at.y + lower.stops.gate.y, CARD.w, CARD.h))).toBe(false);
-    expect(C.lens.at.x).toBeGreaterThan(right(C.gates.closed.paths.at) + 120);
+    expect(overlaps(rest, C.gate.paths.at)).toBe(false);
+    expect(overlaps(rest, cardBox(lower, lower.stops.gate))).toBe(false);
+    expect(C.lens.at.x).toBeGreaterThan(right(C.gate.paths.at) + 120);
     expect(Math.abs(C.lens.at.x - C.reviewer.at.x)).toBeLessThanOrEqual(24);
   });
 
@@ -87,34 +128,36 @@ describe("slide 11a, approved tools", () => {
     for (const b of words) expect(b.y).toBeGreaterThan(bottom(C.staff.at));
   });
 
-  it("joins the line from the mark into the upper branch past the gate and before the screen", () => {
-    expect(C.routes.join.joins.y).toBe(LINE.upper);
-    expect(C.routes.join.joins.x).toBeGreaterThan(right(C.gates.open.paths.at) + 40);
-    expect(C.routes.join.joins.x).toBeLessThan(C.screen.at.x - 40);
-  });
-
   it("sets every row of words on one or two rows, each caption's rows even", () => {
-    for (const list of [C.staff.caption.rows, C.screen.caption.rows, C.ledger.caption.rows, C.reviewer.name.rows, C.mark.words.rows]) {
+    for (const list of [C.staff.caption.rows, C.boundary.caption.rows, C.ledger.caption.rows, C.reviewer.name.rows, C.mark.words.rows]) {
       expect(list.length).toBeLessThanOrEqual(2);
-      const widths = list.map((row) => wordsWidth(row, 26));
+      const widths = list.map((entry) => wordsWidth(entry, 26));
       expect(Math.min(...widths) / Math.max(...widths), list.join(" / ")).toBeGreaterThan(0.6);
     }
   });
 
   it("sets the honesty caption at the lower left, slate, at the label size", () => {
-    const row = rows.find((entry) => entry.key === C.honesty.key)!;
-    expect(row.box.x).toBe(SAFE.left);
-    expect(row.box.h).toBe(LABEL_LINE);
-    expect(bottom(row.box)).toBeGreaterThan(DRAW_FOOT - 40);
+    const honesty = row(C.honesty.key);
+    expect(honesty.x).toBe(SAFE.left);
+    expect(honesty.h).toBe(LABEL_LINE);
+    expect(bottom(honesty)).toBeGreaterThan(DRAW_FOOT - 40);
   });
 
-  it("keeps every row of words clear of every other row, of every drawn thing wherever it stops, and of the routes, with room to spare", () => {
+  it("keeps every row of words clear of every other row, of every drawn thing wherever it rests, and of the routes and the shelf, with room to spare", () => {
     for (const a of rows) for (const b of rows) if (a !== b) expect(overlaps(blockOf(a.key) === blockOf(b.key) ? a.box : grow(a.box, 6), b.box), `${a.key} / ${b.key}`).toBe(false);
-    for (const row of rows) for (const glyph of [...glyphs, ...routes]) expect(overlaps(grow(row.box, 12), glyph.box), `${row.key} / ${glyph.key}`).toBe(false);
+    for (const entry of rows) for (const glyph of [...glyphs, ...routes]) expect(overlaps(grow(entry.box, 12), glyph.box), `${entry.key} / ${glyph.key}`).toBe(false);
+  });
+
+  it("keeps the drawn things apart: the record off the shelf, the reviewer and the mark off the shelf and the screens", () => {
+    const shelf = routes.find((entry) => entry.key === C.shelf.key)!.box;
+    for (const b of [C.ledger.at, C.reviewer.at, box(C.mark.at.x - 26, C.mark.at.y - 26, 52, 52)]) {
+      expect(overlaps(b, shelf)).toBe(false);
+      for (const tool of C.tools) expect(overlaps(b, tool.at)).toBe(false);
+    }
   });
 
   it("fills the field: from under the story band to the drawing's foot, inside the safe area", () => {
-    const all = bounds([...rows.map((row) => row.box), ...glyphs.map((glyph) => glyph.box)]);
+    const all = bounds([...rows.map((entry) => entry.box), ...glyphs.map((glyph) => glyph.box)]);
     expect(all.y).toBeGreaterThanOrEqual(contentTop("control"));
     expect(all.y).toBeLessThan(contentTop("control") + 40);
     expect(bottom(all)).toBeLessThanOrEqual(DRAW_FOOT);

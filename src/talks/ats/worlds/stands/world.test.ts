@@ -154,8 +154,13 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses the orange only through the kit's HumanMark, once each on slide 11a's review and slide 15's fleet, and no pass green", () => {
-    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
+  it("uses the orange only through the kit's HumanMark, once each on slide 11a's review and slide 15's fleet, and on slide 11a's added socket; the pass green only on slide 11a's fitting socket and its boundary", () => {
+    for (const [file, source] of sources.filter(([name]) => name !== "stands-control.css")) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
+    const control = sources.find(([file]) => file === "stands-control.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(control).not.toMatch(/--fr-|#f4642c|#1f573b/i);
+    const coloured = [...control.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => /--dk-(human|pass)\b/.test(body)).map(([, selectors, body]) => [selectors.trim(), body.match(/--dk-(human|pass)\b/g)!] as const);
+    expect(coloured.map(([selectors]) => selectors).sort()).toEqual([".sn-boundary path", ".sn-socket--human", ".sn-socket--pass"]);
+    for (const [selectors, tokens] of coloured) expect(new Set(tokens), selectors).toEqual(new Set([selectors.includes("human") ? "--dk-human" : "--dk-pass"]));
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-control.tsx", "scene-fleet.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual([]);

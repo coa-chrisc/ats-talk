@@ -1,36 +1,63 @@
 /**
- * Slide 11a's own pieces: the card a member of staff carries, slide 11's
- * screen, the record whose lines draw in, and the magnifier the reviewer
- * holds. Their measures are in layout-control.ts; painted by
- * stands-control.css.
+ * Slide 11a's own pieces: the card a member of staff carries, with a hole
+ * the shape of its socket; the shelf and its tool screens; a socket's fill;
+ * the boundary round a screen; the record whose lines draw in; and the
+ * magnifier the reviewer holds. Their measures are in layout-control.ts;
+ * painted by stands-control.css.
  */
 "use client";
 
 import type { Box, Point } from "@/components/deck/kit";
-import { CARD, LEDGER, LENS, SCREEN } from "./layout-control";
+import { BOUNDARY, LEDGER, LENS, TOOL } from "./layout-control";
 
-/** A card: a small white page in a navy outline, three lines on it, the last shorter. It shows (`show`) and travels by `--x` and `--y` (`travel`). */
-export function Card({ id, at }: { id: string; at: Box }) {
-  const x0 = at.x + 9;
+/** A card: a small white page in a navy outline with a hole cut in it (`page`, drawn even-odd, so what is under the hole shows through), and a line across its top. It shows (`show`) and travels by `--x` and `--y` (`travel`). */
+export function Card({ id, page, line }: { id: string; page: string; line: string }) {
   return (
     <g className="dk-move sn-card" data-build={id}>
-      <rect className="sn-card__page" x={at.x} y={at.y} width={CARD.w} height={CARD.h} rx={4} />
-      <path className="sn-card__line" d={`M${x0} ${at.y + 14}H${at.x + CARD.w - 9}M${x0} ${at.y + 25}H${at.x + CARD.w - 9}M${x0} ${at.y + 36}H${at.x + CARD.w - 15}`} />
+      <path className="sn-card__page" d={page} fillRule="evenodd" />
+      <path className="sn-card__line" d={line} />
     </g>
   );
 }
 
-/** Slide 11's screen: the monitor, its neck and base drawing on as one (`draw`), white inside as it draws so a card passing behind it is hidden; the panel in it and the panel's three lines. */
-export function Screen({ id, at }: { id: string; at: Box }) {
-  const foot = at.y + at.h;
-  const p = SCREEN.panel;
+/** A tool screen standing on the shelf: its frame and the panel in it drawing on as one (`draw`), and, when given, its socket's outline with them. */
+export function ToolScreen({ id, at, socket }: { id: string; at: Box; socket?: string }) {
+  const i = TOOL.inset;
   return (
-    <g className="sn-screen" data-build={id}>
-      <rect className="sn-screen__frame dk-draw" x={at.x} y={at.y} width={at.w} height={at.h} rx={8} pathLength={1} />
-      <path className="sn-screen__stand dk-draw" d={`M${at.x + 63} ${foot}V${foot + SCREEN.neck}M${at.x + SCREEN.base.dx} ${foot + SCREEN.neck}H${at.x + SCREEN.base.dx + SCREEN.base.w}`} pathLength={1} />
-      <rect className="sn-screen__panel dk-draw" x={at.x + p.x} y={at.y + p.y} width={p.w} height={p.h} rx={4} pathLength={1} />
-      <path className="sn-screen__line dk-draw" d={SCREEN.lines.map(([x, y, w]) => `M${at.x + x} ${at.y + y}h${w}`).join("")} pathLength={1} />
+    <g className="sn-tool" data-build={id}>
+      <rect className="sn-tool__frame dk-draw" x={at.x} y={at.y} width={at.w} height={at.h} rx={TOOL.rx} pathLength={1} />
+      <rect className="sn-tool__panel dk-draw" x={at.x + i} y={at.y + i} width={at.w - 2 * i} height={at.h - 2 * i} rx={3} pathLength={1} />
+      {socket && <path className="sn-tool__socket dk-draw" d={socket} pathLength={1} />}
     </g>
+  );
+}
+
+/** A socket's fill: deep green as it lights, by `--k` (`fill`). */
+export function LitSocket({ id, d }: { id: string; d: string }) {
+  return <path className="sn-socket sn-socket--pass" data-build={id} d={d} />;
+}
+
+/** The added screen's socket: a grey outline that shows (`show`) with its slot, then fills orange by `--k` (`fill`). */
+export function AddedSocket({ id, d }: { id: string; d: string }) {
+  return (
+    <g className="sn-socket" data-build={id}>
+      <path className="sn-socket__rim" d={d} />
+      <path className="sn-socket--human" d={d} />
+    </g>
+  );
+}
+
+/** The boundary round one screen: a deep green dashed outline open at the shelf. HTML holding its own SVG, as a dashed edge cannot draw on: it wipes on (`wipe`). */
+export function Boundary({ id, at }: { id: string; at: Box }) {
+  const pad = 3;
+  const r = BOUNDARY.rx;
+  const [x0, x1, y0, foot] = [pad, pad + at.w, pad, pad + at.h];
+  return (
+    <div className="sn-boundary dk-wipe" data-build={id} style={{ left: at.x - pad, top: at.y - pad, width: at.w + 2 * pad, height: at.h + pad }}>
+      <svg width={at.w + 2 * pad} height={at.h + pad} viewBox={`0 0 ${at.w + 2 * pad} ${at.h + pad}`} aria-hidden="true">
+        <path d={`M${x0} ${foot}V${y0 + r}Q${x0} ${y0} ${x0 + r} ${y0}H${x1 - r}Q${x1} ${y0} ${x1} ${y0 + r}V${foot}`} />
+      </svg>
+    </div>
   );
 }
 
@@ -55,7 +82,7 @@ export function Magnifier({ id, at }: { id: string; at: Point }) {
   );
 }
 
-/** A route: a navy line drawing on from its first point (`draw`). */
-export function Route({ id, d }: { id: string; d: string }) {
-  return <path className="sn-route dk-draw" data-build={id} d={d} pathLength={1} />;
+/** A route, or the shelf: a navy line drawing on from its first point (`draw`). */
+export function Route({ id, d, shelf = false }: { id: string; d: string; shelf?: boolean }) {
+  return <path className={`${shelf ? "sn-shelf" : "sn-route"} dk-draw`} data-build={id} d={d} pathLength={1} />;
 }
