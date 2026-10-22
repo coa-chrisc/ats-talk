@@ -3,11 +3,11 @@
  * its name inside it; and a request's card, a white face in a light edge
  * holding a miniature of the slide that brought its idea in (slide 19's
  * round table, slide 21's table with a speech bubble, slide 24's four
- * bands, slide 13's fence, slide 14's record and key, and a ledger's row),
- * its name and caption under it. The miniatures are drawn from the same
- * proportions as their slides, small. Script-free: every word is passed
- * in. SVG for the plane's marks but the plate, which is HTML so it wipes on
- * (ready.css paints them).
+ * bands, slide 13's fence, slide 14's record and key, and a ledger page),
+ * its name beside it and its caption under both. The miniatures are drawn
+ * from the same shapes as their slides, small. Script-free: every word is
+ * passed in. SVG for the plane's marks but the plate, which is HTML so it
+ * wipes on (ready.css paints them).
  */
 "use client";
 
@@ -31,9 +31,9 @@ export function GapPlate({ id, at, name }: { id: string; at: Box; name: string }
 type Rows = { rows: readonly string[]; at: Point };
 
 /** Words on several rows, one `<text>`, each row a run on its own baseline, a space kept at each break so the runs read as the one phrase. */
-function RowWords({ words, strong, tone }: { words: Rows; strong?: boolean; tone: "navy" | "soft" }) {
+function RowWords({ words, weight, tone }: { words: Rows; weight: "strong" | "light"; tone: "navy" | "soft" }) {
   return (
-    <text className={`dk-label rd-word rd-word--${tone}${strong ? " rd-word--strong" : ""}`} dominantBaseline="central">
+    <text className={`dk-label rd-word rd-word--${tone} rd-word--${weight}`} dominantBaseline="central">
       {words.rows.map((row, i) => (
         <tspan key={i} x={words.at.x} y={words.at.y + i * CARD.pitch}>
           {i < words.rows.length - 1 ? `${row} ` : row}
@@ -43,24 +43,24 @@ function RowWords({ words, strong, tone }: { words: Rows; strong?: boolean; tone
   );
 }
 
-/** A request's card: its face, its miniature in the band at its top left, its name and caption under it. It lands as one part. */
+/** A request's card: its face, its miniature at its top left, its name beside the miniature in navy semibold, and its caption under both in the light weight and the secondary grey. It lands as one part. */
 export function RequestCard({ id, at, kind, mini, name, caption }: { id: string; at: Box; kind: Miniature; mini: Box; name: Rows; caption: Rows }) {
   return (
     <g className="rd-request" data-build={id}>
       <rect className="rd-request__face" x={at.x} y={at.y} width={at.w} height={at.h} rx={10} />
       <MiniatureOf kind={kind} at={mini} />
-      <RowWords words={name} strong tone="navy" />
-      <RowWords words={caption} tone="soft" />
+      <RowWords words={name} weight="strong" tone="navy" />
+      <RowWords words={caption} weight="light" tone="soft" />
     </g>
   );
 }
 
-/** The empty rings beside the cards, grey and dashed, the orange mark's size: what only the room can fill. They come up together. */
+/** The empty rings before the requests' names, grey and dashed, a row of the name across: a mark not yet made, which only the room can fill. Nine dashes round each, whatever its size (`pathLength`). They come up together. */
 export function EmptyRings({ id, at }: { id: string; at: readonly Point[] }) {
   return (
     <g className="rd-pending" data-build={id}>
       {at.map((c) => (
-        <circle key={`${c.x} ${c.y}`} className="rd-pending__ring" cx={c.x} cy={c.y} r={CARD.ring} />
+        <circle key={`${c.x} ${c.y}`} className="rd-pending__ring" cx={c.x} cy={c.y} r={CARD.ring} pathLength={45} />
       ))}
     </g>
   );
@@ -89,85 +89,91 @@ const chairsRound = (c: Point, reach: number, count: number, start: number) =>
     return { x: Math.round(c.x + reach * Math.cos(a)), y: Math.round(c.y + reach * Math.sin(a)) };
   });
 
-/** Slide 19's round table, seen from above, six chairs round it. */
+/** Slide 19's round table, seen from above, six chairs round it, across the miniature's width. */
 function RoundTable(at: Box) {
-  const c = { x: at.x + 44, y: at.y + at.h / 2 };
+  const c = { x: at.x + at.w / 2, y: at.y + at.h / 2 };
   return (
     <>
-      <circle className="rd-mini__table" cx={c.x} cy={c.y} r={17} />
-      {chairsRound(c, 27, 6, -90).map((seat) => (
-        <Chair key={`${seat.x} ${seat.y}`} c={seat} toward={c} />
+      <circle className="rd-mini__table" cx={c.x} cy={c.y} r={20} />
+      {chairsRound(c, 30, 6, -90).map((seat) => (
+        <Chair key={`${seat.x} ${seat.y}`} c={seat} toward={c} w={13} />
       ))}
     </>
   );
 }
 
-/** Slide 21's table with three chairs at it and a speech bubble over it, two lines of speech in it. */
+/** Slide 21's table with three chairs at it, and over it a speech bubble, its tail toward the table, two lines of speech in it. */
 function Listening(at: Box) {
-  const c = { x: at.x + 32, y: at.y + 34 };
-  const b = box(at.x + 66, at.y, 76, 34);
+  const b = box(at.x + 1, at.y + 6, at.w - 2, 38);
+  const c = { x: at.x + at.w / 2, y: at.y + 90 };
   return (
     <>
-      <circle className="rd-mini__table" cx={c.x} cy={c.y} r={14} />
-      {chairsRound(c, 23, 3, 90).map((seat) => (
+      <path className="rd-mini__bubble" d={`M${b.x + 8} ${b.y}H${b.x + b.w - 8}Q${b.x + b.w} ${b.y} ${b.x + b.w} ${b.y + 8}V${b.y + b.h - 8}Q${b.x + b.w} ${b.y + b.h} ${b.x + b.w - 8} ${b.y + b.h}H${b.x + 30}L${b.x + 18} ${b.y + b.h + 12}L${b.x + 18} ${b.y + b.h}H${b.x + 8}Q${b.x} ${b.y + b.h} ${b.x} ${b.y + b.h - 8}V${b.y + 8}Q${b.x} ${b.y} ${b.x + 8} ${b.y}Z`} />
+      <path className="rd-mini__speech" d={`M${b.x + 11} ${b.y + 13}H${b.x + b.w - 11}M${b.x + 11} ${b.y + 25}H${b.x + b.w - 26}`} />
+      <circle className="rd-mini__table" cx={c.x} cy={c.y} r={15} />
+      {chairsRound(c, 24, 3, 90).map((seat) => (
         <Chair key={`${seat.x} ${seat.y}`} c={seat} toward={c} />
       ))}
-      <path className="rd-mini__bubble" d={`M${b.x + 8} ${b.y}H${b.x + b.w - 8}Q${b.x + b.w} ${b.y} ${b.x + b.w} ${b.y + 8}V${b.y + b.h - 8}Q${b.x + b.w} ${b.y + b.h} ${b.x + b.w - 8} ${b.y + b.h}H${b.x + 24}L${b.x + 6} ${b.y + b.h + 12}L${b.x + 12} ${b.y + b.h}H${b.x + 8}Q${b.x} ${b.y + b.h} ${b.x} ${b.y + b.h - 8}V${b.y + 8}Q${b.x} ${b.y} ${b.x + 8} ${b.y}Z`} />
-      <path className="rd-mini__speech" d={`M${b.x + 12} ${b.y + 12}H${b.x + b.w - 12}M${b.x + 12} ${b.y + 22}H${b.x + b.w - 30}`} />
     </>
   );
 }
 
-/** Slide 24's four bands, stacked in their levels' hues, each with its solid cap at its left end. */
+/** Slide 24's four bands, stacked in their levels' hues down the miniature's height, each with its solid cap at its left end. */
 function Bands(at: Box) {
+  const h = 22;
+  const pitch = (at.h - h) / 3;
   return (
     <>
       {LEVELS.bands.map((band, i) => (
         <g key={band.key} className="rd-mini-band" data-hue={band.hue}>
-          <rect className="rd-mini-band__body" x={at.x} y={at.y + 2 + i * 14} width={140} height={10} rx={3} />
-          <rect className="rd-mini-band__cap" x={at.x} y={at.y + 2 + i * 14} width={5} height={10} rx={2} />
+          <rect className="rd-mini-band__body" x={at.x} y={at.y + i * pitch} width={at.w} height={h} rx={3} />
+          <rect className="rd-mini-band__cap" x={at.x} y={at.y + i * pitch} width={6} height={h} rx={2} />
         </g>
       ))}
     </>
   );
 }
 
-/** Slide 13's fenced yard, small: the green yard inside its rail, posts along it at half the fence's pitch. */
+/** Slide 13's fenced yard, small: the green yard inside its rail, about square in the miniature's middle and 72 across, so the fence's posts, at a quarter of its pitch, stand at both corners, from department-map.ts's numbers. */
 function Yard(at: Box) {
-  const y = box(at.x + 4, at.y + 10, 136, 38);
+  const y = box(at.x + 2, at.y + 26, at.w - 4, at.h - 52);
   const over = FENCE.overhang * 0.6;
   return (
     <>
       <rect className="rd-mini__yard" x={y.x} y={y.y} width={y.w} height={y.h} rx={FENCE.rx} />
       <rect className="rd-mini__rail" x={y.x} y={y.y} width={y.w} height={y.h} rx={FENCE.rx} />
-      {fencePosts(y.x, y.w, FENCE.postPitch / 2).map((x) => (
+      {fencePosts(y.x, y.w, FENCE.postPitch / 4).map((x) => (
         <path key={x} className="rd-mini__post" d={`M${x} ${y.y - over}V${y.y + over}M${x} ${y.y + y.h - over}V${y.y + y.h + over}`} />
       ))}
     </>
   );
 }
 
-/** Slide 14's record and key, larger: a page with three lines, and the key beside it. */
+/** Slide 14's record and key: a page with three lines, the key under it. */
 function RecordKey(at: Box) {
-  const p = box(at.x + 8, at.y + 3, 38, 50);
-  const k = { x: at.x + 82, y: at.y + 28 };
+  const p = box(at.x + 14, at.y + 4, 48, 64);
+  const k = { x: at.x + 16, y: at.y + 98 };
   return (
     <>
-      <path className="rd-mini__line" d={`M${p.x} ${p.y}h${p.w}v${p.h}h${-p.w}z${[14, 24, 34].map((dy) => `M${p.x + 9} ${p.y + dy}h${p.w - 18}`).join("")}`} />
+      <path className="rd-mini__line" d={`M${p.x} ${p.y}h${p.w}v${p.h}h${-p.w}z${[18, 31, 44].map((dy) => `M${p.x + 10} ${p.y + dy}h${p.w - 20}`).join("")}`} />
       <circle className="rd-mini__line" cx={k.x} cy={k.y} r={11} />
-      <path className="rd-mini__line" d={`M${k.x + 11} ${k.y}h32v11M${k.x + 31} ${k.y}v8`} />
+      <path className="rd-mini__line" d={`M${k.x + 11} ${k.y}H${at.x + at.w - 4}v12M${at.x + at.w - 18} ${k.y}v9`} />
     </>
   );
 }
 
-/** A ledger's row in grey, not yet entered: a header rule over a raised row in three columns, a faint rule under it. */
+/** A ledger page: a heading rule, three rows entered, each an item and its amount, and under them an empty row in grey dashes, the line not yet entered. */
 function Ledger(at: Box) {
-  const r = box(at.x, at.y + 16, 150, 26);
+  const p = box(at.x + 2, at.y + 2, at.w - 4, at.h - 4);
+  const head = p.y + 22;
+  const rows = [0, 1, 2].map((i) => head + 16 + i * 20);
+  const amounts = p.x + p.w - 24;
   return (
     <>
-      <path className="rd-mini__head" d={`M${r.x} ${r.y - 8}H${r.x + r.w}`} />
-      <rect className="rd-mini__row" x={r.x} y={r.y} width={r.w} height={r.h} rx={3} />
-      <path className="rd-mini__divider" d={`M${r.x + 50} ${r.y}v${r.h}M${r.x + 100} ${r.y}v${r.h}M${r.x} ${r.y + r.h + 10}H${r.x + r.w}`} />
+      <rect className="rd-mini__page" x={p.x} y={p.y} width={p.w} height={p.h} rx={4} />
+      <path className="rd-mini__head" d={`M${p.x} ${head}H${p.x + p.w}`} />
+      <path className="rd-mini__entry" d={rows.map((y) => `M${p.x + 9} ${y}H${amounts - 8}M${amounts} ${y}H${p.x + p.w - 9}`).join("")} />
+      <rect className="rd-mini__empty" x={p.x + 6} y={rows[2] + 13} width={p.w - 12} height={22} rx={3} />
     </>
   );
 }

@@ -39,6 +39,10 @@
   font-weight: 600;
 }
 
+.rd-word--light.rd-word--light {
+  font-weight: 400;
+}
+
 /* A person, stroked in navy. */
 .rd-figure {
   fill: none;
@@ -198,12 +202,14 @@
    a navy edge and their chairs white, the speech bubble white, the four
    bands in their levels' hues, the fenced yard in the green wash inside a
    navy rail, the record and its key in the process's green, and the
-   ledger's row in grey, not yet entered. The empty rings grey and dashed,
+   ledger page in navy, its last row empty in grey dashes, not yet entered.
+   The plates' names in the medium weight and the requests' captions in the
+   light one, so the requests' names lead. The empty rings grey and dashed,
    nothing inside them. */
 .rd-gap__name {
   font-family: var(--dk-face);
   font-size: var(--dk-label);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 30px;
   color: var(--dk-paper);
 }
@@ -270,31 +276,37 @@
   stroke-linejoin: round;
 }
 
+.rd-mini__page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+}
+
 .rd-mini__head {
   fill: none;
-  stroke: var(--dk-soft);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.rd-mini__entry {
+  fill: none;
+  stroke: var(--dk-paper);
   stroke-width: 2.5;
   stroke-linecap: round;
 }
 
-.rd-mini__row {
-  fill: var(--dk-raised);
-  stroke: var(--dk-soft);
-  stroke-width: 2;
-}
-
-.rd-mini__divider {
+.rd-mini__empty {
   fill: none;
   stroke: var(--dk-soft);
   stroke-width: 2;
-  stroke-dasharray: 4 4;
+  stroke-dasharray: 4 3;
 }
 
 .rd-pending__ring {
   fill: none;
   stroke: var(--dk-soft);
   stroke-width: 2.5;
-  stroke-dasharray: 6 5;
+  stroke-dasharray: 3 2;
 }
 
 /* Slide 28, as slide 2 sets its panels: square, a navy edge drawn on, no
