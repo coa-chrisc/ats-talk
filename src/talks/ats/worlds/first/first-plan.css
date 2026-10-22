@@ -46,52 +46,40 @@
   stroke-width: 2.5;
 }
 
-/* 21: the lower lane runs green, the City's quick work; the upper is the plain ground the foundations are built on. */
-.fs-strip--lower .fs-strip__ground {
-  fill: var(--dk-process);
-  fill-opacity: calc(var(--d, 0) * var(--dk-wash));
+/* 21: both lanes are light outlines with no ground, so the tiles and the cards carry the slide. */
+.fs-strip--line .fs-strip__ground {
+  fill: none;
 }
 
-.fs-strip--lower .fs-strip__edge {
-  stroke: var(--dk-process);
+.fs-strip--line .fs-strip__edge {
+  stroke: var(--dk-rule);
   stroke-width: 3;
 }
 
-/* A well in the upper lane: white with a thin rule, until it fills green. It comes in as its lane draws. */
-.fs-well {
+/* A foundation tile: a plain white face, its navy outline drawing on. The face is there only once the outline starts, as the stroke is, so an undrawn tile covers nothing on this world's other slides. */
+.fs-tile {
   fill: var(--dk-night);
-  stroke: var(--dk-rule);
-  stroke-width: 2;
-  opacity: min(1, calc(var(--d, 0) * 2));
-}
-
-.fs-grow {
-  transform: scaleX(var(--k, 0));
-}
-
-.fs-grow rect {
-  vector-effect: non-scaling-stroke;
-}
-
-.fs-well__fill {
-  fill: var(--dk-process);
-  fill-opacity: var(--dk-tint-active);
-  stroke: var(--dk-process);
+  fill-opacity: min(1, calc(var(--d, 0) * 100));
+  stroke: var(--dk-paper);
   stroke-width: 2.5;
 }
 
-/* A box shipped along the lower lane: solid green, its lid's line in white. */
-.fs-parcel rect {
-  fill: var(--dk-process);
+/* A project card, the deck's small navy document: a white page in a navy outline, its lines in navy. */
+.fs-card__page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
 }
 
-.fs-parcel path {
+.fs-card__line {
   fill: none;
-  stroke: var(--dk-night);
+  stroke: var(--dk-paper);
   stroke-width: 2.5;
+  stroke-linecap: round;
 }
 
-/* An arrow down from a well: navy, its head arriving with the line's front. */
+/* An arrow down from a tile: navy, its head arriving with the line's front. */
 .fs-arrow__line,
 .fs-arrow__head {
   fill: none;
@@ -103,6 +91,65 @@
 
 .fs-arrow .fs-arrow__head {
   opacity: clamp(0, calc(var(--d, 0) * 20 - 19), 1);
+}
+
+/* 22: the staff figures in the City's green, white inside; what they work with, the line under them and the ring in navy. A white face is there only once its outline starts to draw, so undrawn roles cover nothing on this world's other slides. */
+.fs-staff circle,
+.fs-staff path {
+  fill: var(--dk-night);
+  fill-opacity: min(1, calc(var(--d, 0) * 100));
+  stroke: var(--dk-process);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+
+.fs-prop rect,
+.fs-prop path,
+.fs-prop circle {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fs-prop .fs-prop__face {
+  fill: var(--dk-night);
+  fill-opacity: min(1, calc(var(--d, 0) * 100));
+}
+
+.fs-ground,
+.fs-ring__line {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* A stop's dot and an arrowhead come in as the ring's drawing front passes them (--at, in laps from the top). */
+.fs-ring .fs-ring__mark {
+  opacity: clamp(0, calc((var(--d, 0) - var(--at, 0)) * 12), 1);
+}
+
+.fs-ring__stop {
+  fill: var(--dk-process);
+}
+
+.fs-ring__arrow {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The card rides the ring by --r, in laps: the outer part turns about the ring's middle, the inner turns back about the card's own, so it stays upright. */
+.fs-orbit {
+  transform: rotate(calc(var(--r, 0) * 1turn));
+}
+
+.fs-orbit .fs-orbit__card {
+  transform: rotate(calc(var(--r, 0) * -1turn));
 }
 
 /* A tag: grey for a problem, green for the City's own work. */
