@@ -35,6 +35,20 @@ export function Label({ id, at, text, anchor = "middle", tone = "navy", strong =
   );
 }
 
+/** Words set over more than one line, `leading` apart, the first line centred on `first` up and down: one text, so the words read whole. */
+export function Lines({ id, first, lines, leading, anchor = "middle", tone = "navy", strong = false, size = "label" }: Omit<LabelProps, "at" | "text"> & { first: Point; lines: readonly string[]; leading: number }) {
+  const classes = ["dk-label", "fs-label", `fs-label--${tone}`, strong && "fs-label--strong", size === "figure" && "fs-label--figure", size === "text" && "fs-label--text"].filter(Boolean).join(" ");
+  return (
+    <text className={classes} data-build={id} x={first.x} y={first.y} textAnchor={anchor}>
+      {lines.map((line, i) => (
+        <tspan key={i} x={first.x} y={first.y + i * leading} dy="0.35em">
+          {i < lines.length - 1 ? `${line} ` : line}
+        </tspan>
+      ))}
+    </text>
+  );
+}
+
 /** A long strip whose edge draws on (`draw`) and whose ground comes in with it: a lane, a slab's well. Children go with it. */
 export function Strip({ id, at, rx = 12, className, children }: { id: string; at: Box; rx?: number; className?: string; children?: ReactNode }) {
   return (
@@ -42,15 +56,6 @@ export function Strip({ id, at, rx = 12, className, children }: { id: string; at
       <rect className="fs-strip__ground" x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} />
       <rect className="fs-strip__edge dk-draw" x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} pathLength={1} />
       {children}
-    </g>
-  );
-}
-
-/** A part that grows from its left edge as `--k` goes to 1 (`fill`). */
-export function Grow({ id, at, className, rx = 8 }: { id: string; at: Box; className: string; rx?: number }) {
-  return (
-    <g className="fs-grow" data-build={id} style={{ transformOrigin: `${at.x}px ${at.y}px` }}>
-      <rect className={className} x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} />
     </g>
   );
 }
@@ -73,12 +78,20 @@ export function TagShape({ id, at, text, kind }: { id: string; at: Box; text: st
   );
 }
 
-/** A small box shipped along a lane: solid green, its lid's line across it. It travels on `x`. */
-export function Parcel({ id, at }: { id: string; at: Box }) {
+/** A plain tile: a white face in a navy outline that draws on (`draw`). */
+export function Tile({ id, at }: { id: string; at: Box }) {
+  return <rect className="fs-tile dk-draw" data-build={id} x={at.x} y={at.y} width={at.w} height={at.h} rx={10} pathLength={1} />;
+}
+
+/** The card, the deck's small navy document: a white page in a navy outline, a line across its top and two lines of writing under it. It shows and travels whole. */
+export function Card({ id, at }: { id?: string; at: Box }) {
+  const left = at.x + Math.round(at.w * 0.2);
+  const right = at.x + at.w - Math.round(at.w * 0.2);
+  const line = (f: number) => Math.round(at.y + at.h * f);
   return (
-    <g className="fs-parcel" data-build={id}>
-      <rect x={at.x} y={at.y} width={at.w} height={at.h} rx={6} />
-      <path d={`M${at.x + at.w / 2} ${at.y + 4}V${at.y + at.h - 4}`} />
+    <g className="fs-card" data-build={id}>
+      <rect className="fs-card__page" x={at.x} y={at.y} width={at.w} height={at.h} rx={5} />
+      <path className="fs-card__line" d={`M${left} ${line(0.25)}H${right}M${left} ${line(0.47)}H${right}M${left} ${line(0.67)}H${right - Math.round(at.w * 0.2)}`} />
     </g>
   );
 }

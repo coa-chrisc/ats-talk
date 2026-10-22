@@ -1,20 +1,38 @@
-/** A slide-specific visual narrative; shared sequencing keeps reading separate. */
-import { draw, show } from "@/components/deck/kit";
+/**
+ * Slide 22's click: the line and the three figures draw on in turn, each
+ * one's words rising as it lands; then the developers' heading and the ring
+ * draw; then the card appears at the top and rides the ring once at a steady
+ * pace, each stop's words rising as the card reaches it, and stops at the top.
+ * Nothing is ticked and nothing grows.
+ */
+import { draw, rise, show, to } from "@/components/deck/kit";
 import { picture, story } from "../steps";
+import { LEVEL_UP as U } from "./layout-level-up";
 import { into, play } from "./moves";
-export const levelUp=picture("level-up",{play:play(into("level-up"),
- {moves:[story("level-up",0),story("level-up",1)]},
- {moves:[
- show("level-up.role.0",{at:0.0,duration:0.35}),
- show("level-up.role.1",{at:0.5,duration:0.35}),
- show("level-up.role.2",{at:1.0,duration:0.35}),
- show("level-up.practice",{at:1.65,duration:0.35}),
- show("level-up.practice.0",{at:2.1,duration:0.35}),
- draw("level-up.arc.0",{at:2.5,duration:0.35}),
- show("level-up.practice.1",{at:2.85,duration:0.35}),
- draw("level-up.arc.1",{at:3.25,duration:0.35}),
- show("level-up.practice.2",{at:3.6,duration:0.35}),
- draw("level-up.arc.2",{at:4.0,duration:0.35}),
- show("level-up.practice.3",{at:4.35,duration:0.35}),
- draw("level-up.arc.3",{at:4.75,duration:0.35})
- ]})});
+
+/** One lap of the ring, in seconds, at one pace: no ease, so no stretch of it reads as faster. */
+export const LAP = 3.6;
+/** When the lap starts, after the card has come up at the top. */
+export const LAP_START = 0.3;
+
+export const levelUp = picture("level-up", {
+  play: play(
+    into("level-up"),
+    { moves: [story("level-up", 0), story("level-up", 1)] },
+    {
+      moves: [
+        draw(U.ground.key, { at: 0, duration: 0.6 }),
+        ...U.roles.flatMap((role, i) => [draw(role.key, { at: 0.3 + i * 0.45, duration: 0.8 }), rise(role.words.key, { at: 0.5 + i * 0.45, duration: 0.4 })]),
+      ],
+    },
+    { hold: 0.3, moves: [rise(U.heading.key, { at: 0, duration: 0.4 }), draw(U.ring.key, { at: 0.2, duration: 1.0 })] },
+    {
+      hold: 0.2,
+      moves: [
+        show(U.card.key, { at: 0, duration: 0.3 }),
+        to(U.card.key, { "--r": 1 }, { "--r": 0 }, { at: LAP_START, duration: LAP, ease: "none" }),
+        ...U.stops.map((stop) => rise(stop.key, { at: stop.arrives ? LAP_START + stop.arrives * LAP : 0, duration: 0.4 })),
+      ],
+    },
+  ),
+});
