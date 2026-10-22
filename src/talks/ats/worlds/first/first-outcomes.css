@@ -1,0 +1,83 @@
+/* Slide 23's own marks (parts-outcomes.tsx), under the kit's rules: navy
+   (paper) words and outlines on the white ground, the process's green for
+   the City's own staff (first.css), slate (soft) dashes for what is only an
+   example or not yet set. The person's mark is the kit's own; the gate is
+   stands.css's. */
+
+/* A tag in slate dashes, white inside: an example, or a value not yet set. */
+.fs-dashed-tag .fs-dashed-tag__edge {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 9 7;
+}
+
+/* The resident: the kit's person in a heavier navy line, as heavy as the staff figure's green. */
+.fs-resident .dk-person circle,
+.fs-resident .dk-person path {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3.5;
+}
+
+/* The people of 22a and 23 (layout-outcomes.ts's PERSON_CAST): their white comes in as their line draws, so an undrawn one never covers another slide's drawing. */
+.fs-cast .dk-person circle,
+.fs-cast .dk-person path {
+  fill-opacity: var(--d, 0);
+}
+
+/* The line the trip runs along, and the bracket under it: navy. */
+.fs-route {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.fs-bracket {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The request card: a white page, a heavy navy edge, two navy lines of writing. */
+.fs-request .fs-request__page {
+  fill: var(--dk-night);
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.fs-request .fs-request__lines {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* The pin at the bracket's end: a navy stem and head. */
+.fs-pin .fs-pin__stem {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.fs-pin .fs-pin__head {
+  fill: var(--dk-paper);
+}
+
+/* The magnifier: a clear lens in a navy rim, a heavy navy handle. */
+.fs-lens .fs-lens__glass {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 4;
+}
+
+.fs-lens .fs-lens__handle {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 6;
+  stroke-linecap: round;
+}

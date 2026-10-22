@@ -1,16 +1,16 @@
 /**
- * The first world (Part 5, slides 16 to 23) on one plane the size of the
+ * The first world (Part 5, slides 16 to 23, with 22a) on one plane the size of the
  * stage: what every slide shares. Each slide's own places are in its own
  * module (layout-not-proposing.ts, layout-consortium.ts,
  * layout-program-team.ts, layout-listen.ts, layout-sort.ts, then
- * layout-lanes.ts, layout-level-up.ts and layout-outcomes.ts, which share
+ * layout-lanes.ts, layout-level-up.ts, layout-budget.ts and layout-outcomes.ts, which share
  * layout-plan.ts). Every word is read from the script; a title's line break
  * is given by the word it falls after. Every id starts with its picture's
  * id, and each picture's parts sit under two ids, its marks and its HTML,
  * so the next slide's click puts the whole of it away in two moves. Colour
  * follows the brand roles (first.css, first-plan.css).
  */
-import { STORY, storyRows, type Box, type Point, type StoryBand } from "@/components/deck/kit";
+import { STORY, storyKeys, storyRows, type Box, type Point, type StoryBand } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
 import { picturesOf, storyId } from "../steps";
 
@@ -62,6 +62,9 @@ const BREAKS: Record<string, string[]> = {
   "level-up": [
     "skills"
   ],
+  "budget": [
+    "work"
+  ],
   "outcomes": [
     "project"
   ]
@@ -71,23 +74,42 @@ export const TITLES = PICTURES.map((picture) => ({ picture: picture.id, key: tit
 
 const BANDS = ["one", "two", "three"] as const satisfies readonly StoryBand[];
 
-/** Each slide's story lines, in the band under its title: one row each, as every line here fits the band's 1728 px at 32 px. */
+/**
+ * The story lines too wide for the band's 1728 px at 32 px, and the word
+ * each breaks after: slide 22a's first, 1740 px whole, set on two rows. Every
+ * other line fits one row.
+ */
+const STORY_BREAKS: Record<string, readonly (string | undefined)[]> = { budget: ["data,"] };
+
+/** Each slide's story lines, in the band under its title: one row each, but a line `STORY_BREAKS` breaks, set as its rows. */
 export const STORIES = PICTURES.map((picture, i) => ({
   picture: picture.id,
   id: storyId(picture.id),
   band: BANDS[TITLES[i].lines.length - 1] as StoryBand,
-  lines: picture.story,
+  lines: picture.story.map((line, n): string | string[] => {
+    const word = STORY_BREAKS[picture.id]?.[n];
+    return word ? breakAfter(line, word) : line;
+  }),
 }));
+
+/** How many rows a story line takes: one, or as many as it is broken into. */
+export const rowsOf = (line: string | readonly string[]) => (typeof line === "string" ? 1 : line.length);
 
 const storyOf = (pictureId: string) => STORIES.find((entry) => entry.picture === pictureId)!;
 export const bandOf = (pictureId: string) => storyOf(pictureId).band;
 /** Where a slide's story band ends: a row's pitch under its last row's top. */
-export const bandFoot = (pictureId: string) => storyRows(storyOf(pictureId).band, storyOf(pictureId).lines.length).at(-1)!.y + STORY.pitch;
+export const bandFoot = (pictureId: string) => {
+  const { band, lines } = storyOf(pictureId);
+  return storyRows(band, lines.reduce((sum, line) => sum + rowsOf(line), 0)).at(-1)!.y + STORY.pitch;
+};
 /** Where one of the first five slides' drawing may start: the room's height under its story band. */
 export const contentTop = (pictureId: string) => bandFoot(pictureId) + ROOM;
 
-/** How many elements carry each id on more than one: a title's lines. A chain times a staggered move by it. */
-export const COUNTS: Readonly<Record<string, number>> = Object.fromEntries(TITLES.map((title) => [title.key, title.lines.length] as const));
+/** How many elements carry each id on more than one: a title's lines, and a broken story line's rows. A chain times a staggered move by it. */
+export const COUNTS: Readonly<Record<string, number>> = Object.fromEntries([
+  ...TITLES.map((title) => [title.key, title.lines.length] as const),
+  ...STORIES.flatMap((band) => band.lines.flatMap((line, n) => (rowsOf(line) > 1 ? [[storyKeys(band.id, band.lines.length)[n], rowsOf(line)] as const] : []))),
+]);
 
 /** A picture's two parts: its marks (one SVG group) and its HTML (one layer, its story lines in it). */
 export const layerOf = (pictureId: string) => ({ marks: `${pictureId}.marks`, html: `${pictureId}.html` });

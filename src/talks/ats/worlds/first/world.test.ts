@@ -1,10 +1,10 @@
 import { MAX_BUILD_SECONDS, stillAllowance } from "../sequence";
 /**
- * The first world as a whole: its eight slides in order, one at a time,
+ * The first world as a whole: its nine slides in order, one at a time,
  * every word from the script, the house rules, and the story lines. Each
  * slide's own picture is tested in its own file (beats-scene.test.ts for
  * slides 16 and 17, beats-team.test.ts for 18, beats-chart.test.ts for 19
- * and 20, lanes, level-up and outcomes .test.ts for 21 to 23); what they
+ * and 20, lanes, level-up, budget and outcomes .test.ts for 21 to 23 with 22a); what they
  * share is in harness.ts, where things go in layout.test.ts and
  * layout-plan.test.ts.
  */
@@ -16,19 +16,19 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { picturesOf } from "../steps";
 import { LEAVE, at, built, elements, ends, hiddenAt, ids, longest, markup, n, nodes, pictureOfKey, playOf, playsAt, startOf, stepOf, texts, world } from "./harness";
-import { COUNTS, PICTURES, STORIES, TITLES, layerOf, titleKey } from "./layout";
+import { COUNTS, PICTURES, STORIES, TITLES, layerOf, rowsOf, titleKey } from "./layout";
 import { ARRIVE } from "./moves";
 import { first } from "./world";
 
 const dir = import.meta.dirname;
 const own = readdirSync(dir).filter((file) => /\.(tsx?|css)$/.test(file) && !file.endsWith(".test.ts") && file !== "harness.ts");
 const sourceOf = (file: string) => readFileSync(join(dir, file), "utf8");
-const CSS = ["first.css", "first-plan.css"];
+const CSS = ["first.css", "first-plan.css", "first-budget.css", "first-outcomes.css"];
 
 describe("the first world", () => {
-  it("holds the script's slides 16 to 23 in the order shown, one click each", () => {
-    expect(PICTURES.map((picture) => picture.number)).toEqual(["16", "17", "18", "19", "20", "21", "22", "23"]);
-    expect(PICTURES.map((picture) => picture.id)).toEqual(["not-proposing", "consortium", "program-team", "listen", "sort", "lanes", "level-up", "outcomes"]);
+  it("holds the script's slides 16 to 23, with 22a, in the order shown, one click each", () => {
+    expect(PICTURES.map((picture) => picture.number)).toEqual(["16", "17", "18", "19", "20", "21", "22", "22a", "23"]);
+    expect(PICTURES.map((picture) => picture.id)).toEqual(["not-proposing", "consortium", "program-team", "listen", "sort", "lanes", "level-up", "budget", "outcomes"]);
     expect(PICTURES).toEqual(picturesOf("first"));
     expect(first.steps.map((step) => step.id)).toEqual(ids);
     expect(ids).toEqual(PICTURES.map((picture) => stepOf(picture.id)));
@@ -121,6 +121,7 @@ describe("one slide at a time", () => {
       sort: "four.",
       lanes: "projects",
       "level-up": "skills",
+      budget: "work",
       outcomes: "project",
     };
     for (const [id, words] of Object.entries(ends)) {
@@ -172,8 +173,11 @@ describe("the house rules", () => {
   const css = (file: string) => sourceOf(file).replace(/\/\*[\s\S]*?\*\//g, "");
   const rulesWith = (file: string, token: string) => [...css(file).matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => body.includes(token)).map(([, selector]) => selector.trim());
 
-  it("uses neutral assessment markers, no orange or pass ticks, and no provider or literal colours", () => {
-    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b|HumanMark|#[0-9a-f]{3,8}\b|rgba?\(/i);
+  it("uses neutral assessment markers, no orange but the kit's one person's mark on slide 23, no pass ticks, and no provider or literal colours", () => {
+    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b|#[0-9a-f]{3,8}\b|rgba?\(/i);
+    // The kit's HumanMark is the deck's one orange: on slide 23 a person approves the response, so it lands there once, beside the staff figure, and nowhere else in this world.
+    expect(sources.filter(([, source]) => source.includes("HumanMark")).map(([file]) => file)).toEqual(["scene-outcomes.tsx"]);
+    expect([...markup.matchAll(/class="dk-human"[^>]*data-build="([^"]+)"/g)].map(([, key]) => key)).toEqual(["outcomes.mark"]);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     const ticks = sources.filter(([file, source]) => file.endsWith(".tsx") && source.includes("PassTick")).map(([file]) => file);
     expect(ticks).toEqual([]);
@@ -234,15 +238,19 @@ describe("the house rules", () => {
 });
 
 describe("the story lines", () => {
-  it("are set once each, in the band under their title, one row each", () => {
+  it("are set once each, in the band under their title, one row each, but slide 22a's first, on two", () => {
+    const broken = STORIES.flatMap((band) => band.lines.filter((line) => rowsOf(line) > 1).map(() => band.picture));
+    expect(broken).toEqual(["budget"]);
     for (const band of STORIES) {
       expect(band.band, band.picture).toBe(["one", "two", "three"][TITLES.find((title) => title.picture === band.picture)!.lines.length - 1]);
-      const rows = storyRows(band.band, band.lines.length);
+      const rows = storyRows(band.band, band.lines.reduce((sum, line) => sum + rowsOf(line), 0));
+      let row = 0;
       storyKeys(band.id, band.lines.length).forEach((key, i) => {
-        expect(elements(key), key).toBe(1);
-        expect(markup, key).toContain(`top:${rows[i].y}px`);
+        expect(elements(key), key).toBe(rowsOf(band.lines[i]));
+        for (let j = 0; j < rowsOf(band.lines[i]); j++) expect(markup, key).toContain(`top:${rows[row + j].y}px`);
+        row += rowsOf(band.lines[i]);
       });
-      expect(band.lines, band.picture).toEqual(PICTURES.find((picture) => picture.id === band.picture)!.story);
+      expect(band.lines.map((line) => (typeof line === "string" ? line : line.join(" "))), band.picture).toEqual(PICTURES.find((picture) => picture.id === band.picture)!.story);
     }
   });
 

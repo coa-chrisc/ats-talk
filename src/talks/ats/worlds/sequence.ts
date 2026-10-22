@@ -3,7 +3,7 @@ import type { Move, PartMove } from "@/components/deck/engine/types";
 import { span } from "@/components/deck/kit";
 
 export const MAX_BUILD_SECONDS = 24;
-export const TEXT_FIRST = new Set(["review", "course", "lessons", "stumbled", "ladder", "enforce", "track", "control", "exists", "noticed", "infrastructure", "fits", "fleet", "not-proposing", "consortium", "program-team", "listen", "sort", "lanes", "level-up", "levels", "who-decides", "could-be"]);
+export const TEXT_FIRST = new Set(["review", "course", "lessons", "stumbled", "ladder", "enforce", "track", "control", "exists", "noticed", "infrastructure", "fits", "fleet", "not-proposing", "consortium", "program-team", "listen", "sort", "lanes", "level-up", "budget", "levels", "who-decides", "could-be"]);
 /** Brief separation between text and motion, independent of word count. */
 export const TEXT_TO_VISUAL_PAUSE = 0.6;
 export const textFirst = (id: string, click: string) => TEXT_FIRST.has(id) || (id === "community" && click === "roll") || id === "earn";

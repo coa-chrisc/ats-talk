@@ -5,7 +5,7 @@
  * slide's picture away at once and changes the title; nothing carries from
  * one slide to the next. Each slide's moves are in its own module
  * (steps-not-proposing.ts, steps-consortium.ts, steps-program-team.ts,
- * steps-listen.ts, steps-sort.ts, steps-lanes.ts, steps-level-up.ts,
+ * steps-listen.ts, steps-sort.ts, steps-lanes.ts, steps-level-up.ts, steps-budget.ts,
  * steps-outcomes.ts).
  */
 import { chain, hide, retitle, type ChainBeat } from "@/components/deck/kit";

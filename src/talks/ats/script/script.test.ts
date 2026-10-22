@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { PARTS, SCRIPT, WORLDS } from "./index";
 import type { Picture, WorldId } from "./index";
+import { breakAfter } from "./find";
 import ADVANCES from "./geist-medium-advances.json";
 
 /**
@@ -89,6 +90,7 @@ const PLAN: [string, string[]][] = [
   ["sort", ["play"]],
   ["lanes", ["play"]],
   ["level-up", ["play"]],
+  ["budget", ["play"]],
   ["outcomes", ["play"]],
   ["levels", ["play"]],
   ["who-decides", ["play"]],
@@ -104,7 +106,7 @@ const WORLD_OF_SLIDES: [WorldId, string[]][] = [
   ["enterprise", ["3", "4", "4a", "5", "6"]],
   ["ideas", ["7", "8", "9", "10"]],
   ["stands", ["11", "11a", "12", "12a", "12b", "13", "14", "15"]],
-  ["first", ["16", "17", "18", "19", "20", "21", "22", "23"]],
+  ["first", ["16", "17", "18", "19", "20", "21", "22", "22a", "23"]],
   ["ready", ["24", "25", "26", "27", "28", "29"]],
 ];
 
@@ -129,6 +131,11 @@ const OFF_SCRIPT: string[] = [];
 /** Width of a story line at the band's 32 px in Geist Medium, from the font's own advances; the band is 1728 px wide. */
 const WIDTHS: Record<string, number> = ADVANCES.advances;
 const storyWidth = (line: string) => [...line].reduce((sum, ch) => sum + (WIDTHS[ch] ?? 0.6), 0) * 32;
+/**
+ * Story lines wider than the band, each broken by its world onto two rows after the word given, every row then fitting:
+ * slide 22a's first, approved as written, 1740 px whole.
+ */
+const BROKEN: [string, number, string][] = [["budget", 0, "data,"]];
 
 /** GitHub's own terms the script may name in a speaker's note: nowhere, as draft 2 of the ATS script writes it. */
 const GITHUB_TERMS_SAID: string[] = [];
@@ -142,7 +149,7 @@ const TIRED = /\bjourney\w*|at the end of the day|\bsimply\b|!/i;
 
 describe("the talk's script", () => {
   it("is the script, word for word: every picture's heading, On screen, story lines, You say and They see", () => {
-    expect(SOURCE.pictures).toHaveLength(34);
+    expect(SOURCE.pictures).toHaveLength(35);
     expect(SCRIPT.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see }))).toEqual(
       SOURCE.pictures.map(({ part, number, name, show, story, say, see }) => ({ part, number, name, show, story, say, see })),
     );
@@ -186,10 +193,10 @@ describe("the talk's script", () => {
     for (const world of WORLDS) expect(new Set(SCRIPT.filter((picture) => picture.world === world).map((picture) => picture.part)).size, world).toBe(1);
   });
 
-  it("gives every picture one click, and two only where the script says so: 34 in all", () => {
+  it("gives every picture one click, and two only where the script says so: 35 in all", () => {
     expect(SOURCE.pictures.filter((picture) => picture.twoClicks).map((picture) => picture.number)).toEqual(TWO_CLICKS);
     for (const picture of SCRIPT) expect(picture.steps.length, picture.id).toBe(TWO_CLICKS.includes(picture.number) ? 2 : 1);
-    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(35);
+    expect(SCRIPT.flatMap((picture) => picture.steps)).toHaveLength(36);
   });
 
   it("leaves no string empty", () => {
@@ -256,7 +263,13 @@ describe("the story lines", () => {
       }
   });
 
-  it("each fit one line of the story band, measured in the band's face at 32 px against its 1728 px width", () => {
-    for (const picture of SCRIPT) for (const line of picture.story) expect(storyWidth(line), `${picture.id}: ${line}`).toBeLessThanOrEqual(1728);
+  it("each fit one line of the story band, measured in the band's face at 32 px against its 1728 px width, but those broken onto two rows, each row fitting", () => {
+    for (const picture of SCRIPT)
+      picture.story.forEach((line, i) => {
+        const broken = BROKEN.find(([id, n]) => id === picture.id && n === i);
+        // A line listed as broken is one that needs it: a line that fits is set on one row.
+        if (broken) expect(storyWidth(line), `${picture.id}: ${line}`).toBeGreaterThan(1728);
+        for (const row of broken ? breakAfter(line, broken[2]) : [line]) expect(storyWidth(row), `${picture.id}: ${row}`).toBeLessThanOrEqual(1728);
+      });
   });
 });

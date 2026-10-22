@@ -122,6 +122,23 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     ],
   },
   {
+    id: "budget",
+    number: "22a",
+    part: 5,
+    world: "first",
+    name: "Pay for AI by the work and the data",
+    show: "How we pay for AI depends on the work and the data it touches.",
+    say: "Paying for AI is not one decision. For coding work that does not involve City documents or resident data, a few developer subscriptions, such as Claude Code or Codex, can cost far less than paying per token. Each subscription includes usage that would cost much more at metered rates. When we build AI into a City tool, handle City or resident data, or run agents of our own, that work belongs in metered capacity in the City's cloud, in Azure or AWS, where it stays inside our sign-in, access controls, and logging. Metered use also makes sense for agent processes that run on their own. The right balance depends on the work, the data, and the volume. That is a conversation the City still needs to have: a token consumption strategy and a token security strategy. This slide does not settle it. It shows where the line falls and why the conversation matters.",
+    see: ["The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. On the left, three green developer figures draw, and a navy seat badge lands on each: \"Developer subscriptions\", with \"Coding work with no City or resident data\", and under the badges \"Usage included, at a fixed price per person\". The fenced yard from slide 13 then draws on the right: \"Metered capacity in Azure or AWS\", with \"AI in City tools, City data, and agents we run\". Inside it a hexagon agent lands and works; each small piece of work it sends ticks a meter up one step: \"Paid for each token used\". Between the two sides a dashed boundary draws down the middle, labeled \"City or resident data\". Below, the empty round table from slide 12 draws again, in grey dashes: \"Token consumption and security strategy\", with \"A conversation the City still needs to have\". The slide shows no prices and no token counts. It ends on both sides, the boundary between them, and the empty table."],
+    story: [
+      "For coding work that involves no City or resident data, developer subscriptions can cost far less than metered use.",
+      "AI built into City tools and agents we run need metered capacity in our cloud, so we need a token strategy.",
+    ],
+    steps: [
+      { id: "play", show: ["Developer subscriptions", "Coding work with no City or resident data", "Usage included, at a fixed price per person", "Metered capacity in Azure or AWS", "AI in City tools, City data, and agents we run", "Paid for each token used", "City or resident data", "Token consumption and security strategy", "A conversation the City still needs to have"] },
+    ],
+  },
+  {
     id: "outcomes",
     number: "23",
     part: 5,
@@ -129,7 +146,7 @@ export const WHAT_WE_WOULD_DO_FIRST: Picture[] = [
     name: "Measure outcomes",
     show: "Measure how each project improves City services.",
     say: "Consider an illustrative project that helps staff draft responses to service requests. It could support High-Performing Government by improving how staff deliver the service. Choose a measure such as the time from a request to a staff-approved response. Measure current performance before starting the pilot, then agree a target and assign a service owner to track the result. Faster responses are not enough: review accuracy, accessibility, and the corrections staff must make. Before expanding, compare service results, cost, and whether staff actually use the tool. This worksheet is an example of how to plan measurement; it reports no baseline, target, or improvement that has already been established.",
-    see: ["An illustrative service-response document establishes the project. A measurement line is drawn beside the service measure, then baseline and target annotations appear without invented values or a numeric scale. A person, magnifier, and compass add responsibility, quality review, and the expansion decision underneath. Labels: \"Illustrative project: help staff draft service responses\", \"Strategic link: High-Performing Government\", \"Service measure\", \"Time from request to a staff-approved response\", \"Baseline\", \"Measure current performance before the pilot\", \"Target\", \"Agree after measuring the baseline\", \"Responsible role\", \"Assign a service owner to track results\", \"Quality check\", \"Review accuracy, accessibility, and corrections\", \"Expansion decision\", \"Compare results, cost, and staff use\"."],
+    see: ["A dashed tag lands at the top left, saying the project is an example: \"Illustrative project: help staff draft service responses\", with \"Strategic link: High-Performing Government\". Below it a line draws from a navy resident to a green staff figure. The resident sends a request card along the line; it travels to the staff figure, stops and waits there, and an orange mark lands beside the staff figure. The card goes no further. A bracket then draws under the trip, from the request to the approval: \"Service measure\", with \"Time from request to a staff-approved response\". The bracket is the only scale, and it carries no numbers. A pin lands at the bracket's end: \"Baseline\", with \"Measure current performance before the pilot\". A dashed tag appears under it, off the bracket, so it claims no value: \"Target\", with \"Agree after measuring the baseline\". Then the drawings take the rest in turn: beside the staff figure and its mark, \"Responsible role\", with \"Assign a service owner to track results\"; a magnifier passes once over the waiting card, \"Quality check\", with \"Review accuracy, accessibility, and corrections\"; and a closed gate lands on the line beyond the staff figure, \"Expansion decision\", with \"Compare results, cost, and staff use\". Nothing passes the gate. Both supporting sentences appear last, and the slide ends on the measured trip, the pin, the dashed target, the owner, the magnifier and the closed gate."],
     story: [
       "Choose a service measure, establish a baseline, agree a target, and assign responsibility.",
       "Measure quality alongside speed, then decide whether the project should expand.",

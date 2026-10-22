@@ -10,6 +10,7 @@
 
 import { Plane, SetText } from "@/components/deck/kit";
 import { TITLE, TITLES } from "./layout";
+import { BudgetHtml, BudgetMarks } from "./scene-budget";
 import { ConsortiumHtml, ConsortiumMarks } from "./scene-consortium";
 import { LanesHtml, LanesMarks } from "./scene-lanes";
 import { LevelUpHtml, LevelUpMarks } from "./scene-level-up";
@@ -20,6 +21,8 @@ import { ProgramTeamHtml, ProgramTeamMarks } from "./scene-program-team";
 import { SortHtml, SortMarks } from "./scene-sort";
 import "./first.css";
 import "./first-plan.css";
+import "./first-budget.css";
+import "./first-outcomes.css";
 
 export function Scene() {
   return (
@@ -33,6 +36,7 @@ export function Scene() {
           <SortMarks />
           <LanesMarks />
           <LevelUpMarks />
+          <BudgetMarks />
           <OutcomesMarks />
         </>
       }
@@ -47,6 +51,7 @@ export function Scene() {
       <SortHtml />
       <LanesHtml />
       <LevelUpHtml />
+      <BudgetHtml />
       <OutcomesHtml />
     </Plane>
   );

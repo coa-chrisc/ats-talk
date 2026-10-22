@@ -42,10 +42,10 @@ Read every title and story line aloud as if telling a colleague in the hallway; 
 | 2. Where enterprise is | 3 to 6 | 6 |
 | 3. The four lessons | 7 to 10 | 5 |
 | 4. Where the City stands | 11 to 15 | 9 |
-| 5. What we would do first | 16 to 23 | 8 |
+| 5. What we would do first | 16 to 23, with 22a | 9 |
 | 6. Ready, the ask, the reveal | 24 to 29 | 5 |
 
-There are 34 slides and 35 animation steps. The table budgets 36 minutes including pauses. Allow about 30 minutes for narration, then rehearse to set the discussion allowance. For a shorter version, consider combining slide 5 with slide 4, slides 12a and 12b with slide 12, and slide 23 with slide 21.
+There are 35 slides and 36 animation steps. The table budgets 37 minutes including pauses. Allow about 30 minutes for narration, then rehearse to set the discussion allowance. For a shorter version, consider combining slide 5 with slide 4, slides 12a and 12b with slide 12, and slide 23 with slide 21.
 
 ## Branding and color cues
 
@@ -66,6 +66,7 @@ Austin Technology Services, or City of Austin where ATS has no mark. Navy title 
 - Slide 9: Forrester 2026 and Axios, 17 October 2025, for BNY's 130-plus digital employees. Use this as an example of staff capability, not proof that training causes a particular financial return.
 - Slide 22: METR, July 2025 (experienced developers 19 percent slower with AI tools, while believing they were faster).
 - Slide 24: the course's finding that many agents have no one assigned to oversee them.
+- Slide 22a: the subscription-versus-metered value claim, against current plan terms, before presenting; and which developer subscriptions the acceptable use policy would allow.
 - Slide 13: the working agreement with the security team, and the route to production through the CISO and the DCIO to the CIO, in words the CISO would accept.
 
 ---
@@ -342,7 +343,7 @@ Note: confirm the application and module counts as of October 2026.
 
 ---
 
-## Part 5. What we would do first (about 8 minutes)
+## Part 5. What we would do first (about 9 minutes)
 
 ### 16. Start with staff time and coordination
 <!-- beat: the pivot; no agents, no platform, no reorganization; the first steps require staff time -->
@@ -430,6 +431,20 @@ Speaker: Chris
 
 **You say:** Training should prepare staff for their responsibilities. Everyone needs safe everyday use, an understanding of limitations, and familiarity with approved tools. Leads and process owners need to assess needs, vendor claims, workflows, and results. The program team needs specialist system-design and support capabilities. These are different responsibilities, not a ranking of people. Start developer training with a bounded task. Have developers build with AI, review the result, and measure both time and quality. Use what the team learns to improve the method before expanding. Access to a tool is not itself a training program, and training is not proof of better performance; that is why measurement belongs in the process.
 
+### 22a. Pay for AI by the work and the data
+<!-- beat: the money question once projects and people are known; subscriptions for coding work with no City data, metered cloud capacity for AI in City tools and agents we run; a token strategy still to be set -->
+Speaker: Chris
+
+**On screen:** How we pay for AI depends on the work and the data it touches.
+- For coding work that involves no City or resident data, developer subscriptions can cost far less than metered use.
+- AI built into City tools and agents we run need metered capacity in our cloud, so we need a token strategy.
+
+**They see:** The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. On the left, three green developer figures draw, and a navy seat badge lands on each: "Developer subscriptions", with "Coding work with no City or resident data", and under the badges "Usage included, at a fixed price per person". The fenced yard from slide 13 then draws on the right: "Metered capacity in Azure or AWS", with "AI in City tools, City data, and agents we run". Inside it a hexagon agent lands and works; each small piece of work it sends ticks a meter up one step: "Paid for each token used". Between the two sides a dashed boundary draws down the middle, labeled "City or resident data". Below, the empty round table from slide 12 draws again, in grey dashes: "Token consumption and security strategy", with "A conversation the City still needs to have". The slide shows no prices and no token counts. It ends on both sides, the boundary between them, and the empty table.
+
+**You say:** Paying for AI is not one decision. For coding work that does not involve City documents or resident data, a few developer subscriptions, such as Claude Code or Codex, can cost far less than paying per token. Each subscription includes usage that would cost much more at metered rates. When we build AI into a City tool, handle City or resident data, or run agents of our own, that work belongs in metered capacity in the City's cloud, in Azure or AWS, where it stays inside our sign-in, access controls, and logging. Metered use also makes sense for agent processes that run on their own. The right balance depends on the work, the data, and the volume. That is a conversation the City still needs to have: a token consumption strategy and a token security strategy. This slide does not settle it. It shows where the line falls and why the conversation matters.
+
+Note: confirm the subscription-versus-metered value claim against current plan terms before presenting; confirm which developer subscriptions the acceptable use policy would allow.
+
 ### 23. Measure outcomes
 <!-- beat: direction; every project tied to the Citywide Strategic Plan, with a baseline before a target; handoff to what to have ready -->
 Speaker: Stefan
@@ -438,7 +453,7 @@ Speaker: Stefan
 - Choose a service measure, establish a baseline, agree a target, and assign responsibility.
 - Measure quality alongside speed, then decide whether the project should expand.
 
-**They see:** An illustrative service-response document establishes the project. A measurement line is drawn beside the service measure, then baseline and target annotations appear without invented values or a numeric scale. A person, magnifier, and compass add responsibility, quality review, and the expansion decision underneath. Labels: "Illustrative project: help staff draft service responses", "Strategic link: High-Performing Government", "Service measure", "Time from request to a staff-approved response", "Baseline", "Measure current performance before the pilot", "Target", "Agree after measuring the baseline", "Responsible role", "Assign a service owner to track results", "Quality check", "Review accuracy, accessibility, and corrections", "Expansion decision", "Compare results, cost, and staff use".
+**They see:** A dashed tag lands at the top left, saying the project is an example: "Illustrative project: help staff draft service responses", with "Strategic link: High-Performing Government". Below it a line draws from a navy resident to a green staff figure. The resident sends a request card along the line; it travels to the staff figure, stops and waits there, and an orange mark lands beside the staff figure. The card goes no further. A bracket then draws under the trip, from the request to the approval: "Service measure", with "Time from request to a staff-approved response". The bracket is the only scale, and it carries no numbers. A pin lands at the bracket's end: "Baseline", with "Measure current performance before the pilot". A dashed tag appears under it, off the bracket, so it claims no value: "Target", with "Agree after measuring the baseline". Then the drawings take the rest in turn: beside the staff figure and its mark, "Responsible role", with "Assign a service owner to track results"; a magnifier passes once over the waiting card, "Quality check", with "Review accuracy, accessibility, and corrections"; and a closed gate lands on the line beyond the staff figure, "Expansion decision", with "Compare results, cost, and staff use". Nothing passes the gate. Both supporting sentences appear last, and the slide ends on the measured trip, the pin, the dashed target, the owner, the magnifier and the closed gate.
 
 **You say:** Consider an illustrative project that helps staff draft responses to service requests. It could support High-Performing Government by improving how staff deliver the service. Choose a measure such as the time from a request to a staff-approved response. Measure current performance before starting the pilot, then agree a target and assign a service owner to track the result. Faster responses are not enough: review accuracy, accessibility, and the corrections staff must make. Before expanding, compare service results, cost, and whether staff actually use the tool. This worksheet is an example of how to plan measurement; it reports no baseline, target, or improvement that has already been established.
 
