@@ -1,4 +1,4 @@
-/** Slide 11a's picture: a member of staff with a card, named under them; the route forking. The upper branch runs into the shelf: three tool screens with their sockets, named over them, and room for a fourth; the first screen's socket fill, the boundary round it and their words; the record under it, named beside it, its lines drawing in. On the lower branch the gate that stays closed, named under it; the reviewer, named under the line, with the magnifier; the orange mark and its words. The fourth screen, its socket and its dashed slot. The honesty caption at the lower left. The cards are drawn over the screens, so a seated card's hole shows its socket. */
+/** Slide 11a's picture: a member of staff with a card, named under them; the route forking. The upper branch runs into the shelf: three tool screens with their sockets, named past the shelf's end, and room for a fourth; the first screen's socket fill and its words over it, the boundary round it and its words on its left; the record under it, named on its right, its lines drawing in. On the lower branch the gate that stays closed, named under it; the reviewer, named under the line, with the magnifier; the orange mark and its words. The fourth screen, its socket and its dashed slot. The honesty caption at the lower left. The cards are drawn over the screens, so a seated card's hole shows its socket. */
 "use client";
 
 import { Dashed, HumanMark, Part, Person } from "@/components/deck/kit";
@@ -23,21 +23,21 @@ export function ControlMarks() {
       <Route id={C.routes.upper.key} d={C.routes.upper.d} />
       <Route id={C.routes.lower.key} d={C.routes.lower.d} />
       <Route id={C.shelf.key} d={C.shelf.d} shelf />
-      <Words id={C.shelf.name.key} at={C.shelf.name.at} text={C.shelf.name.text} strong />
+      <Words id={C.shelf.name.key} at={C.shelf.name.at} text={C.shelf.name.text} anchor="start" strong />
       {C.tools.slice(0, 3).map((tool) => (
         <ToolScreen key={tool.key} id={tool.key} at={tool.at} socket={tool.rim} />
       ))}
       <ToolScreen id={ADDED.key} at={ADDED.at} />
       <LitSocket id={C.sockets.lit.key} d={C.sockets.lit.d} />
       <AddedSocket id={C.sockets.added.key} d={C.sockets.added.d} />
-      <Words id={C.fits.key} at={C.fits.at} text={C.fits.text} anchor="end" strong />
+      <Words id={C.fits.key} at={C.fits.at} text={C.fits.text} strong />
       <Rows id={C.boundary.caption.key} at={C.boundary.caption.at} rows={C.boundary.caption.rows} pitch={PITCH} anchor="end" soft />
       <Ledger id={C.ledger.key} at={C.ledger.at} />
       {C.ledger.lines.map((line) => (
         <LedgerLine key={line.key} id={line.key} d={line.d} />
       ))}
-      <Words id={C.ledger.name.key} at={C.ledger.name.at} text={C.ledger.name.text} anchor="end" strong />
-      <Rows id={C.ledger.caption.key} at={C.ledger.caption.at} rows={C.ledger.caption.rows} pitch={PITCH} anchor="end" soft />
+      <Words id={C.ledger.name.key} at={C.ledger.name.at} text={C.ledger.name.text} anchor="start" strong />
+      <Rows id={C.ledger.caption.key} at={C.ledger.caption.at} rows={C.ledger.caption.rows} pitch={PITCH} soft />
       <ClosedGate id={C.gate.key} foot={C.gate.foot} scale={GATE_SCALE} />
       <Words id={C.gate.name.key} at={C.gate.name.at} text={C.gate.name.text} strong />
       <Words id={C.gate.caption.key} at={C.gate.caption.at} text={C.gate.caption.text} soft />

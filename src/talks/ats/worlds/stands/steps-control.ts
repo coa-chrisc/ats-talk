@@ -28,9 +28,10 @@ const C = CONTROL;
 const [UPPER, LOWER] = C.cards;
 const [FIRST, SECOND_TOOL, THIRD, ADDED] = C.tools;
 
-/** A card rides at 700 px a second; a route draws at 1100. */
+/** A card rides at 700 px a second, the magnifier at 1000; a route draws at 1100. */
 const SPEED = 700;
 const DRAW_SPEED = 1100;
+const LENS_SPEED = 1000;
 export const STILL = 0.6;
 
 const apart = (a: Point, b: Point) => Math.hypot(b.x - a.x, b.y - a.y);
@@ -88,22 +89,22 @@ const LINE_GAP = 0.15;
 const LINE_TIME = 0.3;
 const RECORDED = LINES + (C.ledger.lines.length - 1) * LINE_GAP + LINE_TIME;
 
-const SECOND = RECORDED + 0.3;
+const SECOND = RECORDED + 0.2;
 const lo = LOWER.stops;
-const toClosed = ride(LOWER.key, ORIGIN, [lo.fork, lo.branch, lo.gate], SECOND + 0.35, true);
+const toClosed = ride(LOWER.key, ORIGIN, [lo.fork, lo.branch, lo.gate], SECOND + 0.25, true);
 export const STOPPED = toClosed.end;
 export const REVIEWER = STOPPED + STILL;
-const LENS = REVIEWER + 0.5;
-const LENS_MOVES = LENS + 0.3;
+const LENS = REVIEWER + 0.4;
+const LENS_MOVES = LENS + 0.25;
 /** Each of the magnifier's legs, out to the card and back to the hand, eases into its stop over twice its plain time; it holds over the card a moment between. */
-const LENS_TIME = (2 * Math.hypot(C.lens.to.x, C.lens.to.y)) / SPEED;
-const LENS_HOLD = 0.3;
+const LENS_TIME = (2 * Math.hypot(C.lens.to.x, C.lens.to.y)) / LENS_SPEED;
+const LENS_HOLD = 0.25;
 const LENS_BACK = LENS_MOVES + LENS_TIME + LENS_HOLD;
-const MARK = LENS_BACK + LENS_TIME + 0.2;
+const MARK = LENS_BACK + LENS_TIME + 0.1;
 /** The slot at the shelf's end, its socket orange, the screen solid in it. */
-const SLOT = MARK + 0.7;
-const ORANGE = SLOT + 0.7;
-const SOLID = ORANGE + 0.5;
+const SLOT = MARK + 0.55;
+const ORANGE = SLOT + 0.55;
+const SOLID = ORANGE + 0.45;
 
 export const control = (): StepDef[] =>
   picture("control", {

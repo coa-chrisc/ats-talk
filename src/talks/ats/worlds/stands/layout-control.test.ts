@@ -10,7 +10,7 @@
 import { describe, expect, it } from "vitest";
 import { box, type Box } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, wordsWidth } from "./layout";
-import { BRANCH_X, CARD, CONTROL, FORK, GAP, LINE, SHELF, cardBox, controlGlyphs, controlRows } from "./layout-control";
+import { BRANCH_X, CARD, CONTROL, FORK, GAP, LINE, SHELF, SOCKET, TOOL, cardBox, controlGlyphs, controlRows } from "./layout-control";
 import { bottom, bounds, inside, overlaps, right } from "./harness";
 
 const C = CONTROL;
@@ -72,10 +72,11 @@ describe("slide 11a, approved tools", () => {
     expect(SHELF.from).toBeGreaterThan(BRANCH_X);
   });
 
-  it("names the shelf once, over its three screens, centred on them", () => {
+  it("names the shelf once, past its end, level with the screens' middle", () => {
     const name = row(C.shelf.name.key);
-    expect(middle(name).x).toBeCloseTo((first.at.x + right(C.tools[2].at)) / 2, 0);
-    expect(bottom(name)).toBeLessThan(C.boundary.at.y);
+    expect(name.x).toBe(SHELF.to + 24);
+    expect(Math.abs(middle(name).y - middle(first.at).y)).toBeLessThanOrEqual(1);
+    expect(right(name)).toBeLessThanOrEqual(SAFE.right);
   });
 
   it("draws the boundary round the first screen alone, open at the shelf", () => {
@@ -90,18 +91,24 @@ describe("slide 11a, approved tools", () => {
     expect(bottom(C.ledger.at)).toBeLessThan(cardBox(lower, lower.stops.gate).y - 20);
   });
 
-  it("sets the first screen's and the record's words just left of them, each block level with what it names", () => {
+  it("sets the first screen's words over it, the boundary's beside its upper corner on its left, and the record's on its right", () => {
     const fits = row(C.fits.key);
-    expect(right(fits)).toBe(C.boundary.at.x - 16);
-    expect(Math.abs(middle(fits).y - first.socket.y)).toBeLessThanOrEqual(4);
+    expect(middle(fits).x).toBeCloseTo(middle(first.at).x, 0);
+    expect(bottom(fits)).toBeLessThanOrEqual(C.boundary.at.y);
     const use = [0, 1].map((k) => row(`${C.boundary.caption.key}.${k}`));
     for (const b of use) expect(right(b)).toBe(C.boundary.at.x - 16);
-    expect(bottom(use[1])).toBeLessThanOrEqual(fits.y);
-    expect(use[0].y).toBeLessThan(C.boundary.at.y + 16);
+    expect(use[0].y).toBe(C.boundary.at.y);
     const ledger = [row(C.ledger.name.key), row(`${C.ledger.caption.key}.0`), row(`${C.ledger.caption.key}.1`)];
-    for (const b of ledger) expect(right(b)).toBe(C.boundary.at.x - 16);
+    for (const b of ledger) expect(b.x).toBe(right(C.ledger.at) + 20);
     expect(ledger[0].y).toBe(C.ledger.at.y);
-    expect(bottom(ledger[2])).toBeLessThanOrEqual(bottom(C.ledger.at) + LABEL_LINE / 2);
+    for (const b of ledger) for (const tool of C.tools) expect(overlaps(b, tool.at), tool.key).toBe(false);
+  });
+
+  it("draws the sockets and the cards' holes large enough to tell apart from the back of the room", () => {
+    expect(SOCKET.r).toBeGreaterThanOrEqual(20);
+    expect(CARD.w).toBeGreaterThanOrEqual(64);
+    expect(CARD.h - CARD.hole - SOCKET.r).toBeGreaterThanOrEqual(8);
+    expect(TOOL.h - CARD.h).toBeGreaterThanOrEqual(2 * TOOL.inset);
   });
 
   it("names the closed gate under its branch, centred on it, and puts the reviewer under the added screen", () => {

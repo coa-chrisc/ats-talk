@@ -1,6 +1,7 @@
 /* Slide 11a's own marks, under stands.css: the routes, the shelf, the
    cards, the tool screens, the record and the magnifier in navy, the
-   structure and the words; the honesty caption is a caption, slate. The
+   structure and the words, the cards solid navy so their holes read from
+   the back of a room; the honesty caption is a caption, slate. The
    staff, the reviewer and the gate's posts are green through stands.css.
    Two colours carry meaning here, the world's only use of them outside the
    kit's own parts: the pass green on the socket that fits and the boundary
@@ -23,7 +24,7 @@
 }
 
 .sn-card__page {
-  fill: var(--dk-night);
+  fill: var(--dk-paper);
   stroke: var(--dk-paper);
   stroke-width: 2.5;
   stroke-linejoin: round;
@@ -31,8 +32,8 @@
 
 .sn-card__line {
   fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 2;
+  stroke: var(--dk-night);
+  stroke-width: 3;
   stroke-linecap: round;
 }
 
@@ -51,7 +52,7 @@
 .sn-tool__socket.dk-draw {
   fill: none;
   stroke: var(--dk-paper);
-  stroke-width: 2.5;
+  stroke-width: 3;
   stroke-linejoin: round;
 }
 
@@ -64,7 +65,7 @@
 .sn-socket__rim {
   fill: none;
   stroke: var(--dk-soft);
-  stroke-width: 2.5;
+  stroke-width: 3;
   stroke-linejoin: round;
 }
 
@@ -73,7 +74,7 @@
   fill-opacity: var(--k, 0);
   stroke: var(--dk-human);
   stroke-opacity: var(--k, 0);
-  stroke-width: 2.5;
+  stroke-width: 3;
   stroke-linejoin: round;
 }
 
@@ -121,4 +122,18 @@
   stroke: var(--dk-paper);
   stroke-width: 5;
   stroke-linecap: round;
+}
+
+/* Slide 14 (display 20) borrows the record and the tool screen from here:
+   its foundation's slabs are raised grey, and the agent's boundary the
+   deck's grey dash for a design still to define. */
+.sn-fits__slab {
+  fill: var(--dk-raised);
+}
+
+.sn-fits__boundary {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 3;
+  stroke-dasharray: 10 8;
 }
