@@ -1,17 +1,18 @@
 /**
- * The enterprise world's drawings of slide 4's three figures, for which the
- * kit has no part: a speech bubble, a draft with a person beside it, and an
- * agent wearing a belt of tools. Script-free: they hold no words. SVG for
+ * The enterprise world's drawings of its figures, for which the kit has no
+ * part: a speech bubble, a draft with a person beside it, the deck's
+ * hexagon agent and its closed gate (the City map's own measures, read from
+ * department-map.ts). Script-free: they hold no words. SVG for
  * the plane's marks, moved with the house moves only (enterprise.css paints
  * them).
  */
 "use client";
 
-import { Agent, Person, type Box, type Point } from "@/components/deck/kit";
+import { Person, type Box, type Point } from "@/components/deck/kit";
+import { AGENT, gatePaths } from "../department-map";
 
-/** The ids of the parts inside the figures that move on their own: the person beside the draft, who draws on, and the belted figure's head ring, which fills. */
+/** The id of the part inside a figure that moves on its own: the person beside the draft, who draws on. */
 export const personOf = (id: string) => `${id}.person`;
-export const headOf = (id: string) => `${id}.head`;
 
 /** A speech bubble with three dots of a reply in it, its tail at its lower left, drawn to fill `at`. */
 export function ChatBubble({ id, at }: { id: string; at: Box }) {
@@ -46,27 +47,31 @@ export function DraftAndSigner({ id, at }: { id: string; at: Box }) {
 }
 
 /**
- * An agent with a belt of tools: the kit's agent ring for a head, a torso
- * under it, a green belt at its waist, two legs, and a wrench and a hammer
- * hanging from the belt at its hips. The only one of the three with tools.
+ * The deck's agent, the same hexagon the City's map draws (its measures
+ * from department-map.ts): a white body in navy, standing on its point at
+ * `at`, its top, two green eyes and a level mouth, every measure times
+ * `scale`. It lands as one part.
  */
-export function BeltedAgent({ id, at }: { id: string; at: Box }) {
-  const cx = at.x + at.w / 2;
-  const foot = at.y + at.h;
-  const head: Point = { x: cx, y: at.y + 13 };
-  const torso = { top: at.y + 32, waist: at.y + 56, half: 22 };
-  const belt = { y: torso.waist, h: 9, half: 28 };
-  const hip = belt.y + belt.h;
+export function HexAgent({ id, at, scale }: { id: string; at: Point; scale: number }) {
+  const k = scale;
+  const mid = at.y + (AGENT.h * k) / 2;
   return (
-    <g className="en-tool-agent" data-build={id}>
-      <path className="en-tool-agent__body" d={`M${cx - torso.half + 4} ${torso.waist}L${cx - torso.half} ${torso.top + 10}Q${cx - torso.half} ${torso.top} ${cx - torso.half + 10} ${torso.top}H${cx + torso.half - 10}Q${cx + torso.half} ${torso.top} ${cx + torso.half} ${torso.top + 10}L${cx + torso.half - 4} ${torso.waist}Z`} />
-      <path className="en-tool-agent__legs" d={`M${cx - 9} ${hip}V${foot - 2}M${cx + 9} ${hip}V${foot - 2}`} />
-      <rect className="en-tool-agent__belt" x={cx - belt.half} y={belt.y} width={2 * belt.half} height={belt.h} rx={3} />
-      {/* A wrench at the left hip: a handle and an open jaw. */}
-      <path className="en-tool-agent__tool" d={`M${cx - belt.half + 3} ${hip}V${hip + 8}M${cx - belt.half - 3} ${hip + 14}L${cx - belt.half + 3} ${hip + 8}L${cx - belt.half + 9} ${hip + 14}`} />
-      {/* A hammer at the right hip: a handle and its head across it. */}
-      <path className="en-tool-agent__tool" d={`M${cx + belt.half - 3} ${hip}V${hip + 14}M${cx + belt.half - 11} ${hip + 3}H${cx + belt.half + 5}`} />
-      <Agent id={headOf(id)} at={head} role="builder" r={13} hue="process" />
+    <g className="en-agent" data-build={id}>
+      <path className="en-agent__body" d={`M${at.x} ${at.y}l${35 * k} ${20 * k}v${49 * k}l${-35 * k} ${20 * k}l${-35 * k} ${-20 * k}v${-49 * k}z`} />
+      <circle className="en-agent__eye" cx={at.x - 12 * k} cy={mid - 3.5 * k} r={4 * k} />
+      <circle className="en-agent__eye" cx={at.x + 12 * k} cy={mid - 3.5 * k} r={4 * k} />
+      <path className="en-agent__mouth" d={`M${at.x - 15 * k} ${mid + 16.5 * k}h${30 * k}`} />
+    </g>
+  );
+}
+
+/** The deck's closed gate, the map's own (department-map.ts): two posts in green standing on `foot`, its two bars across them in navy, times `scale`. It lands as one part. */
+export function ClosedGate({ id, foot, scale }: { id: string; foot: Point; scale: number }) {
+  const gate = gatePaths(foot, scale);
+  return (
+    <g className="en-closed-gate" data-build={id}>
+      <path className="en-closed-gate__bar" d={gate.bars} />
+      <path className="en-closed-gate__post" d={gate.posts} />
     </g>
   );
 }

@@ -175,32 +175,26 @@
   stroke-linecap: round;
 }
 
-.en-tool-agent__body {
+/* The deck's agent, the City map's hexagon: a white body in navy, green eyes, a navy mouth. Slides 4, 4a and 5 draw every agent so. */
+.en-agent__body {
   fill: var(--dk-night);
   stroke: var(--dk-paper);
   stroke-width: 3;
   stroke-linejoin: round;
 }
 
-.en-tool-agent__legs {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-
-.en-tool-agent__belt {
+.en-agent__eye {
   fill: var(--dk-process);
 }
 
-.en-tool-agent__tool {
+.en-agent__mouth {
   fill: none;
-  stroke: var(--dk-process);
-  stroke-width: 4;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
   stroke-linecap: round;
 }
 
-/* The agent's loop: a ring in navy, its stops lighting green, and the bar where it stops. */
+/* The agent's loop: a ring in navy, its stops lighting green, and the closed gate where it stops. */
 .en-loop {
   fill: none;
   stroke: var(--dk-paper);
@@ -220,10 +214,18 @@
   opacity: var(--k, 0);
 }
 
-.en-boundary {
+/* The deck's closed gate, the City map's own: green posts, navy bars across them. Slides 4 and 5. */
+.en-closed-gate__post {
+  fill: none;
+  stroke: var(--dk-process);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.en-closed-gate__bar {
   fill: none;
   stroke: var(--dk-paper);
-  stroke-width: 7;
+  stroke-width: 4;
   stroke-linecap: round;
 }
 
@@ -244,48 +246,13 @@
   stroke-linejoin: round;
 }
 
-/* Slide 5: the desk, the board's frame (its ground coming up as it draws, as the kit's board does), the gate and the keys, the thin lines from the keys to the builders, and the thin wall. */
+/* Slide 5: the desk, the rule the gate stands on over the builders, and the thin wall. */
 .en-desk {
   fill: none;
   stroke: var(--dk-paper);
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.en-board {
-  fill: var(--dk-raised);
-  fill-opacity: calc(var(--d, 0) * 0.72);
-  stroke: var(--dk-rule);
-  stroke-width: 2.5;
-}
-
-.en-gate {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.en-keys__ring {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 2.5;
-}
-
-.en-keys__key {
-  fill: none;
-  stroke: var(--dk-process);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-
-.en-key-line {
-  fill: none;
-  stroke: var(--dk-soft);
-  stroke-width: 2;
-  stroke-linecap: round;
 }
 
 .en-wall {
@@ -339,6 +306,5 @@
 
 .en-stream-check { fill: var(--dk-raised); stroke: var(--dk-process); stroke-width: 2; }
 .en-stream-tray { fill: none; stroke: var(--dk-rule); stroke-width: 2; }
-.en-stream-item rect { fill: var(--dk-night); stroke: var(--dk-process); stroke-width: 2; }
-.en-stream-item path { fill: none; stroke: var(--dk-process); stroke-width: 1.5; }
-.en-stream-item--exception rect, .en-stream-item--exception path { stroke: var(--dk-catalog); }
+.en-stream-item rect { fill: var(--dk-night); stroke: var(--dk-paper); stroke-width: 2; }
+.en-stream-item path { fill: none; stroke: var(--dk-paper); stroke-width: 1.5; }

@@ -2,8 +2,8 @@
  * The enterprise world's plainest pieces: a picture's HTML as one part, its
  * story lines, a word set in the marks, a run of words set in HTML that
  * may wrap inside its box, a large figure on one baseline or on two, a
- * straight stroke, a column, a part of a bar, a stop on a ring, a desk, a
- * gate, a ring of keys, a funnel, a card and a rule. Every word set here is
+ * straight stroke, a column, a part of a bar, a ring and a stop on it, a
+ * desk, a funnel and a card. Every word set here is
  * passed in from a layout, which reads it from the script. Painted by
  * enterprise.css.
  */
@@ -114,9 +114,9 @@ export function BarPart({ id, at, own }: { id: string; at: Box; own: boolean }) 
   return <rect className={`en-part en-part--${own ? "own" : "bought"}`} data-build={id} x={at.x} y={at.y} width={at.w} height={at.h} />;
 }
 
-/** A ring drawn on clockwise from its top (`draw`). */
+/** A ring drawn on clockwise from its left side, where the loop it draws starts and stops (`draw`). */
 export function Ring({ id, at, r }: { id: string; at: Point; r: number }) {
-  return <path className="en-loop dk-draw" data-build={id} d={`M${at.x} ${at.y - r}A${r} ${r} 0 1 1 ${at.x} ${at.y + r}A${r} ${r} 0 1 1 ${at.x} ${at.y - r}`} pathLength={1} />;
+  return <path className="en-loop dk-draw" data-build={id} d={`M${at.x - r} ${at.y}A${r} ${r} 0 1 1 ${at.x + r} ${at.y}A${r} ${r} 0 1 1 ${at.x - r} ${at.y}`} pathLength={1} />;
 }
 
 /** A stop on the ring: a white ring in navy that lights green (`--k`, 0 unlit, 1 lit). */
@@ -125,28 +125,6 @@ export function Stop({ id, at, r }: { id: string; at: Point; r: number }) {
     <g className="en-stop" data-build={id}>
       <circle className="en-stop__ring" cx={at.x} cy={at.y} r={r} />
       <circle className="en-stop__lit" cx={at.x} cy={at.y} r={r} />
-    </g>
-  );
-}
-
-/** A gate: two posts and the lintel across their tops, in navy, drawn on as one line (`draw`) from the left post's foot to the right's. */
-export function Gate({ id, x0, x1, top, foot }: { id: string; x0: number; x1: number; top: number; foot: number }) {
-  return <path className="en-gate dk-draw" data-build={id} d={`M${x0} ${foot}V${top}H${x1}V${foot}`} pathLength={1} />;
-}
-
-/** A ring of keys at a point: a small ring in navy with three keys hanging from it, each a shank with a bit at its end, in green. It arrives whole (`rise`). */
-export function KeyRing({ id, at }: { id: string; at: Point }) {
-  const r = 7;
-  const keys = [-9, 0, 9].map((dx, i) => {
-    const x = at.x + dx;
-    const top = at.y + r - 1;
-    const len = i === 1 ? 20 : 15;
-    return `M${x} ${top}V${top + len}H${x + 4}M${x} ${top + len - 5}H${x + 3}`;
-  });
-  return (
-    <g className="en-keys" data-build={id}>
-      <circle className="en-keys__ring" cx={at.x} cy={at.y} r={r} />
-      <path className="en-keys__key" d={keys.join("")} />
     </g>
   );
 }

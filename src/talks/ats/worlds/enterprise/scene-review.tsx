@@ -1,41 +1,78 @@
+/** Slide 4a's picture: the agents, the checks and the finished work on one flow line, the exceptions' and the audit trays under them, the person in their own column between those, the documents of the stream and the audit's copies. */
 "use client";
-import { Agent, HumanMark, Part, Person } from "@/components/deck/kit";
-import { REVIEW as R, WORK } from "./layout-review";
+
+import { HumanMark, Part, Person, type Point } from "@/components/deck/kit";
+import { AGENT_SCALE, DOC, REVIEW as R, SAMPLES, WORK } from "./layout-review";
 import { Layer, StoryOf, Words } from "./parts";
-const L = R.labels;
-export function ReviewMarks() {
-  return <Part id={R.marks}>
-    <g data-build={R.stage}>
-      <Words at={{x:220,y:560}} text={L.agents} strong size="text" />
-      {[0,1,2].map(i => <Agent key={i} id={`review.agent.${i}`} at={{x:220,y:608+i*48}} role="builder" />)}
-      <path className="en-review-link" d="M290 655H1190 M1178 647L1190 655L1178 663" fill="none" strokeWidth="2" />
-      <rect className="en-stream-check" x="720" y="624" width="210" height="88" rx="12" />
-      <Words at={{x:825,y:560}} text={L.checks} strong size="text" />
-      <Words at={{x:825,y:600}} text={L.methods} />
-      <Words at={{x:1470,y:560}} text={L.completed} strong size="text" />
-      <path className="en-stream-tray" d="M1208 588V760H1750V588" />
-      <path className="en-review-link" d="M825 712V814 M817 802L825 814L833 802" fill="none" strokeWidth="2" />
-      <path className="en-stream-tray" d="M704 828V894H934V828 M1220 828V894H1470V828" />
-      <Words at={{x:820,y:923}} text={L.exceptions} strong />
-      <Words at={{x:820,y:958}} text={L.before} tone="soft" />
-      <Words at={{x:1345,y:923}} text={L.samples} strong />
-      <Words at={{x:1345,y:958}} text={L.after} tone="soft" />
-      <Person id="review.human" at={{x:1052,y:815,w:46,h:78}} />
-      <HumanMark id={R.person} at={{x:1075,y:924}} />
-      <Words at={{x:1075,y:979}} text={L.oversight} />
-      <Words at={{x:96,y:976}} text={L.illustrative} anchor="start" tone="soft" />
+import { HexAgent } from "./parts-figures";
+
+const W = R.words;
+const T = R.trays;
+
+/** A tray open at its top: its two walls and its floor. */
+const trayPath = (at: { x: number; y: number; w: number; h: number }) => `M${at.x} ${at.y}V${at.y + at.h}H${at.x + at.w}V${at.y}`;
+/** An arrowhead 8 px either side, pointing right at `at` or down at it. */
+const headRight = (at: Point) => `M${at.x - 12} ${at.y - 8}L${at.x} ${at.y}L${at.x - 12} ${at.y + 8}`;
+const headDown = (at: Point) => `M${at.x - 8} ${at.y - 12}L${at.x} ${at.y}L${at.x + 8} ${at.y - 12}`;
+
+/** A document: a navy card with three lines written on it, placed by the moves at its top left corner. */
+function Doc({ id }: { id: string }) {
+  return (
+    <g data-build={id} className="en-stream-item">
+      <rect width={DOC.w} height={DOC.h} rx="3" />
+      <path d="M6 9H20M6 15H20M6 21H15" />
     </g>
-    <g data-build={R.audit}><path className="en-review-link" d="M1560 770V804H1345V820 M1337 808L1345 820L1353 808" fill="none" strokeWidth="2" strokeDasharray="8 7" /></g>
-    {WORK.map(item => <g key={item.key} data-build={item.key} className={`en-stream-item${item.exception >= 0 ? " en-stream-item--exception" : ""}`}>
-      <rect width="26" height="30" rx="3" /><path d="M6 9H20M6 15H20M6 21H15" />
-    </g>)}
-  </Part>;
+  );
 }
+
+export function ReviewMarks() {
+  return (
+    <Part id={R.marks}>
+      <g data-build={R.stage}>
+        <Words at={W.agents.at} text={W.agents.text} strong size="text" />
+        <path className="en-review-link" d={`M${R.flow.x0} ${R.flow.y}H${R.flow.x1}${headRight({ x: R.flow.x1, y: R.flow.y })}`} fill="none" strokeWidth="2" />
+        <rect className="en-stream-check" x={R.check.x} y={R.check.y} width={R.check.w} height={R.check.h} rx="12" />
+        <Words at={W.checks.at} text={W.checks.text} strong size="text" />
+        <Words at={W.methods.at} text={W.methods.text} tone="soft" />
+        <Words at={W.completed.at} text={W.completed.text} strong size="text" />
+        <path className="en-stream-tray" d={trayPath(T.done)} />
+        <path className="en-review-link" d={`M${R.down.x} ${R.down.y0}V${R.down.y1}${headDown({ x: R.down.x, y: R.down.y1 })}`} fill="none" strokeWidth="2" />
+        <path className="en-stream-tray" d={`${trayPath(T.exceptions)}${trayPath(T.audit)}`} />
+        <Words at={W.exceptions.at} text={W.exceptions.text} strong />
+        <Words at={W.before.at} text={W.before.text} tone="soft" />
+        <Words at={W.samples.at} text={W.samples.text} strong />
+        <Words at={W.after.at} text={W.after.text} tone="soft" />
+        <Words at={W.oversight.at} text={W.oversight.text} strong />
+        <Words at={W.illustrative.at} text={W.illustrative.text} anchor="start" tone="soft" />
+      </g>
+      {R.agents.map((agent) => (
+        <HexAgent key={agent.key} id={agent.key} at={agent.at} scale={AGENT_SCALE} />
+      ))}
+      <Person id={R.human.key} at={R.human.at} />
+      <HumanMark id={R.person} at={R.mark} />
+      <g data-build={R.audit}>
+        <path className="en-review-link" d={`M${R.link.x} ${R.link.y0}V${R.link.y1}`} fill="none" strokeWidth="2" strokeDasharray="8 7" />
+        <path className="en-review-link" d={headDown({ x: R.link.x, y: R.link.y1 })} fill="none" strokeWidth="2" />
+      </g>
+      {WORK.map((item) => (
+        <Doc key={item.key} id={item.key} />
+      ))}
+      {SAMPLES.map((sample) => (
+        <Doc key={sample.key} id={sample.key} />
+      ))}
+    </Part>
+  );
+}
+
 export function ReviewHtml() {
-  return <Layer id={R.html}>
-    <StoryOf picture="review" />
-    <div data-build={R.forecast.key} className="en-review-forecast" style={{left:R.forecast.at.x,top:R.forecast.at.y,width:R.forecast.at.w,height:R.forecast.at.h}}>
-      <div>{R.forecast.source}</div><strong>{R.forecast.forecast}</strong><p>{R.forecast.scope}</p>
-    </div>
-  </Layer>;
+  return (
+    <Layer id={R.html}>
+      <StoryOf picture="review" />
+      <div data-build={R.forecast.key} className="en-review-forecast" style={{ left: R.forecast.at.x, top: R.forecast.at.y, width: R.forecast.at.w, height: R.forecast.at.h }}>
+        <div>{R.forecast.source}</div>
+        <strong>{R.forecast.forecast}</strong>
+        <p>{R.forecast.scope}</p>
+      </div>
+    </Layer>
+  );
 }

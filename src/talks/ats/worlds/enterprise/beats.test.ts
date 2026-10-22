@@ -6,15 +6,15 @@ import { stillAllowance } from "../sequence";
  * lists, so it is checked here too).
  */
 import { describe, expect, it } from "vitest";
-import { at, elements, endOf, ids, playOf, playsAt, startOf, stepOf, world } from "./harness";
+import { at, elements, endOf, ids, longest, markup, playOf, playsAt, startOf, stepOf, tagOf, world } from "./harness";
 import { storyKeysOf, titleKey } from "./layout";
 import { AGENTS } from "./layout-agents";
 import { FLEET } from "./layout-fleet";
-import { REVIEW, WORK, AUDIT_AT } from "./layout-review";
+import { AUDIT_AT, REVIEW, SAMPLES, STREAM_END, WORK } from "./layout-review";
 import { SPENDING } from "./layout-spending";
 import { STUMBLED } from "./layout-stumbled";
 import { ARRIVE } from "./moves";
-import { headOf, personOf } from "./parts-figures";
+import { personOf } from "./parts-figures";
 
 const storyAt = (pictureId: string, line: 0 | 1) => startOf(stepOf(pictureId), storyKeysOf(pictureId)[line]);
 /** When a part's move on a prop starts. */
@@ -116,11 +116,9 @@ describe("slide 4, chatbots to agents", () => {
       expect(startOf(id, entry.caption.key) - landing[i]).toBeLessThan(0.6);
     }
     expect(startOf(id, personOf(A.figures[1].key))).toBeGreaterThan(landing[1]);
-    expect(startOf(id, headOf(A.figures[2].key))).toBeGreaterThan(landing[2]);
   });
 
-
-  it("then goes round the loop from its top, each stop arriving and lighting in turn as the front reaches it, named as it does, story line B as it goes", () => {
+  it("then goes round the loop from its left side, each stop arriving and lighting in turn as the front reaches it, named as it does", () => {
     const ring = playOf(id, L.key)[0];
     expect(ring.at).toBeGreaterThan(endOf(id, A.figures[2].caption.key));
     const arrive = L.stops.map((stop) => startOn(id, stop.key, "autoAlpha"));
@@ -128,43 +126,61 @@ describe("slide 4, chatbots to agents", () => {
     for (const [i, stop] of L.stops.entries()) {
       expect(arrive[i]).toBeGreaterThanOrEqual(ring.at);
       expect(arrive[i]).toBeLessThan(ring.at + ring.duration);
+      expect(arrive[i] - ring.at).toBeCloseTo(ring.duration * stop.along, 5);
       expect(light[i]).toBeGreaterThan(arrive[i]);
       expect(startOf(id, stop.name.key)).toBeGreaterThan(arrive[i]);
       if (i > 0) expect(light[i] - light[i - 1]).toBeGreaterThan(0.4);
     }
   });
 
-  it("closes the loop with the bar after the last stop lights, and names it", () => {
+  it("closes the loop with the gate once the ring is round and the last stop lit, and names it", () => {
+    const ring = playOf(id, L.key)[0];
     const lastLight = Math.max(...L.stops.map((stop) => endOf(id, stop.key)));
-    expect(startOf(id, L.bar.key)).toBeGreaterThan(lastLight);
-    expect(startOf(id, L.bar.name.key)).toBeGreaterThan(startOf(id, L.bar.key));
+    expect(startOf(id, L.gate.key)).toBeGreaterThan(lastLight);
+    expect(startOf(id, L.gate.key)).toBeGreaterThanOrEqual(ring.at + ring.duration);
+    expect(startOf(id, L.gate.name.key)).toBeGreaterThan(startOf(id, L.gate.key));
   });
 
-  it("ends on the timeline and the lit loop, closed by its bar", () => {
+  it("ends on the timeline and the lit loop, closed by its gate", () => {
     const end = at(id);
     expect(end[A.line.key]["--d"]).toBe(1);
     for (const entry of A.figures) expect(end[entry.key].autoAlpha).toBe(1);
     expect(end[L.key]["--d"]).toBe(1);
     for (const stop of L.stops) expect(end[stop.key]).toMatchObject({ autoAlpha: 1, "--k": 1 });
-    expect(end[L.bar.key]["--d"]).toBe(1);
-    expect(end[L.bar.name.key].autoAlpha).toBe(1);
+    expect(end[L.gate.key]).toMatchObject({ autoAlpha: 1, y: 0 });
+    expect(end[L.gate.name.key].autoAlpha).toBe(1);
   });
 });
 
-describe("slide six work at scale", () => {
+describe("slide 4a, work at scale", () => {
   const id = stepOf("review");
-  it("ramps up production and audits only after the main stream completes", () => {
+  const arrivals = WORK.map((item) => endOf(id, item.key));
+
+  it("ramps up production, finishes the stream inside 10 s, and audits only after the stream has stopped", () => {
     expect(WORK[1].start - WORK[0].start).toBeGreaterThan(WORK[10].start - WORK[9].start);
-    expect(AUDIT_AT).toBeGreaterThan(Math.max(...WORK.map(item => item.start + 2.3)));
+    expect(AUDIT_AT).toBeGreaterThan(STREAM_END);
+    for (const sample of SAMPLES) expect(startOf(id, sample.key)).toBeGreaterThan(Math.max(...arrivals));
+    expect(longest(id)).toBeLessThanOrEqual(10.5);
     expect(endOf(id, REVIEW.forecast.key)).toBeLessThan(startOf(id, "story.review.a"));
   });
-  it("keeps exceptions out of completed work and retains the final accumulation", () => {
+
+  it("keeps exceptions out of the finished grid and ends on a full grid, the exceptions' tray and the audit's copies", () => {
     const end = at(id);
-    expect(WORK.filter(item => item.exception >= 0)).toHaveLength(3);
-    expect(WORK.filter(item => item.sample >= 0)).toHaveLength(3);
+    const slots = WORK.filter((item) => item.exception < 0).map((item) => item.end);
     for (const item of WORK) {
-      expect(end[item.key]).toMatchObject({autoAlpha: 1, x: item.end.x, y: item.end.y});
-      if (item.exception >= 0) expect(playOf(id, item.key).some(move => move.on.x === item.completed.x)).toBe(false);
+      expect(end[item.key]).toMatchObject({ autoAlpha: 1, x: item.end.x, y: item.end.y });
+      if (item.exception >= 0) expect(playOf(id, item.key).some((move) => slots.some((slot) => move.on.x === slot.x && move.on.y === slot.y)), item.key).toBe(false);
+    }
+    for (const sample of SAMPLES) expect(end[sample.key]).toMatchObject({ autoAlpha: 1, x: sample.end.x, y: sample.end.y });
+  });
+
+  it("raises each audit copy on the slot of the document it copies, which stays where it is", () => {
+    for (const sample of SAMPLES) {
+      const copied = WORK.find((item) => item.exception < 0 && item.slot === sample.slot)!;
+      const first = playOf(id, sample.key)[0];
+      expect(first.on).toMatchObject({ x: sample.from.x, y: sample.from.y });
+      expect(copied.end).toEqual(sample.from);
+      expect(playOf(id, copied.key).every((move) => move.at < startOf(id, sample.key))).toBe(true);
     }
   });
 });
@@ -172,27 +188,34 @@ describe("slide six work at scale", () => {
 describe("slide 5, what a fleet is", () => {
   const id = stepOf("fleet-defined");
   const F = FLEET;
-  const K = F.keys;
-  const cells = F.board.rows.flatMap((row) => row.cells);
+  const C = F.checker;
 
   it("reveals complete groups from left to right without returning to earlier groups", () => {
     const leads = [...F.leads.keys, F.leads.desk.key, F.leads.name.key];
-    const work = [F.board.key, ...cells.map(c => c.key), ...F.builders.keys, F.builders.name.key, K.key, K.gate.key, K.name.key, K.caption.key, K.ring.key, ...K.lines.map(l => l.key), ...F.splits.map(l => l.key)];
+    const work = [C.rule.key, C.gate.key, C.name.key, C.caption.key, ...F.builders.keys, F.builders.name.key];
     const groups = [leads, work, [F.wall.key, F.wall.name.key], [...F.reviewers.keys, F.reviewers.name.key], [F.person.key, F.mark.key]];
     for (let i = 1; i < groups.length; i++) expect(Math.min(...groups[i].map(k => startOf(id, k)))).toBeGreaterThan(Math.max(...groups[i - 1].map(k => endOf(id, k))));
     for (const group of groups) expect(new Set(group.map(k => startOf(id, k))).size).toBe(1);
     expect(endOf(id, F.mark.key)).toBeLessThan(storyAt("fleet-defined", 0));
   });
 
-  it("ends on the five groups, every cell filled, the keys agent in its gate with a line to each builder, the mark at the end", () => {
+  it("ends on the five groups, the gate standing on its line over the builders, the mark at the end", () => {
     const end = at(id);
-    for (const cell of cells) expect(end[cell.key]).toMatchObject({ autoAlpha: 1, "--hold": 1, "--k": 1 });
-    for (const key of [...F.leads.keys, ...F.builders.keys, ...F.reviewers.keys, K.key]) expect(end[key]).toMatchObject({ autoAlpha: 1, "--k": 1 });
-    expect(end[K.gate.key]["--d"]).toBe(1);
-    for (const line of K.lines) expect(end[line.key]["--d"]).toBe(1);
-    for (const key of [K.ring.key, K.name.key, K.caption.key]) expect(end[key].autoAlpha, key).toBe(1);
+    for (const key of [...F.leads.keys, ...F.builders.keys, ...F.reviewers.keys]) expect(end[key].autoAlpha, key).toBe(1);
+    expect(end[C.rule.key]["--d"]).toBe(1);
+    expect(end[C.gate.key]).toMatchObject({ autoAlpha: 1, y: 0 });
+    for (const key of [C.name.key, C.caption.key]) expect(end[key].autoAlpha, key).toBe(1);
     expect(end[F.wall.key]["--d"]).toBe(1);
     expect(end[F.mark.key]).toMatchObject({ autoAlpha: 1, "--d": 1 });
+  });
+});
+
+describe("slides 4, 4a and 5, one agent", () => {
+  it("draw every agent as the deck's hexagon, and every permission stop as its closed gate", () => {
+    const agents = [AGENTS.figures[2].key, ...REVIEW.agents.map((agent) => agent.key), ...FLEET.leads.keys, ...FLEET.builders.keys, ...FLEET.reviewers.keys];
+    for (const key of agents) expect(tagOf(key), key).toContain('class="en-agent"');
+    for (const key of [AGENTS.loop.gate.key, FLEET.checker.gate.key]) expect(tagOf(key), key).toContain('class="en-closed-gate"');
+    expect(markup).not.toContain("dk-agent");
   });
 });
 
