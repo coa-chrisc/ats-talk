@@ -1,6 +1,6 @@
 # Agentic AI at the City: what we learned, and what we would do first
 
-The slides for a talk of about 25 minutes by Stefan Wray and Chris Collins of Austin Technology Services, given to the City of Austin's Deputy CIOs and ATS leadership. It brings back what was useful from Carnegie Mellon's Leading Enterprise Agentic AI Development course, states plainly where the City stands, and proposes the first steps: find the City's AI practitioners, listen, sort, run two lanes, level up existing staff, and have a playbook on the shelf for the day agents arrive inside tools the City already owns. The CMU briefing deck Stefan built is the backup section for the security discussion.
+The slides for a talk of about 25 minutes by Stefan Wray and Chris Collins of Austin Technology Services, given to the City of Austin's Deputy CIOs and ATS leadership. It brings back what was useful from Carnegie Mellon's Leading Enterprise Deployment of AI Agents course, states plainly where the City stands, and proposes the first steps: find the City's AI practitioners, listen, sort, run two lanes, level up existing staff, and have a playbook on the shelf for the day agents arrive inside tools the City already owns. The CMU briefing deck Stefan built is the backup section for the security discussion.
 
 The deck runs in a web browser, in the same engine as the city talk. Each click plays one slide's animation, and every slide carries its own words on screen, so it can be read without a speaker. Austin Technology Services branding.
 
