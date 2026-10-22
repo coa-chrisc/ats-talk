@@ -7,8 +7,9 @@ import { storyKeys } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
 import { TEXT_TO_VISUAL_PAUSE } from "../pilot-sequence";
 import { storyId } from "../steps";
-import { at, endOf, longest, playOf, startOf, stepOf } from "./harness";
+import { arrived, at, endOf, longest, playOf, playsAt, startOf, stepOf } from "./harness";
 import { EARN } from "./layout-earn";
+import { ENFORCE } from "./layout-enforce";
 import { LADDER } from "./layout-ladder";
 
 const storyOf = (pictureId: string) => storyKeys(storyId(pictureId), 2);
@@ -52,6 +53,96 @@ describe("slide 7, the ladder", () => {
     expect(end[L.tick.key].autoAlpha).toBe(1);
     expect(end[L.more.key]["--d"]).toBe(1);
     expect(end[L.tool.key]).toMatchObject({ "--d": 1, "--k": 1 });
+  });
+});
+
+describe("slide 8, lesson two: the gate holds, a person opens it, the ledger records", () => {
+  const E = ENFORCE;
+  const id = stepOf("enforce");
+  const end = at(id);
+  const { blocked, approved } = E.cards;
+  const [a, b] = storyOf("enforce");
+  const rides = (key: string) => playOf(id, key).filter((play) => "--x" in play.on);
+  const landed = (play: { at: number; duration: number }) => play.at + play.duration;
+  const [toGate] = rides(blocked.key);
+  const [toWait, through] = rides(approved.key);
+  const [swing] = playOf(id, E.gate.swing);
+  /** Every move that starts after `from` and before `to`: nothing should, while the stage keeps still. */
+  const startsBetween = (from: number, to: number) => playsAt(id).filter((play) => play.at > from + 1e-9 && play.at < to - 1e-9).map((play) => play.key);
+
+  it("reads the story lines first, then stands the agent, the closed gate, the record and the empty ledger before any card moves", () => {
+    expect(startOf(id, a)).toBe(startOf(id, b));
+    for (const key of [E.agent.key, E.gate.key, E.gate.name.key, E.record.key, E.ledger.key, E.ledger.heading.key, blocked.key]) expect(playOf(id, key).length, key).toBeGreaterThan(0);
+    for (const key of [E.agent.key, E.gate.key, E.record.key, E.ledger.key]) expect(startOf(id, key), key).toBeGreaterThan(endOf(id, b));
+    for (const key of [E.agent.key, E.gate.key, E.gate.name.key, E.ledger.key, E.ledger.heading.key]) expect(startOf(id, blocked.key), key).toBeGreaterThanOrEqual(endOf(id, key));
+  });
+
+  it("travels the first card once, at one speed, and stops it dead at the closed gate, its words with it", () => {
+    expect(rides(blocked.key)).toHaveLength(1);
+    expect(toGate.on).toEqual({ "--x": blocked.stop });
+    expect(toGate.ease).toBe("none");
+    // Its words come up over its last stretch and land as it stops.
+    expect(startOf(id, blocked.words.key)).toBeGreaterThan(toGate.at);
+    expect(endOf(id, blocked.words.key)).toBeCloseTo(landed(toGate));
+  });
+
+  it("keeps the stage still for half a second, then stamps the card, brings up the record's words and draws the ledger's first line", () => {
+    const stamp = startOf(id, blocked.stamp.key);
+    const still = stamp - endOf(id, blocked.words.key);
+    expect(still).toBeGreaterThanOrEqual(0.4);
+    expect(still).toBeLessThanOrEqual(0.7);
+    expect(startsBetween(endOf(id, blocked.words.key), stamp)).toEqual([]);
+    expect(startOf(id, E.record.words.key)).toBeGreaterThan(stamp);
+    expect(startOf(id, E.ledger.lines[0].key)).toBeGreaterThan(stamp);
+  });
+
+  it("sends the second card to the gate only after the first is stamped and logged, and holds it there", () => {
+    expect(startOf(id, approved.key)).toBeGreaterThanOrEqual(endOf(id, E.ledger.lines[0].key));
+    expect(toWait.on).toEqual({ "--x": approved.stop });
+    expect(toWait.ease).toBe("none");
+    expect(startOf(id, approved.words.key)).toBeGreaterThan(toWait.at);
+    expect(arrived(id, approved.words.key)).toBeCloseTo(landed(toWait));
+    const still = startOf(id, E.staff.key) - arrived(id, approved.words.key);
+    expect(still).toBeGreaterThanOrEqual(0.4);
+    expect(still).toBeLessThanOrEqual(0.7);
+  });
+
+  it("steps the figure up to the post, lands the mark, and only then opens the gate's lower bar, a quarter turn", () => {
+    expect(startOf(id, E.mark.key)).toBeGreaterThanOrEqual(endOf(id, E.staff.key));
+    expect(startOf(id, E.mark.words.key)).toBeGreaterThan(startOf(id, E.mark.key));
+    expect(playOf(id, E.gate.swing)).toHaveLength(1);
+    expect(swing.on).toEqual({ "--k": 1 });
+    expect(swing.at).toBeGreaterThanOrEqual(endOf(id, E.mark.key));
+    // The upper bar never moves: it is part of the gate, which only draws on.
+    expect(playOf(id, E.gate.key).map((play) => Object.keys(play.on))).toEqual([["--d"]]);
+  });
+
+  it("passes the second card once the gate is open, slowing to its stop, and draws the ledger's second line as it arrives", () => {
+    expect(through.on).toEqual({ "--x": approved.beyond });
+    expect(through.at).toBeGreaterThanOrEqual(landed(swing));
+    expect(through.ease).not.toBe("none");
+    expect(startOf(id, E.ledger.lines[1].key)).toBeGreaterThan(through.at);
+    expect(endOf(id, E.ledger.lines[1].key)).toBeGreaterThanOrEqual(landed(through));
+    // Its words fade as it sets off: its wait is over.
+    expect(playOf(id, approved.words.key).map((play) => play.on.autoAlpha)).toEqual([1, 0]);
+    expect(playOf(id, approved.words.key)[1].at).toBe(through.at);
+  });
+
+  it("ends on the log: the ledger's second line is the last thing to land", () => {
+    expect(endOf(id, E.ledger.lines[1].key)).toBe(longest(id));
+  });
+
+  it("ends on the agent, the gate with its lower bar up, the stamped card before it and the second card through, the person and mark past the far post, the record and both ledger lines", () => {
+    expect(end[blocked.key]).toMatchObject({ autoAlpha: 1, "--x": blocked.stop });
+    expect(end[approved.key]).toMatchObject({ autoAlpha: 1, "--x": approved.beyond });
+    expect(end[E.gate.key]["--d"]).toBe(1);
+    expect(end[E.gate.swing]["--k"]).toBe(1);
+    expect(end[E.staff.key]["--x"]).toBe(0);
+    expect(end[E.staff.figure]["--d"]).toBe(1);
+    expect(end[E.mark.key]).toMatchObject({ autoAlpha: 1, "--d": 1 });
+    for (const key of [E.record.key, E.ledger.key, ...E.ledger.lines.map((line) => line.key)]) expect(end[key]["--d"], key).toBe(1);
+    for (const key of [E.agent.key, E.agent.caption.key, E.gate.name.key, blocked.words.key, blocked.stamp.key, E.mark.words.key, E.record.words.key, E.ledger.heading.key]) expect(end[key].autoAlpha, key).toBe(1);
+    expect(end[approved.words.key].autoAlpha).toBe(0);
   });
 });
 

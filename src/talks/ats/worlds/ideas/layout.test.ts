@@ -8,6 +8,8 @@ import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { LABEL_LINE, TEXT_LINE, contentTop, linesIn, wordsWidth } from "./layout";
 import { LADDER, standing } from "./layout-ladder";
 import { CAPTION_LINE, EARN, GATE, boxOn } from "./layout-earn";
+import { AGENT_SCALE, CARD, ENFORCE } from "./layout-enforce";
+import { AGENT } from "../department-map";
 import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
 
 /** Clear of the frame's chrome: under the logo, over the footer and the slide number, inside the story band's width. */
@@ -50,6 +52,27 @@ const hopBox = () => {
 };
 const evidenceBox = () => label(G.evidence.at, G.evidence.text);
 
+const E = ENFORCE;
+const { blocked, approved } = E.cards;
+/** The agent's hexagon, as one box. */
+const agentBox = () => box(E.agent.top.x - (AGENT.w * AGENT_SCALE) / 2, E.agent.top.y, AGENT.w * AGENT_SCALE, AGENT.h * AGENT_SCALE);
+/** A card moved along its lane by `dx`. */
+const cardBy = (card: Box, dx: number) => box(card.x + dx, card.y, card.w, card.h);
+/** The lower bar swung up a quarter turn about the near post: as tall as the gate is wide, its stroke's width either side of the post. */
+const raisedArm = () => box(E.gate.at.x - 4, E.gate.bars.lower - E.gate.at.w - 4, 8, E.gate.at.w + 8);
+const linesAt = (at: Point, lines: readonly string[], anchor: "start" | "end") => lines.map((line, i) => label({ x: at.x, y: at.y + i * LABEL_LINE }, line, anchor));
+const secondWords = () => linesAt(approved.words.at, approved.words.lines, "end");
+/** Slide 8's words, each set where the layout puts it. */
+const enforceLabels = () => [
+  label(E.agent.caption.at, E.agent.caption.text),
+  label(E.gate.name.at, E.gate.name.text),
+  label(blocked.words.at, blocked.words.text, "end"),
+  ...secondWords(),
+  ...linesAt(E.mark.words.at, E.mark.words.lines, "start"),
+  label(E.record.words.at, E.record.words.text, "end"),
+  label(E.ledger.heading.at, E.ledger.heading.text, "start"),
+];
+
 /** What each slide draws under its story band, at the end of its click and on the way. */
 const DRAWN: Record<string, Box[]> = {
   ladder: [
@@ -77,6 +100,21 @@ const DRAWN: Record<string, Box[]> = {
     // A row's words are checked against the band's edge in their own test, where the rough measure is corrected; its rule runs to the edge.
     ...G.list.map((row) => box(row.rule.x0, row.rule.y - 1, row.rule.x1 - row.rule.x0, 2)),
     label(G.heading.at, G.heading.text, "start"),
+  ],
+  enforce: [
+    agentBox(),
+    E.gate.at,
+    raisedArm(),
+    blocked.at,
+    cardBy(blocked.at, blocked.stop),
+    cardBy(approved.at, approved.stop),
+    cardBy(approved.at, approved.beyond),
+    E.staff.at,
+    cardBy(E.staff.at, E.staff.stepIn),
+    ringBox(E.mark.at, E.mark.r),
+    E.record.at,
+    E.ledger.at,
+    ...enforceLabels(),
   ],
 };
 
@@ -170,6 +208,66 @@ describe("slide 7, the ladder", () => {
     expect(L.tool.at.y).toBeGreaterThan(L.floor.y + 12);
     expect(L.tool.at.x).toBe(L.steps[0].at.x);
     expect(label(L.tool.name.at, L.tool.name.text, "start").x).toBeGreaterThan(L.tool.at.x + L.tool.at.w);
+  });
+});
+
+describe("slide 8, lesson two", () => {
+  const stopped = cardBy(blocked.at, blocked.stop);
+  const waiting = cardBy(approved.at, approved.stop);
+  const through = cardBy(approved.at, approved.beyond);
+
+  it("sets no two of its words over each other", () => {
+    const labels = enforceLabels();
+    for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) expect(overlaps(labels[i], labels[j]), `${i} ${j}`).toBe(false);
+  });
+
+  it("stops each card short of the gate's near post, in its own lane: the first crossing the upper bar, the second the lower", () => {
+    for (const card of [stopped, waiting]) expect(card.x + card.w).toBeLessThan(E.gate.at.x);
+    expect(overlaps(stopped, waiting)).toBe(false);
+    expect(stopped.y).toBeLessThan(E.gate.bars.upper);
+    expect(bottom(stopped)).toBeGreaterThan(E.gate.bars.upper);
+    expect(waiting.y).toBeLessThan(E.gate.bars.lower);
+    expect(bottom(waiting)).toBeGreaterThan(E.gate.bars.lower);
+    // The upper card stays under the gate's top and over the lower bar, so the bar that stays down is the one before it.
+    expect(stopped.y).toBeGreaterThanOrEqual(E.gate.at.y);
+    expect(bottom(stopped)).toBeLessThan(E.gate.bars.lower);
+  });
+
+  it("puts the stamped word on the stopped card's face, and keeps the card's words off both cards and the raised bar", () => {
+    const stamp = label(blocked.stamp.at, blocked.stamp.text);
+    expect(inside(box(stamp.x, stamp.y + 4, stamp.w, stamp.h - 8), stopped)).toBe(true);
+    const words = label(blocked.words.at, blocked.words.text, "end");
+    for (const b of [stopped, waiting, raisedArm(), E.gate.at]) expect(overlaps(words, b)).toBe(false);
+    for (const line of secondWords()) for (const b of [stopped, waiting, raisedArm(), E.gate.at, agentBox()]) expect(overlaps(line, b)).toBe(false);
+  });
+
+  it("raises the lower bar clear of the stopped card and under where drawing starts", () => {
+    expect(overlaps(raisedArm(), stopped)).toBe(false);
+    expect(raisedArm().y).toBeGreaterThanOrEqual(contentTop("enforce"));
+  });
+
+  it("brings the second card to rest just past the far post and short of the figure, and keeps the figure clear of every word", () => {
+    expect(through.x).toBeGreaterThan(E.gate.at.x + E.gate.at.w);
+    expect(through.x + through.w).toBeLessThan(E.staff.at.x);
+    expect(overlaps(through, E.record.at)).toBe(false);
+    expect(overlaps(through, E.ledger.at)).toBe(false);
+    for (const words of enforceLabels()) for (const b of [E.staff.at, ringBox(E.mark.at, E.mark.r), E.record.at, through]) expect(overlaps(words, b)).toBe(false);
+  });
+
+  it("keeps the ledger's heading and both its lines inside its frame, under the floor and clear of the captions", () => {
+    const heading = label(E.ledger.heading.at, E.ledger.heading.text, "start");
+    expect(inside(heading, E.ledger.at)).toBe(true);
+    expect(E.ledger.rule).toBeGreaterThan(bottom(heading));
+    for (const line of E.ledger.lines) expect(within({ x: (line.from.x + line.to) / 2, y: line.from.y }, E.ledger.at), line.key).toBe(true);
+    expect(E.ledger.lines[0].from.y).toBeGreaterThan(E.ledger.rule);
+    expect(E.ledger.at.y).toBeGreaterThan(E.floor);
+    // Every word but the heading, the last, which sits inside it.
+    for (const words of enforceLabels().slice(0, -1)) expect(overlaps(words, E.ledger.at)).toBe(false);
+  });
+
+  it("keeps the card the stamped word's width and a label line over it", () => {
+    expect(CARD.w).toBeGreaterThanOrEqual(label(blocked.stamp.at, blocked.stamp.text).w + 16);
+    expect(CARD.h).toBeGreaterThanOrEqual(LABEL_LINE + 12);
   });
 });
 

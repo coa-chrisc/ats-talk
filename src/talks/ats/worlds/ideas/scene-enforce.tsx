@@ -1,18 +1,48 @@
+/** Slide 8's picture: the hexagon agent and its honesty caption, slate; the closed gate, named under it; the record folder and its words; the ledger, headed, and its two lines; the staff figure past the far post, and the orange mark over them with their words; the two cards, the first's words over its stop and its stamped word, the second's words beside its stop. The cards are drawn last, so they pass over the gate's posts. */
 "use client";
-import { Part } from "@/components/deck/kit";
-import { shown } from "../../script/find";
-import { DrawingLabel as L, Ink, Sketch, drawingProcess } from "../story-drawing";
-import { contentTop } from "./layout";
-import { Layer, StoryOf } from "./parts";
-const w=shown("enforce","play");
-const t=contentTop("enforce");
-export function EnforceMarks(){return <Part id="enforce.marks">
-<g data-build="enforce.request"><Sketch kind="agent" x={180} y={t+83}/><L text={w[0]} x={300} y={t+175} strong/><L text={w[1]} x={300} y={t+211}/></g>
-<Ink id="enforce.approach" d={`M235 ${t+83}h440`}/>
-<g data-build="enforce.packet"><Sketch kind="document" x={300} y={t+83} scale={0.65}/></g>
-<g data-build="enforce.barrier"><path d={`M745 ${t+12}v140M767 ${t+12}v140M726 ${t+25}h60M726 ${t+138}h60`} fill="none" stroke={drawingProcess} strokeWidth={5}/><L text={w[2]} x={755} y={t+175} strong/><L text={w[3]} x={755} y={t+211}/></g>
-<g data-build="enforce.record"><Sketch kind="document" x={1290} y={t+83} scale={1.5}/><L text={w[4]} x={985} y={t+93} strong width={240}/><L text={w[5]} x={1290} y={t+211}/></g>
-<g data-build="enforce.approval"><Sketch kind="person" x={155} y={t+315}/><L text={w[6]} x={230} y={t+302} width={680} anchor="start" strong/><L text={w[7]} x={230} y={t+343} width={680} anchor="start"/></g>
-<g data-build="enforce.log"><Sketch kind="checklist" x={1060} y={t+315}/><L text={w[8]} x={1140} y={t+302} width={670} anchor="start" strong/><L text={w[9]} x={1140} y={t+343} width={670} anchor="start"/></g>
-</Part>;}
-export function EnforceHtml(){return <Layer id="enforce.html"><StoryOf picture="enforce"/></Layer>;}
+
+import { HumanMark, Part, Person } from "@/components/deck/kit";
+import { ENFORCE } from "./layout-enforce";
+import { Layer, StoryOf, Words } from "./parts";
+import { Card, CheckGate, Folder, Hexagon, Ledger, LedgerLine, Stamp, WordLines } from "./parts-enforce";
+
+const E = ENFORCE;
+const { blocked, approved } = E.cards;
+
+export function EnforceMarks() {
+  return (
+    <Part id={E.marks}>
+      <Hexagon id={E.agent.key} top={E.agent.top} scale={E.agent.scale} />
+      <g className="id-honest">
+        <Words id={E.agent.caption.key} at={E.agent.caption.at} text={E.agent.caption.text} />
+      </g>
+      <CheckGate id={E.gate.key} swing={E.gate.swing} posts={E.gate.posts} upper={E.gate.upper} lower={E.gate.lower} />
+      <Words id={E.gate.name.key} at={E.gate.name.at} text={E.gate.name.text} strong />
+      <Folder id={E.record.key} at={E.record.at} />
+      <Words id={E.record.words.key} at={E.record.words.at} text={E.record.words.text} anchor="end" />
+      <Ledger id={E.ledger.key} at={E.ledger.at} rule={E.ledger.rule} />
+      <Words id={E.ledger.heading.key} at={E.ledger.heading.at} text={E.ledger.heading.text} anchor="start" strong />
+      {E.ledger.lines.map((line) => (
+        <LedgerLine key={line.key} id={line.key} from={line.from} to={line.to} />
+      ))}
+      <g className="id-staff dk-move" data-build={E.staff.key}>
+        <Person id={E.staff.figure} at={E.staff.at} />
+      </g>
+      <HumanMark id={E.mark.key} at={E.mark.at} />
+      <WordLines id={E.mark.words.key} at={E.mark.words.at} lines={E.mark.words.lines} anchor="start" />
+      <Words id={blocked.words.key} at={blocked.words.at} text={blocked.words.text} anchor="end" strong />
+      <WordLines id={approved.words.key} at={approved.words.at} lines={approved.words.lines} anchor="end" />
+      <Card id={blocked.key} at={blocked.at} />
+      <Stamp id={blocked.stamp.key} at={blocked.stamp.at} text={blocked.stamp.text} />
+      <Card id={approved.key} at={approved.at} />
+    </Part>
+  );
+}
+
+export function EnforceHtml() {
+  return (
+    <Layer id={E.html}>
+      <StoryOf picture="enforce" />
+    </Layer>
+  );
+}

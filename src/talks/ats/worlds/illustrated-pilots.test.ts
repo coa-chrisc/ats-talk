@@ -23,9 +23,11 @@ describe("illustrated pilot choreography",()=>{
  });
 });
 
-it("stops the deletion request before showing the protected record",()=>{
- expect(peopleStart("enforce.play","enforce.packet")).toBeGreaterThanOrEqual(peopleStart("enforce.play","enforce.barrier"));
- expect(peopleStart("enforce.play","enforce.record")).toBeGreaterThanOrEqual(peopleEnd("enforce.play","enforce.packet"));
+it("stops the deletion request at the drawn gate before saying the record stays intact",()=>{
+ const gate=peopleEnd("enforce.play","enforce.gate"), card=peopleEnd("enforce.play","enforce.card.0");
+ expect(Number.isFinite(gate)&&Number.isFinite(card)).toBe(true);
+ expect(peopleStart("enforce.play","enforce.card.0")).toBeGreaterThanOrEqual(gate);
+ expect(peopleStart("enforce.play","enforce.record.words")).toBeGreaterThanOrEqual(peopleEnd("enforce.play","enforce.card.0.stamp"));
  expect(peopleMarkup).not.toContain('data-build="enforce.panel.');
 });
 it("shows current policy before the missing program structure",()=>{

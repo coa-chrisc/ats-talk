@@ -135,8 +135,10 @@ describe("the house rules", () => {
     .filter((file) => /\.(tsx?|css)$/.test(file) && !file.endsWith(".test.ts"))
     .map((file) => [file, readFileSync(join(dir, file), "utf8")] as const);
 
-  it("uses no orange, no deep pass green but the kit's PassTick, and no provider colour: nobody decides on these slides", () => {
-    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b|HumanMark/i);
+  it("uses no orange but the kit's one HumanMark on slide 8, where a person authorizes the action, no deep pass green but the kit's PassTick, and no provider colour", () => {
+    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
+    for (const [file, source] of sources.filter(([name]) => name !== "scene-enforce.tsx")) expect(source, file).not.toMatch(/HumanMark/);
+    expect([...markup.matchAll(/class="dk-human" data-build="([^"]+)"/g)].map((match) => match[1])).toEqual(["enforce.mark"]);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
   });
 
