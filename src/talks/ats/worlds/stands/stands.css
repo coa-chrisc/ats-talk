@@ -104,13 +104,6 @@
   stroke-dasharray: 7 6;
 }
 
-.sn-leader {
-  fill: none;
-  stroke: var(--dk-paper);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
 /* Slides 13 and 15: the yard inside its picket fence. Each picket rises from
    its foot as the rail, drawing on from the top left corner, reaches it
    (`--at`, its share of the rail). */
@@ -358,13 +351,7 @@
   fill: var(--dk-catalog);
 }
 
-/* Slide 12b: the quotes at 36 px, and the theme rows' words at 40 px over their green rules. */
-.sn-quote.sn-quote {
-  font-size: 36px;
-  font-weight: 500;
-  fill: var(--dk-paper);
-}
-
+/* Slide 12b: the theme rows' words at 40 px over their green rules (the chips and cards are in stands-community.css). */
 .sn-theme.sn-theme {
   font-size: 40px;
   font-weight: 600;

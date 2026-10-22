@@ -35,11 +35,13 @@ type WordsProps = {
   strong?: boolean;
   /** Navy for a name; slate for a caption under one. */
   soft?: boolean;
+  /** A class of the slide's own, as Rows takes. */
+  extra?: string;
 };
 
 /** A word on the stage. */
-export function Words({ id, at, text, anchor = "middle", size = "label", strong = false, soft = false }: WordsProps) {
-  const className = `${size === "text" ? "dk-text" : "dk-label"} sn-word${strong ? " sn-word--strong" : ""}${soft ? " sn-word--soft" : ""}`;
+export function Words({ id, at, text, anchor = "middle", size = "label", strong = false, soft = false, extra = "" }: WordsProps) {
+  const className = `${size === "text" ? "dk-text" : "dk-label"} sn-word${strong ? " sn-word--strong" : ""}${soft ? " sn-word--soft" : ""}${extra ? ` ${extra}` : ""}`;
   return (
     <text className={className} data-build={id} x={at.x} y={at.y} textAnchor={anchor} dominantBaseline="central">
       {text}
