@@ -13,7 +13,7 @@
 
 import type { ReactNode } from "react";
 import { Dashed, box, type Box, type Point } from "@/components/deck/kit";
-import { FENCE, PLATE, fencePosts } from "../department-map";
+import { FENCE, PLATE, fencePickets } from "../department-map";
 import { CARD, type Miniature } from "./layout-could-be";
 import { LEVELS } from "./layout-levels";
 
@@ -134,16 +134,15 @@ function Bands(at: Box) {
   );
 }
 
-/** Slide 13's fenced yard, small: the green yard inside its rail, about square in the miniature's middle and 72 across, so the fence's posts, at a quarter of its pitch, stand at both corners, from department-map.ts's numbers. */
+/** The deck's fenced yard, small: the green yard inside its rail, about square in the miniature's middle and 72 across, its pickets at half size over the top rail, from department-map.ts's numbers. */
 function Yard(at: Box) {
   const y = box(at.x + 2, at.y + 26, at.w - 4, at.h - 52);
-  const over = FENCE.overhang * 0.6;
   return (
     <>
       <rect className="rd-mini__yard" x={y.x} y={y.y} width={y.w} height={y.h} rx={FENCE.rx} />
       <rect className="rd-mini__rail" x={y.x} y={y.y} width={y.w} height={y.h} rx={FENCE.rx} />
-      {fencePosts(y.x, y.w, FENCE.postPitch / 4).map((x) => (
-        <path key={x} className="rd-mini__post" d={`M${x} ${y.y - over}V${y.y + over}M${x} ${y.y + y.h - over}V${y.y + y.h + over}`} />
+      {fencePickets(y, 0.5).pickets.map((picket) => (
+        <path key={picket.x} className="rd-mini__picket" d={picket.d} />
       ))}
     </>
   );

@@ -56,7 +56,7 @@ const BOUNDARY = box(BOUNDARY_X - 2, NAME_Y + LABEL_LINE / 2 + 10, 4, round(TABL
 const RIGHT = BOUNDARY_X + 210;
 const FENCE_SCALE = 0.8;
 const RISE = round(FENCE.picket.rise * FENCE_SCALE);
-const YARD = box(RIGHT, CAPTION_Y + LABEL_LINE / 2 + 10 + RISE, SAFE.right - RIGHT, 130 + FENCE.overhang * 2 - RISE);
+const YARD = box(RIGHT, CAPTION_Y + LABEL_LINE / 2 + 10 + RISE, SAFE.right - RIGHT, 150 - RISE);
 /** The agent in the yard, 60 in from its left fence, its top 22 under the rail. */
 const AGENT_AT: Point = { x: YARD.x + 60 + AGENT.w / 2, y: YARD.y + 22 };
 /** The meter: an outline of four cells, 95 each, 70 past the agent, level with the agent's eyes; its words under it. */

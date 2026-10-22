@@ -112,13 +112,9 @@ export const AGENT = { w: 70, h: 89 } as const;
  * pickets 14 wide, about 36 apart, each from 10 px inside the yard to 24 px
  * over the rail, its point 7 tall: outlined boards standing in front of the
  * rail. Nothing stands past its other rails, so the yard's foot is the
- * fence's. `postPitch` and `overhang` are the posts of slide 27's miniature
- * (ready/parts-could-be.tsx), which can take `fencePickets` in their place.
+ * fence's.
  */
-export const FENCE = { postPitch: 72, overhang: 10, rx: 6, picket: { pitch: 36, w: 14, rise: 24, drop: 10, tip: 7 } } as const;
-
-/** Where a fence's posts stand along a rail from `x` over `w`, one at each end. */
-export const fencePosts = (x: number, w: number, pitch: number = FENCE.postPitch) => Array.from({ length: Math.floor(w / pitch) + 1 }, (_, i) => Math.min(round(x + i * pitch), round(x + w)));
+export const FENCE = { rx: 6, picket: { pitch: 36, w: 14, rise: 24, drop: 10, tip: 7 } } as const;
 
 /**
  * The pickets along the top rail of a fence round `at`, times `scale`: evenly

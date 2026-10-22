@@ -261,7 +261,7 @@
 }
 
 .rd-mini__rail,
-.rd-mini__post {
+.rd-mini__picket {
   fill: none;
   stroke: var(--dk-paper);
   stroke-width: 3;
@@ -388,3 +388,10 @@
 .rd-service-arrow { fill: none; stroke: var(--dk-paper); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 
 .rd-decision-card { fill: var(--dk-night); stroke: var(--dk-process); stroke-width: 2; }
+
+
+.rd-mini__picket {
+  fill: var(--dk-night);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
