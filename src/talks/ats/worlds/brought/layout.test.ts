@@ -1,15 +1,15 @@
 /**
  * Where the brought world's slides put things: slide 1's title page centred
  * on navy; slides 2 and 2a's drawings under their story bands and inside
- * the frame's safe area; slide 2's tiles, benches and captions in a row
- * and apart; slide 2a's four panels on the geometry slide 28 shares, and
+ * the frame's safe area; slide 2's wordmark and caption centred over its
+ * four boxes, each name centred in its box under its check; slide 2a's four panels on the geometry slide 28 shares, and
  * the route under them with its stops apart.
  */
 import { STAGE, STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 import { CREDIT_LINE, DRAW_FOOT, LABEL_LINE, LEAD_LINE, OPENING, SAFE, TEXT_LINE, bandFoot, contentTop, titleOf, wordsWidth } from "./layout";
-import { BENCH, COURSE, TILE } from "./layout-course";
+import { COURSE, MODULE, TYPE, WORDMARK } from "./layout-course";
 import { LESSONS, PANEL, ROUTE, TOP } from "./layout-lessons";
 
 const text = (at: Point, words: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(words, 32), TEXT_LINE, anchor);
@@ -35,7 +35,11 @@ function linesIn(words: string, width: number): number {
 }
 
 const DRAWN: Record<string, Box[]> = {
-  course: [...C.tiles.flatMap((tile) => [tile.at, tile.name.at, tile.bench.at]), text(C.college.at, C.college.text), text(C.build.at, C.build.text)],
+  course: [
+    C.wordmark.at,
+    wordsBox(C.college.at, wordsWidth(C.college.text, TYPE.caption), TYPE.captionLine, "middle"),
+    ...C.modules.flatMap((mod) => [mod.at, ringBox(mod.tick.at, TYPE.tick)]),
+  ],
   lessons: [
     ...F.panels.flatMap((panel) => [panel.at, wordsBox(panel.numeral.at, wordsWidth(panel.numeral.text, PANEL.numeral), PANEL.numeralLine, "start"), panel.name.at]),
     box(R.x0, R.y - ROUTE.stop, R.x1 - R.x0, 2 * ROUTE.stop),
@@ -98,54 +102,69 @@ describe("slide 1, the title page on navy", () => {
   });
 });
 
-describe("slide 2, the four tiles, the benches and the captions", () => {
-  it("lays the four tiles on slide 2a's four columns: 396 wide, 48 apart, 96 to 1824, from the drawing's top", () => {
-    expect(C.tiles).toHaveLength(4);
-    expect(C.tiles[0].at.x).toBe(96);
-    expect(right(C.tiles[3].at)).toBe(1824);
-    for (const [i, tile] of C.tiles.entries()) {
-      expect(tile.at).toEqual(box(96 + i * 444, contentTop("course"), 396, TILE.h));
-      if (i > 0) expect(tile.at.x - right(C.tiles[i - 1].at)).toBe(48);
-    }
+describe("slide 2, the wordmark, its caption and the four boxes", () => {
+  const boxesTop = C.modules[0].at.y;
+  const caption = wordsBox(C.college.at, wordsWidth(C.college.text, TYPE.caption), TYPE.captionLine, "middle");
+  /** A name's block of lines: its first line's middle is `at.y`, each next line a line under it. */
+  const nameBlock = (name: (typeof C.modules)[number]["name"]) => ({ top: name.at.y - TYPE.nameLine / 2, foot: name.at.y + (name.lines.length - 0.5) * TYPE.nameLine });
+
+  it("sets the Carnegie Mellon wordmark at its own proportions, wide enough to read from the back of the room, centred across the stage at the drawing's top", () => {
+    const mark = C.wordmark.at;
+    expect(C.wordmark.src).toMatch(/\/logos\/cmu\.v1\.svg$/);
+    expect(mark.w / mark.h).toBeCloseTo(WORDMARK.w / WORDMARK.h, 6);
+    expect(mark.w).toBeGreaterThanOrEqual(360);
+    expect(mark.w).toBeLessThanOrEqual(460);
+    expect(mark.x + mark.w / 2).toBe(STAGE.w / 2);
+    expect(mark.y).toBe(contentTop("course"));
   });
 
-  it("names each tile inside it, in a 340 px column on two lines at most, clear of the tile's foot", () => {
-    for (const tile of C.tiles) {
-      expect(tile.name.at.x).toBe(tile.at.x + TILE.inset);
-      expect(tile.name.at.w).toBe(340);
-      const lines = linesIn(tile.name.text, TILE.nameW);
-      expect(lines, tile.name.text).toBeLessThanOrEqual(2);
-      expect(tile.name.at.y, tile.name.text).toBeGreaterThanOrEqual(tile.at.y + 28);
-      expect(tile.name.at.y + lines * TILE.nameLine, tile.name.text).toBeLessThanOrEqual(bottom(tile.at) - 28);
-      expect(inside(tile.name.at, tile.at), tile.name.text).toBe(true);
-    }
-  });
-
-  it("centres the college's caption on the stage under the row, clear of the tiles and the benches", () => {
-    const caption = text(C.college.at, C.college.text);
+  it("centres one small caption under the wordmark, above the boxes and clear of both, at 18 px or more on a 1366 px screen", () => {
     expect(C.college.at.x).toBe(STAGE.w / 2);
-    expect(caption.y).toBeGreaterThan(bottom(C.tiles[0].at) + 16);
-    expect(bottom(caption)).toBeLessThan(C.tiles[0].bench.at.y - 16);
+    expect(caption.y).toBeGreaterThanOrEqual(bottom(C.wordmark.at) + 16);
+    expect(bottom(caption) + 32).toBeLessThanOrEqual(boxesTop);
+    expect((TYPE.caption * 1366) / STAGE.w).toBeGreaterThanOrEqual(18);
+    expect(TYPE.caption).toBeLessThan(TYPE.name);
+    expect(caption.w).toBeLessThan(STORY.w);
   });
 
-  it("puts a bench under each tile, centred on it, 300 wide, its legs in from the slab's ends, the four on one line", () => {
-    for (const tile of C.tiles) {
-      const bench = tile.bench.at;
-      expect(bench.w).toBe(BENCH.w);
-      expect(bench.x + bench.w / 2).toBe(tile.at.x + tile.at.w / 2);
-      expect(bench.y).toBe(C.tiles[0].bench.at.y);
-      expect(bench.h).toBe(BENCH.slab + BENCH.leg);
-      expect(inside(bench, box(tile.at.x, bench.y, tile.at.w, bench.h))).toBe(true);
-      expect(BENCH.legIn).toBeGreaterThan(0);
-      expect(BENCH.stretcher).toBeLessThan(BENCH.leg);
+  it("lays the four boxes in a row on slide 2a's four columns, 396 wide and 48 apart from 96 to 1824, under the wordmark", () => {
+    expect(C.modules).toHaveLength(4);
+    expect(C.modules[0].at.x).toBe(96);
+    expect(right(C.modules[3].at)).toBe(1824);
+    for (const [i, mod] of C.modules.entries()) {
+      expect(mod.at).toEqual(box(96 + i * 444, boxesTop, 396, MODULE.h));
+      if (i > 0) expect(mod.at.x - right(C.modules[i - 1].at)).toBe(48);
+    }
+    expect(boxesTop).toBeGreaterThan(bottom(C.wordmark.at));
+  });
+
+  it("centres each name in its box, across and up and down, on two lines at most, broken at a phrase, each line inside the box", () => {
+    for (const mod of C.modules) {
+      const { name, at } = mod;
+      expect(name.lines.join(" "), name.text).toBe(name.text);
+      expect(name.lines.length, name.text).toBeLessThanOrEqual(2);
+      expect(name.at.x, name.text).toBe(at.x + at.w / 2);
+      const block = nameBlock(name);
+      expect((block.top + block.foot) / 2, name.text).toBe(at.y + at.h / 2);
+      for (const line of name.lines) expect(wordsWidth(line, TYPE.name), line).toBeLessThanOrEqual(at.w - 2 * 24);
+      // No line ends on a word that leans on the next.
+      for (const line of name.lines.slice(0, -1)) expect(line, name.text).not.toMatch(/\b(?:the|a|of|to)$/);
     }
   });
 
-  it("centres the build's caption on the stage under the four benches, clear of them", () => {
-    const caption = text(C.build.at, C.build.text);
-    expect(C.build.at.x).toBe(STAGE.w / 2);
-    expect(caption.y).toBeGreaterThan(bottom(C.tiles[0].bench.at) + 16);
-    expect(bottom(caption)).toBeLessThanOrEqual(DRAW_FOOT);
+  it("puts each box's check centred across it, above its name and inside its top, the four checks on one line", () => {
+    for (const mod of C.modules) {
+      const { tick, at, name } = mod;
+      expect(tick.at.x).toBe(at.x + at.w / 2);
+      expect(tick.at.y).toBe(C.modules[0].tick.at.y);
+      expect(tick.at.y - TYPE.tick, name.text).toBeGreaterThanOrEqual(at.y + 16);
+      expect(tick.at.y + TYPE.tick + 12, name.text).toBeLessThanOrEqual(nameBlock(name).top);
+      expect(inside(ringBox(tick.at, TYPE.tick), at)).toBe(true);
+    }
+  });
+
+  it("keeps the boxes clear of the drawing's foot", () => {
+    expect(bottom(C.modules[0].at)).toBeLessThanOrEqual(DRAW_FOOT);
   });
 });
 

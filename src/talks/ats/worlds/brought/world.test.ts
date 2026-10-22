@@ -11,7 +11,8 @@ import { VENDOR_COLOURS, strayTokens } from "@/components/deck/kit/palette";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
+import { withBase } from "@/lib/base-path";
+import { LEAVE, at, built, ids, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, tagOf, texts, visible, world } from "./harness";
 import { COUNTS, PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
 import { ARRIVE, partsOf } from "./moves";
 import { brought } from "./world";
@@ -62,8 +63,11 @@ describe("the brought world", () => {
     expect(brought.steps.map((step) => step.ground)).toEqual(["navy", undefined, undefined]);
   });
 
-  it("shows no picture file: every slide is drawn", () => {
-    expect(markup).not.toMatch(/\.(?:webp|png|jpg|svg)\b/);
+  it("shows one picture file, the Carnegie Mellon wordmark on slide 2, through the base path; everything else is drawn", () => {
+    // Each file once: React also preloads an eager image, by the same address.
+    expect([...new Set([...markup.matchAll(/[\w./-]+\.(?:webp|png|jpg|svg)\b/g)].map(([file]) => file))]).toEqual([withBase("/logos/cmu.v1.svg")]);
+    expect(tagOf("course.wordmark")).toMatch(/^<div\b/);
+    expect(markup.indexOf('data-build="course.html"')).toBeLessThan(markup.indexOf('data-build="course.wordmark"'));
   });
 });
 
@@ -145,11 +149,17 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses no orange and no pass green: nobody decides and nothing is checked on these slides", () => {
-    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
+  it("uses no orange, since nobody decides here, and the pass green only on slide 2's four finished modules: the kit's PassTick and the box it turns green", () => {
+    for (const [file, source] of sources) expect(source, file).not.toMatch(/--dk-human|--fr-|#f4642c|#1f573b/i);
+    for (const [file, source] of sources.filter(([name]) => name !== "brought.css")) expect(source, file).not.toMatch(/--dk-pass/);
+    const css = sources.find(([file]) => file === "brought.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
+    const passing = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => /--dk-pass\b/.test(body)).map(([, selectors]) => selectors.trim());
+    expect(passing).toEqual([".br-module__pass"]);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
-    for (const [file, source] of sources) expect(source, file).not.toMatch(/<HumanMark\b|<PassTick\b/);
-    expect(markup).not.toMatch(/class="dk-human"|class="dk-pass-tick"/);
+    for (const [file, source] of sources) expect(source, file).not.toMatch(/<HumanMark\b/);
+    expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file)).toEqual(["scene-course.tsx"]);
+    expect(markup).not.toMatch(/class="dk-human"/);
+    expect([...markup.matchAll(/class="dk-pass-tick" data-build="([^"]+)"/g)].map((match) => match[1])).toEqual([0, 1, 2, 3].map((i) => `course.module.${i}.tick`));
   });
 
   it("paints otherwise only with the deck's tokens and the role aliases, and no hue beyond green, the catalog's indigo and navy", () => {

@@ -27,13 +27,13 @@ export const WHAT_WE_BROUGHT_BACK: Picture[] = [
     name: "The course",
     show: "We took Carnegie Mellon's course on leading AI agents.",
     say: "Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is designed for executives who decide what AI agents may do inside their organizations. An agent can use tools to carry out a task without a person directing every step. Our classmates were chief data officers and technology leaders from banks, hospitals, and manufacturers. Four half-day modules covered foundations, the data and system architecture agents need, security and trust, and strategy and transformation. In each module, we built and tested an agent ourselves. We specified its task, gave it tools, set its limits, and watched it work. We also tested how it responded to attacks. That practical work helped us understand both what agents can do and what can go wrong.",
-    see: ["The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. Four indigo tiles land in a row across the stage, each named in turn: \"Foundations\", \"Data and architecture\", \"Security, risk and trust\", \"Strategy and transformation\". Under the row a caption settles: \"Heinz College\". The four green workbench outlines draw together beneath the tiles, and one caption sits under the four benches: \"Build and test an agent\". The slide ends on the four tiles, the caption and the four benches."],
+    see: ["The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. The Carnegie Mellon wordmark settles in its red, centered across the stage, with one small gray caption centered under it: \"Heinz College · Leading Enterprise Agentic AI Development\". Four boxes land in a row under the caption as gray dashed outlines, each with its name centered in it: \"Foundations\", \"Data and architecture\", \"Security, risk and trust\", \"Strategy and transformation\". Then, one at a time from left to right, about half a second apart, each box turns green, its outline solid, and a deep green check mark lands in it, above its name. The slide ends on the wordmark and its caption over the four green boxes, each with its check. Nothing moves after that."],
     story: [
       "Four half-day modules covered foundations, data and architecture, security, and strategy.",
       "In each module, we built and tested an agent ourselves.",
     ],
     steps: [
-      { id: "play", show: ["Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation", "Heinz College", "Build and test an agent"] },
+      { id: "play", show: ["Heinz College · Leading Enterprise Agentic AI Development", "Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation"] },
     ],
   },
   {

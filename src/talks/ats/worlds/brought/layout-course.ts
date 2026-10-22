@@ -1,72 +1,64 @@
 /**
- * Slide 2's places: four indigo tiles in a row across the drawing width,
- * each named inside; a caption centred under
- * the row; a green workbench under each tile, drawn as one outline; and
- * one caption centred under the four benches. Words are read from the
- * script, by position.
+ * Slide 2's places: the Carnegie Mellon wordmark centred across the stage
+ * at the drawing's top, one small caption centred under it, and under that
+ * four boxes in a row on slide 2a's four columns. Each box holds its name,
+ * centred in it across and up and down on one or two lines, and the passed
+ * tick, centred across it above the name. Words are read from the script,
+ * by position: the caption, then the four names.
  */
 import { STAGE, box, type Box, type Point } from "@/components/deck/kit";
-import { shown } from "../../script/find";
+import { withBase } from "@/lib/base-path";
+import { breakAfter, shown } from "../../script/find";
 import { SAFE, contentTop, layerOf } from "./layout";
 
-const LABELS = shown("course", "play");
-const NAMES = LABELS.slice(0, 4);
-const [COLLEGE, BUILD] = LABELS.slice(4);
+const [CAPTION, ...NAMES] = shown("course", "play");
 
 /** The drawing's top: under a two-line title and two story lines. */
 export const TOP = contentTop("course");
 
-/**
- * A tile: on the same four columns as slide 2a's panels, 396 wide with 48
- * between, so the row spans 96 to 1824; 168 tall. Its name starts 42 px
- * down in a 340 px column at 32 px semibold on 42 px lines, two lines at
- * most (the longest name runs about 440 px, measured in Geist SemiBold),
- * so a two-line name's foot is 42 px over the tile's, as far as its top
- * is under the tile's.
- */
-export const TILE = { w: 396, gap: 48, h: 168, inset: 28, nameDown: 42, nameW: 340, nameLine: 42, nameLines: 2 } as const;
-const tileAt = (i: number): Box => box(SAFE.left + 16 + i * (TILE.w + TILE.gap), TOP, TILE.w, TILE.h);
-
-/** A caption's middle sits this far under what it captions, on the text size's 45 px line. */
-const CAPTION_DOWN = 44;
-/** The college's caption, centred on the stage under the row. */
-const COLLEGE_Y = TOP + TILE.h + CAPTION_DOWN;
+/** The wordmark file and its own size (its viewBox), set 40 px tall: so 446.25 wide, to read from the back of the room. */
+export const WORDMARK = { src: "/logos/cmu.v1.svg", alt: "Carnegie Mellon University", w: 178.5, h: 16, set: 40 } as const;
+const MARK_W = (WORDMARK.set * WORDMARK.w) / WORDMARK.h;
 
 /**
- * A workbench under each tile, 92 px under the row so the college's
- * caption sits between, about 20 px clear of each: a slab 300 wide and
- * 12 deep centred under the tile, two legs 24 px in from the slab's ends
- * down 70 px, and a stretcher between them 38 px under the slab. The
- * build's caption is centred under the four benches, its foot about 35 px
- * over the drawing's foot.
+ * Type sizes: the caption at the kit's label size (26 px, 18.5 px on a
+ * 1366 px screen) on a 32 px line; a name at the 32 px text, semibold, on
+ * 42 px lines; the tick's radius.
  */
-export const BENCH = { gap: 92, w: 300, slab: 12, legIn: 24, leg: 70, stretcher: 38 } as const;
-const BENCH_TOP = TOP + TILE.h + BENCH.gap;
-const BENCH_FOOT = BENCH_TOP + BENCH.slab + BENCH.leg;
-const BUILD_Y = BENCH_FOOT + CAPTION_DOWN;
+export const TYPE = { caption: 26, captionLine: 32, name: 32, nameLine: 42, tick: 24 } as const;
 
-/** A bench's outline as one path: the slab round its edge, then each leg down from it, then the stretcher across. */
-export function benchPath(at: Box): string {
-  const slabFoot = at.y + BENCH.slab;
-  const left = at.x + BENCH.legIn;
-  const right = at.x + at.w - BENCH.legIn;
-  const foot = at.y + at.h;
-  const bar = slabFoot + BENCH.stretcher;
-  return `M${at.x} ${at.y}H${at.x + at.w}V${slabFoot}H${at.x}ZM${left} ${slabFoot}V${foot}M${right} ${slabFoot}V${foot}M${left} ${bar}H${right}`;
-}
+/** The caption's line starts this far under the wordmark's foot; the boxes start this far under the caption's line. */
+const CAPTION_GAP = 20;
+const BOXES_GAP = 52;
+const CAPTION_Y = TOP + WORDMARK.set + CAPTION_GAP + TYPE.captionLine / 2;
+const BOXES_TOP = CAPTION_Y + TYPE.captionLine / 2 + BOXES_GAP;
+
+/**
+ * A box: on slide 2a's four columns, 396 wide with 48 between, so the row
+ * spans 96 to 1824; 256 tall. A two-line name, centred, then has 86 px over
+ * it, room for the tick 44 under the box's top with 18 px between the two.
+ */
+export const MODULE = { w: 396, gap: 48, h: 256, tickDown: 44 } as const;
+const boxAt = (i: number): Box => box(SAFE.left + 16 + i * (MODULE.w + MODULE.gap), BOXES_TOP, MODULE.w, MODULE.h);
+
+/** Where each name breaks onto a second line, by the word its first line ends on, at the end of a phrase; a name with none fits one line. */
+const NAME_BREAKS: readonly (readonly string[])[] = [[], ["and"], ["Security,"], ["and"]];
 
 export const COURSE = {
   ...layerOf("course"),
-  tiles: NAMES.map((name, i) => {
-    const at = tileAt(i);
-    const bench = box(at.x + (TILE.w - BENCH.w) / 2, BENCH_TOP, BENCH.w, BENCH.slab + BENCH.leg);
+  wordmark: { key: "course.wordmark", src: withBase(WORDMARK.src), alt: WORDMARK.alt, at: box((STAGE.w - MARK_W) / 2, TOP, MARK_W, WORDMARK.set) },
+  college: { key: "course.college", text: CAPTION, at: { x: STAGE.w / 2, y: CAPTION_Y } as Point },
+  modules: NAMES.map((name, i) => {
+    const at = boxAt(i);
+    const lines = breakAfter(name, ...NAME_BREAKS[i]);
+    const middle = { x: at.x + at.w / 2, y: at.y + at.h / 2 };
     return {
-      key: `course.tile.${i}`,
+      key: `course.module.${i}`,
       at,
-      name: { key: `course.tile.${i}.name`, text: name, at: box(at.x + TILE.inset, at.y + TILE.nameDown, TILE.nameW, TILE.nameLines * TILE.nameLine) },
-      bench: { key: `course.bench.${i}`, at: bench },
+      turn: { key: `course.module.${i}.turn` },
+      /** `at` is the first line's middle; each next line sits a line under it, so the block's middle is the box's. */
+      name: { text: name, lines, at: { x: middle.x, y: middle.y - ((lines.length - 1) * TYPE.nameLine) / 2 } as Point, line: TYPE.nameLine },
+      tick: { key: `course.module.${i}.tick`, at: { x: middle.x, y: at.y + MODULE.tickDown } as Point },
     };
   }),
-  college: { key: "course.college", text: COLLEGE, at: { x: STAGE.w / 2, y: COLLEGE_Y } as Point },
-  build: { key: "course.build", text: BUILD, at: { x: STAGE.w / 2, y: BUILD_Y } as Point },
 };

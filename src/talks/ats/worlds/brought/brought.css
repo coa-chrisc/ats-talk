@@ -91,25 +91,48 @@
   opacity: var(--k, 0);
 }
 
-/* Slide 2: a module tile in the catalog's indigo, its edge full and its fill at the idle tint, square-cornered like the panels. */
-.br-tile {
-  fill: var(--dk-catalog);
-  fill-opacity: var(--dk-tint-idle);
-  stroke: var(--dk-catalog);
-  stroke-width: 2.5;
+/* Slide 2: the wordmark, at its box's size. */
+.br-wordmark {
+  position: absolute;
 }
 
-/* A workbench under a tile: the process's green, drawn as one outline. */
-.br-bench {
-  fill: none;
-  stroke: var(--dk-process);
-  stroke-width: 3;
-  stroke-linejoin: round;
-  stroke-linecap: round;
+.br-wordmark img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-/* A caption under the row or the benches: the text size, medium, in the soft ink. */
-.dk-text.br-caption {
+/* The caption under the wordmark: the kit's label, medium, in the soft ink. */
+.dk-label.br-caption {
   font-weight: 500;
-  fill: var(--dk-soft);
+}
+
+/* A module box not done yet: the deck's gray dashed outline, which fades as the box turns (--k). */
+.br-module__dash {
+  fill: none;
+  stroke: var(--dk-soft);
+  stroke-width: 2.5;
+  stroke-dasharray: 10 8;
+  opacity: calc(1 - var(--k, 0));
+}
+
+/* A module box done: a solid deep-green edge over a light wash of it, both coming up as it turns (--k). */
+.br-module__pass {
+  fill: var(--dk-pass);
+  fill-opacity: calc(var(--k, 0) * var(--dk-tint-idle));
+  stroke: var(--dk-pass);
+  stroke-opacity: var(--k, 0);
+  stroke-width: 3;
+}
+
+/* A module's name, centred in its box: the text size, semibold navy. */
+.dk-text.br-module__name {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  fill: var(--dk-paper);
+}
+
+/* The tick in a module box is larger than the kit's, so its mark is drawn heavier to match. */
+.br-check .dk-pass-tick__mark {
+  stroke-width: 4.5;
 }

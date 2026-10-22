@@ -76,8 +76,16 @@ export const texts = markup
   .split("\n")
   .map((text) => decode(text).trim())
   .filter(Boolean);
-/** The text of each SVG `<text>` element, its runs joined: a figure set in several runs reads as one. */
-export const svgTexts = [...markup.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(([, inner]) => decode(inner.replace(/<[^>]+>/g, "")).trim());
+/**
+ * The text of each SVG `<text>` element, its runs joined: a figure set in
+ * several runs reads as one, and a name set on rows (a run placed at its own
+ * `x`) reads with a space where each row starts.
+ */
+export const svgTexts = [...markup.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(([, inner]) =>
+  decode(inner.replace(/<tspan\b[^>]*\bx="[^"]*"[^>]*>/g, " ").replace(/<[^>]+>/g, ""))
+    .replace(/\s+/g, " ")
+    .trim(),
+);
 
 /** Whether two boxes overlap, and whether one is inside another. */
 export const overlaps = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;

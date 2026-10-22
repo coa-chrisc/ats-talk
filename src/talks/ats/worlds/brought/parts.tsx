@@ -2,12 +2,13 @@
  * The brought world's plainest pieces: a picture's HTML as one part, its
  * story lines, a word set in the marks, a run of words set in HTML that
  * wraps inside its box, slide 1's centred type and short rule, slide 2's
- * tile, workbench and caption, and slide 2a's panel and route stop.
+ * wordmark, caption and module box, and slide 2a's panel and route stop.
  * Every word set here is passed in from a layout, which reads it from the
  * script. Painted by brought.css.
  */
 "use client";
 
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { STAGE, Story, place, type Box, type Point } from "@/components/deck/kit";
 import { STORIES } from "./layout";
@@ -67,23 +68,46 @@ export function TitleRule({ id, at }: { id: string; at: Box }) {
   return <div className="br-rule" data-build={id} style={place(at)} />;
 }
 
-/** A caption in the marks: the 32 px text, medium, in the soft ink, centred on its point. */
+/** A small caption in the marks: the kit's label type, medium, in the soft ink, centred on its point. */
 export function Caption({ id, at, text }: { id: string; at: Point; text: string }) {
   return (
-    <text className="dk-text br-caption" data-build={id} x={at.x} y={at.y} textAnchor="middle" dominantBaseline="central">
+    <text className="dk-label br-caption" data-build={id} x={at.x} y={at.y} textAnchor="middle" dominantBaseline="central">
       {text}
     </text>
   );
 }
 
-/** A module tile: a square-cornered plate in the catalog's indigo, its edge full and its fill at the idle tint. */
-export function ModuleTile({ id, at }: { id: string; at: Box }) {
-  return <rect className="br-tile" data-build={id} x={at.x} y={at.y} width={at.w} height={at.h} />;
+/** A wordmark from public/, in HTML at its box's size, served as saved and loaded eagerly, as the kit's stills are. */
+export function Wordmark({ id, at, src, alt }: { id: string; at: Box; src: string; alt: string }) {
+  return (
+    <div className="br-wordmark" data-build={id} style={place(at)}>
+      <Image src={src} alt={alt} width={Math.round(at.w)} height={Math.round(at.h)} loading="eager" decoding="sync" unoptimized />
+    </div>
+  );
 }
 
-/** A workbench: an outline in the process's green that draws on along its path (`draw`). */
-export function Bench({ id, d }: { id: string; d: string }) {
-  return <path className="br-bench dk-draw" data-build={id} d={d} pathLength={1} />;
+/**
+ * A course module's box, square-cornered, with its name centred in it on
+ * rows: a gray dashed outline, not done yet, that turns green (`--k` on
+ * `turn`, 0 to 1) as the dashes fade under a solid deep-green edge and a
+ * light wash of the same green. The name stays navy, so it reads on both.
+ */
+export function Module({ id, turn, at, name }: { id: string; turn: string; at: Box; name: { at: Point; lines: readonly string[]; line: number } }) {
+  return (
+    <g className="br-module" data-build={id}>
+      <g data-build={turn}>
+        <rect className="br-module__dash" x={at.x} y={at.y} width={at.w} height={at.h} />
+        <rect className="br-module__pass" x={at.x} y={at.y} width={at.w} height={at.h} />
+      </g>
+      <text className="dk-text br-module__name" textAnchor="middle" dominantBaseline="central">
+        {name.lines.map((line, i) => (
+          <tspan key={i} x={name.at.x} y={name.at.y + i * name.line} dominantBaseline="central">
+            {line}
+          </tspan>
+        ))}
+      </text>
+    </g>
+  );
 }
 
 /** A tall panel: a square-cornered outline in navy that draws on round its edge (`draw`). */
