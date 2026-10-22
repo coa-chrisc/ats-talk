@@ -89,13 +89,13 @@ Speaker: Chris
 <!-- beat: what the course was, who it was for and why it was worth the time, before any of its ideas are named -->
 Speaker: Chris
 
-**On screen:** We took Carnegie Mellon's course on leading AI agents.
-- Four half-day modules covered foundations, data and architecture, security, and strategy.
-- In each module, we built and tested an agent ourselves.
+**On screen:** We took Carnegie Mellon's course on leading enterprise deployment of AI agents.
+- Over four days and more than 20 hours of instruction, we covered these topics.
+- Our classmates were technology leaders from banks, hospitals, and manufacturers.
 
 **They see:** The title settles, then both supporting sentences appear together. After a 0.6-second pause, the visual sequence begins. The Carnegie Mellon wordmark settles in its red, centered across the stage, with one small gray caption centered under it: "Heinz College · Leading Enterprise Agentic AI Development". Four boxes land in a row under the caption as gray dashed outlines, each with its name centered in it: "Foundations", "Data and architecture", "Security, risk and trust", "Strategy and transformation". Then, one at a time from left to right, about half a second apart, each box turns green, its outline solid, and a deep green check mark lands in it, above its name. The slide ends on the wordmark and its caption over the four green boxes, each with its check. Nothing moves after that.
 
-**You say:** Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is designed for executives who decide what AI agents may do inside their organizations. An agent can use tools to carry out a task without a person directing every step. Our classmates were chief data officers and technology leaders from banks, hospitals, and manufacturers. Four half-day modules covered foundations, the data and system architecture agents need, security and trust, and strategy and transformation. In each module, we built and tested an agent ourselves. We specified its task, gave it tools, set its limits, and watched it work. We also tested how it responded to attacks. That practical work helped us understand both what agents can do and what can go wrong.
+**You say:** Carnegie Mellon's Heinz College runs a certificate program called Leading Enterprise Agentic AI Development. It is designed for executives who decide what AI agents may do inside their organizations. An agent can use tools to carry out a task without a person directing every step. Our classmates were chief data officers and technology leaders from banks, hospitals, and manufacturers. Over four days and more than 20 hours of instruction, the course covered four topics: foundations, the data and system architecture agents need, security, risk and trust, and strategy and transformation.
 
 ### 2a. Four lessons
 <!-- beat: the setup; the four lessons named once, so the room can count them, expect them and recognize them when they return -->
