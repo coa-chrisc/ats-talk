@@ -9,7 +9,6 @@ import { describe, expect, it } from "vitest";
 import { at, before, elements, endOf, ids, playOf, playsAt, startOf, stepOf, world } from "./harness";
 import { titleKey } from "./layout";
 import { EXISTS } from "./layout-exists";
-import { INFRASTRUCTURE } from "./layout-infrastructure";
 import { NOTICED } from "./layout-noticed";
 import { ARRIVE } from "./moves";
 
@@ -105,41 +104,5 @@ describe("slide 12a, the wall", () => {
     expect(startOf(id, N.only.key) - read).toBeGreaterThanOrEqual(0.8);
     const end = at(id);
     for (const key of [...N.plaques.map((plaque) => plaque.key), ...N.hosts.map((host) => host.key), N.only.key]) expect(end[key].autoAlpha, key).toBe(1);
-  });
-});
-
-describe("slide 13, the yard", () => {
-  const id = stepOf("infrastructure");
-  const I = INFRASTRUCTURE;
-  const tiles = I.tiles.map((tile) => startOf(id, tile.key));
-
-  it("draws the fence and names the yard, then lands the three tiles inside it in turn, story line A with them", () => {
-    expect(startOf(id, I.name.key)).toBeGreaterThan(startOf(id, I.fence.key));
-    expect(startOf(id, I.caption.key)).toBeGreaterThan(startOf(id, I.name.key));
-    expect(tiles[0]).toBeGreaterThan(startOf(id, I.fence.key) + 0.6);
-    for (let i = 1; i < tiles.length; i++) expect(tiles[i] - tiles[i - 1]).toBeGreaterThanOrEqual(0.4);
-  });
-
-  it("brings the calendar up under the fence once the tiles are in, and fills the calendar as one short group", () => {
-    expect(startOf(id, I.calendar.key)).toBeGreaterThan(Math.max(...I.tiles.map((tile) => endOf(id, tile.key))));
-    const [fill] = playOf(id, I.calendar.weeks.key);
-    expect(fill.at).toBeGreaterThan(startOf(id, I.calendar.key));
-    expect(fill.stagger).toBe(0);
-    expect(endOf(id, I.calendar.weeks.key) - fill.at).toBeLessThan(0.5);
-    expect(endOf(id, I.calendar.weeks.key) - fill.at).toBeLessThan(2.5);
-  });
-
-  it("settles the two plates once the calendar is full, then wipes the dashed one on apart, its caption after, with story line B", () => {
-    const [a, b] = I.plates.map((plate) => startOf(id, plate.key));
-    expect(a).toBeGreaterThan(endOf(id, I.calendar.weeks.key));
-    expect(b).toBeGreaterThan(a);
-    const wiped = playOf(id, I.joining.key)[0];
-    expect(wiped.at).toBeGreaterThan(b);
-    expect(Object.keys(wiped.on)).toEqual(["--wt", "--wr", "--wb", "--wl"]);
-    expect(startOf(id, I.joining.caption.key)).toBeGreaterThan(wiped.at);
-    const end = at(id);
-    expect(end[I.fence.key]["--d"]).toBe(1);
-    for (const key of [...I.tiles.map((tile) => tile.key), I.calendar.weeks.key, ...I.plates.map((plate) => plate.key)]) expect(end[key].autoAlpha, key).toBe(1);
-    expect(end[I.joining.key]).toMatchObject({ "--wt": 0, "--wr": 0, "--wb": 0, "--wl": 0 });
   });
 });

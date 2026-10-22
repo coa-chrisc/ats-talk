@@ -169,15 +169,6 @@
   stroke-opacity: var(--k, 0);
 }
 
-/* The dashed plate's name, set as a plate's is. */
-.sn-dashed-name {
-  font-family: var(--dk-face);
-  font-size: var(--dk-text);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--dk-paper);
-}
-
 /* Slide 12a: the rail, the cords and nails, the plaques in their indigo edges, the small nameplates. */
 .sn-rail {
   fill: none;
@@ -216,7 +207,7 @@
   stroke-width: 1.5;
 }
 
-/* Slide 13: the tiles in the yard, the calendar's weeks and their green fill. */
+/* Slide 13: the tiles in the yard. */
 .sn-tile__face {
   fill: var(--dk-night);
   stroke: var(--dk-paper);
@@ -228,19 +219,6 @@
   stroke: var(--dk-process);
   stroke-width: 4;
   stroke-linecap: round;
-}
-
-.sn-week {
-  fill: var(--dk-night);
-  stroke: var(--dk-rule);
-  stroke-width: 1.5;
-}
-
-.sn-week-fill {
-  fill: var(--dk-process);
-  fill-opacity: var(--dk-tint-active);
-  stroke: var(--dk-process);
-  stroke-width: 1.5;
 }
 
 /* Slide 14: the heads' rules and the short rules joining each pair to its tick. */
