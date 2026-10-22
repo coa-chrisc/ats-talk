@@ -8,9 +8,9 @@
 "use client";
 
 import type { Box, Point } from "@/components/deck/kit";
-import { BOUNDARY, LEDGER, LENS, TOOL } from "./layout-control";
+import { BOUNDARY, LENS, TOOL } from "./layout-control";
 
-/** A card: a small white page in a navy outline with a hole cut in it (`page`, drawn even-odd, so what is under the hole shows through), and a line across its top. It shows (`show`) and travels by `--x` and `--y` (`travel`). */
+/** A card: a solid navy page with a hole cut in it (`page`, drawn even-odd, so what is under the hole shows through), and a white line across its top. It shows (`show`) and travels by `--x` and `--y` (`travel`). */
 export function Card({ id, page, line }: { id: string; page: string; line: string }) {
   return (
     <g className="dk-move sn-card" data-build={id}>
@@ -63,7 +63,7 @@ export function Boundary({ id, at }: { id: string; at: Box }) {
 
 /** The record: a page drawing on (`draw`), white inside as it draws. Its lines are drawn by `LedgerLine`, each as its own part. */
 export function Ledger({ id, at }: { id: string; at: Box }) {
-  return <rect className="sn-ledger dk-draw" data-build={id} x={at.x} y={at.y} width={LEDGER.w} height={LEDGER.h} rx={6} pathLength={1} />;
+  return <rect className="sn-ledger dk-draw" data-build={id} x={at.x} y={at.y} width={at.w} height={at.h} rx={6} pathLength={1} />;
 }
 
 /** One line in the record, drawing in from its left (`draw`). */

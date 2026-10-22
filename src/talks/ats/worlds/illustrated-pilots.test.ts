@@ -19,7 +19,7 @@ describe("illustrated pilot choreography",()=>{
   expect(peopleMarkup).not.toContain('data-build="people.panel.');
   expect(fitsMarkup).not.toContain('data-build="fits.panel.');
   expect(peopleMarkup).toContain('data-build="people.selection"');
-  expect(fitsMarkup).toContain('stroke-dasharray="8 10"');
+  expect(fitsMarkup).toContain('class="sn-fits__boundary" data-build="fits.boundary"');
  });
 });
 

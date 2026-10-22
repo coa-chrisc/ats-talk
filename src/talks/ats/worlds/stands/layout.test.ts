@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, tagWords, wordsWidth } from "./layout";
 import { controlGlyphs, controlRows } from "./layout-control";
+import { fitsGlyphs, fitsRows } from "./layout-fits";
 import { EXISTS, existsRows } from "./layout-exists";
 import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
 import { HOST, NOTICED } from "./layout-noticed";
@@ -55,6 +56,7 @@ const DRAWN: Record<string, Box[]> = {
     label(F.portfolio.at, F.portfolio.text, "start"),
   ],
   control: [...controlRows().map((row) => row.box), ...controlGlyphs().map((glyph) => glyph.box)],
+  fits: [...fitsRows().map((row) => row.box), ...fitsGlyphs().map((glyph) => glyph.box)],
   exists: [
     E.map.outline,
     ...existsRows().map((row) => row.box),

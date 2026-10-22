@@ -11,7 +11,7 @@
 import { describe, expect, it } from "vitest";
 import { box, type Box } from "@/components/deck/kit";
 import { at, endOf, markup, playOf, playsAt, startOf, stepOf, tagOf } from "./harness";
-import { CONTROL, cardBox, controlRows, shapePath } from "./layout-control";
+import { CARD, CONTROL, cardBox, controlRows, shapePath } from "./layout-control";
 import { overlaps } from "./harness";
 
 describe("slide 11a, approved tools", () => {
@@ -72,7 +72,7 @@ describe("slide 11a, approved tools", () => {
     const to = cardBox(upper, upper.stops.shelf);
     const path: Box = box(from.x, Math.min(from.y, to.y), to.x + to.w - from.x, from.h);
     const crossed = controlRows().filter((row) => overlaps(row.box, path));
-    expect(crossed.map((row) => row.key)).toEqual(expect.arrayContaining([C.fits.key]));
+    expect(crossed.map((row) => row.key.replace(/\.\d+$/, ""))).toEqual(expect.arrayContaining([C.boundary.caption.key]));
     const inside = end(leg(upper.key, upper.stops.tool));
     for (const row of crossed) expect(startOf(id, row.key.replace(/\.\d+$/, "")), row.key).toBeGreaterThanOrEqual(inside - 1e-9);
   });
@@ -176,11 +176,18 @@ describe("slide 11a's drawing", () => {
   it("holes the first card round and the second in a diamond, and draws both over the screens and sockets, so a seated card's hole shows its socket", () => {
     const [upper, lower] = C.cards;
     expect([upper.shape, lower.shape]).toEqual(["circle", "diamond"]);
-    expect(upper.page).toContain(shapePath("circle", { x: upper.at.x + 20, y: upper.at.y + 30 }));
-    expect(lower.page).toContain(shapePath("diamond", { x: lower.at.x + 20, y: lower.at.y + 30 }));
+    expect(upper.page).toContain(shapePath("circle", { x: upper.at.x + CARD.w / 2, y: upper.at.y + CARD.hole }));
+    expect(lower.page).toContain(shapePath("diamond", { x: lower.at.x + CARD.w / 2, y: lower.at.y + CARD.hole }));
     expect(tagOf(upper.key)).toBeDefined();
     expect(own).toMatch(/fill-rule="evenodd"/);
     const last = Math.max(...[...C.tools.map((tool) => tool.key), C.sockets.lit.key, C.sockets.added.key].map((key) => markup.indexOf(`data-build="${key}"`)));
     for (const card of C.cards) expect(markup.indexOf(`data-build="${card.key}"`), card.key).toBeGreaterThan(last);
+  });
+
+  it("sets every row of words with the anchor its layout measures it by", () => {
+    for (const row of controlRows()) {
+      const key = row.key.replace(/\.\d+$/, "");
+      expect(tagOf(key), key).toContain(`text-anchor="${row.anchor}"`);
+    }
   });
 });
