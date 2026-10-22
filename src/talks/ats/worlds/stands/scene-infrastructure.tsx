@@ -4,14 +4,15 @@
 import { Dashed, Part } from "@/components/deck/kit";
 import { INFRASTRUCTURE, TILE_WORDS } from "./layout-infrastructure";
 import { Layer, Rows, StoryOf, Words } from "./parts";
-import { Fence, Plate, WeekFills, Weeks, YardTile } from "./parts-figures";
+import { Plate, WeekFills, Weeks, YardTile } from "./parts-figures";
+import { Fence } from "./parts-map";
 
 const I = INFRASTRUCTURE;
 
 export function InfrastructureMarks() {
   return (
     <Part id={I.marks}>
-      <Fence id={I.fence.key} at={I.fence.at} posts={I.fence.posts} />
+      <Fence id={I.fence.key} at={I.fence.at} />
       <Words id={I.name.key} at={I.name.at} text={I.name.text} anchor="start" size="text" strong />
       <Words id={I.caption.key} at={I.caption.at} text={I.caption.text} anchor="start" soft />
       {I.tiles.map((tile) => (

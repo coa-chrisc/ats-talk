@@ -247,7 +247,9 @@
   opacity: clamp(0, calc(var(--d, 0) * 20 - 19), 1);
 }
 
-/* The small yard: slide 13's fence, its ground washed green as it draws. */
+/* The small yard: slide 13's picket fence, its ground washed green as it
+   draws, each picket standing up from the top rail as the rail reaches it
+   (`--at`, its share of the rail). */
 .fs-fence__yard {
   fill: var(--dk-process);
   fill-opacity: calc(var(--d, 0) * var(--dk-wash));
@@ -259,12 +261,14 @@
   stroke-width: 3;
 }
 
-.fs-fence__post {
-  fill: none;
+.fs-fence__picket {
+  fill: var(--dk-night);
   stroke: var(--dk-paper);
   stroke-width: 3;
-  stroke-linecap: round;
-  opacity: min(1, calc(var(--d, 0) * 2));
+  stroke-linejoin: round;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(clamp(0, calc((var(--d, 0) - var(--at, 0)) * 12), 1));
 }
 
 /* Slide 19: a speech bubble. */

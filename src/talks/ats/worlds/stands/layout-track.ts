@@ -1,37 +1,34 @@
 /**
  * Slide 11's places: the department map unlit, and what is still to
  * establish beside it. At the left, the grid of departments at the map's
- * proportions (department-map.ts), drawn as large as the field's height
- * allows, named inside its top left; a green line round it, the policy,
- * headed by its column's heading over it and named with its caption under
- * it. At the right, the column's other heading over the three dashed
- * plates, each plate's name and caption set inside it. Words are read from
- * the script, by position.
+ * size and place, where slides 12 and 15 set it too (department-map.ts),
+ * named inside its top left; a green line round it, the policy, headed by
+ * its column's heading over it and named with its caption under it. At the
+ * right, the column's other heading over the three dashed plates, each
+ * plate's name and caption set inside it, the column from the ring's top to
+ * the drawing's foot. Words are read from the script, by position.
  */
 import { box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
-import { PLATE, PLATES_H, RING_PAD, gridAt, gridSize, plateColumn } from "../department-map";
-import { SAFE, TEXT_LINE, contentTop, layerOf, round, wordsWidth } from "./layout";
+import { MAP_AT, PLATE, RING_PAD, gridAt, plateColumn } from "../department-map";
+import { SAFE, contentTop, layerOf, wordsWidth } from "./layout";
 
 const [DEPARTMENTS, IN_PLACE, POLICY, POLICY_CAPTION, TO_ESTABLISH, ...PLATE_WORDS] = shown("track", "play");
 
 const TOP = contentTop("track");
 /** The two columns' headings on one row over the drawing, 16 px under its first line. */
 const HEAD_Y = TOP + 16;
-/** The ring and the plates start 36 px under the drawing's first line, clear of the headings' row. */
-const BODY_Y = TOP + 36;
-/** The policy's name sits 30 px under the ring's foot, its row ending inside the plates' column's foot. */
+/** The policy's name sits 30 px under the ring's foot. */
 const NAME_DROP = 30;
 
-/** The plates' column at the drawing's right edge. */
-const PLATES_AT: Point = { x: SAFE.right - PLATE.w, y: BODY_Y };
-/** The policy's row: centred so its text line ends 4 px over the plates' foot. */
-const POLICY_Y = BODY_Y + PLATES_H - 4 - TEXT_LINE / 2;
-/** The ring from the drawing's left edge, its foot the name's drop over the policy's row; the grid inside it as large as that leaves room for. */
-const RING_FOOT = POLICY_Y - NAME_DROP;
-const SCALE = round((RING_FOOT - BODY_Y - RING_PAD.top - RING_PAD.foot) / gridSize(1).h);
-const MAP = gridAt({ x: 96 + RING_PAD.side, y: BODY_Y + RING_PAD.top }, SCALE);
-const RING = box(96, BODY_Y, MAP.outline.w + 2 * RING_PAD.side, RING_FOOT - BODY_Y);
+/** The grid at the map's size and place; the ring round it, the ring's pad out from it at the sides and foot and at the top room for the grid's name. */
+const MAP = gridAt(MAP_AT, 1);
+const RING = box(MAP.outline.x - RING_PAD.side, MAP.outline.y - RING_PAD.top, MAP.outline.w + 2 * RING_PAD.side, MAP.outline.h + RING_PAD.top + RING_PAD.foot);
+const RING_FOOT = RING.y + RING.h;
+/** The policy's row: its text line's middle the name's drop under the ring. */
+const POLICY_Y = RING_FOOT + NAME_DROP;
+/** The plates' column at the drawing's right edge, level with the ring's top. */
+const PLATES_AT: Point = { x: SAFE.right - PLATE.w, y: RING.y };
 
 export const TRACK = {
   ...layerOf("track"),

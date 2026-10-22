@@ -12,6 +12,7 @@
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { shown } from "../../script/find";
+import { FENCE, fenceBox } from "../department-map";
 import { LABEL_LINE, SAFE, contentTop, layerOf, polar, round, wordsWidth } from "./layout";
 
 const [TEAM, LEAD, STRATEGY, ARCHITECTURE, CONSULTING, DEPARTMENTS, ADVISES, AZURE] = shown("program-team", "play");
@@ -63,14 +64,14 @@ const TILE_W = (TEAM_BOX.w - 2 * TILE.gap) / 3;
 
 /**
  * The yard under the tiles: slide 13's fence drawn small, 520 by 88, under
- * the box's middle, 32 px under the tiles; posts every 40 px reaching 7 px
- * over and under its rails. It is as wide as its long caption (about 640
+ * the box's middle, its pickets at 0.8 of slide 13's, their tips 25 px
+ * under the tiles. It is as wide as its long caption (about 640
  * px at 26 px) less a little each side, so the caption reads as the yard's
  * and not as a line across the stage. Two people stand inside it, 72 px
- * each side of its middle, its caption 14 px under the posts' feet.
+ * each side of its middle, its caption 14 px under its foot.
  */
-const YARD = box(TEAM_BOX.x + TEAM_BOX.w / 2 - 260, TILE.y + TILE.h + 32, 520, 88);
-export const POSTS = { pitch: 40, reach: 7 } as const;
+const FENCE_SCALE = 0.8;
+const YARD = box(TEAM_BOX.x + TEAM_BOX.w / 2 - 260, TILE.y + TILE.h + 25 + round(FENCE.picket.rise * FENCE_SCALE), 520, 88);
 const YARD_PEOPLE = [YARD.x + YARD.w / 2 - 72, YARD.x + YARD.w / 2 + 72];
 
 /* The departments, right */
@@ -131,8 +132,10 @@ export const PROGRAM_TEAM = {
   yard: {
     key: "program-team.yard",
     at: YARD,
-    posts: Array.from({ length: Math.floor(YARD.w / POSTS.pitch) + 1 }, (_, i) => YARD.x + i * POSTS.pitch),
+    /** The fence at its scale, and what it covers, its pickets' tips included. */
+    scale: FENCE_SCALE,
+    reach: fenceBox(YARD, FENCE_SCALE),
     people: YARD_PEOPLE.map((x, i) => ({ key: `program-team.yard.person.${i}`, at: standing(x, YARD.y + (YARD.h - MEMBER.h) / 2) })),
-    caption: { key: "program-team.yard.caption", text: AZURE, at: { x: YARD.x + YARD.w / 2, y: YARD.y + YARD.h + POSTS.reach + 14 + LABEL_LINE / 2 } as Point },
+    caption: { key: "program-team.yard.caption", text: AZURE, at: { x: YARD.x + YARD.w / 2, y: YARD.y + YARD.h + 14 + LABEL_LINE / 2 } as Point },
   },
 };

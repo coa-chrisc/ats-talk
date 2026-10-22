@@ -2,18 +2,16 @@
  * Slide 13's places. Over the left two thirds, the fenced yard, named over
  * its top left with its caption beside the name, and three tiles in a row
  * inside it, each with its name and its caption under it (broken on two
- * rows where it runs past the tile). Under the fence, a calendar strip of
- * weeks, a row of 52 for each year and a short third row, named under it;
- * beside the strip, two nameplates side by side and a third, dashed, a
- * little apart, its caption under it. The right third over the strip is
+ * rows where it runs past the tile). Under the fence, a calendar of weeks,
+ * two rows of 26 for each year and a short fifth row, named under it;
+ * beside the calendar, two nameplates side by side and a third, dashed, a
+ * little apart, its caption under it. The right third over the calendar is
  * left empty: the yard reaches nothing there. Words are read from the
  * script, by position.
- *
- * The drawing has y 548 to 914, under a two-line title with two story lines.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
-import { fencePosts } from "../department-map";
+import { fenceBox } from "../department-map";
 import { LABEL_LINE, SAFE, TEXT_LINE, contentTop, layerOf, wordsWidth } from "./layout";
 
 const [SANDBOX, CANNOT_REACH, RUNNING, RUNNING_CAPTION, PERMISSION, PERMISSION_CAPTION, ROUTE, ROUTE_CAPTION, EVERY_WEEK, MICROSOFT, QUISITIVE, AMAZON, JOINING] = shown("infrastructure", "play");
@@ -24,8 +22,8 @@ const TOP = contentTop("infrastructure");
 
 /** The yard's name and caption on one row over its top left, the name at the text size. */
 const NAME_Y = TOP + 24;
-/** The yard: the left two thirds, from x 96 to 1248, 160 px tall under its name. Posts along its rails at the department map's pitch. */
-const FENCE = box(96, TOP + 58, 1152, 160);
+/** The yard: the left two thirds, from x 96 to 1248, 160 px tall under its name, its fence's pickets standing clear under the name's row. */
+const FENCE = box(96, TOP + 80, 1152, 160);
 
 /** Three tiles, 18 px inside the fence top and foot and 15 from its sides, 18 apart: 362 wide each, room for the longest name at the layout's safe measure. */
 const TILE = { pad: 15, gap: 18, top: 18 } as const;
@@ -54,28 +52,28 @@ const tiles = [
 
 /* The calendar, under the fence */
 
-/** 52 weeks to a row, two rows of years and 12 weeks of a third: over two years. Each week 10 px square, 13 apart; the rows 14 apart: the strip is 673 px wide, leaving the plates their room beside it. */
-export const WEEK = { cols: 52, weeks: 116, w: 10, pitch: 13, rowPitch: 14 } as const;
-/** The strip 36 px under the fence's foot (its posts stand 10 below it). */
-const CAL = { x: 96, y: FENCE.y + FENCE.h + 36 } as const;
+/** 26 weeks to a row, two rows to a year: four full rows for two years and 12 weeks of a fifth, over two years. Each week 20 px square, 26 apart across and down: the calendar is 670 px wide and 124 tall, leaving the plates their room beside it. */
+export const WEEK = { cols: 26, weeks: 116, w: 20, pitch: 26, rowPitch: 26 } as const;
+/** The calendar 32 px under the fence's foot. */
+const CAL = { x: 96, y: FENCE.y + FENCE.h + 32 } as const;
 const weeks: Box[] = Array.from({ length: WEEK.weeks }, (_, n) => box(CAL.x + (n % WEEK.cols) * WEEK.pitch, CAL.y + Math.floor(n / WEEK.cols) * WEEK.rowPitch, WEEK.w, WEEK.w));
 const CAL_W = (WEEK.cols - 1) * WEEK.pitch + WEEK.w;
 const CAL_ROWS = Math.ceil(WEEK.weeks / WEEK.cols);
 const CAL_H = (CAL_ROWS - 1) * WEEK.rowPitch + WEEK.w;
-/** The strip's name 28 px under its last row. */
+/** The calendar's name 28 px under its last row. */
 const EVERY_AT: Point = { x: CAL.x, y: CAL.y + CAL_H + 28 };
 
-/* The nameplates, beside the strip */
+/* The nameplates, beside the calendar */
 
-/** Plates 52 px tall, each as wide as its name at the text size and 40 to spare; the two 12 apart and 48 right of the strip; the dashed one ending at the drawing's right edge, 48 or more past the second. */
+/** Plates 52 px tall, each as wide as its name at the text size and 40 to spare, level with the calendar's middle; the two 12 apart and 48 right of the calendar; the dashed one ending at the drawing's right edge, 48 or more past the second. */
 const PLATE = { h: 52, pad: 40, gap: 12 } as const;
 const plateW = (text: string) => wordsWidth(text, 32) + PLATE.pad;
-const PLATE_Y = CAL.y - 6;
+const PLATE_Y = CAL.y + (CAL_H - PLATE.h) / 2;
 const MICROSOFT_AT = box(CAL.x + CAL_W + 48, PLATE_Y, plateW(MICROSOFT), PLATE.h);
 const QUISITIVE_AT = box(MICROSOFT_AT.x + MICROSOFT_AT.w + PLATE.gap, PLATE_Y, plateW(QUISITIVE), PLATE.h);
 const AMAZON_AT = box(SAFE.right - 16 - plateW(AMAZON), PLATE_Y, plateW(AMAZON), PLATE.h);
-/** The dashed plate's caption centred under it, on the strip's name's row. */
-const JOINING_AT: Point = { x: AMAZON_AT.x + AMAZON_AT.w / 2, y: EVERY_AT.y };
+/** The dashed plate's caption centred 28 px under it. */
+const JOINING_AT: Point = { x: AMAZON_AT.x + AMAZON_AT.w / 2, y: AMAZON_AT.y + AMAZON_AT.h + 28 };
 
 export const INFRASTRUCTURE = {
   ...layerOf("infrastructure"),
@@ -84,7 +82,7 @@ export const INFRASTRUCTURE = {
   fence: {
     key: "infrastructure.fence",
     at: FENCE,
-    posts: fencePosts(FENCE.x, FENCE.w),
+    reach: fenceBox(FENCE),
   },
   tiles,
   calendar: { key: "infrastructure.calendar", at: box(CAL.x, CAL.y, CAL_W, CAL_H), weeks: { key: "infrastructure.weeks", at: weeks } },

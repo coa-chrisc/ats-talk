@@ -7,10 +7,12 @@ import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
 import { bandFoot, bottom, bounds, inside, overlaps, ringBox, wordsBox } from "./harness";
 import { LABEL_LINE, TEXT_LINE, centreOf, contentTop, wordsWidth } from "./layout";
+import { GRID as MAP, LIT, MAP_AT, WINDOW } from "../department-map";
+import { FLEET } from "../stands/layout-fleet";
 import { AISLE, CONSORTIUM, SEAT_10, WALKER } from "./layout-consortium";
 import { LISTEN, SITTER } from "./layout-listen";
 import { CHAIR_9, NOT_PROPOSING } from "./layout-not-proposing";
-import { MEMBER, POSTS, PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
+import { MEMBER, PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
 import { DOT_R, LIST_BOX, SORT } from "./layout-sort";
 
 /** Clear of the frame's chrome: under the wordmark, over the footer and the slide number, inside the story band's width. */
@@ -55,7 +57,7 @@ const DRAWN: Record<string, Box[]> = {
     text(T.box.name.at, T.box.name.text),
     T.plate.at,
     ...T.tiles.map((tile) => tile.at),
-    box(T.yard.at.x, T.yard.at.y - POSTS.reach, T.yard.at.w, T.yard.at.h + 2 * POSTS.reach),
+    T.yard.reach,
     label(T.yard.caption.at, T.yard.caption.text),
     T.dept.at,
     label(T.line.caption.at, T.line.caption.text),
@@ -152,11 +154,32 @@ describe("slide 16", () => {
 });
 
 describe("slide 17", () => {
-  it("draws twelve boxes, two columns each side of an aisle down the stage's middle, none on another", () => {
-    expect(P.boxes).toHaveLength(12);
+  it("draws the department map's 21 boxes, four columns left and three right of an aisle down the stage's middle, none on another", () => {
+    expect(P.boxes).toHaveLength(MAP.cols * MAP.rows);
     expect((AISLE.x0 + AISLE.x1) / 2).toBe(960);
     for (const a of P.boxes) for (const b of P.boxes) if (a !== b) expect(overlaps(a.at, b.at), `${a.key} ${b.key}`).toBe(false);
     for (const b of P.boxes) expect(b.at.x + b.at.w <= AISLE.x0 || b.at.x >= AISLE.x1, b.key).toBe(true);
+    expect(P.boxes.filter((b) => b.at.x + b.at.w <= AISLE.x0)).toHaveLength(4 * MAP.rows);
+  });
+
+  it("draws the boxes at the map's size, its left half where slides 11, 12 and 15 set the grid", () => {
+    const left = P.boxes.filter((b) => b.column < 4);
+    for (const b of P.boxes) expect([b.at.w, b.at.h], b.key).toEqual([MAP.box.w, MAP.box.h]);
+    for (const b of left) {
+      const cell = FLEET.map.cell(b.column, b.row);
+      expect([b.at.x, b.at.y], b.key).toEqual([cell.x, cell.y]);
+    }
+    expect(Math.min(...P.boxes.map((b) => b.at.y))).toBe(MAP_AT.y);
+  });
+
+  it("lights, as the slide opens, the windows slide 12 left lit: the six named full, the three unnamed faint", () => {
+    const at = (cells: readonly (readonly number[])[]) => cells.map(([col, row]) => P.boxes.find((b) => b.column === col && b.row === row)!);
+    for (const b of at(LIT.named)) expect([b.early, b.window.lit, b.walker !== null], b.key).toEqual([true, 1, true]);
+    for (const b of at(LIT.unnamed)) {
+      expect([b.early, b.window.lit, b.walker], b.key).toEqual([true, WINDOW.faint, null]);
+      expect(b.window.at.w).toBeLessThan(at(LIT.named)[0].window.at.w);
+    }
+    expect(P.early).toHaveLength(LIT.named.length + LIT.unnamed.length);
   });
 
   it("sets each window inside its box, a person beside it, apart", () => {
@@ -194,7 +217,7 @@ describe("slide 17", () => {
     expect(P.caption.at.x).toBe(P.table.c.x);
   });
 
-  it("seats each lit box's person on its own chair, the led departments on the three that grow", () => {
+  it("seats each named or called box's person on its own chair, the led departments on the three that grow", () => {
     const walkers = P.boxes.flatMap((b) => (b.walker ? [b] : []));
     expect(walkers.length).toBe(P.table.seats.length);
     expect(new Set(walkers.map((b) => b.walker!.seat)).size).toBe(walkers.length);
@@ -208,10 +231,11 @@ describe("slide 17", () => {
     }
   });
 
-  it("leaves two boxes dark, lit five before the call and the rest as the card passes their column", () => {
-    expect(P.boxes.filter((b) => !b.lit)).toHaveLength(2);
-    expect(P.early).toHaveLength(5);
-    expect(P.called).toHaveLength(5);
+  it("leaves eight boxes dark, lit nine before the call and four as the card passes their column", () => {
+    expect(P.boxes.filter((b) => !b.lit)).toHaveLength(8);
+    expect(P.early).toHaveLength(9);
+    expect(P.called).toHaveLength(4);
+    for (const n of P.called) expect(P.boxes[n].walker, P.boxes[n].key).not.toBeNull();
     for (const n of P.called) expect(P.early.includes(n)).toBe(false);
     for (let i = 1; i < P.called.length; i++) expect(P.boxes[P.called[i]].column).toBeGreaterThanOrEqual(P.boxes[P.called[i - 1]].column);
   });
@@ -272,12 +296,13 @@ describe("slide 18", () => {
 
   it("draws the small yard under the tiles, under the box's middle, its two people inside it and its caption under it", () => {
     const tilesFoot = Math.max(...T.tiles.map((tile) => bottom(tile.at)));
-    expect(T.yard.at.y - POSTS.reach).toBeGreaterThan(tilesFoot + 16);
+    expect(T.yard.reach.y).toBeGreaterThan(tilesFoot + 16);
+    expect(bottom(T.yard.reach)).toBe(bottom(T.yard.at));
     expect(T.yard.at.x + T.yard.at.w / 2).toBe(T.box.at.x + T.box.at.w / 2);
     expect(T.yard.at.w).toBeLessThan(T.box.at.w);
     for (const person of T.yard.people) expect(inside(person.at, T.yard.at), person.key).toBe(true);
     expect(overlaps(T.yard.people[0].at, T.yard.people[1].at)).toBe(false);
-    expect(label(T.yard.caption.at, T.yard.caption.text).y).toBeGreaterThan(bottom(T.yard.at) + POSTS.reach);
+    expect(label(T.yard.caption.at, T.yard.caption.text).y).toBeGreaterThan(bottom(T.yard.reach) + 8);
   });
 
   it("sets the departments at the right, level with the box, named inside, its staff under the name; the line from the box to it, its caption under the line between them", () => {

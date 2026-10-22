@@ -1,9 +1,9 @@
 /**
  * The department map: the drawings the talk returns to across worlds, as
- * numbers only. The grid of departments (slides 11, 12 and 15), the lit
+ * numbers only. The grid of departments (slides 11, 12, 15 and 17), the lit
  * window in a box (12, 15 and 17), the policy line round it (11), the three
  * dashed plates of what is still to establish (11 and 27), the sandbox's
- * fence (13, 15 and 27), the gate, closed (11a and 15) or open (11a), and
+ * fence (13, 15, 18 and 27), the gate, closed (11a and 15) or open (11a), and
  * the round table (12, empty, and 17).
  * A world carries nothing to the next, so each draws these in its own
  * classes from the same proportions here, and an audience that has learned
@@ -18,20 +18,25 @@ const round = (n: number) => Math.round(n * 100) / 100;
 /** Seven departments across and three down, each box 94 by 54 at scale 1 (slide 12's size), 12 apart across and 10 down. */
 export const GRID = { cols: 7, rows: 3, box: { w: 94, h: 54 }, gap: 12, rowGap: 10, rx: 8 } as const;
 
-/** The boxes slide 12 lights, as [column, row]: six named, in the grid's outer columns, and three unnamed among the rest. */
+/**
+ * The boxes slide 12 lights, as [column, row]: six named, in the order its
+ * list names them, each in a column of its own and two to a row, so the
+ * windows read left to right and top to bottom in the list's order; and three
+ * unnamed among the rest.
+ */
 export const LIT = {
   named: [
     [0, 0],
-    [0, 1],
-    [0, 2],
-    [6, 0],
-    [6, 1],
+    [1, 0],
+    [2, 1],
+    [4, 1],
+    [5, 2],
     [6, 2],
   ],
   unnamed: [
-    [2, 1],
-    [3, 0],
-    [4, 2],
+    [5, 0],
+    [0, 2],
+    [3, 2],
   ],
 } as const;
 
@@ -57,7 +62,10 @@ export const windowAt = (centre: Point, h: number, scale = 1): Box => {
 };
 
 /** The line round the grid (slide 11's policy, slide 12's ring): this far out at the sides and foot, and at the top room for the grid's name. */
-export const RING_PAD = { side: 36, top: 64, foot: 36 } as const;
+export const RING_PAD = { side: 16, top: 64, foot: 36 } as const;
+
+/** Where slides 11, 12 and 15 set the grid, at scale 1: the same place on all three, so the map holds still from slide to slide. */
+export const MAP_AT: Point = { x: 96, y: 648 };
 
 /** The grid drawn with its top left box at `origin`, every measure times `scale`. */
 export function gridAt(origin: Point, scale = 1) {
@@ -98,11 +106,49 @@ export const PLATES_H = 3 * PLATE.h + 2 * PLATE.gap;
 /** An agent (slide 14): a hexagon 70 wide and 89 tall at scale 1, its top point at the middle of its width. */
 export const AGENT = { w: 70, h: 89 } as const;
 
-/** The sandbox's fence (slide 13): posts every 72 px along its rails, standing 10 px past them, its corners rounded 6. */
-export const FENCE = { postPitch: 72, overhang: 10, rx: 6 } as const;
+/**
+ * The sandbox's fence (slides 13, 15 and 18): a picket fence round the yard.
+ * Its rails are the yard's edge, corners rounded 6; along its top rail stand
+ * pickets 14 wide, about 36 apart, each from 10 px inside the yard to 24 px
+ * over the rail, its point 7 tall: outlined boards standing in front of the
+ * rail. Nothing stands past its other rails, so the yard's foot is the
+ * fence's. `postPitch` and `overhang` are the posts of slide 27's miniature
+ * (ready/parts-could-be.tsx), which can take `fencePickets` in their place.
+ */
+export const FENCE = { postPitch: 72, overhang: 10, rx: 6, picket: { pitch: 36, w: 14, rise: 24, drop: 10, tip: 7 } } as const;
 
 /** Where a fence's posts stand along a rail from `x` over `w`, one at each end. */
 export const fencePosts = (x: number, w: number, pitch: number = FENCE.postPitch) => Array.from({ length: Math.floor(w / pitch) + 1 }, (_, i) => Math.min(round(x + i * pitch), round(x + w)));
+
+/**
+ * The pickets along the top rail of a fence round `at`, times `scale`: evenly
+ * spaced, the first and last just inside the rounded corners. Each picket's
+ * path, and `at`, the share of the rail's length drawn on when the rail
+ * reaches it (the rail draws from its top left corner, rightward), so each
+ * picket rises as the rail passes; and `reach`, how far the pickets stand over
+ * the rail.
+ */
+export function fencePickets(at: Box, scale = 1) {
+  const p = FENCE.picket;
+  const w = round(p.w * scale);
+  const [rise, drop, tip] = [round(p.rise * scale), round(p.drop * scale), round(p.tip * scale)];
+  const inset = round(FENCE.rx * scale + w);
+  const run = at.w - 2 * inset;
+  const count = Math.max(2, Math.round(run / (p.pitch * scale)) + 1);
+  const [top, foot] = [round(at.y - rise), round(at.y + drop)];
+  const perimeter = 2 * (at.w + at.h);
+  const pickets = Array.from({ length: count }, (_, i) => {
+    const x = round(at.x + inset + (i * run) / (count - 1));
+    return { x, at: round((x - at.x) / perimeter), d: `M${round(x - w / 2)} ${foot}V${round(top + tip)}L${x} ${top}L${round(x + w / 2)} ${round(top + tip)}V${foot}Z` };
+  });
+  return { pickets, reach: rise };
+}
+
+/** The box a fence round `at` fills, times `scale`: the yard and the pickets over its top rail. */
+export const fenceBox = (at: Box, scale = 1): Box => {
+  const rise = round(FENCE.picket.rise * scale);
+  return box(at.x, round(at.y - rise), at.w, round(at.h + rise));
+};
 
 /** The gate (slide 10's hurdle): two posts 72 apart, 40 tall, and two bars across them 12 and 28 px under the posts' tops. Opened, it works as a boom barrier: both bars swing up together about the left post until they stand upright over it, one boom, and the right post stands alone. */
 export const GATE = { h: 40, span: 72, bars: [12, 28] } as const;

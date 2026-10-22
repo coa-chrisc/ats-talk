@@ -74,14 +74,15 @@ describe("slide 17", () => {
   const id = stepOf("consortium");
   const end = at(id);
   const walkers = P.boxes.flatMap((box) => (box.walker ? [box] : []));
-  const windowLit = (key: string) => playOf(id, key).find((play) => play.on["--k"] === 1)!;
+  const windowLit = (b: (typeof P.boxes)[number]) => playOf(id, b.window.key).find((play) => play.on["--k"] === b.window.lit)!;
   const slide = playOf(id, P.card.key).find((play) => "x" in play.on)!;
 
-  it("opens on the grid with five windows lit, a person beside each, before the card comes", () => {
+  it("opens on the grid with the nine windows slide 12 lit, the unnamed three faint, a person beside each named one, before the card comes", () => {
     for (const n of P.early) {
       const box = P.boxes[n];
-      expect(windowLit(box.window.key).at, box.key).toBeLessThan(slide.at);
-      expect(startOf(id, box.walker!.key), box.key).toBeLessThan(slide.at);
+      expect(windowLit(box).at, box.key).toBeLessThan(slide.at);
+      expect(end[box.window.key]["--k"], box.key).toBe(box.window.lit);
+      if (box.walker) expect(startOf(id, box.walker.key), box.key).toBeLessThan(slide.at);
     }
   });
 
@@ -91,18 +92,18 @@ describe("slide 17", () => {
     for (const n of P.called) {
       const box = P.boxes[n];
       const due = slide.at + P.passes[box.column] * slide.duration;
-      expect(windowLit(box.window.key).at - due, box.key).toBeGreaterThanOrEqual(0);
-      expect(windowLit(box.window.key).at - due, box.key).toBeLessThan(0.25);
-      expect(startOf(id, box.walker!.key), box.key).toBeCloseTo(windowLit(box.window.key).at, 6);
+      expect(windowLit(box).at - due, box.key).toBeGreaterThanOrEqual(-1e-9);
+      expect(windowLit(box).at - due, box.key).toBeLessThan(0.25);
+      expect(startOf(id, box.walker!.key), box.key).toBeCloseTo(windowLit(box).at, 6);
     }
     expect(end[P.card.key].autoAlpha).toBe(0);
   });
 
-  it("never lights the two dark boxes", () => {
-    for (const box of P.boxes.filter((b) => !b.lit)) expect(playOf(id, box.window.key).some((play) => play.on["--k"] === 1), box.key).toBe(false);
+  it("never lights the eight dark boxes", () => {
+    for (const box of P.boxes.filter((b) => !b.lit)) expect(playOf(id, box.window.key).some((play) => "--k" in play.on), box.key).toBe(false);
   });
 
-  it("walks every person from its box to its seat, across and down on different curves, once the table is drawn, each window going dark", () => {
+  it("walks every person from its box to its seat, across and down on different curves, once the table is drawn, its window still lit behind it", () => {
     const tableDrawn = startOf(id, P.table.key);
     for (const box of walkers) {
       const w = box.walker!;
@@ -114,7 +115,7 @@ describe("slide 17", () => {
       expect(across.ease).not.toBe(down.ease);
       expect([across.ease, down.ease]).toEqual([EASE.draw, EASE.out]);
       expect(end[w.key], box.key).toMatchObject({ autoAlpha: 1, x: 0, y: 0 });
-      expect(end[box.window.key]["--k"], box.key).toBe(0);
+      expect(end[box.window.key]["--k"], box.key).toBe(1);
     }
   });
 
@@ -129,9 +130,10 @@ describe("slide 17", () => {
     expect(startOf(id, P.caption.key)).toBeGreaterThan(Math.min(...leading.map((seat) => grows(seat.key))));
   });
 
-  it("ends on the table, the people round it and the grid behind with its boxes dimmed", () => {
+  it("ends on the table, the people round it and the grid behind with its windows still lit", () => {
     expect(end[P.table.key]["--d"]).toBe(1);
-    for (const box of P.boxes) expect(end[box.key].autoAlpha, box.key).toBe(0.45);
+    for (const box of P.boxes) expect([end[box.key].autoAlpha, end[box.window.key].autoAlpha], box.key).toEqual([1, 1]);
+    for (const box of P.boxes.filter((b) => b.lit)) expect(end[box.window.key]["--k"], box.key).toBe(box.window.lit);
     for (const key of [P.table.name.key, P.caption.key, ...P.table.seats.map((seat) => seat.key)]) expect(end[key].autoAlpha, key).toBe(1);
   });
 });
