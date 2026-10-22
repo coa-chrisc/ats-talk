@@ -206,7 +206,8 @@ describe("the house rules", () => {
 
   it("prefixes every class of its own with rd-", () => {
     const classes = [...markup.matchAll(/class="([^"]+)"/g)].flatMap(([, list]) => list.split(/\s+/));
-    expect([...new Set(classes.filter((name) => !/^(rd-|dk-)/.test(name)))]).toEqual([]);
+    // The one piece drawn from another world: the talk's hexagon agent, shared through the department map's parts (stands/parts-map.tsx).
+    expect([...new Set(classes.filter((name) => !/^(rd-|dk-|sn-agent(?:__|$))/.test(name)))]).toEqual([]);
     const own = [...source("ready.css").replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/\.([a-z][\w-]*)/g)].map(([, name]) => name).filter((name) => !name.startsWith("dk-"));
     expect(own.filter((name) => !name.startsWith("rd-"))).toEqual([]);
   });

@@ -1,8 +1,10 @@
-/** Slide 24's picture: four bands stacked across the field, each in its level's hue, named and captioned; three agents, each put in a band and dropped into the short list under them with its level and an owner's nameplate; and the grey tag at the list's left. */
+/** Slide 24's picture: four bands stacked across the field, each in its level's hue, named and captioned; three hexagon agents in the short list under them, each with its level and an owner's nameplate; and the grey tag at the list's left. */
 "use client";
 
-import { Agent, Part } from "@/components/deck/kit";
-import { LEVELS, LEVEL_AGENT_R, PLATE } from "./layout-levels";
+import { Part } from "@/components/deck/kit";
+import { Agent } from "../stands/parts-map";
+import "../stands/stands.css";
+import { LEVELS, LEVEL_AGENT_SCALE, PLATE } from "./layout-levels";
 import { GreyTag, Layer, Nameplate, StoryOf, Words } from "./parts";
 
 const L = LEVELS;
@@ -31,7 +33,7 @@ export function LevelsMarks() {
         </g>
       ))}
       {L.rows.map((row) => (
-        <Agent key={row.agent.key} id={row.agent.key} at={row.agent.at} role="builder" hue={row.hue === "grey" ? undefined : row.hue} r={LEVEL_AGENT_R} />
+        <Agent key={row.agent.key} id={row.agent.key} at={row.agent.top} scale={LEVEL_AGENT_SCALE} />
       ))}
       <GreyTag id={L.tag.key} at={L.tag.at} text={L.tag.text} />
     </Part>

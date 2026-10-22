@@ -3,8 +3,8 @@
  * the reading pause the picture. At the right, the heading of what is still
  * to establish, and slide 11's three empty plates wipe on in turn; then the
  * six requests land one after another in the script's order, each card
- * with its miniature, name and caption; last, an empty dashed ring comes up
- * on every card at once, and the picture holds still. Nothing fills a plate or a
+ * with its miniature, name and caption; last, a small empty dashed ring
+ * comes up before every request's name at once, and the picture holds still. Nothing fills a plate or a
  * ring.
  */
 import { show, wipe } from "@/components/deck/kit";

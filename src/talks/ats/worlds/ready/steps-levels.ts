@@ -9,8 +9,8 @@ const L = LEVELS;
 
 /** The bands grow one after another, each over `grow`; its name and caption come up just behind its front. */
 const BANDS = { apart: 0.32, grow: 0.7, name: 0.2, caption: 0.35 } as const;
-/** A register row arrives in place; its icon fills while its name and owner appear. */
-const AGENT = { show: 0.4, fill: 0.75 } as const;
+/** A register row arrives in place: its agent, its level's name and its owner appear together. */
+const AGENT = { show: 0.4 } as const;
 /** Seconds between one agent's start and the next: the one before has landed in its row first. */
 export const AGENT_APART = 0.8;
 
@@ -18,7 +18,6 @@ const agent = (row: (typeof L.rows)[number], i: number) => {
   const t = i * AGENT_APART;
   return [
     ...to(row.agent.key, { autoAlpha: 1 }, { autoAlpha: 0, y: 0 }, { at: t, duration: AGENT.show, ease: EASE.soft }),
-    ...fill(row.agent.key, { at: t, duration: AGENT.fill }),
     ...rise(row.name.key, { at: t }),
     ...rise(row.plate.key, { at: t }),
   ];

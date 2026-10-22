@@ -6,7 +6,7 @@
  */
 import { storyKeys } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
-import { at, endOf, movesOf, playOf, showsAfter, startOf, world } from "./harness";
+import { at, endOf, markup, movesOf, playOf, showsAfter, startOf, world } from "./harness";
 import { LEVELS } from "./layout-levels";
 
 const click = "levels.play";
@@ -30,6 +30,12 @@ describe("24, the four levels", () => {
     }
   });
 
+
+  it("draws each agent in the register as the talk's hexagon agent, not the kit's ringed dot", () => {
+    for (const row of L.rows) expect(markup).toContain(`class="sn-agent" data-build="${row.agent.key}"`);
+    const slide = markup.slice(markup.indexOf(`data-build="${L.marks}"`), markup.indexOf("data-build=\"who-decides.marks\""));
+    expect(slide).not.toMatch(/dk-agent/);
+  });
 
   it("reveals each agent in its register row with its level and responsible person", () => {
     for (const row of L.rows) {

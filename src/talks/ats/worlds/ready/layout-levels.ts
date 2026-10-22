@@ -2,13 +2,14 @@
  * Slide 24's places: four bands across the whole field, stacked from the
  * least autonomy at the top to the most at the foot, each in its own hue
  * with its level's name at its left and its caption in a column after it.
- * Three agents are put in a level each: an agent lands in its band, right of
- * the captions, then drops straight down into its row of the short list
- * under the bands, where its level's name and an owner's nameplate join it.
+ * Three agents are put in a level each, in the short list under the bands:
+ * each row the talk's hexagon agent (department-map.ts), standing still,
+ * with its level's name and an owner's nameplate.
  * The grey tag sits at the list's left, level with its middle row. Words
  * are read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
+import { AGENT } from "../department-map";
 import { LABEL_LINE, SAFE, TAG, contentTop, groupOf, labelsOf, tagWidth, wordsBox, wordsWidth } from "./layout";
 
 const [NO_GO, NO_GO_CAPTION, ASSIST, ASSIST_CAPTION, APPROVAL, APPROVAL_CAPTION, BOUNDED, BOUNDED_CAPTION, OWNER, LIST_TAG] = labelsOf("levels");
@@ -24,8 +25,12 @@ const NAME_X = SAFE.left + 32;
 const CAPTION_X = 584;
 /** Where an agent lands in its band: right of the longest caption (about 520 px from 584) with room to spare, in the band's open right third. */
 const AGENT_X = 1240;
-/** An agent's ring at this radius fits a 44 px list row with room over and under. */
-export const LEVEL_AGENT_R = 16;
+/** The hexagon agent as a row glyph: 0.4 of its size, 28 by 36, so it fits a 50 px list row with room over and under (about 25 px tall at 1366). */
+export const LEVEL_AGENT_SCALE = 0.4;
+/** Half the glyph's height, which bounds it both ways: the room the layout keeps round an agent's middle. */
+export const LEVEL_AGENT_R = Math.ceil((AGENT.h * LEVEL_AGENT_SCALE) / 2);
+/** The glyph's box about its middle `c`. */
+const agentBox = (c: Point): Box => box(c.x - (AGENT.w * LEVEL_AGENT_SCALE) / 2, c.y - (AGENT.h * LEVEL_AGENT_SCALE) / 2, AGENT.w * LEVEL_AGENT_SCALE, AGENT.h * LEVEL_AGENT_SCALE);
 /** The list: three rows 50 apart, the first 40 under the bands' foot, so the last row's agent ends 2 px over the floor. */
 const LIST = { gap: 40, pitch: 50 } as const;
 /** In a row: the level's name 36 right of the agent's middle, and the nameplate after the longest name (about 290 px at 26 px semibold). */
@@ -68,8 +73,8 @@ export const LEVELS = {
     return {
       band,
       hue: level.hue,
-      /** The agent sits in its row; it starts `drop` px higher, in its band. */
-      agent: { key: `levels.row.${i}.agent`, at: { x: AGENT_X, y } as Point, drop: from - y },
+      /** The agent's middle in its row, and its hexagon's top point, where the drawing is set from; `drop` is how far above the row its band's middle is. */
+      agent: { key: `levels.row.${i}.agent`, at: { x: AGENT_X, y } as Point, top: { x: AGENT_X, y: y - (AGENT.h * LEVEL_AGENT_SCALE) / 2 } as Point, drop: from - y },
       name: { key: `levels.row.${i}.name`, text: level.name, at: { x: ROW.name, y } as Point },
       plate: { key: `levels.row.${i}.plate`, text: OWNER, at: box(ROW.plate, y - PLATE.h / 2, plateW, PLATE.h) },
     };
@@ -82,8 +87,8 @@ export const LEVELS = {
 export const LEVELS_BOXES: Box[] = [
   ...LEVELS.bands.flatMap((band) => [band.at, wordsBox(band.name.at, band.name.text, 32, "start"), wordsBox(band.caption.at, band.caption.text, 26, "start")]),
   ...LEVELS.rows.flatMap((row) => [
-    box(row.agent.at.x - LEVEL_AGENT_R, row.agent.at.y - LEVEL_AGENT_R, 2 * LEVEL_AGENT_R, 2 * LEVEL_AGENT_R),
-    box(row.agent.at.x - LEVEL_AGENT_R, row.agent.at.y + row.agent.drop - LEVEL_AGENT_R, 2 * LEVEL_AGENT_R, 2 * LEVEL_AGENT_R),
+    agentBox(row.agent.at),
+    agentBox({ x: row.agent.at.x, y: row.agent.at.y + row.agent.drop }),
     wordsBox(row.name.at, row.name.text, 26, "start"),
     row.plate.at,
   ]),
