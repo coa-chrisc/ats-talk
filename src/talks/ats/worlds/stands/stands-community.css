@@ -1,0 +1,30 @@
+/* Slide 12b's chips and quote cards, under the world's rules (stands.css).
+   A department chip is a plain outline in slate with its name in navy; the
+   four quoted departments are lit as the stands world marks what is in
+   place (slide 11a's fitting socket): a green wash inside a deep-green
+   outline, the name in deep green. A quote card is a light outline, its
+   department's name at its head in the same deep green, the quote in the
+   text size in navy, the speaker in slate (.sn-word--soft). */
+
+.sn-chip {
+  fill: var(--dk-night);
+  stroke: var(--dk-soft);
+  stroke-width: 2;
+}
+
+.sn-chip.sn-chip--lit {
+  fill: var(--dk-process);
+  fill-opacity: calc(var(--dk-wash) * 2);
+  stroke: var(--dk-pass);
+  stroke-width: 2.5;
+}
+
+.sn-word--lit.sn-word--lit {
+  fill: var(--dk-pass);
+}
+
+.sn-card {
+  fill: var(--dk-night);
+  stroke: var(--dk-rule);
+  stroke-width: 2.5;
+}

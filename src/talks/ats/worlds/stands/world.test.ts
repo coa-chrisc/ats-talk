@@ -14,6 +14,7 @@ import { describe, expect, it } from "vitest";
 import { COUNTS } from "./counts";
 import { LEAVE, at, built, ids, lastStepOf, longest, markup, n, onStage, pictureHolding, playOf, startOf, stepOf, svgTexts, texts, visible, world } from "./harness";
 import { PICTURES, STORIES, TITLES, layerOf, storyKeysOf, titleKey } from "./layout";
+import { COMMUNITY } from "./layout-community";
 import { ARRIVE, partsOf } from "./moves";
 import { stands, standsEntry } from "./world";
 
@@ -129,7 +130,9 @@ describe("the words on the stage", () => {
   it("include every label, once, and every story line, whole", () => {
     /** A label is set once on each slide that shows it: a caption on two rows reads as one SVG text, a dashed plate's name as one HTML text. */
     const set = [...svgTexts, ...texts.filter((text) => !svgTexts.some((whole) => whole.includes(text)))];
-    for (const label of new Set(labels)) expect(set.filter((text) => text === label), label).toHaveLength(labels.filter((entry) => entry === label).length);
+    // Slide 12b heads each quote card with its department's name, which that department's chip shows too.
+    const headers = COMMUNITY.cards.map((card) => card.dept.text);
+    for (const label of new Set(labels)) expect(set.filter((text) => text === label), label).toHaveLength(labels.filter((entry) => entry === label).length + headers.filter((entry) => entry === label).length);
     const joined = texts.join(" ");
     for (const line of stories) expect(joined, line).toContain(line);
     for (const picture of PICTURES) for (const word of picture.show.split(" ")) expect(joined, picture.show).toContain(word);
@@ -154,13 +157,20 @@ describe("the words on the stage", () => {
 });
 
 describe("the house rules", () => {
-  it("uses the orange only through the kit's HumanMark, once each on slide 11a's review, slide 14's sensitive-action approval and slide 15's fleet, and on slide 11a's added socket; the pass green only on slide 11a's fitting socket and its boundary", () => {
-    for (const [file, source] of sources.filter(([name]) => name !== "stands-control.css")) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
+  it("uses the orange only through the kit's HumanMark, once each on slide 11a's review, slide 14's sensitive-action approval and slide 15's fleet, and on slide 11a's added socket; the pass green only on slide 11a's fitting socket and its boundary, and on slide 12b's four lit departments and their cards' heads", () => {
+    for (const [file, source] of sources.filter(([name]) => name !== "stands-control.css" && name !== "stands-community.css")) expect(source, file).not.toMatch(/--dk-human|--dk-pass|--fr-|#f4642c|#1f573b/i);
     const control = sources.find(([file]) => file === "stands-control.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
     expect(control).not.toMatch(/--fr-|#f4642c|#1f573b/i);
     const coloured = [...control.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => /--dk-(human|pass)\b/.test(body)).map(([, selectors, body]) => [selectors.trim(), body.match(/--dk-(human|pass)\b/g)!] as const);
     expect(coloured.map(([selectors]) => selectors).sort()).toEqual([".sn-boundary path", ".sn-socket--human", ".sn-socket--pass"]);
     for (const [selectors, tokens] of coloured) expect(new Set(tokens), selectors).toEqual(new Set([selectors.includes("human") ? "--dk-human" : "--dk-pass"]));
+    // Slide 12b: the deep green, never the orange, only on the lit chips and the words in them and over the cards: four chips, eight words.
+    const community = sources.find(([file]) => file === "stands-community.css")![1].replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(community).not.toMatch(/--dk-human|--fr-|#f4642c|#1f573b/i);
+    const lit = [...community.matchAll(/([^{}]+)\{([^}]*)\}/g)].filter(([, , body]) => /--dk-pass\b/.test(body)).map(([, selectors]) => selectors.trim());
+    expect(lit.sort()).toEqual([".sn-chip.sn-chip--lit", ".sn-word--lit.sn-word--lit"]);
+    expect(markup.match(/sn-chip--lit/g) ?? []).toHaveLength(4);
+    expect(markup.match(/sn-word--lit/g) ?? []).toHaveLength(8);
     for (const [file, source] of sources) expect(source, file).not.toMatch(VENDOR_COLOURS);
     expect(sources.filter(([, source]) => /<HumanMark\b/.test(source)).map(([file]) => file).sort()).toEqual(["scene-control.tsx", "scene-fits.tsx", "scene-fleet.tsx"]);
     expect(sources.filter(([, source]) => /<PassTick\b/.test(source)).map(([file]) => file).sort()).toEqual([]);

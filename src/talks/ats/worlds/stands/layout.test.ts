@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagWidth, tagWords, wordsWidth } from "./layout";
+import { COMMUNITY, THEME } from "./layout-community";
 import { controlGlyphs, controlRows } from "./layout-control";
 import { fitsGlyphs, fitsRows } from "./layout-fits";
 import { EXISTS, existsRows } from "./layout-exists";
@@ -67,6 +68,11 @@ const DRAWN: Record<string, Box[]> = {
     box(N.rail.x0, N.rail.y - 2, N.rail.x1 - N.rail.x0, 4),
     ...N.plaques.flatMap((plaque) => [plaque.at, { ...plaque.at, y: plaque.at.y - 24 }, ringBox(plaque.cord.nail, 4)]),
     N.only.at,
+  ],
+  community: [
+    ...COMMUNITY.chips.map((chip) => chip.at),
+    ...COMMUNITY.cards.map((card) => card.at),
+    ...COMMUNITY.themes.flatMap((theme) => [wordsBox(theme.at, wordsWidth(theme.text, THEME.size), THEME.line, "start"), box(theme.rule.x0, theme.rule.y - 2, theme.rule.x1 - theme.rule.x0, 4)]),
   ],
   infrastructure: [
     text(I.name.at, I.name.text, "start"),
