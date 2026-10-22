@@ -152,34 +152,12 @@ export function YardTile({ id, at, children }: { id: string; at: Box; children?:
   );
 }
 
-/** The calendar's weeks: an empty outline for each. */
-export function Weeks({ id, at }: { id: string; at: readonly Box[] }) {
-  return (
-    <g data-build={id}>
-      {at.map((week, i) => (
-        <rect key={i} className="sn-week" x={week.x} y={week.y} width={week.w} height={week.h} rx={2} />
-      ))}
-    </g>
-  );
-}
-
-/** Each week filling with the process's green, one element each under one id, so they fill in order with a stagger. */
-export function WeekFills({ id, at }: { id: string; at: readonly Box[] }) {
-  return (
-    <>
-      {at.map((week, i) => (
-        <rect key={i} className="sn-week-fill" data-build={id} x={week.x} y={week.y} width={week.w} height={week.h} rx={2} />
-      ))}
-    </>
-  );
-}
-
-/** A partner's nameplate: a white plate in a navy edge, its name set in it. */
+/** A nameplate at the table: a white plate in a navy edge, its name set in its middle at the label size. */
 export function Plate({ id, at, text }: { id: string; at: Box; text: string }) {
   return (
     <g className="sn-plate" data-build={id}>
       <rect className="sn-plate__face" x={at.x} y={at.y} width={at.w} height={at.h} rx={8} />
-      <text className="dk-text sn-word sn-word--strong" x={at.x + at.w / 2} y={at.y + at.h / 2} textAnchor="middle" dominantBaseline="central">
+      <text className="dk-label sn-word sn-word--strong" x={at.x + at.w / 2} y={at.y + at.h / 2} textAnchor="middle" dominantBaseline="central">
         {text}
       </text>
     </g>

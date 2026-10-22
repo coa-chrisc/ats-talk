@@ -1,13 +1,21 @@
-/** Slide 13's picture: the fenced yard, named with its caption, three tiles inside it each with its name and caption; under it the calendar of weeks, named, and beside it the two nameplates and the dashed third with its caption. */
+/**
+ * Slide 13's picture: the fenced yard, named with its caption, and its five
+ * tiles, each with its name and any caption; at the right, the round table
+ * seen from above (the first world's, drawn solid in navy) with four chairs,
+ * a person in each, a nameplate by each chair, and the table's caption.
+ */
 "use client";
 
-import { Dashed, Part } from "@/components/deck/kit";
-import { INFRASTRUCTURE, TILE_WORDS } from "./layout-infrastructure";
-import { Layer, Rows, StoryOf, Words } from "./parts";
-import { Plate, WeekFills, Weeks, YardTile } from "./parts-figures";
+import "../first/first.css";
+import { Part } from "@/components/deck/kit";
+import { Chair, Sitter, Table } from "../first/parts-room";
+import { HEAD, INFRASTRUCTURE, SEAT } from "./layout-infrastructure";
+import { Layer, StoryOf, Words } from "./parts";
+import { Plate, YardTile } from "./parts-figures";
 import { Fence } from "./parts-map";
 
 const I = INFRASTRUCTURE;
+const T = I.table;
 
 export function InfrastructureMarks() {
   return (
@@ -17,17 +25,20 @@ export function InfrastructureMarks() {
       <Words id={I.caption.key} at={I.caption.at} text={I.caption.text} anchor="start" soft />
       {I.tiles.map((tile) => (
         <YardTile key={tile.key} id={tile.key} at={tile.at}>
-          <Words at={tile.name.at} text={tile.name.text} anchor="start" size="text" strong />
-          <Rows at={tile.caption.at} rows={tile.caption.rows} pitch={TILE_WORDS.pitch} soft />
+          <Words at={tile.name.at} text={tile.name.text} size="text" strong />
+          {tile.caption && <Words at={tile.caption.at} text={tile.caption.text} soft />}
         </YardTile>
       ))}
-      <Weeks id={I.calendar.key} at={I.calendar.weeks.at} />
-      <WeekFills id={I.calendar.weeks.key} at={I.calendar.weeks.at} />
-      <Words id={I.every.key} at={I.every.at} text={I.every.text} anchor="start" />
+      {T.seats.map((seat) => (
+        <Chair key={seat.key} id={seat.key} at={seat.at} deg={seat.deg} size={SEAT}>
+          <Sitter id={seat.sitter} head={HEAD} />
+        </Chair>
+      ))}
+      <Table id={T.key} c={T.c} r={T.r} />
       {I.plates.map((plate) => (
         <Plate key={plate.key} id={plate.key} at={plate.at} text={plate.text} />
       ))}
-      <Words id={I.joining.caption.key} at={I.joining.caption.at} text={I.joining.caption.text} soft />
+      <Words id={I.met.key} at={I.met.at} text={I.met.text} size="text" />
     </Part>
   );
 }
@@ -35,9 +46,6 @@ export function InfrastructureMarks() {
 export function InfrastructureHtml() {
   return (
     <Layer id={I.html}>
-      <Dashed id={I.joining.key} at={I.joining.at} rx={8}>
-        <span className="sn-dashed-name">{I.joining.text}</span>
-      </Dashed>
       <StoryOf picture="infrastructure" />
     </Layer>
   );

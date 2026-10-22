@@ -43,7 +43,7 @@ describe("the stands world", () => {
     expect([...new Set(built)].filter((key) => !moved.has(key) && !byParent.has(key))).toEqual([]);
   });
 
-  it("gives every part one element, but a title's lines and slide 13's weeks", () => {
+  it("gives every part one element, but a title's lines", () => {
     const counted = (key: string) => built.filter((id) => id === key).length;
     expect([...new Set(built)].filter((key) => counted(key) !== (COUNTS[key] ?? 1))).toEqual([]);
   });

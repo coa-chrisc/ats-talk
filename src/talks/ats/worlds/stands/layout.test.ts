@@ -10,7 +10,7 @@ import { DRAW_FOOT, LABEL_LINE, SAFE, TAG, TEXT_LINE, bandFoot, contentTop, tagW
 import { controlGlyphs, controlRows } from "./layout-control";
 import { fitsGlyphs, fitsRows } from "./layout-fits";
 import { EXISTS, existsRows } from "./layout-exists";
-import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastructure";
+import { INFRASTRUCTURE } from "./layout-infrastructure";
 import { HOST, NOTICED } from "./layout-noticed";
 import { FLEET, PITCH } from "./layout-fleet";
 import { TRACK } from "./layout-track";
@@ -72,11 +72,9 @@ const DRAWN: Record<string, Box[]> = {
     text(I.name.at, I.name.text, "start"),
     label(I.caption.at, I.caption.text, "start"),
     I.fence.reach,
-    I.calendar.at,
-    label(I.every.at, I.every.text, "start"),
+    ringBox(I.table.c, I.table.r),
     ...I.plates.map((plate) => plate.at),
-    I.joining.at,
-    label(I.joining.caption.at, I.joining.caption.text),
+    text(I.met.at, I.met.text),
   ],
 };
 
@@ -161,58 +159,6 @@ describe("slide 12a, the wall", () => {
   it("sets the grey tag apart under the wall, at its middle", () => {
     expect(N.only.at.y).toBeGreaterThanOrEqual(bottom(d) + 24);
     expect(N.only.at.x + N.only.at.w / 2).toBeCloseTo(960, 0);
-  });
-});
-
-describe("slide 13, the yard", () => {
-  const fence = I.fence.at;
-  const yard = I.fence.reach;
-  const partners = bounds([...I.plates.map((plate) => plate.at), I.joining.at, label(I.joining.caption.at, I.joining.caption.text)]);
-
-  it("spans the left two thirds with the yard, named over its top left, the caption beside the name", () => {
-    expect(fence.x).toBe(SAFE.left + 16);
-    expect(right(fence)).toBe(96 + (1728 * 2) / 3);
-    expect(bottom(text(I.name.at, I.name.text, "start"))).toBeLessThanOrEqual(yard.y - 8);
-    expect(label(I.caption.at, I.caption.text, "start").x).toBeGreaterThan(right(text(I.name.at, I.name.text, "start")));
-  });
-
-  it("lands three tiles in a row inside the fence, apart, each holding its name and its caption's rows", () => {
-    expect(I.tiles).toHaveLength(3);
-    for (const tile of I.tiles) {
-      expect(inside(tile.at, box(fence.x + 8, fence.y + 8, fence.w - 16, fence.h - 16)), tile.key).toBe(true);
-      for (const row of tileRows(tile)) expect(row.y - row.line / 2, tile.key).toBeGreaterThanOrEqual(tile.at.y + 4);
-      const last = tileRows(tile).at(-1)!;
-      expect(last.y + last.line / 2, tile.key).toBeLessThanOrEqual(bottom(tile.at) - 4);
-      expect(tile.caption.rows.length, tile.caption.text).toBeLessThanOrEqual(2);
-      for (const row of tile.caption.rows) expect(TILE_WORDS.inset + wordsWidth(row, 26), row).toBeLessThanOrEqual(tile.at.w - 8);
-      expect(TILE_WORDS.inset + wordsWidth(tile.name.text, 32), tile.name.text).toBeLessThanOrEqual(tile.at.w - 8);
-      expect(tile.caption.rows.join(" "), tile.key).toBe(tile.caption.text);
-    }
-    for (let i = 1; i < I.tiles.length; i++) expect(I.tiles[i].at.x).toBeGreaterThan(right(I.tiles[i - 1].at) + 16);
-  });
-
-  it("lays the calendar under the fence, two rows of 26 weeks for each year and more, its weeks 20 px square, named under it at the drawing's foot", () => {
-    expect(I.calendar.at.y).toBeGreaterThan(bottom(yard) + 16);
-    expect(WEEK.cols).toBe(26);
-    expect(WEEK.weeks).toBeGreaterThan(4 * WEEK.cols);
-    expect(WEEK.w).toBeGreaterThanOrEqual(20);
-    expect(bottom(label(I.every.at, I.every.text, "start"))).toBeGreaterThan(DRAW_FOOT - 24);
-    expect(I.calendar.weeks.at).toHaveLength(WEEK.weeks);
-    for (const week of I.calendar.weeks.at) expect(inside(week, I.calendar.at)).toBe(true);
-    expect(label(I.every.at, I.every.text, "start").y).toBeGreaterThan(bottom(I.calendar.at));
-  });
-
-  it("sets the two plates side by side beside the calendar and the dashed one apart, its caption under it, all under the yard", () => {
-    const [m, q] = I.plates.map((plate) => plate.at);
-    expect(m.x).toBeGreaterThan(right(I.calendar.at) + 32);
-    expect(q.y).toBe(m.y);
-    expect(q.x - right(m)).toBeLessThanOrEqual(20);
-    expect(I.joining.at.x - right(q)).toBeGreaterThanOrEqual(48);
-    expect(right(I.joining.at)).toBe(SAFE.right - 16);
-    expect(partners.y).toBeGreaterThan(bottom(yard) + 16);
-    for (const plate of [...I.plates, I.joining]) expect(plate.at.w, plate.text).toBeGreaterThanOrEqual(wordsWidth(plate.text, 32) + 24);
-    expect(label(I.joining.caption.at, I.joining.caption.text).y).toBeGreaterThan(bottom(I.joining.at));
-    expect(overlaps(label(I.joining.caption.at, I.joining.caption.text), label(I.every.at, I.every.text, "start"))).toBe(false);
   });
 });
 

@@ -1,101 +1,122 @@
 /**
- * Slide 13's places. Over the left two thirds, the fenced yard, named over
- * its top left with its caption beside the name, and three tiles in a row
- * inside it, each with its name and its caption under it (broken on two
- * rows where it runs past the tile). Under the fence, a calendar of weeks,
- * two rows of 26 for each year and a short fifth row, named under it;
- * beside the calendar, two nameplates side by side and a third, dashed, a
- * little apart, its caption under it. The right third over the calendar is
- * left empty: the yard reaches nothing there. Words are read from the
- * script, by position.
+ * Slide 13's places. At the left, the fenced yard, named over its top left
+ * with its caption beside the name, and five tiles inside it in reading
+ * order: the first across the yard's width, then two rows of two, each tile
+ * with its name and, where the script gives one, its caption under it. At
+ * the right, the round table seen from above, the department map's table
+ * drawn smaller, four chairs round it with a person in each and a nameplate
+ * by each chair (top, left, right, foot), the table's caption under the
+ * lowest plate. Every word is measured as Geist sets it and its box sized
+ * from that. Words are read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
-import { breakAfter, shown } from "../../script/find";
-import { fenceBox } from "../department-map";
-import { LABEL_LINE, SAFE, TEXT_LINE, contentTop, layerOf, wordsWidth } from "./layout";
+import ADVANCES from "../../script/geist-medium-advances.json";
+import { shown } from "../../script/find";
+import { TABLE, fenceBox } from "../department-map";
+import { SAFE, contentTop, layerOf, wordsWidth } from "./layout";
 
-const [SANDBOX, CANNOT_REACH, RUNNING, RUNNING_CAPTION, PERMISSION, PERMISSION_CAPTION, ROUTE, ROUTE_CAPTION, EVERY_WEEK, MICROSOFT, QUISITIVE, AMAZON, JOINING] = shown("infrastructure", "play");
+const [SANDBOX, CANNOT_REACH, RUNNING, RUNNING_CAPTION, AS_CODE, AS_CODE_CAPTION, CONTAINERS, FIREWALL, TOKENS, TOKENS_CAPTION, CITY, MICROSOFT, QUISITIVE, SECURITY, MET] = shown("infrastructure", "play");
 
 const TOP = contentTop("infrastructure");
 
+/* Measuring words */
+
+const ADVANCE: Record<string, number> = ADVANCES.advances;
+/** How wide a run of words is set at a size, from Geist Medium's own advances 2 per cent over (6 for the strong, 600, cut): what a box sized to its words is sized from. */
+export const setWidth = (text: string, size: number, strong = false) => Math.ceil([...text].reduce((sum, ch) => sum + (ADVANCE[ch] ?? 0.6), 0) * size * (strong ? 1.06 : 1.02));
+/** The wider of that and the world's rough measure: the room words are given where nothing is sized to them. */
+export const measure = (text: string, size: number, strong = false) => Math.max(wordsWidth(text, size), setWidth(text, size, strong));
+
 /* The yard */
 
-/** The yard's name and caption on one row over its top left, the name at the text size. */
+/** The yard's name and caption on one row over its top left, the name at the text size, the caption 24 px after it. */
 const NAME_Y = TOP + 24;
-/** The yard: the left two thirds, from x 96 to 1248, 160 px tall under its name, its fence's pickets standing clear under the name's row. */
-const FENCE = box(96, TOP + 80, 1152, 160);
+/** The yard: from x 96, 1064 wide and 340 tall, its pickets standing clear under the name's row. */
+const FENCE = box(96, TOP + 80, 1064, 340);
 
-/** Three tiles, 18 px inside the fence top and foot and 15 from its sides, 18 apart: 362 wide each, room for the longest name at the layout's safe measure. */
-const TILE = { pad: 15, gap: 18, top: 18 } as const;
-const TILE_W = (FENCE.w - 2 * TILE.pad - 2 * TILE.gap) / 3;
-const TILE_H = FENCE.h - 2 * TILE.top;
-/** A tile's words: its name 34 px under its top, its caption's first row 36 under that, its rows 30 apart, all 12 px in from its left. */
-export const TILE_WORDS = { inset: 12, name: 34, caption: 70, pitch: 30 } as const;
+/** Tiles 16 px inside the fence's sides and foot, 20 under its rail, 14 apart; each 92 tall. */
+const TILE = { pad: 16, top: 20, gap: 14, h: 92 } as const;
+/**
+ * A tile's words, centred across it: its name at the text size (strong) and
+ * its caption at the label size. A captioned tile has its name's middle 30 px
+ * under its top and its caption's 65, so 14 px are left over the name and
+ * under the caption; a tile with a name alone has it in its middle.
+ */
+export const TILE_WORDS = { inset: 20, nameSize: 32, captionSize: 26, name: 30, caption: 65 } as const;
 
-/** A caption broken on two rows where it would run past its tile at the label size, after the word the layout names. */
-const CAPTION_BREAKS: Record<string, string[]> = { [RUNNING_CAPTION]: ["and"], [PERMISSION_CAPTION]: ["with the"], [ROUTE_CAPTION]: ["CISO,"] };
-const rowsOf = (text: string) => breakAfter(text, ...(CAPTION_BREAKS[text] ?? []));
+const INNER = { x: FENCE.x + TILE.pad, w: FENCE.w - 2 * TILE.pad } as const;
+const HALF = (INNER.w - TILE.gap) / 2;
+const rowY = (row: number) => FENCE.y + TILE.top + row * (TILE.h + TILE.gap);
+const tileAt = [box(INNER.x, rowY(0), INNER.w, TILE.h), box(INNER.x, rowY(1), HALF, TILE.h), box(INNER.x + HALF + TILE.gap, rowY(1), HALF, TILE.h), box(INNER.x, rowY(2), HALF, TILE.h), box(INNER.x + HALF + TILE.gap, rowY(2), HALF, TILE.h)];
 
 const tiles = [
   { text: RUNNING, caption: RUNNING_CAPTION },
-  { text: PERMISSION, caption: PERMISSION_CAPTION },
-  { text: ROUTE, caption: ROUTE_CAPTION },
-].map((entry, i) => {
-  const at = box(FENCE.x + TILE.pad + i * (TILE_W + TILE.gap), FENCE.y + TILE.top, TILE_W, TILE_H);
+  { text: AS_CODE, caption: AS_CODE_CAPTION },
+  { text: CONTAINERS },
+  { text: FIREWALL },
+  { text: TOKENS, caption: TOKENS_CAPTION },
+].map((entry: { text: string; caption?: string }, i) => {
+  const at = tileAt[i];
+  const x = at.x + at.w / 2;
   return {
     key: `infrastructure.tile.${i}`,
     at,
-    name: { text: entry.text, at: { x: at.x + TILE_WORDS.inset, y: at.y + TILE_WORDS.name } as Point },
-    caption: { text: entry.caption, rows: rowsOf(entry.caption), at: { x: at.x + TILE_WORDS.inset, y: at.y + TILE_WORDS.caption } as Point },
+    name: { text: entry.text, at: { x, y: at.y + (entry.caption ? TILE_WORDS.name : at.h / 2) } as Point },
+    caption: entry.caption ? { text: entry.caption, at: { x, y: at.y + TILE_WORDS.caption } as Point } : null,
   };
 });
 
-/* The calendar, under the fence */
+/* The table, at the right */
 
-/** 26 weeks to a row, two rows to a year: four full rows for two years and 12 weeks of a fifth, over two years. Each week 20 px square, 26 apart across and down: the calendar is 670 px wide and 124 tall, leaving the plates their room beside it. */
-export const WEEK = { cols: 26, weeks: 116, w: 20, pitch: 26, rowPitch: 26 } as const;
-/** The calendar 32 px under the fence's foot. */
-const CAL = { x: 96, y: FENCE.y + FENCE.h + 32 } as const;
-const weeks: Box[] = Array.from({ length: WEEK.weeks }, (_, n) => box(CAL.x + (n % WEEK.cols) * WEEK.pitch, CAL.y + Math.floor(n / WEEK.cols) * WEEK.rowPitch, WEEK.w, WEEK.w));
-const CAL_W = (WEEK.cols - 1) * WEEK.pitch + WEEK.w;
-const CAL_ROWS = Math.ceil(WEEK.weeks / WEEK.cols);
-const CAL_H = (CAL_ROWS - 1) * WEEK.rowPitch + WEEK.w;
-/** The calendar's name 28 px under its last row. */
-const EVERY_AT: Point = { x: CAL.x, y: CAL.y + CAL_H + 28 };
+/** The department map's table at 0.65 of its size, with four of its chairs and a head in each. */
+const SCALE = 0.65;
+const R = Math.round(TABLE.r * SCALE);
+const RING = Math.round(TABLE.ring * SCALE);
+export const SEAT = { w: Math.round(TABLE.seat.w * SCALE), h: Math.round(TABLE.seat.h * SCALE), rx: Math.round(TABLE.seat.rx * SCALE) } as const;
+export const HEAD = 9;
 
-/* The nameplates, beside the calendar */
+/** Nameplates at the label size (strong), 40 px tall, as wide as their words as set and 20 px each side; each 12 px off its chair. */
+export const PLATE = { size: 26, h: 40, pad: 20, gap: 12 } as const;
+const plateW = (text: string) => setWidth(text, PLATE.size, true) + 2 * PLATE.pad;
+/** From the table's middle to a plate's near edge. */
+const NEAR = RING + SEAT.w / 2 + PLATE.gap;
+/** The table's caption, at the text size, its middle 20 px plus half its size under the lowest plate. */
+const MET_DOWN = NEAR + PLATE.h + 20 + 16;
 
-/** Plates 52 px tall, each as wide as its name at the text size and 40 to spare, level with the calendar's middle; the two 12 apart and 48 right of the calendar; the dashed one ending at the drawing's right edge, 48 or more past the second. */
-const PLATE = { h: 52, pad: 40, gap: 12 } as const;
-const plateW = (text: string) => wordsWidth(text, 32) + PLATE.pad;
-const PLATE_Y = CAL.y + (CAL_H - PLATE.h) / 2;
-const MICROSOFT_AT = box(CAL.x + CAL_W + 48, PLATE_Y, plateW(MICROSOFT), PLATE.h);
-const QUISITIVE_AT = box(MICROSOFT_AT.x + MICROSOFT_AT.w + PLATE.gap, PLATE_Y, plateW(QUISITIVE), PLATE.h);
-const AMAZON_AT = box(SAFE.right - 16 - plateW(AMAZON), PLATE_Y, plateW(AMAZON), PLATE.h);
-/** The dashed plate's caption centred 28 px under it. */
-const JOINING_AT: Point = { x: AMAZON_AT.x + AMAZON_AT.w / 2, y: AMAZON_AT.y + AMAZON_AT.h + 28 };
+/**
+ * The table's middle: across, the group centred between 48 px past the fence
+ * and the safe area's right edge; down, the caption's foot level with the
+ * fence's.
+ */
+const GROUP = { x0: FENCE.x + FENCE.w + 48, x1: SAFE.right } as const;
+const C: Point = {
+  x: Math.round((GROUP.x0 + plateW(MICROSOFT) + NEAR + (GROUP.x1 - plateW(QUISITIVE) - NEAR)) / 2),
+  y: FENCE.y + FENCE.h - MET_DOWN - 16,
+};
+
+/** The four chairs, in the script's order: top, left, right, foot. */
+const SIDES = [-90, 180, 0, 90] as const;
+const seats = SIDES.map((deg, i) => {
+  const a = (deg * Math.PI) / 180;
+  return { key: `infrastructure.seat.${i}`, sitter: `infrastructure.sitter.${i}`, at: { x: Math.round(C.x + RING * Math.cos(a)), y: Math.round(C.y + RING * Math.sin(a)) } as Point, deg };
+});
+
+/** Each plate by its chair, on the side away from the table, centred on it. */
+const plateAt = (text: string, side: number): Box => {
+  const w = plateW(text);
+  if (side === 0) return box(C.x - w / 2, C.y - NEAR - PLATE.h, w, PLATE.h);
+  if (side === 1) return box(C.x - NEAR - w, C.y - PLATE.h / 2, w, PLATE.h);
+  if (side === 2) return box(C.x + NEAR, C.y - PLATE.h / 2, w, PLATE.h);
+  return box(C.x - w / 2, C.y + NEAR, w, PLATE.h);
+};
 
 export const INFRASTRUCTURE = {
   ...layerOf("infrastructure"),
   name: { key: "infrastructure.name", text: SANDBOX, at: { x: FENCE.x + 16, y: NAME_Y } as Point },
-  caption: { key: "infrastructure.caption", text: CANNOT_REACH, at: { x: FENCE.x + 16 + wordsWidth(SANDBOX, 32) + 24, y: NAME_Y } as Point },
-  fence: {
-    key: "infrastructure.fence",
-    at: FENCE,
-    reach: fenceBox(FENCE),
-  },
+  caption: { key: "infrastructure.caption", text: CANNOT_REACH, at: { x: FENCE.x + 16 + measure(SANDBOX, 32, true) + 24, y: NAME_Y } as Point },
+  fence: { key: "infrastructure.fence", at: FENCE, reach: fenceBox(FENCE) },
   tiles,
-  calendar: { key: "infrastructure.calendar", at: box(CAL.x, CAL.y, CAL_W, CAL_H), weeks: { key: "infrastructure.weeks", at: weeks } },
-  every: { key: "infrastructure.every", text: EVERY_WEEK, at: EVERY_AT },
-  plates: [
-    { key: "infrastructure.plate.0", text: MICROSOFT, at: MICROSOFT_AT },
-    { key: "infrastructure.plate.1", text: QUISITIVE, at: QUISITIVE_AT },
-  ],
-  joining: { key: "infrastructure.amazon", text: AMAZON, at: AMAZON_AT, caption: { key: "infrastructure.amazon.caption", text: JOINING, at: JOINING_AT } },
+  table: { key: "infrastructure.table", c: C, r: R, seat: SEAT, seats },
+  plates: [CITY, MICROSOFT, QUISITIVE, SECURITY].map((text, i) => ({ key: `infrastructure.plate.${i}`, text, seat: i, at: plateAt(text, i) })),
+  met: { key: "infrastructure.met", text: MET, at: { x: C.x, y: C.y + MET_DOWN } as Point },
 };
-
-/** The rows a tile's words take, for the layout test: its name's, then each caption row's. */
-export const tileRows = (tile: (typeof tiles)[number]) => [
-  { y: tile.name.at.y, line: TEXT_LINE },
-  ...tile.caption.rows.map((_, i) => ({ y: tile.caption.at.y + i * TILE_WORDS.pitch, line: LABEL_LINE })),
-];

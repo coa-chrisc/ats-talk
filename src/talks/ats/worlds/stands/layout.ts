@@ -46,7 +46,7 @@ const BREAKS: Record<string, string[]> = {
     "departments"
   ],
   "infrastructure": [
-    "infrastructure"
+    "way"
   ],
   "fits": [
     "controls"
@@ -61,7 +61,7 @@ export const titleOf = (pictureId: string) => TITLES.find((title) => title.pictu
 
 const BANDS = ["one", "two", "three"] as const satisfies readonly StoryBand[];
 
-/** Each slide's story lines, in the band under its title: one row each, as every line fits the band's 1728 px at 32 px (the longest, slide 13's line A, is 1535 px). */
+/** Each slide's story lines, in the band under its title: one row each, as every line fits the band's 1728 px at 32 px (the longest, slide 13's line B, is 1620 px). */
 export const STORIES = PICTURES.map((picture) => ({
   picture: picture.id,
   id: storyId(picture.id),
