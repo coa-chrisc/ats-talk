@@ -1,36 +1,34 @@
 /**
  * Slide 15's places: the department map lit and occupied, and the checks
- * before expanding. Over the top, the grid of departments at the map's
- * proportions (department-map.ts), named over it, its nine windows lit as
+ * before expanding. At the left, the grid of departments where slides 11 and
+ * 12 set it (department-map.ts), named over it, its nine windows lit as
  * slide 12 lights them and three staff standing in the middle row's unlit
- * boxes; the staff's name and caption beside it; at the right, the
- * sandbox's small fenced yard, named over it, holding three agents, a
- * member of staff and the orange mark, the fleet's name and caption inside
- * it. Under them, one rule from the grid's left edge to the drawing's
- * right, headed at its start, with three closed gates standing on it, each
- * named under it; and the portfolio as a plain line on the drawing's foot,
- * a clear row under the gates' words. Words are read from the script, by
- * position.
+ * boxes; the staff's name and caption directly under it, and the portfolio
+ * as plain words on the drawing's foot under them. At the right, the
+ * sandbox's small fenced yard, named beside it, holding three agents, a
+ * member of staff and the orange mark in a row; the fleet's name and caption
+ * under the fence. Under the yard, one rule from the grid's right edge to the
+ * drawing's right, headed over its start, with three closed gates standing
+ * on it across the width it runs, each named under it. Words are read from
+ * the script, by position.
  */
 import { box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
-import { AGENT, LIT, STAFF, WINDOW, fencePosts, gatePaths, gridAt, windowAt } from "../department-map";
-import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, layerOf } from "./layout";
+import { AGENT, LIT, MAP_AT, STAFF, WINDOW, fenceBox, gatePaths, gridAt, windowAt } from "../department-map";
+import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, layerOf, tagWords } from "./layout";
 
 const [CAPABILITIES, STAFF_NAME, STAFF_CAPTION, SANDBOX, SANDBOX_CAPTION, FLEET_NAME, FLEET_CAPTION, BEFORE, ...REST] = shown("fleet", "play");
 const GATE_WORDS = REST.slice(0, 6);
 const PORTFOLIO = REST[6];
 
 const TOP = contentTop("fleet");
-/** The headings over the grid and the yard, on one row 16 px under the drawing's first line. */
-const HEAD_Y = TOP + 16;
 /** A caption's rows are this far apart. */
 export const PITCH = 30;
 
 /* The map */
 
-/** The grid at slide 12's size, 36 px under the drawing's first line, from the drawing's left edge. */
-const MAP = gridAt({ x: 96, y: TOP + 36 }, 1);
+/** The grid at the map's place, named 30 px over it. */
+const MAP = gridAt(MAP_AT, 1);
 const MAP_FOOT = MAP.outline.y + MAP.outline.h;
 const MAP_RIGHT = MAP.outline.x + MAP.outline.w;
 
@@ -51,60 +49,88 @@ const standIn = (col: number, row: number) => {
 };
 const staff = STAFF.map(([col, row], i) => ({ key: `fleet.staff.${i}`, at: standIn(col, row) }));
 
-/** The staff's name and caption 30 px right of the grid, the name a row over the staff's row's middle. */
-const STAFF_WORDS: Point = { x: MAP_RIGHT + 30, y: MAP.centre(0, 1).y - 32 };
+/** The staff's name 32 px under the grid, its caption on one row under the name. */
+const STAFF_WORDS: Point = { x: MAP.outline.x, y: MAP_FOOT + 32 };
+
+/** The portfolio on two rows, its last at the drawing's foot. */
+const PORTFOLIO_ROWS = breakAfter(PORTFOLIO, "applications");
+const PORTFOLIO_AT: Point = { x: MAP.outline.x, y: DRAW_FOOT - LABEL_LINE / 2 - (PORTFOLIO_ROWS.length - 1) * PITCH };
 
 /* The yard */
 
-/** The yard from 1164 to the drawing's right edge, its foot level with the grid's; named over it and captioned under the name. */
-const YARD_X = 1164;
-const FENCE = box(YARD_X, TOP + 82, SAFE.right - YARD_X, MAP_FOOT - (TOP + 82));
-const YARD_MID = FENCE.y + FENCE.h / 2;
-/** Three agents at 0.7 of slide 14's size, 62 apart, their middle on the yard's; a member of staff 48 by 64 after them on the same foot; the mark beside the staff's shoulder. */
-const AGENT_SCALE = 0.7;
-const AGENT_TOP = Math.round(YARD_MID - (AGENT.h * AGENT_SCALE) / 2);
-const agents = [0, 1, 2].map((i) => ({ key: `fleet.agent.${i}`, at: { x: FENCE.x + 40 + i * 62, y: AGENT_TOP } as Point }));
-const AGENT_FOOT = Math.round(AGENT_TOP + AGENT.h * AGENT_SCALE);
-const KEEPER = box(FENCE.x + 206, AGENT_FOOT - 64, 48, 64);
-const MARK: Point = { x: KEEPER.x + KEEPER.w + 34, y: YARD_MID };
-/** The fleet's name and caption inside the yard, after the mark. */
-const FLEET_WORDS: Point = { x: MARK.x + 50, y: YARD_MID - PITCH };
+/** The yard 44 px right of the grid, its fence's pickets 20 px under the drawing's top. */
+const YARD_X = MAP_RIGHT + 44;
+const YARD_Y = TOP + 40;
+/** Inside it, 28 px from its rails: three agents at 0.6 of slide 14's size, 56 apart, their middle on the yard's; a member of staff 42 by 56 after them on the same foot; the mark 30 past the staff's side. */
+const INSET = 28;
+const AGENT_SCALE = 0.6;
+const AGENT_W = AGENT.w * AGENT_SCALE;
+const AGENT_H = AGENT.h * AGENT_SCALE;
+const YARD_H = 84;
+const YARD_MID = YARD_Y + YARD_H / 2;
+const AGENT_TOP = Math.round(YARD_MID - AGENT_H / 2);
+const agents = [0, 1, 2].map((i) => ({ key: `fleet.agent.${i}`, at: { x: Math.round(YARD_X + INSET + AGENT_W / 2 + i * 56), y: AGENT_TOP } as Point }));
+const AGENT_FOOT = Math.round(AGENT_TOP + AGENT_H);
+const KEEPER = box(Math.round(agents[2].at.x + AGENT_W / 2 + 14), AGENT_FOOT - 56, 42, 56);
+const MARK: Point = { x: KEEPER.x + KEEPER.w + 30, y: YARD_MID };
+const FENCE = box(YARD_X, YARD_Y, MARK.x + 24 + INSET - YARD_X, YARD_H);
+const FENCE_RIGHT = FENCE.x + FENCE.w;
 
-/* The rule, its gates and the portfolio */
+/** The yard's name and caption 28 px right of the fence, the name level with the rail's top, the caption on two rows under it. */
+const YARD_WORDS: Point = { x: FENCE_RIGHT + 28, y: FENCE.y + LABEL_LINE / 2 };
 
-/** The rule 64 px under the grid, its heading over its start; the gates at the hurdle's size, at the middles of three equal slots after the heading, their tops clear of the yard's posts. */
-const RULE_Y = MAP_FOOT + 64;
+/** The fleet's name 28 px under the fence, its caption under the name. */
+const FLEET_WORDS: Point = { x: FENCE.x, y: FENCE.y + FENCE.h + 28 };
+
+/* The rule and its gates */
+
+/** The rule from the grid's right edge, 20 px under its foot, to the drawing's right; headed over its start, clear over the gates' tops. */
+const RULE_Y = MAP_FOOT + 20;
 const GATE_SCALE = 1;
-const SLOTS = { x: 360, w: (SAFE.right - 360) / 3 } as const;
-const GATE_BREAKS = ["and", "application's", "use,"];
-const gates = [0, 1, 2].map((i) => {
-  const foot: Point = { x: Math.round(SLOTS.x + (i + 0.5) * SLOTS.w), y: RULE_Y };
+/** Each gate's caption broken at a phrase so no row runs wider than the middle gate's name: the first on three rows, the others on two. */
+const GATE_BREAKS = [["team", "provide"], ["application's"], ["use,"]];
+const GATE_LABELS = [0, 1, 2].map((i) => ({ name: GATE_WORDS[2 * i], rows: breakAfter(GATE_WORDS[2 * i + 1], ...GATE_BREAKS[i]) }));
+/**
+ * A gate's words are as wide as their longest row, measured as a tag's
+ * words are. The gates spread across the rule: the first's words start 24
+ * px past the rule's start, the last's end 16 px short of the drawing's
+ * right edge, and the room left over is shared out evenly between them.
+ */
+const LABEL_W = GATE_LABELS.map(({ name, rows }) => Math.max(...[name, ...rows].map((row) => tagWords(row, 26))));
+const LABELS_FROM = MAP_RIGHT + 24;
+const LABELS_TO = SAFE.right - 16;
+const GATE_GAP = (LABELS_TO - LABELS_FROM - LABEL_W.reduce((sum, w) => sum + w, 0)) / (LABEL_W.length - 1);
+const GATE_X = LABEL_W.map((w, i) => LABELS_FROM + LABEL_W.slice(0, i).reduce((sum, v) => sum + v + GATE_GAP, 0) + w / 2);
+const gates = GATE_LABELS.map(({ name, rows }, i) => {
+  const foot: Point = { x: Math.round(GATE_X[i]), y: RULE_Y };
   return {
     key: `fleet.gate.${i}`,
     foot,
     at: gatePaths(foot, GATE_SCALE).at,
-    name: { key: `fleet.gate.${i}.name`, text: GATE_WORDS[2 * i], at: { x: foot.x, y: RULE_Y + 30 } as Point },
-    caption: { key: `fleet.gate.${i}.caption`, text: GATE_WORDS[2 * i + 1], rows: breakAfter(GATE_WORDS[2 * i + 1], GATE_BREAKS[i]), at: { x: foot.x, y: RULE_Y + 30 + 32 } as Point },
+    name: { key: `fleet.gate.${i}.name`, text: name, at: { x: foot.x, y: RULE_Y + 30 } as Point },
+    caption: { key: `fleet.gate.${i}.caption`, text: GATE_WORDS[2 * i + 1], rows, at: { x: foot.x, y: RULE_Y + 30 + 32 } as Point },
   };
 });
+/** The heading's row 16 px over the gates' tops, in line with the first gate's words, 24 px past the rule's start and clear of the grid. */
+const BEFORE_AT: Point = { x: LABELS_FROM, y: Math.min(...gates.map((gate) => gate.at.y)) - 16 - LABEL_LINE / 2 };
 
 export const FLEET = {
   ...layerOf("fleet"),
   map: MAP,
   grid: { key: "fleet.grid", at: MAP.outline },
-  name: { key: "fleet.name", text: CAPABILITIES, at: { x: MAP.outline.x, y: HEAD_Y } as Point },
+  name: { key: "fleet.name", text: CAPABILITIES, at: { x: MAP.outline.x, y: MAP.outline.y - 30 } as Point },
   windows,
   staff,
   staffWords: {
     name: { key: "fleet.staff.name", text: STAFF_NAME, at: STAFF_WORDS },
-    caption: { key: "fleet.staff.caption", text: STAFF_CAPTION, rows: breakAfter(STAFF_CAPTION, "practice"), at: { x: STAFF_WORDS.x, y: STAFF_WORDS.y + 32 } as Point },
+    caption: { key: "fleet.staff.caption", text: STAFF_CAPTION, rows: [STAFF_CAPTION], at: { x: STAFF_WORDS.x, y: STAFF_WORDS.y + 32 } as Point },
   },
   yard: {
     key: "fleet.yard",
     at: FENCE,
-    posts: fencePosts(FENCE.x, FENCE.w),
-    name: { key: "fleet.yard.name", text: SANDBOX, at: { x: FENCE.x, y: HEAD_Y } as Point },
-    caption: { key: "fleet.yard.caption", text: SANDBOX_CAPTION, at: { x: FENCE.x, y: HEAD_Y + LABEL_LINE } as Point },
+    reach: fenceBox(FENCE),
+    name: { key: "fleet.yard.name", text: SANDBOX, at: YARD_WORDS },
+    caption: { key: "fleet.yard.caption", text: SANDBOX_CAPTION, rows: breakAfter(SANDBOX_CAPTION, "environment"), at: { x: YARD_WORDS.x, y: YARD_WORDS.y + 32 } as Point },
   },
   agents,
   agentScale: AGENT_SCALE,
@@ -112,11 +138,11 @@ export const FLEET = {
   mark: { key: "fleet.mark", at: MARK },
   fleetWords: {
     name: { key: "fleet.fleet.name", text: FLEET_NAME, at: FLEET_WORDS },
-    caption: { key: "fleet.fleet.caption", text: FLEET_CAPTION, rows: breakAfter(FLEET_CAPTION, "workflow"), at: { x: FLEET_WORDS.x, y: FLEET_WORDS.y + PITCH } as Point },
+    caption: { key: "fleet.fleet.caption", text: FLEET_CAPTION, rows: [FLEET_CAPTION], at: { x: FLEET_WORDS.x, y: FLEET_WORDS.y + PITCH } as Point },
   },
-  before: { key: "fleet.before", text: BEFORE, at: { x: 96, y: RULE_Y - 28 } as Point },
-  rule: { key: "fleet.rule", from: { x: 96, y: RULE_Y } as Point, to: { x: SAFE.right, y: RULE_Y } as Point },
+  before: { key: "fleet.before", text: BEFORE, at: BEFORE_AT },
+  rule: { key: "fleet.rule", from: { x: MAP_RIGHT, y: RULE_Y } as Point, to: { x: SAFE.right, y: RULE_Y } as Point },
   gates,
   gateScale: GATE_SCALE,
-  portfolio: { key: "fleet.portfolio", text: PORTFOLIO, at: { x: 96, y: DRAW_FOOT - LABEL_LINE / 2 } as Point },
+  portfolio: { key: "fleet.portfolio", text: PORTFOLIO, rows: PORTFOLIO_ROWS, at: PORTFOLIO_AT },
 };

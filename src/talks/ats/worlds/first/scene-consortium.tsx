@@ -1,9 +1,10 @@
 /**
- * Slide 17's picture: twelve department boxes, two columns each side of an
- * aisle, a window in each; the green person in each lit box, drawn at the
- * seat it walks to and moved back into its box until it walks; the round
- * table in the aisle with its ten chairs, the three that grow among them;
- * and the card that slides across the middle row.
+ * Slide 17's picture: the department map's 21 boxes, four columns left of an
+ * aisle and three right of it, a window in each; the green person in each
+ * named or called box, drawn at the seat it walks to and moved back into
+ * its box until it walks; the round table in the aisle with its ten
+ * chairs, the three that grow among them; and the card that slides across
+ * the middle row.
  */
 "use client";
 

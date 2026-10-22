@@ -111,7 +111,9 @@
   stroke-linecap: round;
 }
 
-/* Slide 13: the yard inside its fence. */
+/* Slides 13 and 15: the yard inside its picket fence. Each picket rises from
+   its foot as the rail, drawing on from the top left corner, reaches it
+   (`--at`, its share of the rail). */
 .sn-fence__yard {
   fill: var(--dk-process);
   fill-opacity: calc(var(--d, 0) * var(--dk-wash));
@@ -123,12 +125,14 @@
   stroke-width: 4;
 }
 
-.sn-fence__post {
-  fill: none;
+.sn-fence__picket {
+  fill: var(--dk-night);
   stroke: var(--dk-paper);
-  stroke-width: 4;
-  stroke-linecap: round;
-  opacity: min(1, calc(var(--d, 0) * 2));
+  stroke-width: 3;
+  stroke-linejoin: round;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(clamp(0, calc((var(--d, 0) - var(--at, 0)) * 12), 1));
 }
 
 .sn-plate__face {

@@ -1,11 +1,10 @@
-/** Slide 15's picture: the grid of departments, named, its windows lit and three staff standing in it, their name and caption beside it; the fenced yard, named, holding three agents, a member of staff and the orange mark, the fleet's name and caption inside it; the rule, headed, its three closed gates each named under it; the portfolio at the foot. */
+/** Slide 15's picture: the grid of departments, named, its windows lit and three staff standing in it, their name and caption under it and the portfolio at the foot under them; the fenced yard, named beside it, holding three agents, a member of staff and the orange mark, the fleet's name and caption under it; the rule from the grid's edge, headed, its three closed gates each named under it. */
 "use client";
 
 import { HumanMark, Part, Person } from "@/components/deck/kit";
 import { FLEET, PITCH } from "./layout-fleet";
 import { Layer, Rows, StoryOf, Stroke, Words } from "./parts";
-import { Fence } from "./parts-figures";
-import { Agent, ClosedGate, LitWindow } from "./parts-map";
+import { Agent, ClosedGate, Fence, LitWindow } from "./parts-map";
 
 const F = FLEET;
 
@@ -28,9 +27,9 @@ export function FleetMarks() {
       </g>
       <Words id={F.staffWords.name.key} at={F.staffWords.name.at} text={F.staffWords.name.text} anchor="start" strong />
       <Rows id={F.staffWords.caption.key} at={F.staffWords.caption.at} rows={F.staffWords.caption.rows} pitch={PITCH} soft />
-      <Fence id={F.yard.key} at={F.yard.at} posts={F.yard.posts} />
+      <Fence id={F.yard.key} at={F.yard.at} />
       <Words id={F.yard.name.key} at={F.yard.name.at} text={F.yard.name.text} anchor="start" strong />
-      <Words id={F.yard.caption.key} at={F.yard.caption.at} text={F.yard.caption.text} anchor="start" soft />
+      <Rows id={F.yard.caption.key} at={F.yard.caption.at} rows={F.yard.caption.rows} pitch={PITCH} soft />
       {F.agents.map((agent) => (
         <Agent key={agent.key} id={agent.key} at={agent.at} scale={F.agentScale} />
       ))}
@@ -47,7 +46,7 @@ export function FleetMarks() {
         <Words key={gate.name.key} id={gate.name.key} at={gate.name.at} text={gate.name.text} strong />,
         <Rows key={gate.caption.key} id={gate.caption.key} at={gate.caption.at} rows={gate.caption.rows} pitch={PITCH} anchor="middle" soft />,
       ])}
-      <Words id={F.portfolio.key} at={F.portfolio.at} text={F.portfolio.text} anchor="start" />
+      <Rows id={F.portfolio.key} at={F.portfolio.at} rows={F.portfolio.rows} pitch={PITCH} />
     </Part>
   );
 }

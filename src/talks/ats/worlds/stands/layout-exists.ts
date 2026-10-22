@@ -1,18 +1,18 @@
 /**
- * Slide 12's places: the department map's grid of plain boxes, 7 by 3
- * (department-map.ts), at the drawing's top left, named once over it; a
- * window lit in six named boxes, the grid's left column and its right
- * column, and smaller and fainter in three unnamed boxes among the rest;
- * the six names, each with its caption under it, in a list down the
- * drawing's right side, each behind a bullet the shape of the window. Under
- * the grid a cluster of the City's staff, named beside it, its caption and
- * the training's under the name; and beside them an empty round table in
+ * Slide 12's places: the department map's grid of plain boxes, 7 by 3, where
+ * slides 11 and 15 set it (department-map.ts), named once over it; a window
+ * lit in six named boxes, one to a column and in the list's order, and
+ * smaller and fainter in three unnamed boxes among the rest; the six names,
+ * each with its caption under it, in a list down the drawing's right side,
+ * each behind a bullet the shape of the window. Under the grid a cluster of
+ * the City's staff, named beside it, its caption and the training's under
+ * the name; and beside them, by the grid's foot, an empty round table in
  * grey dashes, at slide 17's proportions, its caption under it. Words are
  * read from the script, by position.
  */
 import { box, type Box, type Point } from "@/components/deck/kit";
 import { breakAfter, shown } from "../../script/find";
-import { LIT, WINDOW, gridAt, tableReach, windowAt } from "../department-map";
+import { LIT, MAP_AT, WINDOW, gridAt, tableReach, windowAt } from "../department-map";
 import { DRAW_FOOT, LABEL_LINE, SAFE, contentTop, layerOf, round, wordsWidth } from "./layout";
 
 const [DEPARTMENTS, ...REST] = shown("exists", "play");
@@ -25,10 +25,11 @@ export const PITCH = LABEL_LINE;
 
 /* The grid */
 
-/** The grid at 0.92 of slide 12's first size, so the cluster and the table fit under it; its name on the drawing's first row, the grid 46 px under the drawing's top. */
-export const MAP_SCALE = 0.92;
-const MAP = gridAt({ x: SAFE.left, y: TOP + 46 }, MAP_SCALE);
+/** The grid at the map's size and place, slides 11 and 15's; its name 30 px over it. */
+export const MAP_SCALE = 1;
+const MAP = gridAt(MAP_AT, MAP_SCALE);
 const MAP_FOOT = MAP.outline.y + MAP.outline.h;
+const MAP_RIGHT = MAP.outline.x + MAP.outline.w;
 
 /* The list */
 
@@ -69,20 +70,22 @@ const UNDER = round(MAP_FOOT + 30);
 /** The staff, cast scale: a front row of three, a back row of two raised 26 px between them, each 66 px from the next, so no two bodies in a row meet. */
 export const FIGURE = { w: 63, h: 84, pitch: 66, raise: 26 } as const;
 const staff = [
-  ...[0, 1].map((i) => box(SAFE.left + FIGURE.pitch / 2 + i * FIGURE.pitch, UNDER, FIGURE.w, FIGURE.h)),
-  ...[0, 1, 2].map((i) => box(SAFE.left + i * FIGURE.pitch, UNDER + FIGURE.raise, FIGURE.w, FIGURE.h)),
+  ...[0, 1].map((i) => box(MAP.outline.x + FIGURE.pitch / 2 + i * FIGURE.pitch, UNDER, FIGURE.w, FIGURE.h)),
+  ...[0, 1, 2].map((i) => box(MAP.outline.x + i * FIGURE.pitch, UNDER + FIGURE.raise, FIGURE.w, FIGURE.h)),
 ].map((at, i) => ({ key: `exists.staff.${i}`, at }));
-const CLUSTER_RIGHT = SAFE.left + 2 * FIGURE.pitch + FIGURE.w;
+const CLUSTER_RIGHT = MAP.outline.x + 2 * FIGURE.pitch + FIGURE.w;
 
 /** The group's name 28 px right of the cluster, level with its top; its caption and the training's two rows under it. */
 const GROUP_AT: Point = { x: CLUSTER_RIGHT + 28, y: UNDER + PITCH / 2 };
 const TRAINING_ROWS = breakAfter(TRAINING, "each");
 
-/** The empty table at half slide 17's size; its caption 28 px under it on two rows, its last row at the drawing's foot and its right end at the drawing's left side's end. */
-export const TABLE_SCALE = 0.5;
+/** The empty table at 0.45 of slide 17's size, in the room between the grid and the list, by the grid's foot; its caption 28 px under it on three rows, its last row at the drawing's foot and its right end 4 px short of the drawing's left side's end. */
+export const TABLE_SCALE = 0.45;
 const REACH = tableReach(TABLE_SCALE);
-const TABLE_ROWS = breakAfter(NOT_IN_ROOM, "never");
-const TABLE_X = round(LEFT_END - Math.max(...TABLE_ROWS.map((row) => wordsWidth(row, 26))) / 2 - 12);
+const TABLE_ROWS = breakAfter(NOT_IN_ROOM, "have", "been");
+const TABLE_X = round(LEFT_END - Math.max(...TABLE_ROWS.map((row) => wordsWidth(row, 26))) / 2 - 4);
+/** The table's left side clears the grid's right edge. */
+export const TABLE_CLEAR = round(TABLE_X - REACH - MAP_RIGHT);
 const TABLE_CAPTION_AT: Point = { x: TABLE_X, y: DRAW_FOOT - LABEL_LINE / 2 - (TABLE_ROWS.length - 1) * PITCH };
 const TABLE_C: Point = { x: TABLE_X, y: round(TABLE_CAPTION_AT.y - 28 - REACH) };
 
@@ -90,7 +93,7 @@ export const EXISTS = {
   ...layerOf("exists"),
   map: MAP,
   grid: { key: "exists.grid", at: MAP.outline },
-  name: { key: "exists.name", text: DEPARTMENTS, at: { x: MAP.outline.x, y: TOP + 16 } as Point },
+  name: { key: "exists.name", text: DEPARTMENTS, at: { x: MAP.outline.x, y: MAP.outline.y - 30 } as Point },
   named,
   unnamed: LIT.unnamed.map(([col, row]) => windowOf(col, row, true)),
   staff,

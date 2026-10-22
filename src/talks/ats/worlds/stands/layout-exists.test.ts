@@ -1,7 +1,8 @@
 /**
- * Where slide 12 puts things: the department map's grid at the drawing's
- * top left, a window lit in six named boxes and, fainter, in three unnamed
- * ones; the six names in a list down the right, each behind its bullet; the
+ * Where slide 12 puts things: the department map's grid where slides 11 and
+ * 15 set it, a window lit in six named boxes, in the list's order, and,
+ * fainter, in three unnamed ones; the six names in a list down the right,
+ * each behind its bullet; the
  * cluster of staff under the grid with its words; and the empty table
  * beside them, its caption under it. Every row of words clear of every
  * other and of every drawn thing. The world's other slides are in
@@ -10,8 +11,9 @@
 import { describe, expect, it } from "vitest";
 import { box, type Box } from "@/components/deck/kit";
 import { DRAW_FOOT, SAFE, contentTop } from "./layout";
-import { EXISTS, EXISTS_FOOT, FIGURE, LEFT_END, LIST, MAP_SCALE, TABLE_SCALE, existsRows } from "./layout-exists";
-import { GRID, LIT, TABLE, WINDOW, gridSize } from "../department-map";
+import { EXISTS, EXISTS_FOOT, FIGURE, LEFT_END, LIST, MAP_SCALE, TABLE_CLEAR, TABLE_SCALE, existsRows } from "./layout-exists";
+import { FLEET } from "./layout-fleet";
+import { GRID, LIT, MAP_AT, TABLE, WINDOW, gridSize } from "../department-map";
 import { bottom, bounds, inside, overlaps, right, ringBox } from "./harness";
 
 const E = EXISTS;
@@ -37,7 +39,26 @@ describe("slide 12, the departments", () => {
     for (const a of E.map.cells) for (const b of E.map.cells) if (a !== b) expect(overlaps(a.at, b.at), `${a.n} ${b.n}`).toBe(false);
   });
 
-  it("lights a window in six named boxes, the grid's outer columns, and smaller and fainter in three unnamed ones among the rest, each inside its box with room round it", () => {
+  it("sets the grid where slides 11 and 15 set it, at the same size", () => {
+    expect(MAP_SCALE).toBe(1);
+    expect([E.map.outline.x, E.map.outline.y]).toEqual([MAP_AT.x, MAP_AT.y]);
+    expect([E.map.outline.w, E.map.outline.h]).toEqual([FLEET.map.outline.w, FLEET.map.outline.h]);
+    expect([E.map.outline.x, E.map.outline.y]).toEqual([FLEET.map.outline.x, FLEET.map.outline.y]);
+  });
+
+  it("lights the six named windows where the list reads them: one to a column, left to right and top to bottom in the list's order", () => {
+    const cols = E.named.map((lit) => lit.col);
+    const rowsDown = E.named.map((lit) => lit.row);
+    for (let i = 1; i < E.named.length; i++) {
+      expect(cols[i], E.named[i].key).toBeGreaterThan(cols[i - 1]);
+      expect(rowsDown[i], E.named[i].key).toBeGreaterThanOrEqual(rowsDown[i - 1]);
+      expect(E.named[i].entry.name.at.y).toBeGreaterThan(E.named[i - 1].entry.name.at.y);
+    }
+    const reading = [...E.named].sort((a, b) => a.row - b.row || a.col - b.col);
+    expect(reading.map((lit) => lit.key)).toEqual(E.named.map((lit) => lit.key));
+  });
+
+  it("lights a window in six named boxes and smaller and fainter in three unnamed ones among the rest, each inside its box with room round it", () => {
     expect(E.named.map((lit) => [lit.col, lit.row])).toEqual(LIT.named.map(([col, row]) => [col, row]));
     expect(E.unnamed.map((lit) => [lit.col, lit.row])).toEqual(LIT.unnamed.map(([col, row]) => [col, row]));
     expect(new Set([...E.named, ...E.unnamed].map((lit) => lit.key)).size).toBe(9);
@@ -77,6 +98,8 @@ describe("slide 12, the departments", () => {
     const words = bounds(rows.filter((row) => row.key.startsWith("exists.group.") || row.key.startsWith("exists.training")).map((row) => row.box));
     expect(words.x).toBeGreaterThanOrEqual(right(cluster) + 24);
     expect(table.x).toBeGreaterThanOrEqual(right(words) + 24);
+    expect(table.x).toBeGreaterThanOrEqual(right(E.map.outline) + 12);
+    expect(TABLE_CLEAR).toBeGreaterThanOrEqual(12);
   });
 
   it("draws the empty table at slide 17's proportions, its caption under it", () => {

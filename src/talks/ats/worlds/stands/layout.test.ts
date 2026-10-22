@@ -13,7 +13,7 @@ import { INFRASTRUCTURE, TILE_WORDS, WEEK, tileRows } from "./layout-infrastruct
 import { HOST, NOTICED } from "./layout-noticed";
 import { FLEET, PITCH } from "./layout-fleet";
 import { TRACK } from "./layout-track";
-import { AGENT, GRID, PLATE, gridSize } from "../department-map";
+import { AGENT, FENCE, GRID, MAP_AT, PLATE, RING_PAD, fenceBox, fencePickets, gridSize } from "../department-map";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
 
 const label = (at: Point, text: string, anchor: "start" | "middle" | "end" = "middle") => wordsBox(at, wordsWidth(text, 26), LABEL_LINE, anchor);
@@ -28,8 +28,8 @@ const rowsBox = (at: Point, rows: readonly string[], anchor: "start" | "middle" 
 const gateLabels = F.gates.map((gate) => bounds([wordsBox(gate.name.at, tagWords(gate.name.text, 26), LABEL_LINE, "middle"), rowsBox(gate.caption.at, gate.caption.rows, "middle")]));
 const staffWords = bounds([label(F.staffWords.name.at, F.staffWords.name.text, "start"), rowsBox(F.staffWords.caption.at, F.staffWords.caption.rows)]);
 const fleetWords = bounds([label(F.fleetWords.name.at, F.fleetWords.name.text, "start"), rowsBox(F.fleetWords.caption.at, F.fleetWords.caption.rows)]);
-const yardWords = bounds([label(F.yard.name.at, F.yard.name.text, "start"), wordsBox(F.yard.caption.at, tagWords(F.yard.caption.text, 26), LABEL_LINE, "start")]);
-const fence = (at: Box) => box(at.x, at.y - 10, at.w, at.h + 20);
+const yardWords = bounds([label(F.yard.name.at, F.yard.name.text, "start"), rowsBox(F.yard.caption.at, F.yard.caption.rows)]);
+const portfolio = rowsBox(F.portfolio.at, F.portfolio.rows);
 
 const DRAWN: Record<string, Box[]> = {
   track: [
@@ -46,13 +46,13 @@ const DRAWN: Record<string, Box[]> = {
     F.map.outline,
     staffWords,
     yardWords,
-    fence(F.yard.at),
+    F.yard.reach,
     fleetWords,
     label(F.before.at, F.before.text, "start"),
     box(F.rule.from.x, F.rule.from.y - 2, F.rule.to.x - F.rule.from.x, 4),
     ...F.gates.map((gate) => gate.at),
     ...gateLabels,
-    label(F.portfolio.at, F.portfolio.text, "start"),
+    portfolio,
   ],
   control: [...controlRows().map((row) => row.box), ...controlGlyphs().map((glyph) => glyph.box)],
   exists: [
@@ -69,7 +69,7 @@ const DRAWN: Record<string, Box[]> = {
   infrastructure: [
     text(I.name.at, I.name.text, "start"),
     label(I.caption.at, I.caption.text, "start"),
-    box(I.fence.at.x, I.fence.at.y - 10, I.fence.at.w, I.fence.at.h + 20),
+    I.fence.reach,
     I.calendar.at,
     label(I.every.at, I.every.text, "start"),
     ...I.plates.map((plate) => plate.at),
@@ -164,13 +164,13 @@ describe("slide 12a, the wall", () => {
 
 describe("slide 13, the yard", () => {
   const fence = I.fence.at;
-  const yard = box(fence.x, fence.y - 10, fence.w, fence.h + 20);
+  const yard = I.fence.reach;
   const partners = bounds([...I.plates.map((plate) => plate.at), I.joining.at, label(I.joining.caption.at, I.joining.caption.text)]);
 
   it("spans the left two thirds with the yard, named over its top left, the caption beside the name", () => {
     expect(fence.x).toBe(SAFE.left + 16);
     expect(right(fence)).toBe(96 + (1728 * 2) / 3);
-    expect(bottom(text(I.name.at, I.name.text, "start"))).toBeLessThanOrEqual(fence.y - 10);
+    expect(bottom(text(I.name.at, I.name.text, "start"))).toBeLessThanOrEqual(yard.y - 8);
     expect(label(I.caption.at, I.caption.text, "start").x).toBeGreaterThan(right(text(I.name.at, I.name.text, "start")));
   });
 
@@ -189,15 +189,18 @@ describe("slide 13, the yard", () => {
     for (let i = 1; i < I.tiles.length; i++) expect(I.tiles[i].at.x).toBeGreaterThan(right(I.tiles[i - 1].at) + 16);
   });
 
-  it("lays the calendar under the fence, a row of 52 weeks for each year and more, named under it", () => {
+  it("lays the calendar under the fence, two rows of 26 weeks for each year and more, its weeks 20 px square, named under it at the drawing's foot", () => {
     expect(I.calendar.at.y).toBeGreaterThan(bottom(yard) + 16);
-    expect(WEEK.weeks).toBeGreaterThan(2 * WEEK.cols);
+    expect(WEEK.cols).toBe(26);
+    expect(WEEK.weeks).toBeGreaterThan(4 * WEEK.cols);
+    expect(WEEK.w).toBeGreaterThanOrEqual(20);
+    expect(bottom(label(I.every.at, I.every.text, "start"))).toBeGreaterThan(DRAW_FOOT - 24);
     expect(I.calendar.weeks.at).toHaveLength(WEEK.weeks);
     for (const week of I.calendar.weeks.at) expect(inside(week, I.calendar.at)).toBe(true);
     expect(label(I.every.at, I.every.text, "start").y).toBeGreaterThan(bottom(I.calendar.at));
   });
 
-  it("sets the two plates side by side beside the strip and the dashed one apart, its caption under it, all under the yard", () => {
+  it("sets the two plates side by side beside the calendar and the dashed one apart, its caption under it, all under the yard", () => {
     const [m, q] = I.plates.map((plate) => plate.at);
     expect(m.x).toBeGreaterThan(right(I.calendar.at) + 32);
     expect(q.y).toBe(m.y);
@@ -211,18 +214,45 @@ describe("slide 13, the yard", () => {
   });
 });
 
-describe("the department map on slides 11 and 15", () => {
-  it("draws the grid at the map's proportions on both, slide 15 at the map's full size (slide 12 scales it to fit: layout-exists.test.ts)", () => {
-    for (const map of [T.map, F.map]) {
-      expect(map.outline.w / map.outline.h).toBeCloseTo(gridSize(1).w / gridSize(1).h, 2);
+describe("the department map on slides 11, 12 and 15", () => {
+  it("draws the grid at the map's full size and at the map's place on all three", () => {
+    for (const map of [T.map, E.map, F.map]) {
+      expect([map.outline.w, map.outline.h]).toEqual([gridSize(1).w, gridSize(1).h]);
+      expect([map.outline.x, map.outline.y]).toEqual([MAP_AT.x, MAP_AT.y]);
       expect(map.cells).toHaveLength(GRID.cols * GRID.rows);
     }
-    expect([F.map.outline.w, F.map.outline.h]).toEqual([gridSize(1).w, gridSize(1).h]);
   });
 });
 
+describe("the picket fence, slides 13, 15 and 18", () => {
+  for (const [name, at, scale] of [
+    ["slide 13", I.fence.at, 1],
+    ["slide 15", F.yard.at, 1],
+    ["slide 18 (small)", box(0, 100, 520, 88), 0.8],
+  ] as const) {
+    it(`${name}: stands its pickets on the top rail, their tips clear over it, nothing under the foot rail, evenly along the rail inside its corners`, () => {
+      const { pickets, reach } = fencePickets(at, scale);
+      expect(pickets.length).toBeGreaterThanOrEqual(2);
+      expect(fenceBox(at, scale)).toEqual(box(at.x, at.y - reach, at.w, at.h + reach));
+      expect(reach).toBeGreaterThanOrEqual(12);
+      for (const picket of pickets) {
+        const ys = [...picket.d.matchAll(/[MVL](?:[\d.-]+ )?([\d.-]+)/g)].map((m) => Number(m[1]));
+        expect(Math.min(...ys), picket.d).toBe(at.y - reach);
+        expect(Math.max(...ys), picket.d).toBeLessThan(at.y + at.h / 2);
+        expect(picket.x).toBeGreaterThan(at.x + FENCE.rx * scale);
+        expect(picket.x).toBeLessThan(at.x + at.w - FENCE.rx * scale);
+        expect(picket.at).toBeGreaterThan(0);
+        expect(picket.at).toBeLessThan(0.5);
+      }
+      const gaps = pickets.slice(1).map((p, i) => p.x - pickets[i].x);
+      expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThanOrEqual(1);
+      expect(Math.min(...gaps)).toBeGreaterThan(FENCE.picket.w * scale * 2);
+    });
+  }
+});
+
 describe("slide 11, the map on paper", () => {
-  it("fills the field's height: the ring from the drawing's top to the policy's row, the plates the same height, the policy's row at the field's foot", () => {
+  it("fills the field's height: the ring from the map's place to the policy's row, the plates the same height down to the drawing's foot", () => {
     expect(T.ring.at.y).toBe(T.plates[0].at.y);
     expect(bottom(text(T.policy.name.at, T.policy.name.text, "start"))).toBeLessThanOrEqual(bottom(T.plates[2].at));
     expect(bottom(T.plates[2].at)).toBeGreaterThan(DRAW_FOOT - 8);
@@ -231,7 +261,8 @@ describe("slide 11, the map on paper", () => {
 
   it("holds the grid inside the ring, its name between them, and keeps the ring and its words clear of the plates", () => {
     const grid = T.map.outline;
-    expect(inside(grid, box(T.ring.at.x + 24, T.ring.at.y + 24, T.ring.at.w - 48, T.ring.at.h - 48))).toBe(true);
+    expect([grid.x - T.ring.at.x, grid.y - T.ring.at.y, right(T.ring.at) - right(grid), bottom(T.ring.at) - bottom(grid)]).toEqual([RING_PAD.side, RING_PAD.top, RING_PAD.side, RING_PAD.foot]);
+    expect(label(T.name.at, T.name.text, "start").y).toBeGreaterThanOrEqual(T.ring.at.y + 12);
     expect(inside(label(T.name.at, T.name.text, "start"), T.ring.at)).toBe(true);
     expect(bottom(label(T.name.at, T.name.text, "start"))).toBeLessThanOrEqual(grid.y - 4);
     for (const b of [T.ring.at, label(T.policy.caption.at, T.policy.caption.text, "start"), label(T.place.at, T.place.text, "start")]) expect(right(b)).toBeLessThan(T.plates[0].at.x - 48);
@@ -254,13 +285,28 @@ describe("slide 11, the map on paper", () => {
 });
 
 describe("slide 15, the map lit and occupied", () => {
-  it("keeps the map, the staff's words, the yard and its words apart, and the rule's band under them all", () => {
-    const top = [F.map.outline, staffWords, bounds([yardWords, fence(F.yard.at)])];
-    for (const a of top) for (const b of top) if (a !== b) expect(overlaps(a, b)).toBe(false);
-    for (const b of top) expect(bottom(b)).toBeLessThan(label(F.before.at, F.before.text, "start").y - 8);
-    expect(right(F.map.outline) + 24).toBeLessThanOrEqual(staffWords.x);
-    expect(right(staffWords) + 16).toBeLessThanOrEqual(F.yard.at.x);
-    expect(bottom(yardWords)).toBeLessThanOrEqual(F.yard.at.y - 10);
+  it("keeps the map, the staff's words, the yard, its words and the fleet's words apart", () => {
+    const parts = [F.map.outline, staffWords, F.yard.reach, yardWords, fleetWords, portfolio];
+    for (const a of parts) for (const b of parts) if (a !== b) expect(overlaps(a, b)).toBe(false);
+  });
+
+  it("sets the staff's words directly under the grid, from its left edge, and the portfolio under them", () => {
+    expect(staffWords.x).toBe(F.map.outline.x);
+    expect(staffWords.y).toBeGreaterThanOrEqual(bottom(F.map.outline) + 8);
+    expect(staffWords.y).toBeLessThanOrEqual(bottom(F.map.outline) + 24);
+    expect(portfolio.x).toBe(F.map.outline.x);
+    expect(portfolio.y).toBeGreaterThanOrEqual(bottom(staffWords) + 8);
+    expect(F.portfolio.rows.join(" ")).toBe(F.portfolio.text);
+  });
+
+  it("names the yard beside its fence, and sets the fleet's words under the fence, clear of the mark", () => {
+    expect(yardWords.x).toBeGreaterThanOrEqual(right(F.yard.at) + 24);
+    expect(yardWords.y).toBeGreaterThanOrEqual(F.yard.reach.y);
+    expect(F.yard.caption.rows.join(" ")).toBe(F.yard.caption.text);
+    expect(fleetWords.x).toBe(F.yard.at.x);
+    expect(fleetWords.y).toBeGreaterThanOrEqual(bottom(F.yard.at) + 8);
+    expect(overlaps(fleetWords, ringBox(F.mark.at, 32))).toBe(false);
+    expect(right(fleetWords)).toBeLessThanOrEqual(SAFE.right);
   });
 
   it("stands each member of staff inside an unlit box of the grid", () => {
@@ -272,29 +318,37 @@ describe("slide 15, the map lit and occupied", () => {
     }
   });
 
-  it("holds the agents, the member of staff, the mark and the fleet's words inside the yard, in a row, apart", () => {
+  it("holds the agents, the member of staff and the mark inside the yard, in a row, apart", () => {
     const yard = box(F.yard.at.x + 12, F.yard.at.y + 12, F.yard.at.w - 24, F.yard.at.h - 24);
     const agents = F.agents.map((agent) => box(agent.at.x - (AGENT.w * F.agentScale) / 2, agent.at.y, AGENT.w * F.agentScale, AGENT.h * F.agentScale));
-    const row = [...agents, F.keeper.at, ringBox(F.mark.at, 24), fleetWords];
+    const row = [...agents, F.keeper.at, ringBox(F.mark.at, 24)];
     for (const b of row) expect(inside(b, yard)).toBe(true);
     for (let i = 1; i < row.length; i++) expect(row[i].x).toBeGreaterThanOrEqual(right(row[i - 1]) + 6);
   });
 
-  it("stands three closed gates on the rule after its heading, clear of the yard, each named under it, apart, the portfolio a clear row under them off the rule", () => {
+  it("runs the rule from the grid's right edge to the drawing's, headed over its start, three closed gates standing on it across that width, each named under it, apart", () => {
     const before = label(F.before.at, F.before.text, "start");
-    expect(bottom(before)).toBeLessThanOrEqual(F.rule.from.y - 4);
-    expect(F.rule.from.x).toBe(F.map.outline.x);
+    expect(F.rule.from.x).toBe(right(F.map.outline));
     expect(F.rule.to.x).toBe(SAFE.right);
+    expect(before.x, "in line with the first gate's words, clear of the grid").toBe(F.rule.from.x + 24);
+    expect(Math.abs(before.x - gateLabels[0].x)).toBeLessThanOrEqual(1);
     for (const gate of F.gates) {
       expect(bottom(gate.at)).toBe(F.rule.from.y);
-      expect(gate.at.x).toBeGreaterThan(right(before) + 24);
+      expect(bottom(before), gate.key).toBeLessThanOrEqual(gate.at.y - 12);
+      expect(gate.at.y, `${gate.key} clear of the fleet's words`).toBeGreaterThanOrEqual(bottom(fleetWords) + 24);
     }
     for (const b of gateLabels) expect(b.y).toBeGreaterThan(F.rule.from.y + 4);
-    for (let i = 1; i < gateLabels.length; i++) expect(gateLabels[i].x).toBeGreaterThan(right(gateLabels[i - 1]) + 24);
+    const gaps = gateLabels.slice(1).map((b, i) => b.x - right(gateLabels[i]));
+    for (const gap of gaps) expect(gap).toBeGreaterThanOrEqual(32);
+    expect(Math.max(...gaps) - Math.min(...gaps), "the room shared evenly").toBeLessThanOrEqual(2);
+    expect(gateLabels[0].x).toBeGreaterThanOrEqual(F.rule.from.x + 24);
+    expect(right(gateLabels[2])).toBeLessThanOrEqual(SAFE.right);
     for (const gate of F.gates) expect(gate.caption.rows.join(" ")).toBe(gate.caption.text);
-    const portfolio = label(F.portfolio.at, F.portfolio.text, "start");
-    for (const b of gateLabels) expect(portfolio.y, "a clear row under the gates' words").toBeGreaterThanOrEqual(bottom(b) + 16);
-    for (const gate of F.gates) expect(gate.at.y, `${gate.key} clear of the yard's posts`).toBeGreaterThanOrEqual(bottom(F.yard.at) + 10 + 12);
+  });
+
+  it("keeps the staff's words and the portfolio left of the gates' words, the portfolio's last row on the drawing's foot", () => {
+    for (const b of [staffWords, portfolio]) expect(right(b) + 24).toBeLessThanOrEqual(gateLabels[0].x);
     expect(bottom(portfolio)).toBeLessThanOrEqual(DRAW_FOOT);
+    expect(bottom(portfolio)).toBeGreaterThan(DRAW_FOOT - 24);
   });
 });

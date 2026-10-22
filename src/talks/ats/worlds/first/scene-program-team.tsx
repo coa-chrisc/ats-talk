@@ -9,7 +9,7 @@
 "use client";
 
 import { Part, Person } from "@/components/deck/kit";
-import { POSTS, PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
+import { PROGRAM_TEAM, SEAT_18 } from "./layout-program-team";
 import { Chair, Table } from "./parts-room";
 import { Fence, Frame, Nameplate, Reach, TeamTile } from "./parts-team";
 import { Layer, StoryOf, Words } from "./parts";
@@ -31,7 +31,7 @@ export function ProgramTeamMarks() {
       {P.tiles.map((tile) => (
         <TeamTile key={tile.key} id={tile.key} at={tile.at} text={tile.text} words={tile.words} />
       ))}
-      <Fence id={P.yard.key} at={P.yard.at} posts={P.yard.posts} reach={POSTS.reach} />
+      <Fence id={P.yard.key} at={P.yard.at} scale={P.yard.scale} />
       {P.yard.people.map((person) => (
         <g key={person.key} className="fs-walker">
           <Person id={person.key} at={person.at} />

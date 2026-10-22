@@ -1,8 +1,8 @@
 /**
  * The stands world's drawings for what the kit has no part for: slide 11's
  * fence post; slide 11a's gauge, a step of its stair and its climber;
- * slide 12a's plaque and the cord it hangs by; slide 13's fence, a tile
- * inside it and a nameplate; slide 15's step of the stair with its gate.
+ * slide 12a's plaque and the cord it hangs by; slide 13's tile
+ * inside the yard and a nameplate; slide 15's step of the stair with its gate.
  * Script-free: every word is passed in. SVG for the plane's marks, moved
  * with the house moves only (stands.css paints them).
  */
@@ -139,21 +139,7 @@ export function Host({ id, at, text }: { id: string; at: Box; text: string }) {
   );
 }
 
-/* Slide 13 */
-
-/** The yard's fence: a top rail, a foot rail and posts along them, drawn on as one outline (`draw`), the posts with it. */
-export function Fence({ id, at, posts }: { id: string; at: Box; posts: readonly number[] }) {
-  return (
-    <g className="sn-fence" data-build={id}>
-      <rect className="sn-fence__yard" x={at.x} y={at.y} width={at.w} height={at.h} rx={6} />
-      <rect className="sn-fence__rail dk-draw" x={at.x} y={at.y} width={at.w} height={at.h} rx={6} pathLength={1} />
-      {posts.flatMap((x) => [
-        <path key={`t${x}`} className="sn-fence__post" d={`M${x} ${at.y - 10}V${at.y + 10}`} />,
-        <path key={`b${x}`} className="sn-fence__post" d={`M${x} ${at.y + at.h - 10}V${at.y + at.h + 10}`} />,
-      ])}
-    </g>
-  );
-}
+/* Slide 13 (its fence is parts-map.tsx's) */
 
 /** A tile inside the yard: a white face in a navy edge with a green rule down its left side, what it holds set inside it. It lands as one part. */
 export function YardTile({ id, at, children }: { id: string; at: Box; children?: ReactNode }) {

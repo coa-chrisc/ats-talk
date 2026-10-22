@@ -3,15 +3,35 @@
  * gives their numbers): the lit window in a department's box (slides 12
  * and 15); slide 11's dashed plate of what is still to establish, its name
  * and caption set inside it; slide 15's agent, the two-dot hexagon of
- * slide 14; and the gate, slide 10's hurdle with green posts and its bars
- * across, closed (11a and 15) or opening (11a); and slide 17's round table,
- * empty, in grey dashes (12). Script-free: every word is passed in. Painted
- * by stands.css.
+ * slide 14; the sandbox's picket fence round its yard (13 and 15); the
+ * gate, slide 10's hurdle with green posts and its bars across, closed (11a
+ * and 15) or opening (11a); and slide 17's round table, empty, in grey
+ * dashes (12). Script-free: every word is passed in. Painted by stands.css.
  */
 "use client";
 
+import type { CSSProperties } from "react";
 import { Dashed, type Box, type Point } from "@/components/deck/kit";
-import { AGENT, PLATE, TABLE, WINDOW, gatePaths, tableSeats } from "../department-map";
+import { AGENT, FENCE, PLATE, TABLE, WINDOW, fencePickets, gatePaths, tableSeats } from "../department-map";
+
+/**
+ * The sandbox's fence round its yard: the yard's ground, washed green as the
+ * fence draws; its rails, drawn on from the top left corner round (`draw`);
+ * and its pointed pickets along the top rail, each rising as the rail passes
+ * it. `scale` sizes the pickets.
+ */
+export function Fence({ id, at, scale = 1 }: { id: string; at: Box; scale?: number }) {
+  const rx = FENCE.rx * scale;
+  return (
+    <g className="sn-fence" data-build={id}>
+      <rect className="sn-fence__yard" x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} />
+      <rect className="sn-fence__rail dk-draw" x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} pathLength={1} />
+      {fencePickets(at, scale).pickets.map((picket) => (
+        <path key={picket.x} className="sn-fence__picket" d={picket.d} style={{ "--at": picket.at } as CSSProperties} />
+      ))}
+    </g>
+  );
+}
 
 /** A window in a department's box: the box's soft green wash and the window's green square, both coming up as it lights (`fill`; `fill` to `WINDOW.faint` lights it faintly). */
 export function LitWindow({ id, cell, at, rx }: { id: string; cell: Box; at: Box; rx: number }) {
