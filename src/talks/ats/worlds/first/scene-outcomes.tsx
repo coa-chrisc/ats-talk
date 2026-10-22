@@ -1,17 +1,70 @@
+/**
+ * Slide 23's picture: the dashed tag at the top left; the line from the
+ * navy resident through the green staff figure to the closed gate; the
+ * request card, the person's mark by the staff figure; the bracket under
+ * the trip with its words, the pin at its end and the dashed tag under the
+ * pin; and, by the drawings they name, the owner's words, the magnifier and
+ * its words, and the words before the gate.
+ */
 "use client";
-import { Part } from "@/components/deck/kit";
-import { shown } from "../../script/find";
-import { DrawingLabel as L, Ink, Sketch, drawingInk, drawingPaper, drawingProcess } from "../story-drawing";
-import { contentTop } from "./layout";
+
+import { HumanMark, Part, Person, type Point } from "@/components/deck/kit";
+import { ClosedGate } from "../stands/parts-map";
+import { OUTCOMES, LENS, PIN } from "./layout-outcomes";
 import { Layer, StoryOf } from "./parts";
-const w=shown("outcomes","play");
-const t=contentTop("outcomes");
-export function OutcomesMarks(){return <Part id="outcomes.marks">
-<g data-build="outcomes.project"><Sketch kind="document" x={145} y={t+51}/><L text={w[0]} x={210} y={t+24} anchor="start" strong width={1580}/><L text={w[1]} x={210} y={t+65} anchor="start" width={1580}/></g>
-<g data-build="outcomes.measure"><L text={w[2]} x={96} y={t+130} anchor="start" strong width={380}/><L text={w[3]} x={96} y={t+168} anchor="start" width={470}/></g>
-<Ink id="outcomes.ruler" d={`M640 ${t+158}h1090M640 ${t+144}v28M1730 ${t+144}v28`}/>
-<g data-build="outcomes.baseline"><L text={w[4]} x={850} y={t+120} strong/><L text={w[5]} x={850} y={t+203} width={440}/><path d={`M850 ${t+145}v26`} stroke={drawingProcess} strokeWidth={4}/></g>
-<g data-build="outcomes.target"><L text={w[6]} x={1500} y={t+120} strong/><L text={w[7]} x={1500} y={t+203} width={480}/><circle cx={1500} cy={t+158} r={12} fill={drawingPaper} stroke={drawingInk} strokeWidth={3} strokeDasharray="4 4"/></g>
-{[0,1,2].map(i=><g key={i} data-build={`outcomes.check.${i}`}><Sketch kind={['person','magnify','compass'][i]} x={155+i*586} y={t+330} scale={0.75}/><L text={w[8+i*2]} x={215+i*586} y={t+302} anchor="start" strong width={435}/><L text={w[9+i*2]} x={215+i*586} y={t+340} anchor="start" width={435}/></g>)}
-</Part>;}
-export function OutcomesHtml(){return <Layer id="outcomes.html"><StoryOf picture="outcomes"/></Layer>;}
+import { DashedTag, Lens, Line, Pin, RequestCard } from "./parts-outcomes";
+import { Label } from "./parts-plan";
+
+const O = OUTCOMES;
+type Group = { key: string; anchor: "start" | "middle" | "end"; name: { text: string; at: Point }; caption: { text: string; at: Point } };
+
+/** A name over its caption, as one part. */
+function Named({ group }: { group: Group }) {
+  return (
+    <g data-build={group.key}>
+      <Label at={group.name.at} text={group.name.text} anchor={group.anchor} strong />
+      <Label at={group.caption.at} text={group.caption.text} anchor={group.anchor} />
+    </g>
+  );
+}
+
+export function OutcomesMarks() {
+  return (
+    <Part id={O.marks}>
+      <DashedTag id={O.tag.key} at={O.tag.at}>
+        <Label at={O.tag.project.at} text={O.tag.project.text} anchor="start" strong />
+        <Label at={O.tag.link.at} text={O.tag.link.text} anchor="start" />
+      </DashedTag>
+      <Line id={O.route.key} d={`M${O.route.from.x} ${O.route.from.y}H${O.route.to.x}`} className="fs-route" />
+      <g className="fs-resident fs-cast">
+        <Person id={O.resident.key} at={O.resident.at} />
+      </g>
+      <g className="fs-walker fs-cast">
+        <Person id={O.staff.key} at={O.staff.at} />
+      </g>
+      <ClosedGate id={O.gate.key} foot={O.gate.foot} scale={O.gate.scale} />
+      <RequestCard id={O.card.key} at={O.card.from} />
+      <HumanMark id={O.mark.key} at={O.mark.at} />
+      <Line id={O.bracket.key} d={O.bracket.d} className="fs-bracket" />
+      <Named group={O.measure} />
+      <Pin id={O.pin.key} top={O.pin.top} head={O.pin.head} r={PIN.r} />
+      <Named group={O.baseline} />
+      <DashedTag id={O.target.key} at={O.target.at}>
+        <Label at={O.target.name.at} text={O.target.name.text} anchor="start" strong />
+        <Label at={O.target.caption.at} text={O.target.caption.text} anchor="start" />
+      </DashedTag>
+      <Named group={O.owner} />
+      <Lens id={O.lens.key} at={O.lens.at} r={LENS.r} handle={LENS.handle} />
+      <Named group={O.quality} />
+      <Named group={O.expansion} />
+    </Part>
+  );
+}
+
+export function OutcomesHtml() {
+  return (
+    <Layer id={O.html}>
+      <StoryOf picture="outcomes" />
+    </Layer>
+  );
+}

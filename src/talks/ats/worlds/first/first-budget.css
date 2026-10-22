@@ -1,0 +1,60 @@
+/* Slide 22a's own marks (parts-budget.tsx), under the kit's rules: navy
+   (paper) words and outlines on the white ground, the process's green for
+   the City's own people and the work it pays for as it is done. The
+   developers, the yard and the agent are painted by first.css and
+   stands.css; the empty table by stands.css. */
+
+/* A seat badge: a navy card on the chest, a white line across it. */
+.fs-badge .fs-badge__card {
+  fill: var(--dk-paper);
+}
+
+.fs-badge .fs-badge__line {
+  fill: none;
+  stroke: var(--dk-night);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* The meter: a navy outline drawing on over its cells, the rules between them coming in as it draws. */
+.fs-meter .fs-meter__edge {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+}
+
+.fs-meter .fs-meter__ticks {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-opacity: clamp(0, calc(var(--d, 0) * 4 - 3), 1);
+}
+
+/* A cell of the meter: green, growing across from its left edge as it fills (parts-plan.tsx's Grow). */
+.fs-meter__cell {
+  fill: var(--dk-process);
+}
+
+/* A small piece of work: a navy dot. */
+.fs-token {
+  fill: var(--dk-paper);
+}
+
+/* The boundary between the two sides: a navy dashed line, wiped on. */
+.fs-boundary {
+  position: absolute;
+}
+
+.fs-boundary svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.fs-boundary path {
+  fill: none;
+  stroke: var(--dk-paper);
+  stroke-width: 3;
+  stroke-dasharray: 10 8;
+}

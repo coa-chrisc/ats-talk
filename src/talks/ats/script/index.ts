@@ -15,7 +15,7 @@ export const PARTS = [
   { name: "Where enterprise is", minutes: 6 },
   { name: "The four lessons", minutes: 5 },
   { name: "Where the City stands", minutes: 9 },
-  { name: "What we would do first", minutes: 8 },
+  { name: "What we would do first", minutes: 9 },
   { name: "Ready, the ask, the reveal", minutes: 5 },
 ] as const;
 
