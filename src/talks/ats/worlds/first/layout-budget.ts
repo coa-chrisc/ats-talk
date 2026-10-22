@@ -11,7 +11,7 @@
  * caption beside it. Words are read from the script, by position.
  */
 import { box, type Point } from "@/components/deck/kit";
-import { AGENT, FENCE, fencePosts, tableReach } from "../department-map";
+import { AGENT, FENCE, fenceBox, tableReach } from "../department-map";
 import { PERSON_CAST, setBox } from "./layout-outcomes";
 import { LABEL_LINE, SAFE, contentTop, groupOf, labelsOf, round } from "./layout-plan";
 
@@ -52,9 +52,11 @@ const BOUNDARY = box(BOUNDARY_X - 2, NAME_Y + LABEL_LINE / 2 + 10, 4, round(TABL
 
 /* The City's cloud, on the right */
 
-/** The right side starts 210 past the boundary; the yard runs from there to the band's right edge, 130 tall, its posts' tops 10 under the caption's line. */
+/** The right side starts 210 past the boundary; the yard runs from there to the band's right edge, its pickets (at slide 24's scale) 10 under the caption's line, its foot where the old post fence's was. */
 const RIGHT = BOUNDARY_X + 210;
-const YARD = box(RIGHT, CAPTION_Y + LABEL_LINE / 2 + 10 + FENCE.overhang, SAFE.right - RIGHT, 130);
+const FENCE_SCALE = 0.8;
+const RISE = round(FENCE.picket.rise * FENCE_SCALE);
+const YARD = box(RIGHT, CAPTION_Y + LABEL_LINE / 2 + 10 + RISE, SAFE.right - RIGHT, 130 + FENCE.overhang * 2 - RISE);
 /** The agent in the yard, 60 in from its left fence, its top 22 under the rail. */
 const AGENT_AT: Point = { x: YARD.x + 60 + AGENT.w / 2, y: YARD.y + 22 };
 /** The meter: an outline of four cells, 95 each, 70 past the agent, level with the agent's eyes; its words under it. */
@@ -82,7 +84,7 @@ export const BUDGET = {
   metered: {
     name: words("budget.metered.name", METERED, { x: RIGHT, y: NAME_Y }),
     caption: words("budget.metered.caption", METERED_CAPTION, { x: RIGHT, y: CAPTION_Y }),
-    yard: { key: "budget.yard", at: YARD, posts: fencePosts(YARD.x, YARD.w), reach: FENCE.overhang },
+    yard: { key: "budget.yard", at: YARD, scale: FENCE_SCALE },
     agent: { key: "budget.agent", at: AGENT_AT, scale: 1 },
     meter: { key: "budget.meter", at: METER_AT, ticks: [1, 2, 3].map((i) => round(METER_AT.x + i * METER.cell)) },
     /** Only the cells a piece of work fills are parts; the fourth stays empty, the meter's outline round it. */
@@ -112,7 +114,7 @@ export const BUDGET_PARTS = {
   boundary: BOUNDARY,
   boundaryName: name(B.boundary.name, "middle"),
   metered: [name(B.metered.name), caption(B.metered.caption)],
-  yard: box(YARD.x, YARD.y - FENCE.overhang, YARD.w, YARD.h + 2 * FENCE.overhang),
+  yard: fenceBox(YARD, FENCE_SCALE),
   agent: box(AGENT_AT.x - AGENT.w / 2, AGENT_AT.y, AGENT.w, AGENT.h),
   meter: METER_AT,
   token: box(TOKEN_FROM.x - TOKEN.r, TOKEN_FROM.y - TOKEN.r, 2 * TOKEN.r, 2 * TOKEN.r),

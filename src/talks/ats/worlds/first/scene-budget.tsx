@@ -38,7 +38,7 @@ export function BudgetMarks() {
       <Name w={B.boundary.name} anchor="middle" />
       <Name w={B.metered.name} />
       <Caption w={B.metered.caption} />
-      <Fence id={B.metered.yard.key} at={B.metered.yard.at} posts={B.metered.yard.posts} reach={B.metered.yard.reach} />
+      <Fence id={B.metered.yard.key} at={B.metered.yard.at} scale={B.metered.yard.scale} />
       <Agent id={B.metered.agent.key} at={B.metered.agent.at} scale={B.metered.agent.scale} />
       {B.metered.cells.map((cell) => (
         <Grow key={cell.key} id={cell.key} at={cell.at} className="fs-meter__cell" rx={4} />
