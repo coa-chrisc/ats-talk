@@ -58,3 +58,12 @@
   stroke-width: 3;
   stroke-dasharray: 10 8;
 }
+
+/* parts-plan.tsx's Grow: a part that grows across from its left edge as `--k` goes to 1. */
+.fs-grow {
+  transform: scaleX(var(--k, 0));
+}
+
+.fs-grow rect {
+  vector-effect: non-scaling-stroke;
+}

@@ -143,3 +143,12 @@ export function Plate({ id, at, text }: { id: string; at: Box; text: string }) {
     </g>
   );
 }
+
+/** A part that grows from its left edge as `--k` goes to 1 (`fill`). */
+export function Grow({ id, at, className, rx = 8 }: { id: string; at: Box; className: string; rx?: number }) {
+  return (
+    <g className="fs-grow" data-build={id} style={{ transformOrigin: `${at.x}px ${at.y}px` }}>
+      <rect className={className} x={at.x} y={at.y} width={at.w} height={at.h} rx={rx} />
+    </g>
+  );
+}
