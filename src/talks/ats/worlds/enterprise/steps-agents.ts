@@ -4,20 +4,21 @@
  * line's front passes it, named as it lands, with story line A; then the
  * loop draws under the agent, round from its top, each stop arriving and
  * lighting as the front reaches it, named as it does, with story line B;
- * and the bar lands across the ring where it closes, named.
+ * and the closed gate lands across the ring at its left side, where the
+ * loop started and now stops, named.
  */
 import type { StepDef } from "@/components/deck/engine";
 import { EASE, behind, draw, fill, rise, show } from "@/components/deck/kit";
 import { picture, story } from "../steps";
 import { AGENTS } from "./layout-agents";
 import { into, land, play } from "./moves";
-import { headOf, personOf } from "./parts-figures";
+import { personOf } from "./parts-figures";
 
 const A = AGENTS;
 const L = A.loop;
 
 /** How long the line takes to cross the stage: slow enough that each figure lands as its front passes, half a second or more apart. */
-const LINE = { at: 0, duration: 2.4 } as const;
+const LINE = { at: 0, duration: 3 } as const;
 /** Each figure lands a little behind the front, so the line is under it first. */
 const BEHIND = 0.08;
 /** How long the ring takes to go round once, at an even pace, as a loop runs: each stop 0.6 s after the one before. */
@@ -26,9 +27,8 @@ const RING = { at: 0, duration: 3, ease: "none" } as const;
 const landed = behind(LINE, A.figures.map((figure) => figure.along));
 const reached = L.stops.map((stop) => RING.at + RING.duration * stop.along);
 
-/** What a figure does as it lands: the person beside the draft draws on; the belted figure's head ring fills green. */
-const inner = (figure: (typeof A.figures)[number], at: number) =>
-  figure.kind === "draft" ? draw(personOf(figure.key), { at: at + 0.15, duration: 0.6 }) : figure.kind === "belted" ? fill(headOf(figure.key), { at: at + 0.15, duration: 0.6 }) : [];
+/** What a figure does as it lands: the person beside the draft draws on. */
+const inner = (figure: (typeof A.figures)[number], at: number) => (figure.kind === "draft" ? draw(personOf(figure.key), { at: at + 0.15, duration: 0.6 }) : []);
 
 export const agents = (): StepDef[] =>
   picture("agents", {
@@ -53,7 +53,7 @@ export const agents = (): StepDef[] =>
         ],
       },
       { with: true, hold: 1.5, moves: [story("agents", 0)] },
-      // The loop goes round under the agent from its top, each stop arriving and lighting as the front reaches it, named as it does.
+      // The loop goes round under the agent from the gate's place at its left, each stop arriving and lighting as the front reaches it, named as it does.
       {
         hold: 0.6,
         moves: [
@@ -66,7 +66,7 @@ export const agents = (): StepDef[] =>
         ],
       },
       { with: true, hold: 1.4, moves: [story("agents", 1)] },
-      // The bar lands across the ring where the loop closes, and its name.
-      { hold: 0.2, moves: [draw(L.bar.key, { at: 0, duration: 0.45 }), rise(L.bar.name.key, { at: 0.25, duration: 0.6 })] },
+      // The gate lands across the ring where the loop started, closing it, and its name.
+      { hold: 0.2, moves: [land(L.gate.key, 0, 0.5), rise(L.gate.name.key, { at: 0.25, duration: 0.6 })] },
     ]),
   });

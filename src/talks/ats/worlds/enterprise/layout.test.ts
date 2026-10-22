@@ -4,13 +4,13 @@
  * the parts that must not meet kept apart, and the parts that hold others
  * holding them.
  */
-import { AGENT_R, STORY, box, type Box, type Point } from "@/components/deck/kit";
+import { STORY, box, type Box, type Point } from "@/components/deck/kit";
 import { describe, expect, it } from "vitest";
 import { bottom, bounds, inside, overlaps, right, ringBox, wordsBox } from "./harness";
-import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, bandFoot, contentTop, linesIn, titleOf, wordsWidth } from "./layout";
-import { AGENTS, CAPTION_Y, LOOP_RING } from "./layout-agents";
-import { BUILDER_R, FLEET, GATE } from "./layout-fleet";
-import { REVIEW } from "./layout-review";
+import { DRAW_FOOT, LABEL_LINE, SAFE, TAG_LINE, TEXT_LINE, agentBox, bandFoot, contentTop, gateBox, linesIn, titleOf, wordsWidth } from "./layout";
+import { AGENTS, AGENT_SCALE as FIGURE_SCALE, CAPTION_Y, LOOP_RING } from "./layout-agents";
+import { AGENT_SCALE as FLEET_SCALE, FLEET } from "./layout-fleet";
+import { DOC, REVIEW, SAMPLES, SLOTS, WORK, reviewZones, wordBoxes } from "./layout-review";
 import { BAR, COLUMN, SPENDING } from "./layout-spending";
 import { FIGURE as BIG, CARD, INNER, STUMBLED, figureBox as stumbledFigure } from "./layout-stumbled";
 
@@ -20,17 +20,17 @@ const S = SPENDING;
 const A = AGENTS;
 const L = A.loop;
 const F = FLEET;
-const K = F.keys;
+const C = F.checker;
 const R = REVIEW;
-const reviewZones = () => R.cards.map(card => card.at);
 const T = STUMBLED;
 
 /** The person's mark: its ring, and its words to its right (the kit sets them 44 px from its middle). */
 const markBox = () => box(F.mark.at.x - 24, F.mark.at.y - 24, 48, 48);
 const markWords = () => label({ x: F.mark.at.x + 44, y: F.mark.at.y }, F.mark.text, "start");
-/** The gate's posts and lintel, and the ring of keys with its keys hanging 21 px under its middle (parts.tsx). */
-const gateBox = () => box(K.gate.x0 - 2, K.gate.top - 2, K.gate.x1 - K.gate.x0 + 4, K.gate.foot - K.gate.top + 2);
-const keyRingBox = () => box(K.ring.at.x - 11, K.ring.at.y - 7, 24, 34);
+/** The agents on slide 5, each the hexagon at the slide's one size; the checker's gate on its line; slide 4's gate across the ring. */
+const fleetAgent = (at: Point) => agentBox(at, FLEET_SCALE);
+const checkerGate = () => gateBox(C.gate.foot, C.gate.scale);
+const loopGate = () => gateBox(L.gate.foot, L.gate.scale);
 
 const DRAWN: Record<string, Box[]> = {
   spending: [
@@ -47,24 +47,23 @@ const DRAWN: Record<string, Box[]> = {
     ...A.figures.flatMap((entry) => [entry.at, text(entry.name.at, entry.name.text), label(entry.caption.at, entry.caption.text)]),
     ringBox(L.centre, L.r),
     ...L.stops.flatMap((stop) => [ringBox(stop.at, LOOP_RING.stop), label(stop.name.at, stop.name.text, stop.name.anchor)]),
-    label(L.bar.name.at, L.bar.name.text, "end"),
+    loopGate(),
+    label(L.gate.name.at, L.gate.name.text, "end"),
   ],
-  review: reviewZones(),
+  review: [...Object.values(reviewZones()), ...WORK.map((item) => box(item.end.x, item.end.y, DOC.w, DOC.h)), ...SAMPLES.map((sample) => box(sample.end.x, sample.end.y, DOC.w, DOC.h))],
   "fleet-defined": [
-    ...F.leads.at.map((at) => ringBox(at, AGENT_R)),
+    ...F.leads.at.map(fleetAgent),
     box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs),
     text(F.leads.name.at, F.leads.name.text),
-    F.board.box,
-    ...F.builders.at.map((at) => ringBox(at, BUILDER_R)),
+    ...F.builders.at.map(fleetAgent),
     text(F.builders.name.at, F.builders.name.text),
-    gateBox(),
-    ringBox(K.at, AGENT_R),
-    keyRingBox(),
-    text(K.name.at, K.name.text, "start"),
-    label(K.caption.at, K.caption.text, "start"),
+    box(C.rule.x0, C.rule.y - 2, C.rule.x1 - C.rule.x0, 4),
+    checkerGate(),
+    text(C.name.at, C.name.text),
+    label(C.caption.at, C.caption.text),
     box(F.wall.x - 2, F.wall.y0, 4, F.wall.y1 - F.wall.y0),
     label(F.wall.name.at, F.wall.name.text),
-    ...F.reviewers.at.map((at) => ringBox(at, AGENT_R)),
+    ...F.reviewers.at.map(fleetAgent),
     text(F.reviewers.name.at, F.reviewers.name.text),
     F.person.at,
     markBox(),
@@ -247,6 +246,13 @@ describe("slide 4, the timeline and the loop", () => {
     }
   });
 
+  it("draws the agent as the deck's hexagon, standing in its figure's box, as tall as the box", () => {
+    const agent = A.figures[2];
+    const drawn = agentBox({ x: agent.foot.x, y: agent.at.y }, FIGURE_SCALE);
+    expect(inside(drawn, agent.at)).toBe(true);
+    expect(agent.at.h - drawn.h).toBeLessThan(1);
+  });
+
   it("keeps the figures' words clear of the years", () => {
     for (const entry of A.figures) for (const year of A.years) {
       expect(overlaps(text(entry.name.at, entry.name.text), text(year.at, year.text, year.anchor)), `${entry.name.text} ${year.text}`).toBe(false);
@@ -254,15 +260,23 @@ describe("slide 4, the timeline and the loop", () => {
     }
   });
 
-  it("centres the loop under the agent, under its caption, with five stops a fifth of the ring apart from the top, clockwise", () => {
+  it("centres the loop, half as wide again as before, under the agent on the line's right half, under its caption and over the drawing's foot", () => {
     const agent = A.figures[2];
     expect(L.centre.x).toBe(agent.foot.x);
-    expect(L.centre.y - L.r - LOOP_RING.stop).toBeGreaterThan(CAPTION_Y + LABEL_LINE / 2 + 24);
+    expect(L.centre.x).toBeGreaterThan((A.line.x0 + A.line.x1) / 2);
+    expect(L.r).toBeGreaterThanOrEqual(1.5 * 80);
+    expect(L.centre.y - L.r).toBeGreaterThan(CAPTION_Y + LABEL_LINE / 2 + 24);
+    expect(L.centre.y + L.r + 2).toBeLessThanOrEqual(DRAW_FOOT);
+  });
+
+  it("sets five stops a sixth of the ring apart, clockwise from the gate's place at its left side", () => {
     expect(L.stops).toHaveLength(5);
     for (const [i, stop] of L.stops.entries()) {
-      const deg = -90 + 72 * i;
+      const deg = 180 + 60 * (i + 1);
       expect(stop.at.x).toBeCloseTo(L.centre.x + L.r * Math.cos((deg * Math.PI) / 180), 1);
       expect(stop.at.y).toBeCloseTo(L.centre.y + L.r * Math.sin((deg * Math.PI) / 180), 1);
+      expect(stop.along).toBeCloseTo((i + 1) / 6, 5);
+      expect(stop.at.y + LOOP_RING.stop).toBeLessThanOrEqual(DRAW_FOOT);
     }
   });
 
@@ -279,98 +293,127 @@ describe("slide 4, the timeline and the loop", () => {
     }
   });
 
-  it("crosses the ring with the bar between the last stop and the first, its name to its left, clear of the stops' names", () => {
-    const mid = { x: (L.bar.from.x + L.bar.to.x) / 2, y: (L.bar.from.y + L.bar.to.y) / 2 };
-    expect(Math.hypot(mid.x - L.centre.x, mid.y - L.centre.y)).toBeCloseTo(L.r, 0);
-    expect(mid.x).toBeLessThan(L.centre.x);
-    expect(mid.y).toBeLessThan(L.stops[4].at.y);
-    expect(mid.x).toBeGreaterThan(L.stops[4].at.x);
-    const name = label(L.bar.name.at, L.bar.name.text, "end");
-    expect(right(name)).toBeLessThan(Math.min(L.bar.from.x, L.bar.to.x));
-    for (const stop of L.stops) expect(overlaps(name, label(stop.name.at, stop.name.text, stop.name.anchor)), stop.name.text).toBe(false);
+  it("stands the closed gate across the ring at its left side, its bars across the ring's line, its name to its left, clear of every other word and stop", () => {
+    const gate = loopGate();
+    expect(L.gate.at).toEqual({ x: L.centre.x - L.r, y: L.centre.y });
+    expect(gate.x).toBeLessThan(L.gate.at.x);
+    expect(right(gate)).toBeGreaterThan(L.gate.at.x);
+    expect(gate.y).toBeLessThan(L.gate.at.y);
+    expect(bottom(gate)).toBeGreaterThan(L.gate.at.y);
+    for (const stop of L.stops) expect(overlaps(gate, ringBox(stop.at, LOOP_RING.stop)), stop.name.text).toBe(false);
+    const name = label(L.gate.name.at, L.gate.name.text, "end");
+    expect(right(name)).toBeLessThanOrEqual(gate.x - 16);
+    expect(name.x).toBeGreaterThanOrEqual(SAFE.left);
+    const others = [...L.stops.map((stop) => label(stop.name.at, stop.name.text, stop.name.anchor)), ...A.figures.flatMap((entry) => [text(entry.name.at, entry.name.text), label(entry.caption.at, entry.caption.text)])];
+    for (const other of others) expect(overlaps(name, other)).toBe(false);
   });
 });
 
-describe("slide six review process", () => {
+/** How far apart two boxes are: 0 where they meet. */
+const apart = (a: Box, b: Box) => Math.hypot(Math.max(0, b.x - right(a), a.x - right(b)), Math.max(0, b.y - bottom(a), a.y - bottom(b)));
+
+describe("slide 4a, the review stream", () => {
+  const Z = reviewZones();
+  const B = wordBoxes();
+
   it("distinguishes review before completion from audit after completion", () => {
-    expect(R.labels.before).toBe("Review before proceeding");
-    expect(R.labels.after).toBe("Review after completion");
+    expect(R.words.before.text).toBe("Review before proceeding");
+    expect(R.words.after.text).toBe("Review after completion");
   });
-  it("keeps all cards separate and the forecast above the story", () => {
-    for (const [i, card] of R.cards.entries()) for (const other of R.cards.slice(i + 1)) expect(overlaps(card.at, other.at)).toBe(false);
+
+  it("keeps every group apart, and the forecast above the story", () => {
+    const zones = Object.entries(Z);
+    for (const [i, [name, zone]] of zones.entries()) for (const [other, next] of zones.slice(i + 1)) expect(overlaps(zone, next), `${name} ${other}`).toBe(false);
     expect(bottom(R.forecast.at)).toBeLessThan(contentTop("review") - 100);
     expect(right(R.forecast.at)).toBeLessThanOrEqual(SAFE.right);
+  });
+
+  it("gives the person, the mark and its name their own column, at least 40 px clear of every other group", () => {
+    const column = [R.human.at, box(R.mark.x - 24, R.mark.y - 24, 48, 48), B.oversight];
+    for (const part of column) for (const [name, zone] of Object.entries(Z).filter(([name]) => name !== "human")) expect(apart(part, zone), name).toBeGreaterThanOrEqual(40);
+    // Between the two lower trays: right of the exceptions' words, left of the audit's.
+    expect(Z.human.x).toBeGreaterThan(right(Z.exceptions));
+    expect(right(Z.human)).toBeLessThan(Z.audit.x);
+  });
+
+  it("fills the finished grid whole: 24 documents, one in each slot of an 8 by 3 grid, inside its tray", () => {
+    const done = WORK.filter((item) => item.exception < 0);
+    expect(SLOTS).toBe(24);
+    expect(done).toHaveLength(SLOTS);
+    expect(new Set(done.map((item) => item.slot))).toEqual(new Set(Array.from({ length: SLOTS }, (_, i) => i)));
+    const xs = [...new Set(done.map((item) => item.end.x))].sort((a, b) => a - b);
+    const ys = [...new Set(done.map((item) => item.end.y))].sort((a, b) => a - b);
+    expect([xs.length, ys.length]).toEqual([8, 3]);
+    for (const item of done) expect(inside(box(item.end.x, item.end.y, DOC.w, DOC.h), R.trays.done), item.key).toBe(true);
+  });
+
+  it("sends the three exceptions into their own tray and three copies of finished documents, one from each row, into the audit tray", () => {
+    const exceptions = WORK.filter((item) => item.exception >= 0);
+    expect(exceptions).toHaveLength(3);
+    for (const item of exceptions) expect(inside(box(item.end.x, item.end.y, DOC.w, DOC.h), R.trays.exceptions), item.key).toBe(true);
+    expect(SAMPLES).toHaveLength(3);
+    const slots = WORK.filter((item) => item.exception < 0).map((item) => item.end);
+    for (const sample of SAMPLES) {
+      expect(slots, sample.key).toContainEqual(sample.from);
+      expect(inside(box(sample.end.x, sample.end.y, DOC.w, DOC.h), R.trays.audit), sample.key).toBe(true);
+    }
+    expect(new Set(SAMPLES.map((sample) => sample.from.y)).size).toBe(3);
+  });
+
+  it("runs every document through the checks, on the flow line", () => {
+    for (const item of WORK) expect(inside(box(item.through.x, item.through.y, DOC.w, DOC.h), R.check), item.key).toBe(true);
+    expect(R.check.y).toBeLessThan(R.flow.y);
+    expect(bottom(R.check)).toBeGreaterThan(R.flow.y);
   });
 });
 
 describe("slide 5, the fleet, five groups", () => {
-  it("puts the groups left to right, apart: the leads, the board and its builders under the gate, the wall, the reviewers, the person", () => {
-    const leads = bounds([...F.leads.at.map((at) => ringBox(at, AGENT_R)), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs)]);
-    const reviewers = bounds(F.reviewers.at.map((at) => ringBox(at, AGENT_R)));
-    expect(F.board.box.x).toBeGreaterThan(right(leads) + 48);
-    expect(F.wall.x).toBeGreaterThan(right(F.board.box) + 48);
-    expect(reviewers.x).toBeGreaterThan(F.wall.x + 48);
-    expect(F.person.at.x).toBeGreaterThan(right(reviewers) + 120);
+  const leads = () => bounds([...F.leads.at.map(fleetAgent), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs)]);
+  const builders = () => bounds(F.builders.at.map(fleetAgent));
+  const reviewers = () => bounds(F.reviewers.at.map(fleetAgent));
+
+  it("puts the groups left to right, apart: the leads, the builders under the gate's line, the dividing line, the reviewers, the person", () => {
+    expect(C.rule.x0).toBeGreaterThan(right(leads()) + 48);
+    expect(F.wall.x).toBeGreaterThan(C.rule.x1 + 48);
+    expect(reviewers().x).toBeGreaterThan(F.wall.x + 48);
+    expect(F.person.at.x).toBeGreaterThan(right(reviewers()) + 120);
   });
 
-  it("splits the board into two rows of six cells, a builder over each column, the builders over the board", () => {
-    expect(F.board.rows).toHaveLength(2);
-    for (const row of F.board.rows) {
-      expect(row.cells).toHaveLength(6);
-      for (const cell of row.cells) expect(inside(cell, F.board.box)).toBe(true);
-    }
-    expect(F.splits.map((split) => split.y)).toEqual(F.board.rows.slice(1).map((row) => row.box.y));
-    for (const [i, at] of F.builders.at.entries()) {
-      const cell = F.board.rows[0].cells[i];
-      expect(at.x).toBe(cell.x + cell.w / 2);
-      expect(at.y + BUILDER_R).toBeLessThan(F.board.box.y - 12);
-    }
-    expect(BUILDER_R).toBeLessThan(AGENT_R);
+  it("stands every agent on one line at one size: the leads, the six builders and the two reviewers", () => {
+    const all = [...F.leads.at, ...F.builders.at, ...F.reviewers.at];
+    expect([F.leads.at.length, F.builders.at.length, F.reviewers.at.length]).toEqual([3, 6, 2]);
+    for (const at of all) expect(at.y).toBe(F.agentTop);
+    const xs = all.map((at) => at.x);
+    for (let i = 1; i < xs.length; i++) expect(fleetAgent(all[i]).x, `agent ${i}`).toBeGreaterThan(right(fleetAgent(all[i - 1])));
   });
 
-  it("stands the keys agent in its gate centred over the builders, the ring of keys at its hand, a line from its foot to each builder, its name and caption to its right", () => {
-    const gate = gateBox();
-    expect(K.at.x).toBe(F.board.box.x + F.board.box.w / 2);
-    expect(K.gate.x0).toBeLessThan(K.at.x - AGENT_R);
-    expect(K.gate.x1).toBeGreaterThan(K.at.x + AGENT_R);
-    expect(K.gate.top).toBeLessThan(K.at.y - AGENT_R);
-    expect(K.gate.foot).toBeGreaterThan(K.at.y + AGENT_R);
-    expect(K.gate.top).toBeGreaterThanOrEqual(contentTop("fleet-defined"));
-    expect(overlaps(keyRingBox(), ringBox(K.at, AGENT_R))).toBe(false);
-    expect(inside(keyRingBox(), gate)).toBe(true);
-    expect(K.lines).toHaveLength(F.builders.at.length);
-    for (const [i, line] of K.lines.entries()) {
-      expect(line.from.x).toBe(K.at.x);
-      expect(line.from.y).toBeGreaterThan(K.gate.foot);
-      expect(line.to.x).toBe(F.builders.at[i].x);
-      expect(line.to.y).toBeLessThan(F.builders.at[i].y - BUILDER_R);
-      expect(line.to.y - line.from.y).toBeGreaterThan(40);
-    }
-    const name = text(K.name.at, K.name.text, "start");
-    const caption = label(K.caption.at, K.caption.text, "start");
-    expect(name.x).toBeGreaterThan(K.gate.x1 + GATE.nameGap - 1);
-    expect(caption.x).toBe(name.x);
-    expect(caption.y).toBeGreaterThanOrEqual(bottom(name));
-    expect(bottom(caption)).toBeLessThan(F.wall.y0);
-    expect(bottom(caption)).toBeLessThan(Math.min(...F.reviewers.at.map((at) => at.y - AGENT_R)));
-    // The lines fan down and right under the words: where a line is level with the words' foot, it is still left of them.
-    for (const words of [name, caption]) for (const line of K.lines) {
-      const k = Math.min(1, Math.max(0, (bottom(words) - line.from.y) / (line.to.y - line.from.y)));
-      expect(line.from.x + k * (line.to.x - line.from.x), line.key).toBeLessThan(words.x - 8);
-    }
+  it("stands the closed gate on a line over the whole row of builders, its name and caption centred over it", () => {
+    const gate = checkerGate();
+    expect(C.rule.x0).toBeLessThan(builders().x);
+    expect(C.rule.x1).toBeGreaterThan(right(builders()));
+    expect(C.rule.y).toBeLessThan(builders().y - 16);
+    expect(C.gate.foot).toEqual({ x: (F.builders.at[0].x + F.builders.at[5].x) / 2, y: C.rule.y });
+    const name = text(C.name.at, C.name.text);
+    const caption = label(C.caption.at, C.caption.text);
+    expect([C.name.at.x, C.caption.at.x]).toEqual([C.gate.foot.x, C.gate.foot.x]);
+    expect(name.y).toBeGreaterThanOrEqual(contentTop("fleet-defined"));
+    expect(caption.y).toBeGreaterThanOrEqual(bottom(name) - 8);
+    expect(bottom(caption)).toBeLessThan(gate.y);
   });
 
-  it("stands the wall from the builders' tops to under the board, its name under its foot", () => {
-    expect(F.wall.y0).toBeLessThan(Math.min(...F.builders.at.map((at) => at.y - BUILDER_R)));
-    expect(F.wall.y1).toBeGreaterThan(bottom(F.board.box) - 16);
-    expect(label(F.wall.name.at, F.wall.name.text).y).toBeGreaterThan(F.wall.y1);
+  it("stands the dividing line from over the agents' tops to under their names, its name directly under its foot", () => {
+    const words = label(F.wall.name.at, F.wall.name.text);
+    expect(F.wall.y0).toBeLessThan(F.agentTop);
+    expect(F.wall.y1).toBeGreaterThan(bottom(text(F.leads.name.at, F.leads.name.text)));
+    expect(F.wall.name.at.x).toBe(F.wall.x);
+    expect(words.y).toBeGreaterThan(F.wall.y1);
+    expect(words.y - F.wall.y1).toBeLessThan(16);
   });
 
-  it("names the groups on two lines, each name clear of every drawing and every other name", () => {
-    const names = [text(F.leads.name.at, F.leads.name.text), text(F.builders.name.at, F.builders.name.text), label(F.wall.name.at, F.wall.name.text), text(F.reviewers.name.at, F.reviewers.name.text), markWords(), text(K.name.at, K.name.text, "start"), label(K.caption.at, K.caption.text, "start")];
-    expect(new Set([F.leads.name.at.y, F.reviewers.name.at.y, F.mark.at.y]).size).toBe(1);
-    expect(F.builders.name.at.y).toBe(F.wall.name.at.y);
-    const drawings = [...F.leads.at.map((at) => ringBox(at, AGENT_R)), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs), F.board.box, ...F.builders.at.map((at) => ringBox(at, BUILDER_R)), gateBox(), keyRingBox(), ...F.reviewers.at.map((at) => ringBox(at, AGENT_R)), F.person.at, markBox(), box(F.wall.x - 2, F.wall.y0, 4, F.wall.y1 - F.wall.y0)];
+  it("names the groups on one row, each name clear of every drawing and every other name", () => {
+    const names = [text(F.leads.name.at, F.leads.name.text), text(F.builders.name.at, F.builders.name.text), label(F.wall.name.at, F.wall.name.text), text(F.reviewers.name.at, F.reviewers.name.text), markWords(), text(C.name.at, C.name.text), label(C.caption.at, C.caption.text)];
+    expect(new Set([F.leads.name.at.y, F.builders.name.at.y, F.reviewers.name.at.y, F.mark.at.y]).size).toBe(1);
+    const drawings = [...[...F.leads.at, ...F.builders.at, ...F.reviewers.at].map(fleetAgent), box(F.leads.desk.x0, F.leads.desk.y, F.leads.desk.x1 - F.leads.desk.x0, F.leads.desk.legs), box(C.rule.x0, C.rule.y - 2, C.rule.x1 - C.rule.x0, 4), checkerGate(), F.person.at, markBox(), box(F.wall.x - 2, F.wall.y0, 4, F.wall.y1 - F.wall.y0)];
     for (const [i, name] of names.entries()) {
       for (const drawing of drawings) expect(overlaps(name, drawing), `name ${i}`).toBe(false);
       for (const other of names.slice(i + 1)) expect(overlaps(name, other), `name ${i}`).toBe(false);

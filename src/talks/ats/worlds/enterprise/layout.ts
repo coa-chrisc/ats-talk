@@ -10,6 +10,7 @@
  */
 import { STORY, storyKeys, storyRows, type Box, type Point, type StoryBand } from "@/components/deck/kit";
 import { breakAfter, storyOf as scriptStory } from "../../script/find";
+import { AGENT, gatePaths } from "../department-map";
 import { picturesOf, storyId } from "../steps";
 
 /** The pictures this world holds, in the script's order. */
@@ -114,6 +115,14 @@ export function linesIn(text: string, size: number, width: number): number {
 
 export const round = (n: number) => Math.round(n * 100) / 100;
 export const centreOf = (b: Box): Point => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 });
+
+/** The box the deck's hexagon agent fills (parts-figures.tsx), its top point at `at`, times `scale`: the map's own measures. */
+export const agentBox = (at: Point, scale: number): Box => ({ x: round(at.x - (AGENT.w * scale) / 2), y: at.y, w: round(AGENT.w * scale), h: round(AGENT.h * scale) });
+/** The box the deck's closed gate fills, standing on `foot`, times `scale`, its posts' round caps and its stroke widened in. */
+export const gateBox = (foot: Point, scale: number): Box => {
+  const at = gatePaths(foot, scale).at;
+  return { x: at.x - 3, y: at.y - 3, w: at.w + 6, h: at.h + 6 };
+};
 
 /**
  * A large figure, a number and the words round it (`Over`, `percent`): the
